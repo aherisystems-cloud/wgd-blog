@@ -25,6 +25,7 @@
   --shadow-sm: 0 2px 8px rgba(123, 31, 162, 0.08);
   --shadow-md: 0 8px 24px rgba(123, 31, 162, 0.12);
   --shadow-lg: 0 16px 48px rgba(123, 31, 162, 0.18);
+  --shadow-xl: 0 24px 64px rgba(123, 31, 162, 0.24);
   --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -504,54 +505,11 @@ body {
   z-index: 2;
 }
 
-.newsletter-cta h3 {
-  font-size: 2rem;
-  font-weight: 800;
-  margin-bottom: 12px;
-}
-
-.newsletter-cta p {
-  font-size: 1.125rem;
-  opacity: 0.95;
-  margin-bottom: 28px;
-}
-
-.newsletter-form {
-  display: flex;
-  gap: 12px;
-  max-width: 500px;
+.newsletter-cta iframe {
+  border-radius: 16px;
+  box-shadow: var(--shadow-xl);
   margin: 0 auto;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.newsletter-input {
-  flex: 1;
-  min-width: 250px;
-  padding: 16px 20px;
-  border: none;
-  border-radius: 28px;
-  font-family: 'Nunito', sans-serif;
-  font-size: 15px;
-}
-
-.newsletter-btn {
-  padding: 16px 36px;
-  border: none;
-  border-radius: 28px;
-  background: var(--white);
-  color: var(--purple-primary);
-  font-family: 'Nunito', sans-serif;
-  font-size: 15px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: var(--transition);
-  box-shadow: var(--shadow-md);
-}
-
-.newsletter-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+  display: block;
 }
 
 /* ====== Related Posts ====== */
@@ -709,7 +667,7 @@ body {
 
 .scroll-top:hover {
   transform: translateY(-4px);
-  box-shadow: var(--shadow-xl);
+  box-shadow: 0 24px 64px rgba(123, 31, 162, 0.24);
 }
 
 /* ====== Exit Intent Popup ====== */
@@ -793,6 +751,12 @@ body {
   padding: 16px;
 }
 
+.exit-popup-content iframe {
+  width: 100%;
+  min-height: 500px;
+  border: none;
+}
+
 @keyframes slideUpPopup {
   from {
     opacity: 0;
@@ -838,8 +802,9 @@ body {
     padding: 32px 24px;
   }
   
-  .newsletter-form {
-    flex-direction: column;
+  .newsletter-cta iframe {
+    width: 100% !important;
+    max-width: 100%;
   }
   
   .related-grid {
@@ -1056,7 +1021,7 @@ body {
     <!-- NEWSLETTER CTA -->
     <div class="newsletter-cta">
       <div class="newsletter-cta-content">
-        <iframe width="540" height="305" src="https://43949154.sibforms.com/serve/MUIFAPyQ9_bfSXkPWBO8zw0Q8-K6p-lh52NEPxUZW_KW6Bxr7jNKf0aSLx8H6MkxHztBHikhDrVG-vaj_YSAWy1s5zR5j1tWjnVfjysGhT_YteJU9De4l5EMFWBrXjCI1OaRRLMUy3jkmzn-AYuBCQPT_hadcWRpGmlfHEOPG5WjWTGWGGAczSj98E6CwfwSTzliF2Zk30_4IryF" frameborder="0" scrolling="auto" allowfullscreen style="display: block;margin-left: auto;margin-right: auto;max-width: 100%; border-radius: 16px; box-shadow: var(--shadow-xl);"></iframe>
+        <iframe width="540" height="550" src="https://43949154.sibforms.com/serve/MUIFAPyQ9_bfSXkPWBO8zw0Q8-K6p-lh52NEPxUZW_KW6Bxr7jNKf0aSLx8H6MkxHztBHikhDrVG-vaj_YSAWy1s5zR5j1tWjnVfjysGhT_YteJU9De4l5EMFWBrXjCI1OaRRLMUy3jkmzn-AYuBCQPT_hadcWRpGmlfHEOPG5WjWTGWGGAczSj98E6CwfwSTzliF2Zk30_4IryF" frameborder="0" scrolling="no" allowfullscreen style="display: block;margin-left: auto;margin-right: auto;max-width: 100%; border-radius: 16px; box-shadow: var(--shadow-xl);"></iframe>
       </div>
     </div>
     
@@ -1130,7 +1095,7 @@ body {
       <p>Join our community for exclusive decor tips</p>
     </div>
     <div class="exit-popup-content">
-      <iframe width="100%" height="420" src="https://43949154.sibforms.com/serve/MUIFAPyQ9_bfSXkPWBO8zw0Q8-K6p-lh52NEPxUZW_KW6Bxr7jNKf0aSLx8H6MkxHztBHikhDrVG-vaj_YSAWy1s5zR5j1tWjnVfjysGhT_YteJU9De4l5EMFWBrXjCI1OaRRLMUy3jkmzn-AYuBCQPT_hadcWRpGmlfHEOPG5WjWTGWGGAczSj98E6CwfwSTzliF2Zk30_4IryF" frameborder="0" scrolling="auto" allowfullscreen></iframe>
+      <iframe width="100%" height="550" src="https://43949154.sibforms.com/serve/MUIFAPyQ9_bfSXkPWBO8zw0Q8-K6p-lh52NEPxUZW_KW6Bxr7jNKf0aSLx8H6MkxHztBHikhDrVG-vaj_YSAWy1s5zR5j1tWjnVfjysGhT_YteJU9De4l5EMFWBrXjCI1OaRRLMUy3jkmzn-AYuBCQPT_hadcWRpGmlfHEOPG5WjWTGWGGAczSj98E6CwfwSTzliF2Zk30_4IryF" frameborder="0" scrolling="no" allowfullscreen></iframe>
     </div>
   </div>
 </div>
