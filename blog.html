@@ -534,11 +534,11 @@ img {
   height: 100%;
 }
 
-/* ====== Newsletter Section ====== */
+/* ====== Newsletter Section (Embedded) ====== */
 .newsletter {
   background: linear-gradient(135deg, var(--purple-primary), var(--purple-light));
   border-radius: 24px;
-  padding: 48px;
+  padding: 48px 32px;
   margin: 64px 0;
   text-align: center;
   position: relative;
@@ -561,60 +561,91 @@ img {
   z-index: 2;
 }
 
-.newsletter h2 {
-  color: var(--white);
-  font-size: 2rem;
-  font-weight: 800;
-  margin-bottom: 12px;
+.newsletter iframe {
+  border-radius: 16px;
+  box-shadow: var(--shadow-xl);
+  background: white;
 }
 
-.newsletter p {
-  color: rgba(255,255,255,0.9);
-  font-size: 1.125rem;
-  margin-bottom: 32px;
-}
-
-.newsletter-form {
-  display: flex;
-  gap: 12px;
-  max-width: 500px;
-  margin: 0 auto;
-  flex-wrap: wrap;
+/* ====== Exit Intent Popup ====== */
+.exit-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(5px);
+  z-index: 9999;
+  display: none;
+  align-items: center;
   justify-content: center;
+  animation: fadeIn 0.3s ease;
 }
 
-.newsletter-input {
-  flex: 1;
-  min-width: 250px;
-  padding: 16px 20px;
-  border: none;
-  border-radius: 28px;
-  font-family: 'Nunito', sans-serif;
-  font-size: 15px;
+.exit-popup-overlay.active {
+  display: flex;
 }
 
-.newsletter-input:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(255,255,255,0.3);
+.exit-popup {
+  position: relative;
+  background: white;
+  border-radius: 24px;
+  max-width: 600px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-xl);
+  animation: slideUpPopup 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.newsletter-btn {
-  padding: 16px 36px;
-  border: none;
-  border-radius: 28px;
+.exit-popup-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
   background: var(--white);
-  color: var(--purple-primary);
-  font-family: 'Nunito', sans-serif;
-  font-size: 15px;
-  font-weight: 700;
+  border: 2px solid var(--gray-200);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  font-size: 24px;
+  color: var(--gray-600);
   transition: var(--transition);
-  box-shadow: var(--shadow-md);
+  z-index: 10;
 }
 
-.newsletter-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+.exit-popup-close:hover {
+  background: var(--purple-primary);
+  color: var(--white);
+  border-color: var(--purple-primary);
+  transform: rotate(90deg);
+}
+
+.exit-popup-header {
+  background: linear-gradient(135deg, var(--purple-primary), var(--purple-light));
+  padding: 32px 24px;
+  text-align: center;
+  color: white;
+  border-radius: 24px 24px 0 0;
+}
+
+.exit-popup-header h2 {
+  font-size: 2rem;
+  margin-bottom: 8px;
+  font-weight: 800;
+}
+
+.exit-popup-header p {
+  font-size: 1.125rem;
+  opacity: 0.95;
+}
+
+.exit-popup-content {
+  padding: 16px;
 }
 
 /* ====== Footer ====== */
@@ -687,19 +718,14 @@ img {
   }
 }
 
-/* ====== Skeleton Loading ====== */
-.skeleton {
-  animation: skeleton-loading 1.5s infinite ease-in-out;
-  background: linear-gradient(90deg, var(--gray-200) 25%, var(--gray-100) 50%, var(--gray-200) 75%);
-  background-size: 200% 100%;
-}
-
-@keyframes skeleton-loading {
-  0% {
-    background-position: 200% 0;
+@keyframes slideUpPopup {
+  from {
+    opacity: 0;
+    transform: translateY(50px) scale(0.9);
   }
-  100% {
-    background-position: -200% 0;
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }
 
@@ -724,15 +750,16 @@ img {
   }
   
   .newsletter {
-    padding: 32px 24px;
+    padding: 32px 16px;
   }
   
-  .newsletter-form {
-    flex-direction: column;
+  .newsletter iframe {
+    width: 100% !important;
+    max-width: 100%;
   }
   
-  .newsletter-input {
-    width: 100%;
+  .exit-popup {
+    max-width: 95%;
   }
 }
 
@@ -753,133 +780,6 @@ img {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--purple-primary);
 }
-
-/* ====== Exit Intent Popup ====== */
-.exit-popup-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(8px);
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s ease;
-}
-
-.exit-popup-overlay.active {
-  opacity: 1;
-  visibility: visible;
-}
-
-.exit-popup {
-  background: var(--white);
-  border-radius: 24px;
-  padding: 0;
-  max-width: 600px;
-  width: 90%;
-  position: relative;
-  transform: scale(0.9) translateY(-20px);
-  transition: transform 0.3s ease;
-  box-shadow: 0 24px 64px rgba(123, 31, 162, 0.3);
-  overflow: hidden;
-}
-
-.exit-popup-overlay.active .exit-popup {
-  transform: scale(1) translateY(0);
-}
-
-.exit-popup-close {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.9);
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-  color: var(--gray-800);
-  transition: var(--transition);
-  z-index: 10;
-  box-shadow: var(--shadow-md);
-}
-
-.exit-popup-close:hover {
-  background: var(--white);
-  transform: rotate(90deg);
-  color: var(--purple-primary);
-}
-
-.exit-popup-header {
-  background: linear-gradient(135deg, var(--purple-primary), var(--purple-light));
-  padding: 32px 24px;
-  text-align: center;
-  color: var(--white);
-  position: relative;
-  overflow: hidden;
-}
-
-.exit-popup-header::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  right: -20%;
-  width: 300px;
-  height: 300px;
-  background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
-  border-radius: 50%;
-}
-
-.exit-popup-header h2 {
-  font-size: 2rem;
-  font-weight: 800;
-  margin-bottom: 8px;
-  position: relative;
-  z-index: 2;
-}
-
-.exit-popup-header p {
-  font-size: 1.125rem;
-  opacity: 0.95;
-  position: relative;
-  z-index: 2;
-}
-
-.exit-popup-body {
-  padding: 24px;
-}
-
-.exit-popup-body iframe {
-  border-radius: 12px;
-  box-shadow: none !important;
-}
-
-@media (max-width: 768px) {
-  .exit-popup {
-    width: 95%;
-    max-height: 90vh;
-    overflow-y: auto;
-  }
-  
-  .exit-popup-header h2 {
-    font-size: 1.5rem;
-  }
-  
-  .exit-popup-header p {
-    font-size: 1rem;
-  }
-}
-
 </style>
 </head>
 
@@ -933,13 +833,27 @@ img {
     <button id="loadMore"><span>Load More Articles</span></button>
   </div>
 
-  <!-- NEWSLETTER - EMBEDDED BREVO FORM -->
+  <!-- NEWSLETTER EMBEDDED -->
   <section class="newsletter">
     <div class="newsletter-content">
-      <iframe width="540" height="305" src="https://43949154.sibforms.com/serve/MUIFAPyQ9_bfSXkPWBO8zw0Q8-K6p-lh52NEPxUZW_KW6Bxr7jNKf0aSLx8H6MkxHztBHikhDrVG-vaj_YSAWy1s5zR5j1tWjnVfjysGhT_YteJU9De4l5EMFWBrXjCI1OaRRLMUy3jkmzn-AYuBCQPT_hadcWRpGmlfHEOPG5WjWTGWGGAczSj98E6CwfwSTzliF2Zk30_4IryF" frameborder="0" scrolling="auto" allowfullscreen style="display: block;margin-left: auto;margin-right: auto;max-width: 100%; border-radius: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.15);"></iframe>
+      <iframe width="540" height="305" src="https://43949154.sibforms.com/serve/MUIFAPyQ9_bfSXkPWBO8zw0Q8-K6p-lh52NEPxUZW_KW6Bxr7jNKf0aSLx8H6MkxHztBHikhDrVG-vaj_YSAWy1s5zR5j1tWjnVfjysGhT_YteJU9De4l5EMFWBrXjCI1OaRRLMUy3jkmzn-AYuBCQPT_hadcWRpGmlfHEOPG5WjWTGWGGAczSj98E6CwfwSTzliF2Zk30_4IryF" frameborder="0" scrolling="auto" allowfullscreen style="display: block;margin-left: auto;margin-right: auto;max-width: 100%;"></iframe>
     </div>
   </section>
 
+</div>
+
+<!-- EXIT INTENT POPUP -->
+<div class="exit-popup-overlay" id="exitPopup">
+  <div class="exit-popup">
+    <div class="exit-popup-close" id="closePopup">×</div>
+    <div class="exit-popup-header">
+      <h2>Wait! Don't Miss Out! 🏠✨</h2>
+      <p>Get exclusive home decor tips & inspiration</p>
+    </div>
+    <div class="exit-popup-content">
+      <iframe width="100%" height="420" src="https://43949154.sibforms.com/serve/MUIFAPyQ9_bfSXkPWBO8zw0Q8-K6p-lh52NEPxUZW_KW6Bxr7jNKf0aSLx8H6MkxHztBHikhDrVG-vaj_YSAWy1s5zR5j1tWjnVfjysGhT_YteJU9De4l5EMFWBrXjCI1OaRRLMUy3jkmzn-AYuBCQPT_hadcWRpGmlfHEOPG5WjWTGWGGAczSj98E6CwfwSTzliF2Zk30_4IryF" frameborder="0" scrolling="auto" allowfullscreen></iframe>
+    </div>
+  </div>
 </div>
 
 <!-- FOOTER -->
@@ -982,23 +896,6 @@ img {
   </div>
 </footer>
 
-<!-- SCROLL TO TOP -->
-<div class="scroll-top" id="scrollTop">↑</div>
-
-<!-- EXIT INTENT POPUP -->
-<div class="exit-popup-overlay" id="exitPopup">
-  <div class="exit-popup">
-    <button class="exit-popup-close" id="closeExitPopup">×</button>
-    <div class="exit-popup-header">
-      <h2>Wait! Don't Miss Out! 🎨</h2>
-      <p>Join 10,000+ home decor lovers getting exclusive tips</p>
-    </div>
-    <div class="exit-popup-body">
-      <iframe width="540" height="305" src="https://43949154.sibforms.com/serve/MUIFAPyQ9_bfSXkPWBO8zw0Q8-K6p-lh52NEPxUZW_KW6Bxr7jNKf0aSLx8H6MkxHztBHikhDrVG-vaj_YSAWy1s5zR5j1tWjnVfjysGhT_YteJU9De4l5EMFWBrXjCI1OaRRLMUy3jkmzn-AYuBCQPT_hadcWRpGmlfHEOPG5WjWTGWGGAczSj98E6CwfwSTzliF2Zk30_4IryF" frameborder="0" scrolling="auto" allowfullscreen style="display: block;margin-left: auto;margin-right: auto;max-width: 100%; border: none;"></iframe>
-    </div>
-  </div>
-</div>
-
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
 <script>
@@ -1007,7 +904,7 @@ let allPosts = [];
 let visibleCount = POSTS_PER_PAGE;
 let activeCategory = "All";
 
-// Sample data (replace with your actual data fetch)
+// Sample data
 const samplePosts = [
   {
     slug: "modern-minimalist-living-room",
@@ -1136,7 +1033,6 @@ function renderPosts() {
     </a>
   `).join('');
   
-  // Hide load more if all posts shown
   const loadMoreBtn = document.getElementById('loadMore');
   if (visibleCount >= filtered.length) {
     loadMoreBtn.style.display = 'none';
@@ -1145,13 +1041,13 @@ function renderPosts() {
   }
 }
 
-// Load More functionality
+// Load More
 document.getElementById('loadMore').onclick = () => {
   visibleCount += POSTS_PER_PAGE;
   renderPosts();
 };
 
-// Search functionality
+// Search
 document.getElementById('searchInput').addEventListener('input', (e) => {
   const searchTerm = e.target.value.toLowerCase();
   const filtered = allPosts.filter(post => 
@@ -1192,113 +1088,80 @@ document.getElementById('searchInput').addEventListener('input', (e) => {
   `).join('');
 });
 
-// View toggle (optional - you can implement list view)
+// View toggle
 document.querySelectorAll('.view-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    // Implement list/grid view switching here if needed
   });
 });
 
-// Newsletter form
-document.querySelector('.newsletter-form').addEventListener('submit', (e) => {
-  e.preventDefault();
-  alert('Thanks for subscribing! 🎉');
-  e.target.reset();
-});
-
-// ====== EXIT INTENT POPUP ======
+/* ====== EXIT INTENT POPUP FUNCTIONALITY ====== */
 let exitIntentShown = false;
 const exitPopup = document.getElementById('exitPopup');
-const closeExitPopup = document.getElementById('closeExitPopup');
+const closePopup = document.getElementById('closePopup');
 
-// Function to show popup
-function showExitPopup() {
-  if (!exitIntentShown) {
-    exitPopup.classList.add('active');
-    exitIntentShown = true;
-    // Store in session so it doesn't show again this session
-    sessionStorage.setItem('exitPopupShown', 'true');
-  }
-}
-
-// Function to hide popup
-function hideExitPopup() {
-  exitPopup.classList.remove('active');
-}
-
-// Exit intent detection (when mouse leaves top of page)
+// Detect exit intent (mouse leaving viewport from top)
 document.addEventListener('mouseleave', (e) => {
-  // Check if already shown in this session
-  if (sessionStorage.getItem('exitPopupShown')) return;
-  
-  // Only trigger when mouse leaves from top (exiting browser)
-  if (e.clientY < 10) {
+  if (!exitIntentShown && e.clientY <= 0) {
     showExitPopup();
   }
 });
 
-// Optional: Show popup after 30 seconds of inactivity (uncomment if desired)
-/*
-let inactivityTimer;
-function resetInactivityTimer() {
-  clearTimeout(inactivityTimer);
-  inactivityTimer = setTimeout(() => {
-    if (!sessionStorage.getItem('exitPopupShown')) {
-      showExitPopup();
-    }
-  }, 30000); // 30 seconds
-}
-
-document.addEventListener('mousemove', resetInactivityTimer);
-document.addEventListener('keypress', resetInactivityTimer);
-resetInactivityTimer();
-*/
-
-// Optional: Show popup after scrolling 50% down the page (uncomment if desired)
-/*
-let scrollPopupShown = false;
-window.addEventListener('scroll', () => {
-  if (scrollPopupShown || sessionStorage.getItem('exitPopupShown')) return;
-  
-  const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
-  if (scrollPercent > 50) {
-    showExitPopup();
-    scrollPopupShown = true;
-  }
+// Close on X button
+closePopup.addEventListener('click', () => {
+  hideExitPopup();
 });
-*/
 
-// Close popup when clicking X button
-closeExitPopup.addEventListener('click', hideExitPopup);
-
-// Close popup when clicking outside
+// Close on overlay click
 exitPopup.addEventListener('click', (e) => {
   if (e.target === exitPopup) {
     hideExitPopup();
   }
 });
 
-// Close popup with ESC key
+// Close on ESC key
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && exitPopup.classList.contains('active')) {
     hideExitPopup();
   }
 });
 
-// Listen for successful form submission in iframe (optional)
-window.addEventListener('message', (event) => {
-  // Check if message is from Brevo form
-  if (event.data && event.data.type === 'brevo-form-success') {
-    hideExitPopup();
-    // Optional: Show thank you message
-    setTimeout(() => {
-      alert('🎉 Welcome to the Wow Glam Decor family!');
-    }, 300);
-  }
-});
+function showExitPopup() {
+  exitPopup.classList.add('active');
+  exitIntentShown = true;
+  document.body.style.overflow = 'hidden';
+  
+  // Store in session so it doesn't show again this session
+  sessionStorage.setItem('exitPopupShown', 'true');
+}
 
+function hideExitPopup() {
+  exitPopup.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+// Check if already shown this session
+if (sessionStorage.getItem('exitPopupShown')) {
+  exitIntentShown = true;
+}
+
+// Also trigger on mobile after 30 seconds of inactivity
+let inactivityTimer;
+function resetInactivityTimer() {
+  clearTimeout(inactivityTimer);
+  if (!exitIntentShown) {
+    inactivityTimer = setTimeout(() => {
+      showExitPopup();
+    }, 30000); // 30 seconds
+  }
+}
+
+document.addEventListener('mousemove', resetInactivityTimer);
+document.addEventListener('scroll', resetInactivityTimer);
+document.addEventListener('keypress', resetInactivityTimer);
+
+resetInactivityTimer();
 </script>
 
 </body>
