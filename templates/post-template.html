@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<!-- Primary SEO Meta Tags -->
+<title>{{SEO_TITLE}} | Wow Glam Decor</title>
+<meta name="title" content="{{SEO_TITLE}}" />
+<meta name="description" content="{{SEO_DESCRIPTION}}" />
+<meta name="keywords" content="{{KEYWORDS}}" />
+<meta name="author" content="{{AUTHOR_NAME}}" />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<link rel="canonical" content="https://wowglamdecor.com/posts/{{SLUG}}.html" />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://wowglamdecor.com/posts/{{SLUG}}.html" />
+<meta property="og:title" content="{{SEO_TITLE}}" />
+<meta property="og:description" content="{{SEO_DESCRIPTION}}" />
+<meta property="og:image" content="https://wowglamdecor.com{{FEATURED_IMAGE}}" />
+<meta property="og:site_name" content="Wow Glam Decor" />
+<meta property="article:published_time" content="{{PUBLISH_DATE}}" />
+<meta property="article:author" content="{{AUTHOR_NAME}}" />
+<meta property="article:section" content="{{CATEGORY}}" />
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content="https://wowglamdecor.com/posts/{{SLUG}}.html" />
+<meta property="twitter:title" content="{{SEO_TITLE}}" />
+<meta property="twitter:description" content="{{SEO_DESCRIPTION}}" />
+<meta property="twitter:image" content="https://wowglamdecor.com{{FEATURED_IMAGE}}" />
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+
+<!-- Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "{{TITLE}}",
+  "description": "{{SEO_DESCRIPTION}}",
+  "image": {
+    "@type": "ImageObject",
+    "url": "https://wowglamdecor.com{{FEATURED_IMAGE}}",
+    "width": 1200,
+    "height": 630
+  },
+  "author": {
+    "@type": "Person",
+    "name": "{{AUTHOR_NAME}}",
+    "jobTitle": "{{AUTHOR_ROLE}}"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Wow Glam Decor",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://wowglamdecor.com/content/images/logo.jpg",
+      "width": 600,
+      "height": 60
+    }
+  },
+  "datePublished": "{{PUBLISH_DATE}}",
+  "dateModified": "{{PUBLISH_DATE}}",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://wowglamdecor.com/posts/{{SLUG}}.html"
+  },
+  "articleSection": "{{CATEGORY}}",
+  "keywords": ["{{KEYWORDS}}"]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://wowglamdecor.com"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://wowglamdecor.com/blog.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "{{CATEGORY}}",
+      "item": "https://wowglamdecor.com/category/{{CATEGORY_SLUG}}"
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "name": "{{TITLE}}"
+    }
+  ]
+}
+</script>
+
+<style>
+/* ====== CSS Variables ====== */
+:root {
+  --purple-primary: #7B1FA2;
+  --purple-dark: #4A0072;
+  --purple-light: #9C4DCC;
+  --white: #FFFFFF;
+  --off-white: #FAFAFA;
+  --gray-100: #F5F5F5;
+  --gray-200: #EEEEEE;
+  --gray-300: #E0E0E0;
+  --gray-600: #757575;
+  --gray-800: #424242;
+  --gray-900: #212121;
+  --accent-gold: #FFD700;
+  --accent-coral: #FF6B6B;
+  --shadow-sm: 0 2px 8px rgba(123, 31, 162, 0.08);
+  --shadow-md: 0 8px 24px rgba(123, 31, 162, 0.12);
+  --shadow-lg: 0 16px 48px rgba(123, 31, 162, 0.18);
+  --shadow-xl: 0 24px 64px rgba(123, 31, 162, 0.24);
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Nunito', system-ui, -apple-system, sans-serif;
+  background: var(--off-white);
+  color: var(--gray-900);
+  line-height: 1.8;
+}
+
+/* ====== Progress Bar ====== */
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--purple-primary), var(--purple-light));
+  width: 0%;
+  z-index: 1000;
+  transition: width 0.1s ease;
+  box-shadow: 0 2px 8px rgba(123, 31, 162, 0.3);
+}
+
+/* ====== Navigation ====== */
+.navbar {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  height: 48px;
+  width: auto;
+}
+
+.nav-back {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--gray-800);
+  font-weight: 600;
+  transition: var(--transition);
+  text-decoration: none;
+}
+
+.nav-back:hover {
+  color: var(--purple-primary);
+  gap: 12px;
+}
+
+/* ====== Breadcrumbs ====== */
+.breadcrumbs {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 16px 24px;
+  font-size: 14px;
+  color: var(--gray-600);
+}
+
+.breadcrumbs a {
+  color: var(--purple-primary);
+  transition: var(--transition);
+  text-decoration: none;
+}
+
+.breadcrumbs a:hover {
+  color: var(--purple-dark);
+}
+
+.breadcrumbs span {
+  margin: 0 8px;
+}
+
+/* ====== Hero Header ====== */
+.hero-header {
+  position: relative;
+  height: 60vh;
+  min-height: 500px;
+  max-height: 700px;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  background: var(--gray-900);
+}
+
+.hero-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.7;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.8) 100%);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 48px 24px;
+  color: var(--white);
+}
+
+.category-badge {
+  display: inline-block;
+  background: var(--purple-primary);
+  color: var(--white);
+  padding: 8px 18px;
+  border-radius: 24px;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-md);
+}
+
+.hero-title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 900;
+  line-height: 1.2;
+  margin-bottom: 20px;
+  text-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.hero-meta {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  font-size: 15px;
+  opacity: 0.95;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.author-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--white);
+}
+
+.meta-dot {
+  width: 4px;
+  height: 4px;
+  background: rgba(255,255,255,0.6);
+  border-radius: 50%;
+}
+
+/* ====== Article Container ====== */
+.article-container {
+  max-width: 1400px;
+  margin: -80px auto 0;
+  position: relative;
+  z-index: 10;
+  padding: 0 24px;
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 48px;
+  align-items: start;
+}
+
+.article-main {
+  background: var(--white);
+  border-radius: 24px 24px 0 0;
+  box-shadow: var(--shadow-lg);
+  padding: 64px 48px 48px;
+}
+
+/* ====== Affiliate Disclosure ====== */
+.affiliate-disclosure {
+  background: rgba(123, 31, 162, 0.05);
+  border-left: 4px solid var(--purple-primary);
+  padding: 16px 20px;
+  margin-bottom: 32px;
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--gray-800);
+  line-height: 1.6;
+}
+
+.affiliate-disclosure strong {
+  color: var(--purple-primary);
+  font-weight: 700;
+}
+
+.affiliate-disclosure a {
+  color: var(--purple-primary);
+  text-decoration: underline;
+}
+
+/* ====== Article Content ====== */
+.article-content {
+  font-size: 18px;
+  line-height: 1.8;
+  color: var(--gray-800);
+}
+
+.article-content h2 {
+  font-size: 2rem;
+  font-weight: 800;
+  margin: 48px 0 20px;
+  color: var(--gray-900);
+  line-height: 1.3;
+}
+
+.article-content h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 36px 0 16px;
+  color: var(--gray-900);
+}
+
+.article-content h4 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 28px 0 12px;
+  color: var(--purple-primary);
+}
+
+.article-content p {
+  margin-bottom: 24px;
+}
+
+.article-content ul,
+.article-content ol {
+  margin: 24px 0;
+  padding-left: 28px;
+}
+
+.article-content li {
+  margin-bottom: 12px;
+}
+
+.article-content li::marker {
+  color: var(--purple-primary);
+}
+
+.article-content blockquote {
+  margin: 40px 0;
+  padding: 24px 32px;
+  background: var(--gray-100);
+  border-left: 4px solid var(--purple-primary);
+  border-radius: 0 12px 12px 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--gray-900);
+}
+
+.article-content img {
+  width: 100%;
+  border-radius: 16px;
+  margin: 40px 0;
+  box-shadow: var(--shadow-md);
+}
+
+.article-content a {
+  color: var(--purple-primary);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: rgba(123, 31, 162, 0.3);
+  text-underline-offset: 3px;
+  transition: var(--transition);
+}
+
+.article-content a:hover {
+  text-decoration-color: var(--purple-primary);
+}
+
+/* ====== Tags Section ====== */
+.article-tags {
+  margin: 48px 0;
+  padding: 32px 0;
+  border-top: 2px solid var(--gray-200);
+  border-bottom: 2px solid var(--gray-200);
+}
+
+.tags-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--gray-600);
+  margin-bottom: 12px;
+}
+
+.tags-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.tag {
+  padding: 8px 16px;
+  background: var(--gray-100);
+  color: var(--gray-800);
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: var(--transition);
+  text-decoration: none;
+}
+
+.tag:hover {
+  background: rgba(123, 31, 162, 0.1);
+  color: var(--purple-primary);
+  transform: translateY(-2px);
+}
+
+/* ====== Author Bio ====== */
+.author-bio {
+  margin: 48px 0;
+  padding: 32px;
+  background: var(--gray-100);
+  border-radius: 20px;
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.author-bio-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid var(--white);
+  box-shadow: var(--shadow-md);
+  flex-shrink: 0;
+}
+
+.author-bio-content h3 {
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+  color: var(--gray-900);
+}
+
+.author-bio-content p {
+  font-size: 15px;
+  color: var(--gray-600);
+  margin-bottom: 16px;
+}
+
+.author-social {
+  display: flex;
+  gap: 12px;
+}
+
+.social-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
+  text-decoration: none;
+}
+
+.social-icon:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  background: var(--purple-primary);
+}
+
+/* ====== Newsletter CTA ====== */
+.newsletter-cta {
+  margin: 48px 0;
+  padding: 48px;
+  background: linear-gradient(135deg, var(--purple-primary), var(--purple-light));
+  border-radius: 24px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  color: var(--white);
+}
+
+.newsletter-cta::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.newsletter-cta-content {
+  position: relative;
+  z-index: 2;
+}
+
+.newsletter-cta iframe {
+  border-radius: 16px;
+  box-shadow: var(--shadow-xl);
+  margin: 0 auto;
+  display: block;
+}
+
+/* ====== Sidebar ====== */
+.article-sidebar {
+  position: sticky;
+  top: 100px;
+}
+
+.sidebar-section {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: var(--shadow-md);
+  margin-bottom: 24px;
+}
+
+.sidebar-section h3 {
+  font-size: 1.125rem;
+  font-weight: 800;
+  margin-bottom: 20px;
+  color: var(--gray-900);
+}
+
+.sidebar-product {
+  display: flex;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--gray-200);
+  text-decoration: none;
+  color: inherit;
+  transition: var(--transition);
+}
+
+.sidebar-product:last-child {
+  border-bottom: none;
+}
+
+.sidebar-product:hover {
+  transform: translateX(4px);
+}
+
+.sidebar-product-image {
+  width: 70px;
+  height: 70px;
+  border-radius: 12px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.sidebar-product-info h4 {
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  line-height: 1.4;
+  color: var(--gray-900);
+}
+
+.sidebar-product-price {
+  font-size: 16px;
+  font-weight: 900;
+  color: var(--purple-primary);
+  margin-bottom: 4px;
+}
+
+.sidebar-cta {
+  font-size: 12px;
+  color: var(--purple-primary);
+  font-weight: 700;
+  display: inline-block;
+}
+
+/* ====== Scroll to Top Button ====== */
+.scroll-top {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--purple-primary);
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  visibility: hidden;
+  transition: var(--transition);
+  font-size: 24px;
+  z-index: 99;
+  border: none;
+}
+
+.scroll-top.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.scroll-top:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 24px 64px rgba(123, 31, 162, 0.24);
+}
+
+/* ====== Exit Intent Popup ====== */
+.exit-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(5px);
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s ease;
+}
+
+.exit-popup-overlay.active {
+  display: flex;
+}
+
+.exit-popup {
+  position: relative;
+  background: white;
+  border-radius: 24px;
+  max-width: 600px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-xl);
+  animation: slideUpPopup 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.exit-popup-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 2px solid var(--gray-200);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 24px;
+  color: var(--gray-600);
+  transition: var(--transition);
+  z-index: 10;
+}
+
+.exit-popup-close:hover {
+  background: var(--purple-primary);
+  color: var(--white);
+  border-color: var(--purple-primary);
+  transform: rotate(90deg);
+}
+
+.exit-popup-header {
+  background: linear-gradient(135deg, var(--purple-primary), var(--purple-light));
+  padding: 32px 24px;
+  text-align: center;
+  color: white;
+  border-radius: 24px 24px 0 0;
+}
+
+.exit-popup-header h2 {
+  font-size: 2rem;
+  margin-bottom: 8px;
+  font-weight: 800;
+}
+
+.exit-popup-header p {
+  font-size: 1.125rem;
+  opacity: 0.95;
+}
+
+.exit-popup-content {
+  padding: 16px;
+}
+
+.exit-popup-content iframe {
+  width: 100%;
+  min-height: 500px;
+  border: none;
+}
+
+/* ====== Animations ====== */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUpPopup {
+  from {
+    opacity: 0;
+    transform: translateY(50px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ====== Responsive ====== */
+@media (max-width: 1200px) {
+  .article-container {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  
+  .article-sidebar {
+    position: static;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-header {
+    height: 50vh;
+    min-height: 400px;
+  }
+  
+  .article-main {
+    padding: 32px 24px;
+  }
+  
+  .article-content {
+    font-size: 16px;
+  }
+  
+  .author-bio {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .newsletter-cta {
+    padding: 32px 24px;
+  }
+  
+  .newsletter-cta iframe {
+    width: 100% !important;
+    max-width: 100%;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- PROGRESS BAR -->
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- NAVIGATION -->
+<nav class="navbar">
+  <div class="nav-container">
+    <a href="/" aria-label="Wow Glam Decor Homepage">
+      <img src="/content/images/logo.jpg" alt="Wow Glam Decor Logo" class="logo">
+    </a>
+    <a href="/blog.html" class="nav-back">← Back to Blog</a>
+  </div>
+</nav>
+
+<!-- BREADCRUMBS -->
+<nav class="breadcrumbs" aria-label="Breadcrumb navigation">
+  <a href="/">Home</a>
+  <span>›</span>
+  <a href="/blog.html">Blog</a>
+  <span>›</span>
+  <a href="/category/{{CATEGORY_SLUG}}">{{CATEGORY}}</a>
+  <span>›</span>
+  <span>{{TITLE}}</span>
+</nav>
+
+<!-- HERO HEADER -->
+<header class="hero-header">
+  <img src="{{FEATURED_IMAGE}}" alt="{{FEATURED_IMAGE_ALT}}" class="hero-image" loading="eager">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <span class="category-badge">{{CATEGORY}}</span>
+    <h1 class="hero-title">{{TITLE}}</h1>
+    <div class="hero-meta">
+      <div class="meta-item">
+        <img src="{{AUTHOR_AVATAR}}" alt="{{AUTHOR_NAME}}" class="author-avatar">
+        <span><strong>{{AUTHOR_NAME}}</strong></span>
+      </div>
+      <span class="meta-dot"></span>
+      <time class="meta-item" datetime="{{PUBLISH_DATE}}">{{PUBLISH_DATE_FORMATTED}}</time>
+      <span class="meta-dot"></span>
+      <span class="meta-item">{{READ_TIME}} min read</span>
+    </div>
+  </div>
+</header>
+
+<!-- ARTICLE CONTAINER -->
+<div class="article-container">
+  
+  <!-- MAIN ARTICLE -->
+  <article class="article-main">
+    
+    <!-- AFFILIATE DISCLOSURE -->
+    <div class="affiliate-disclosure">
+      <strong>💡 Affiliate Disclosure:</strong> This post contains affiliate links. If you purchase through our links, we may earn a small commission at no extra cost to you. We only recommend products we genuinely use and love. <a href="/affiliate-disclosure" rel="nofollow">Read our full disclosure policy</a>.
+    </div>
+    
+    <div class="article-content">
+      {{ARTICLE_CONTENT}}
+    </div>
+    
+    <!-- TAGS -->
+    <div class="article-tags">
+      <div class="tags-title">Tagged in:</div>
+      <div class="tags-list">
+        {{TAGS_HTML}}
+      </div>
+    </div>
+    
+    <!-- AUTHOR BIO -->
+    <div class="author-bio">
+      <img src="{{AUTHOR_AVATAR}}" alt="{{AUTHOR_NAME}}" class="author-bio-avatar">
+      <div class="author-bio-content">
+        <h3>{{AUTHOR_NAME}}</h3>
+        <p>{{AUTHOR_BIO}}</p>
+        <div class="author-social">
+          <a href="#" class="social-icon" aria-label="Facebook">📘</a>
+          <a href="#" class="social-icon" aria-label="Instagram">📷</a>
+          <a href="#" class="social-icon" aria-label="Twitter">🐦</a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- NEWSLETTER CTA -->
+    <div class="newsletter-cta">
+      <div class="newsletter-cta-content">
+        <iframe width="540" height="550" src="https://43949154.sibforms.com/serve/MUIFAPyQ9_bfSXkPWBO8zw0Q8-K6p-lh52NEPxUZW_KW6Bxr7jNKf0aSLx8H6MkxHztBHikhDrVG-vaj_YSAWy1s5zR5j1tWjnVfjysGhT_YteJU9De4l5EMFWBrXjCI1OaRRLMUy3jkmzn-AYuBCQPT_hadcWRpGmlfHEOPG5WjWTGWGGAczSj98E6CwfwSTzliF2Zk30_4IryF" frameborder="0" scrolling="no" allowfullscreen style="display: block;margin-left: auto;margin-right: auto;max-width: 100%;" title="Newsletter signup form"></iframe>
+      </div>
+    </div>
+    
+  </article>
+  
+  <!-- SIDEBAR -->
+  <aside class="article-sidebar">
+    <div class="sidebar-section">
+      <h3>🌟 Editor's Picks</h3>
+      {{SIDEBAR_PRODUCTS}}
+    </div>
+  </aside>
+  
+</div>
+
+<!-- SCROLL TO TOP -->
+<button class="scroll-top" id="scrollTop" aria-label="Scroll to top">↑</button>
+
+<!-- EXIT INTENT POPUP -->
+<div class="exit-popup-overlay" id="exitPopup" role="dialog" aria-modal="true" aria-labelledby="popup-title">
+  <div class="exit-popup">
+    <button class="exit-popup-close" id="closePopup" aria-label="Close popup">×</button>
+    <div class="exit-popup-header">
+      <h2 id="popup-title">Before You Go! 🏠✨</h2>
+      <p>Join our community for exclusive decor tips</p>
+    </div>
+    <div class="exit-popup-content">
+      <iframe width="100%" height="550" src="https://43949154.sibforms.com/serve/MUIFAPyQ9_bfSXkPWBO8zw0Q8-K6p-lh52NEPxUZW_KW6Bxr7jNKf0aSLx8H6MkxHztBHikhDrVG-vaj_YSAWy1s5zR5j1tWjnVfjysGhT_YteJU9De4l5EMFWBrXjCI1OaRRLMUy3jkmzn-AYuBCQPT_hadcWRpGmlfHEOPG5WjWTGWGGAczSj98E6CwfwSTzliF2Zk30_4IryF" frameborder="0" scrolling="no" allowfullscreen title="Newsletter signup form"></iframe>
+    </div>
+  </div>
+</div>
+
+<script>
+// Progress Bar
+window.addEventListener('scroll', () => {
+  const windowHeight = window.innerHeight;
+  const documentHeight = document.documentElement.scrollHeight;
+  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  const progress = (scrollTop / (documentHeight - windowHeight)) * 100;
+  document.getElementById('progressBar').style.width = progress + '%';
+  
+  // Show/hide scroll to top button
+  const scrollTopBtn = document.getElementById('scrollTop');
+  if (scrollTop > 500) {
+    scrollTopBtn.classList.add('visible');
+  } else {
+    scrollTopBtn.classList.remove('visible');
+  }
+});
+
+// Scroll to top
+document.getElementById('scrollTop').addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+/* ====== EXIT INTENT POPUP FUNCTIONALITY ====== */
+let exitIntentShown = false;
+const exitPopup = document.getElementById('exitPopup');
+const closePopupBtn = document.getElementById('closePopup');
+
+// Detect exit intent (mouse leaving viewport from top)
+document.addEventListener('mouseleave', (e) => {
+  if (!exitIntentShown && e.clientY <= 0) {
+    showExitPopup();
+  }
+});
+
+// Close on X button
+closePopupBtn.addEventListener('click', () => {
+  hideExitPopup();
+});
+
+// Close on overlay click
+exitPopup.addEventListener('click', (e) => {
+  if (e.target === exitPopup) {
+    hideExitPopup();
+  }
+});
+
+// Close on ESC key
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && exitPopup.classList.contains('active')) {
+    hideExitPopup();
+  }
+});
+
+function showExitPopup() {
+  exitPopup.classList.add('active');
+  exitIntentShown = true;
+  document.body.style.overflow = 'hidden';
+  sessionStorage.setItem('exitPopupShown', 'true');
+}
+
+function hideExitPopup() {
+  exitPopup.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+// Check if already shown this session
+if (sessionStorage.getItem('exitPopupShown')) {
+  exitIntentShown = true;
+}
+
+// Mobile: trigger after 30 seconds of reading
+let readingTimer;
+function resetReadingTimer() {
+  clearTimeout(readingTimer);
+  if (!exitIntentShown) {
+    readingTimer = setTimeout(() => {
+      showExitPopup();
+    }, 30000);
+  }
+}
+
+document.addEventListener('mousemove', resetReadingTimer);
+document.addEventListener('scroll', resetReadingTimer);
+document.addEventListener('keypress', resetReadingTimer);
+
+resetReadingTimer();
+
+// Track affiliate clicks
+document.querySelectorAll('a[rel*="sponsored"]').forEach(link => {
+  link.addEventListener('click', function() {
+    console.log('Affiliate click:', this.href);
+    // Add GA4 tracking here when ready
+  });
+});
+</script>
+
+</body>
+</html>
+```
+
+## ✅ What I Did:
+
+1. **Copied ALL CSS** from your original `post.html`
+2. **Copied ALL JavaScript** from your original `post.html`
+3. **Added ALL placeholders** that will be replaced by `generate-posts.js`:
+   - `{{SEO_TITLE}}`, `{{TITLE}}`, `{{SLUG}}`, etc.
+4. **Fixed paths** - changed `/mnt/user-data/uploads/` to `/content/images/`
+5. **Kept all your design elements** - exit popup, progress bar, newsletter, etc.
+
+## 📝 Just Save This As:
+```
+templates/post-template.html
