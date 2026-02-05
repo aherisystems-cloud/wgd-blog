@@ -1,0 +1,22 @@
+[
+  {
+    "slug": "best-standing-desks",
+    "title": "Best Standing Desks for Small Apartments",
+    "description": "Compact, affordable standing desks perfect for small spaces.",
+    "date": "2026-02-05",
+    "category": "Furniture",
+    "tags": ["standing desk", "home office"],
+    "author": "Rita N.",
+    "image": "/content/images/desk.jpg"
+  },
+  {
+    "slug": "top-smart-home-devices",
+    "title": "Top Smart Home Devices to Make Life Easier",
+    "description": "Automate your home with these top smart gadgets.",
+    "date": "2026-02-04",
+    "category": "Home Tech",
+    "tags": ["smart home", "gadgets", "automation"],
+    "author": "Rita N.",
+    "image": "/content/images/smart-home.jpg"
+  }
+]
