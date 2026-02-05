@@ -1560,13 +1560,24 @@ document.querySelectorAll('a[rel*="sponsored"]').forEach(link => {
 </script>
 
 <!-- Google Analytics 4 (Replace G-XXXXXXXXXX with your ID) -->
-<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-28ZW4Z5PSV"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'G-XXXXXXXXXX');
+  gtag('config', 'G-28ZW4Z5PSV');
 </script> -->
 
 </body>
 </html>
+<script>
+// Fetch and render posts dynamically
+fetch('/content/posts/index.json')
+  .then(res => res.json())
+  .then(posts => {
+    allPosts = posts;
+    renderFilters();
+    renderPosts();
+  })
+  .catch(err => console.error('Error loading posts:', err));
+</script>
