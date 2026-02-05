@@ -1,1 +1,1282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Blog Post - Wow Glam Decor</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
 
+<style>
+/* ====== CSS Variables ====== */
+:root {
+  --purple-primary: #7B1FA2;
+  --purple-dark: #4A0072;
+  --purple-light: #9C4DCC;
+  --white: #FFFFFF;
+  --off-white: #FAFAFA;
+  --gray-100: #F5F5F5;
+  --gray-200: #EEEEEE;
+  --gray-300: #E0E0E0;
+  --gray-600: #757575;
+  --gray-800: #424242;
+  --gray-900: #212121;
+  --shadow-sm: 0 2px 8px rgba(123, 31, 162, 0.08);
+  --shadow-md: 0 8px 24px rgba(123, 31, 162, 0.12);
+  --shadow-lg: 0 16px 48px rgba(123, 31, 162, 0.18);
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Nunito', system-ui, -apple-system, sans-serif;
+  background: var(--off-white);
+  color: var(--gray-900);
+  line-height: 1.8;
+}
+
+/* ====== Progress Bar ====== */
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--purple-primary), var(--purple-light));
+  width: 0%;
+  z-index: 1000;
+  transition: width 0.1s ease;
+  box-shadow: 0 2px 8px rgba(123, 31, 162, 0.3);
+}
+
+/* ====== Navigation ====== */
+.navbar {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  height: 48px;
+  width: auto;
+}
+
+.nav-back {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--gray-800);
+  font-weight: 600;
+  transition: var(--transition);
+}
+
+.nav-back:hover {
+  color: var(--purple-primary);
+  gap: 12px;
+}
+
+/* ====== Hero Header ====== */
+.hero-header {
+  position: relative;
+  height: 60vh;
+  min-height: 500px;
+  max-height: 700px;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  background: var(--gray-900);
+}
+
+.hero-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.7;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.8) 100%);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 48px 24px;
+  color: var(--white);
+}
+
+.category-badge {
+  display: inline-block;
+  background: var(--purple-primary);
+  color: var(--white);
+  padding: 8px 18px;
+  border-radius: 24px;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-md);
+}
+
+.hero-title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 900;
+  line-height: 1.2;
+  margin-bottom: 20px;
+  text-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.hero-meta {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  font-size: 15px;
+  opacity: 0.95;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.author-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--white);
+}
+
+.meta-dot {
+  width: 4px;
+  height: 4px;
+  background: rgba(255,255,255,0.6);
+  border-radius: 50%;
+}
+
+/* ====== Article Container ====== */
+.article-container {
+  max-width: 800px;
+  margin: -80px auto 0;
+  position: relative;
+  z-index: 10;
+}
+
+.article-card {
+  background: var(--white);
+  border-radius: 24px 24px 0 0;
+  box-shadow: var(--shadow-lg);
+  padding: 64px 48px 48px;
+}
+
+/* ====== Social Share Sticky ====== */
+.social-share-sticky {
+  position: fixed;
+  left: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 50;
+}
+
+.share-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--white);
+  box-shadow: var(--shadow-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+  font-size: 20px;
+  border: 2px solid var(--gray-200);
+}
+
+.share-btn:hover {
+  transform: scale(1.1);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--purple-primary);
+}
+
+/* ====== Article Content ====== */
+.article-content {
+  font-size: 18px;
+  line-height: 1.8;
+  color: var(--gray-800);
+}
+
+.article-content h2 {
+  font-size: 2rem;
+  font-weight: 800;
+  margin: 48px 0 20px;
+  color: var(--gray-900);
+  line-height: 1.3;
+}
+
+.article-content h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 36px 0 16px;
+  color: var(--gray-900);
+}
+
+.article-content h4 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 28px 0 12px;
+  color: var(--purple-primary);
+}
+
+.article-content p {
+  margin-bottom: 24px;
+}
+
+.article-content ul,
+.article-content ol {
+  margin: 24px 0;
+  padding-left: 28px;
+}
+
+.article-content li {
+  margin-bottom: 12px;
+}
+
+.article-content li::marker {
+  color: var(--purple-primary);
+}
+
+.article-content blockquote {
+  margin: 40px 0;
+  padding: 24px 32px;
+  background: var(--gray-100);
+  border-left: 4px solid var(--purple-primary);
+  border-radius: 0 12px 12px 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--gray-900);
+}
+
+.article-content img {
+  width: 100%;
+  border-radius: 16px;
+  margin: 40px 0;
+  box-shadow: var(--shadow-md);
+}
+
+.article-content figcaption {
+  text-align: center;
+  font-size: 14px;
+  color: var(--gray-600);
+  margin-top: -32px;
+  margin-bottom: 40px;
+  font-style: italic;
+}
+
+.article-content a {
+  color: var(--purple-primary);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: rgba(123, 31, 162, 0.3);
+  text-underline-offset: 3px;
+  transition: var(--transition);
+}
+
+.article-content a:hover {
+  text-decoration-color: var(--purple-primary);
+}
+
+/* Highlighted text for click-to-tweet */
+.highlight-tweet {
+  background: linear-gradient(120deg, rgba(123, 31, 162, 0.1) 0%, rgba(123, 31, 162, 0.05) 100%);
+  padding: 2px 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.highlight-tweet:hover {
+  background: rgba(123, 31, 162, 0.15);
+}
+
+/* ====== Table of Contents (Sidebar) ====== */
+.toc-sidebar {
+  position: fixed;
+  right: 24px;
+  top: 120px;
+  width: 280px;
+  background: var(--white);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: var(--shadow-md);
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+}
+
+.toc-title {
+  font-size: 14px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--gray-600);
+  margin-bottom: 16px;
+}
+
+.toc-list {
+  list-style: none;
+}
+
+.toc-item {
+  margin-bottom: 12px;
+}
+
+.toc-link {
+  color: var(--gray-600);
+  font-size: 14px;
+  line-height: 1.5;
+  transition: var(--transition);
+  display: block;
+  padding: 6px 0;
+  border-left: 2px solid transparent;
+  padding-left: 12px;
+}
+
+.toc-link:hover,
+.toc-link.active {
+  color: var(--purple-primary);
+  border-left-color: var(--purple-primary);
+  font-weight: 600;
+}
+
+/* ====== Tags Section ====== */
+.article-tags {
+  margin: 48px 0;
+  padding: 32px 0;
+  border-top: 2px solid var(--gray-200);
+  border-bottom: 2px solid var(--gray-200);
+}
+
+.tags-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--gray-600);
+  margin-bottom: 12px;
+}
+
+.tags-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.tag {
+  padding: 8px 16px;
+  background: var(--gray-100);
+  color: var(--gray-800);
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: var(--transition);
+}
+
+.tag:hover {
+  background: rgba(123, 31, 162, 0.1);
+  color: var(--purple-primary);
+  transform: translateY(-2px);
+}
+
+/* ====== Author Bio ====== */
+.author-bio {
+  margin: 48px 0;
+  padding: 32px;
+  background: var(--gray-100);
+  border-radius: 20px;
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.author-bio-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid var(--white);
+  box-shadow: var(--shadow-md);
+  flex-shrink: 0;
+}
+
+.author-bio-content h3 {
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+  color: var(--gray-900);
+}
+
+.author-bio-content p {
+  font-size: 15px;
+  color: var(--gray-600);
+  margin-bottom: 16px;
+}
+
+.author-social {
+  display: flex;
+  gap: 12px;
+}
+
+.social-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
+}
+
+.social-icon:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  background: var(--purple-primary);
+  color: var(--white);
+}
+
+/* ====== Newsletter CTA ====== */
+.newsletter-cta {
+  margin: 48px 0;
+  padding: 48px;
+  background: linear-gradient(135deg, var(--purple-primary), var(--purple-light));
+  border-radius: 24px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  color: var(--white);
+}
+
+.newsletter-cta::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.newsletter-cta-content {
+  position: relative;
+  z-index: 2;
+}
+
+.newsletter-cta h3 {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+
+.newsletter-cta p {
+  font-size: 1.125rem;
+  opacity: 0.95;
+  margin-bottom: 28px;
+}
+
+.newsletter-form {
+  display: flex;
+  gap: 12px;
+  max-width: 500px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.newsletter-input {
+  flex: 1;
+  min-width: 250px;
+  padding: 16px 20px;
+  border: none;
+  border-radius: 28px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 15px;
+}
+
+.newsletter-btn {
+  padding: 16px 36px;
+  border: none;
+  border-radius: 28px;
+  background: var(--white);
+  color: var(--purple-primary);
+  font-family: 'Nunito', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: var(--shadow-md);
+}
+
+.newsletter-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ====== Related Posts ====== */
+.related-posts {
+  margin: 64px 0;
+}
+
+.related-title {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.related-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.related-card {
+  background: var(--white);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+}
+
+.related-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+}
+
+.related-card-image {
+  width: 100%;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+}
+
+.related-card-content {
+  padding: 20px;
+}
+
+.related-card h4 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--gray-900);
+  line-height: 1.4;
+}
+
+.related-card p {
+  font-size: 14px;
+  color: var(--gray-600);
+}
+
+/* ====== Comments Section ====== */
+.comments-section {
+  margin: 64px 0;
+  padding: 48px;
+  background: var(--white);
+  border-radius: 24px;
+  box-shadow: var(--shadow-md);
+}
+
+.comments-title {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 32px;
+}
+
+.comment-form {
+  margin-bottom: 48px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--gray-900);
+}
+
+.form-input,
+.form-textarea {
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid var(--gray-200);
+  border-radius: 12px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 15px;
+  transition: var(--transition);
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--purple-primary);
+  box-shadow: 0 0 0 3px rgba(123, 31, 162, 0.1);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.submit-btn {
+  padding: 14px 32px;
+  border: none;
+  border-radius: 28px;
+  background: var(--purple-primary);
+  color: var(--white);
+  font-family: 'Nunito', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.submit-btn:hover {
+  background: var(--purple-dark);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* ====== Scroll to Top Button ====== */
+.scroll-top {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--purple-primary);
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  visibility: hidden;
+  transition: var(--transition);
+  font-size: 24px;
+  z-index: 99;
+}
+
+.scroll-top.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.scroll-top:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-xl);
+}
+
+/* ====== Exit Intent Popup ====== */
+.exit-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(5px);
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s ease;
+}
+
+.exit-popup-overlay.active {
+  display: flex;
+}
+
+.exit-popup {
+  position: relative;
+  background: white;
+  border-radius: 24px;
+  max-width: 600px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-xl);
+  animation: slideUpPopup 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.exit-popup-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 2px solid var(--gray-200);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 24px;
+  color: var(--gray-600);
+  transition: var(--transition);
+  z-index: 10;
+}
+
+.exit-popup-close:hover {
+  background: var(--purple-primary);
+  color: var(--white);
+  border-color: var(--purple-primary);
+  transform: rotate(90deg);
+}
+
+.exit-popup-header {
+  background: linear-gradient(135deg, var(--purple-primary), var(--purple-light));
+  padding: 32px 24px;
+  text-align: center;
+  color: white;
+  border-radius: 24px 24px 0 0;
+}
+
+.exit-popup-header h2 {
+  font-size: 2rem;
+  margin-bottom: 8px;
+  font-weight: 800;
+}
+
+.exit-popup-header p {
+  font-size: 1.125rem;
+  opacity: 0.95;
+}
+
+.exit-popup-content {
+  padding: 16px;
+}
+
+@keyframes slideUpPopup {
+  from {
+    opacity: 0;
+    transform: translateY(50px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ====== Responsive ====== */
+@media (max-width: 1200px) {
+  .toc-sidebar {
+    display: none;
+  }
+  
+  .social-share-sticky {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-header {
+    height: 50vh;
+    min-height: 400px;
+  }
+  
+  .article-card {
+    padding: 32px 24px;
+  }
+  
+  .article-content {
+    font-size: 16px;
+  }
+  
+  .author-bio {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .newsletter-cta {
+    padding: 32px 24px;
+  }
+  
+  .newsletter-form {
+    flex-direction: column;
+  }
+  
+  .related-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .comments-section {
+    padding: 32px 24px;
+  }
+}
+
+/* ====== Animations ====== */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.article-content > * {
+  animation: slideUp 0.6s ease both;
+}
+
+.article-content > *:nth-child(1) { animation-delay: 0.1s; }
+.article-content > *:nth-child(2) { animation-delay: 0.15s; }
+.article-content > *:nth-child(3) { animation-delay: 0.2s; }
+</style>
+</head>
+
+<body>
+
+<!-- PROGRESS BAR -->
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- NAVIGATION -->
+<nav class="navbar">
+  <div class="nav-container">
+    <img src="/mnt/user-data/uploads/WGD_LOGO.jpg" alt="Wow Glam Decor" class="logo">
+    <a href="/blog.html" class="nav-back">← Back to Blog</a>
+  </div>
+</nav>
+
+<!-- HERO HEADER -->
+<header class="hero-header">
+  <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1600&q=80" alt="Article featured image" class="hero-image">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <span class="category-badge">Living Room</span>
+    <h1 class="hero-title">10 Modern Minimalist Living Room Ideas That'll Transform Your Space</h1>
+    <div class="hero-meta">
+      <div class="meta-item">
+        <img src="https://i.pravatar.cc/80?img=5" alt="Author" class="author-avatar">
+        <span><strong>Sarah Martinez</strong></span>
+      </div>
+      <span class="meta-dot"></span>
+      <span class="meta-item">Feb 3, 2026</span>
+      <span class="meta-dot"></span>
+      <span class="meta-item">8 min read</span>
+      <span class="meta-dot"></span>
+      <span class="meta-item">2.4K views</span>
+    </div>
+  </div>
+</header>
+
+<!-- SOCIAL SHARE STICKY -->
+<div class="social-share-sticky">
+  <div class="share-btn" title="Share on Facebook">📘</div>
+  <div class="share-btn" title="Share on Twitter">🐦</div>
+  <div class="share-btn" title="Share on Pinterest">📌</div>
+  <div class="share-btn" title="Copy Link">🔗</div>
+</div>
+
+<!-- TABLE OF CONTENTS SIDEBAR -->
+<aside class="toc-sidebar">
+  <div class="toc-title">In This Article</div>
+  <ul class="toc-list">
+    <li class="toc-item"><a href="#intro" class="toc-link active">Introduction</a></li>
+    <li class="toc-item"><a href="#declutter" class="toc-link">1. Declutter Everything</a></li>
+    <li class="toc-item"><a href="#neutral-palette" class="toc-link">2. Choose a Neutral Palette</a></li>
+    <li class="toc-item"><a href="#furniture" class="toc-link">3. Select Multi-Functional Furniture</a></li>
+    <li class="toc-item"><a href="#lighting" class="toc-link">4. Layer Your Lighting</a></li>
+    <li class="toc-item"><a href="#conclusion" class="toc-link">Conclusion</a></li>
+  </ul>
+</aside>
+
+<!-- ARTICLE CONTAINER -->
+<div class="article-container">
+  <article class="article-card">
+    
+    <div class="article-content">
+      
+      <h2 id="intro">Why Minimalism is More Than Just a Trend</h2>
+      
+      <p>Minimalism isn't just about having less—it's about making room for more of what matters. In a world cluttered with distractions, creating a serene, intentional living space can transform not just your home, but your entire mindset.</p>
+      
+      <p>Over the past decade, I've helped hundreds of homeowners transition from cluttered, chaotic living rooms to peaceful minimalist sanctuaries. And the transformation goes far beyond aesthetics. <span class="highlight-tweet">When your space is calm, your mind follows.</span></p>
+      
+      <blockquote>
+        "Minimalism is not a lack of something. It's simply the perfect amount of something." — Nicholas Burroughs
+      </blockquote>
+      
+      <p>Let's dive into ten proven strategies that will help you create a modern minimalist living room that's both beautiful and functional.</p>
+      
+      <h2 id="declutter">1. Declutter Everything (Yes, Everything)</h2>
+      
+      <p>The foundation of minimalist design is simple: <strong>less is more</strong>. Before you buy a single piece of furniture or paint a wall, you need to ruthlessly declutter your space.</p>
+      
+      <p>Here's my proven 3-step decluttering method:</p>
+      
+      <ul>
+        <li><strong>Remove everything</strong> — Take every item out of your living room</li>
+        <li><strong>Sort intentionally</strong> — Create three piles: Keep, Donate, Trash</li>
+        <li><strong>Only bring back essentials</strong> — If it doesn't serve a purpose or bring joy, it stays out</li>
+      </ul>
+      
+      <img src="https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=1200&q=80" alt="Minimalist living room with clean lines">
+      <figcaption>A perfect example of decluttered minimalist space</figcaption>
+      
+      <h2 id="neutral-palette">2. Choose a Neutral Color Palette</h2>
+      
+      <p>Color psychology plays a massive role in how we feel in a space. For minimalist living rooms, stick to a cohesive neutral palette that promotes calm and clarity.</p>
+      
+      <p>My go-to color combinations:</p>
+      
+      <ol>
+        <li>Warm whites + soft beiges + natural wood tones</li>
+        <li>Cool grays + crisp white + black accents</li>
+        <li>Cream + taupe + muted sage green</li>
+      </ol>
+      
+      <p>The key is to choose one base color (usually white or light gray) and build layers with 2-3 complementary neutrals. This creates depth without visual chaos.</p>
+      
+      <h3>Pro Tip: The 60-30-10 Rule</h3>
+      
+      <p>Use your dominant color for 60% of the room, your secondary color for 30%, and an accent color for 10%. This creates perfect balance.</p>
+      
+      <h2 id="furniture">3. Select Multi-Functional Furniture</h2>
+      
+      <p>In minimalist design, every piece must earn its place. That's why multi-functional furniture is your best friend.</p>
+      
+      <p>Consider these smart pieces:</p>
+      
+      <ul>
+        <li>Ottoman with hidden storage</li>
+        <li>Sofa bed for guests</li>
+        <li>Nesting coffee tables</li>
+        <li>Wall-mounted floating shelves</li>
+      </ul>
+      
+      <img src="https://images.unsplash.com/photo-1567016432779-094069958ea5?w=1200&q=80" alt="Multi-functional minimalist furniture">
+      
+      <h2 id="lighting">4. Layer Your Lighting for Depth</h2>
+      
+      <p>One overhead light won't cut it in a minimalist space. You need layers of light to create warmth and dimension.</p>
+      
+      <p>Implement these three types of lighting:</p>
+      
+      <ul>
+        <li><strong>Ambient lighting</strong> — Your main overhead fixture</li>
+        <li><strong>Task lighting</strong> — Reading lamps, desk lights</li>
+        <li><strong>Accent lighting</strong> — Uplights, wall sconces, candles</li>
+      </ul>
+      
+      <h4>Lighting Temperature Matters</h4>
+      
+      <p>Choose warm white bulbs (2700K-3000K) for a cozy feel, or cool white (4000K-5000K) for a crisp, modern look. Never mix temperatures in the same room.</p>
+      
+      <h2 id="conclusion">Final Thoughts: Start Small, Dream Big</h2>
+      
+      <p>Creating a minimalist living room doesn't happen overnight. Start with one corner, one wall, or even one piece of furniture. The key is to be intentional with every choice you make.</p>
+      
+      <p>Remember: minimalism isn't about deprivation—it's about curating a space that supports the life you want to live. Every item in your living room should either serve a function or bring you genuine joy.</p>
+      
+      <p>What's the first change you'll make in your living room? I'd love to hear about your minimalist journey in the comments below!</p>
+      
+    </div>
+    
+    <!-- TAGS -->
+    <div class="article-tags">
+      <div class="tags-title">Tagged in:</div>
+      <div class="tags-list">
+        <a href="#" class="tag">Minimalism</a>
+        <a href="#" class="tag">Living Room</a>
+        <a href="#" class="tag">Modern Design</a>
+        <a href="#" class="tag">Decluttering</a>
+        <a href="#" class="tag">Interior Tips</a>
+      </div>
+    </div>
+    
+    <!-- AUTHOR BIO -->
+    <div class="author-bio">
+      <img src="https://i.pravatar.cc/200?img=5" alt="Sarah Martinez" class="author-bio-avatar">
+      <div class="author-bio-content">
+        <h3>Sarah Martinez</h3>
+        <p>Sarah is a certified interior designer with over 12 years of experience helping homeowners create spaces they love. She specializes in minimalist and Scandinavian design, and has been featured in major home decor publications.</p>
+        <div class="author-social">
+          <div class="social-icon">📘</div>
+          <div class="social-icon">📷</div>
+          <div class="social-icon">🐦</div>
+          <div class="social-icon">📌</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- NEWSLETTER CTA -->
+    <div class="newsletter-cta">
+      <div class="newsletter-cta-content">
+        <iframe width="540" height="305" src="https://43949154.sibforms.com/serve/MUIFAPyQ9_bfSXkPWBO8zw0Q8-K6p-lh52NEPxUZW_KW6Bxr7jNKf0aSLx8H6MkxHztBHikhDrVG-vaj_YSAWy1s5zR5j1tWjnVfjysGhT_YteJU9De4l5EMFWBrXjCI1OaRRLMUy3jkmzn-AYuBCQPT_hadcWRpGmlfHEOPG5WjWTGWGGAczSj98E6CwfwSTzliF2Zk30_4IryF" frameborder="0" scrolling="auto" allowfullscreen style="display: block;margin-left: auto;margin-right: auto;max-width: 100%; border-radius: 16px; box-shadow: var(--shadow-xl);"></iframe>
+      </div>
+    </div>
+    
+  </article>
+  
+  <!-- RELATED POSTS -->
+  <section class="related-posts">
+    <h2 class="related-title">You Might Also Like</h2>
+    <div class="related-grid">
+      
+      <a href="#" class="related-card">
+        <img src="https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=600&q=80" alt="Related post" class="related-card-image">
+        <div class="related-card-content">
+          <h4>5 Bedroom Color Schemes That Promote Better Sleep</h4>
+          <p>Science-backed palettes for your sanctuary</p>
+        </div>
+      </a>
+      
+      <a href="#" class="related-card">
+        <img src="https://images.unsplash.com/photo-1556911220-bff31c812dba?w=600&q=80" alt="Related post" class="related-card-image">
+        <div class="related-card-content">
+          <h4>Small Kitchen Storage: 20 Clever Hacks</h4>
+          <p>Maximize every inch of your space</p>
+        </div>
+      </a>
+      
+      <a href="#" class="related-card">
+        <img src="https://images.unsplash.com/photo-1513519245088-0e12902e35ca?w=600&q=80" alt="Related post" class="related-card-image">
+        <div class="related-card-content">
+          <h4>15 DIY Wall Art Ideas for Beginners</h4>
+          <p>No artistic skills required!</p>
+        </div>
+      </a>
+      
+    </div>
+  </section>
+  
+  <!-- COMMENTS SECTION -->
+  <section class="comments-section">
+    <h2 class="comments-title">Join the Conversation</h2>
+    
+    <form class="comment-form">
+      <div class="form-group">
+        <label class="form-label">Name</label>
+        <input type="text" class="form-input" placeholder="Your name" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-input" placeholder="your@email.com" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Comment</label>
+        <textarea class="form-textarea" placeholder="Share your thoughts..." required></textarea>
+      </div>
+      <button type="submit" class="submit-btn">Post Comment</button>
+    </form>
+    
+  </section>
+  
+</div>
+
+<!-- SCROLL TO TOP -->
+<div class="scroll-top" id="scrollTop">↑</div>
+
+<!-- EXIT INTENT POPUP -->
+<div class="exit-popup-overlay" id="exitPopup">
+  <div class="exit-popup">
+    <div class="exit-popup-close" id="closePopup">×</div>
+    <div class="exit-popup-header">
+      <h2>Before You Go! 🏠✨</h2>
+      <p>Join our community for exclusive decor tips</p>
+    </div>
+    <div class="exit-popup-content">
+      <iframe width="100%" height="420" src="https://43949154.sibforms.com/serve/MUIFAPyQ9_bfSXkPWBO8zw0Q8-K6p-lh52NEPxUZW_KW6Bxr7jNKf0aSLx8H6MkxHztBHikhDrVG-vaj_YSAWy1s5zR5j1tWjnVfjysGhT_YteJU9De4l5EMFWBrXjCI1OaRRLMUy3jkmzn-AYuBCQPT_hadcWRpGmlfHEOPG5WjWTGWGGAczSj98E6CwfwSTzliF2Zk30_4IryF" frameborder="0" scrolling="auto" allowfullscreen></iframe>
+    </div>
+  </div>
+</div>
+
+<script>
+// Progress Bar
+window.addEventListener('scroll', () => {
+  const windowHeight = window.innerHeight;
+  const documentHeight = document.documentElement.scrollHeight;
+  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  const progress = (scrollTop / (documentHeight - windowHeight)) * 100;
+  document.getElementById('progressBar').style.width = progress + '%';
+  
+  // Show/hide scroll to top button
+  const scrollTopBtn = document.getElementById('scrollTop');
+  if (scrollTop > 500) {
+    scrollTopBtn.classList.add('visible');
+  } else {
+    scrollTopBtn.classList.remove('visible');
+  }
+});
+
+// Scroll to top
+document.getElementById('scrollTop').addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// TOC Active State
+const tocLinks = document.querySelectorAll('.toc-link');
+const sections = document.querySelectorAll('h2[id]');
+
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(section => {
+    const sectionTop = section.offsetTop;
+    if (window.pageYOffset >= sectionTop - 100) {
+      current = section.getAttribute('id');
+    }
+  });
+  
+  tocLinks.forEach(link => {
+    link.classList.remove('active');
+    if (link.getAttribute('href') === '#' + current) {
+      link.classList.add('active');
+    }
+  });
+});
+
+// Comment Form
+document.querySelector('.comment-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  alert('Comment posted! 💬');
+  e.target.reset();
+});
+
+// Share Buttons
+document.querySelectorAll('.share-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const title = document.querySelector('.hero-title').textContent;
+    const url = window.location.href;
+    
+    if (this.title.includes('Copy Link')) {
+      navigator.clipboard.writeText(url);
+      alert('Link copied! 📋');
+    } else {
+      alert('Share functionality would open ' + this.title);
+    }
+  });
+});
+
+// Click to tweet
+document.querySelectorAll('.highlight-tweet').forEach(element => {
+  element.addEventListener('click', () => {
+    const text = element.textContent;
+    const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+    window.open(tweetUrl, '_blank');
+  });
+});
+
+/* ====== EXIT INTENT POPUP FUNCTIONALITY ====== */
+let exitIntentShown = false;
+const exitPopup = document.getElementById('exitPopup');
+const closePopupBtn = document.getElementById('closePopup');
+
+// Detect exit intent (mouse leaving viewport from top)
+document.addEventListener('mouseleave', (e) => {
+  if (!exitIntentShown && e.clientY <= 0) {
+    showExitPopup();
+  }
+});
+
+// Close on X button
+closePopupBtn.addEventListener('click', () => {
+  hideExitPopup();
+});
+
+// Close on overlay click
+exitPopup.addEventListener('click', (e) => {
+  if (e.target === exitPopup) {
+    hideExitPopup();
+  }
+});
+
+// Close on ESC key
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && exitPopup.classList.contains('active')) {
+    hideExitPopup();
+  }
+});
+
+function showExitPopup() {
+  exitPopup.classList.add('active');
+  exitIntentShown = true;
+  document.body.style.overflow = 'hidden';
+  
+  // Store in session so it doesn't show again this session
+  sessionStorage.setItem('exitPopupShown', 'true');
+}
+
+function hideExitPopup() {
+  exitPopup.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+// Check if already shown this session
+if (sessionStorage.getItem('exitPopupShown')) {
+  exitIntentShown = true;
+}
+
+// Also trigger on mobile after 30 seconds of reading
+let readingTimer;
+function resetReadingTimer() {
+  clearTimeout(readingTimer);
+  if (!exitIntentShown) {
+    readingTimer = setTimeout(() => {
+      showExitPopup();
+    }, 30000); // 30 seconds
+  }
+}
+
+document.addEventListener('mousemove', resetReadingTimer);
+document.addEventListener('scroll', resetReadingTimer);
+document.addEventListener('keypress', resetReadingTimer);
+
+resetReadingTimer();
+</script>
+
+</body>
+</html>
