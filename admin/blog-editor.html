@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Wow Glam Decor - Blog Post Editor</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  padding: 40px 20px;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  overflow: hidden;
+}
+
+.header {
+  background: linear-gradient(135deg, #1A1D2E, #2D3250);
+  color: white;
+  padding: 40px;
+  text-align: center;
+}
+
+.header h1 {
+  font-size: 2rem;
+  margin-bottom: 8px;
+}
+
+.header p {
+  opacity: 0.9;
+  font-size: 0.95rem;
+}
+
+.form-container {
+  padding: 40px;
+}
+
+.form-group {
+  margin-bottom: 24px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #1A1D2E;
+  font-size: 0.95rem;
+}
+
+.form-group label .required {
+  color: #DC2626;
+  margin-left: 4px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid #E5E7EB;
+  border-radius: 12px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-group textarea {
+  min-height: 400px;
+  font-family: 'Monaco', 'Courier New', monospace;
+  resize: vertical;
+}
+
+.form-hint {
+  font-size: 0.85rem;
+  color: #6B7280;
+  margin-top: 6px;
+}
+
+.tags-input {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px;
+  border: 2px solid #E5E7EB;
+  border-radius: 12px;
+  min-height: 52px;
+}
+
+.tag {
+  background: #667eea;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tag button {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 1.1rem;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+
+.tag button:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+.tag-input-field {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  min-width: 120px;
+}
+
+.affiliate-section {
+  margin-top: 32px;
+  padding: 24px;
+  background: #F9FAFB;
+  border-radius: 12px;
+}
+
+.affiliate-section h3 {
+  margin-bottom: 16px;
+  color: #1A1D2E;
+}
+
+.affiliate-product {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  border: 2px solid #E5E7EB;
+}
+
+.affiliate-product-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.remove-product-btn {
+  background: #DC2626;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.remove-product-btn:hover {
+  background: #B91C1C;
+}
+
+.btn-add-product {
+  background: #10B981;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+  margin-top: 12px;
+}
+
+.btn-add-product:hover {
+  background: #059669;
+  transform: translateY(-2px);
+}
+
+.submit-section {
+  margin-top: 40px;
+  padding-top: 32px;
+  border-top: 2px solid #E5E7EB;
+  display: flex;
+  gap: 16px;
+}
+
+.btn {
+  flex: 1;
+  padding: 16px;
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-secondary {
+  background: #F3F4F6;
+  color: #1F2937;
+}
+
+.btn-secondary:hover {
+  background: #E5E7EB;
+}
+
+.status-message {
+  padding: 16px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  font-weight: 500;
+  display: none;
+}
+
+.status-message.success {
+  background: #D1FAE5;
+  color: #065F46;
+  border: 2px solid #10B981;
+  display: block;
+}
+
+.status-message.error {
+  background: #FEE2E2;
+  color: #991B1B;
+  border: 2px solid #DC2626;
+  display: block;
+}
+
+.markdown-preview {
+  margin-top: 32px;
+  padding: 24px;
+  background: #F9FAFB;
+  border-radius: 12px;
+  display: none;
+}
+
+.markdown-preview.show {
+  display: block;
+}
+
+.markdown-preview h3 {
+  margin-bottom: 16px;
+  color: #1A1D2E;
+}
+
+.preview-content {
+  background: white;
+  padding: 24px;
+  border-radius: 8px;
+  max-height: 400px;
+  overflow-y: auto;
+  font-family: Georgia, serif;
+  line-height: 1.6;
+}
+
+.preview-content h2 {
+  margin-top: 24px;
+  margin-bottom: 12px;
+  color: #1A1D2E;
+}
+
+.preview-content p {
+  margin-bottom: 16px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1>📝 Blog Post Editor</h1>
+    <p>Create and publish your Wow Glam Decor blog posts</p>
+  </div>
+  
+  <div class="form-container">
+    <div id="statusMessage" class="status-message"></div>
+    
+    <form id="blogForm">
+      <!-- Title -->
+      <div class="form-group">
+        <label>Post Title <span class="required">*</span></label>
+        <input 
+          type="text" 
+          id="title" 
+          placeholder="e.g., 10 Modern Minimalist Living Room Ideas"
+          required
+        />
+        <p class="form-hint">Create a compelling, SEO-friendly title</p>
+      </div>
+      
+      <!-- Category -->
+      <div class="form-group">
+        <label>Category <span class="required">*</span></label>
+        <select id="category" required>
+          <option value="">Select a category...</option>
+          <option value="Living Room">Living Room</option>
+          <option value="Bedroom">Bedroom</option>
+          <option value="Kitchen">Kitchen</option>
+          <option value="DIY">DIY</option>
+          <option value="Home Tech">Home Tech</option>
+          <option value="Furniture">Furniture</option>
+        </select>
+      </div>
+      
+      <!-- Tags -->
+      <div class="form-group">
+        <label>Tags</label>
+        <div class="tags-input" id="tagsContainer">
+          <input 
+            type="text" 
+            class="tag-input-field" 
+            id="tagInput"
+            placeholder="Type a tag and press Enter"
+          />
+        </div>
+        <p class="form-hint">Add relevant tags for better discoverability</p>
+      </div>
+      
+      <!-- Author Name -->
+      <div class="form-group">
+        <label>Author Name</label>
+        <input 
+          type="text" 
+          id="authorName" 
+          placeholder="e.g., Sarah Martinez"
+          value="Wow Glam Decor Editorial Team"
+        />
+      </div>
+      
+      <!-- Author Role -->
+      <div class="form-group">
+        <label>Author Role</label>
+        <input 
+          type="text" 
+          id="authorRole" 
+          placeholder="e.g., Interior Design Expert"
+          value="Interior Design Expert"
+        />
+      </div>
+      
+      <!-- Content -->
+      <div class="form-group">
+        <label>Blog Content (Markdown) <span class="required">*</span></label>
+        <textarea 
+          id="content" 
+          placeholder="Write your blog post content in Markdown format...
+
+## Why This Topic Matters
+
+Your introduction goes here...
+
+### Main Point 1
+
+Content for your first section...
+
+### Main Point 2
+
+More great content...
+
+## Conclusion
+
+Wrap it up with a strong conclusion..."
+          required
+        ></textarea>
+        <p class="form-hint">Use Markdown formatting: ## for headings, **bold**, *italic*, - for lists</p>
+      </div>
+      
+      <!-- SEO Meta Description -->
+      <div class="form-group">
+        <label>SEO Meta Description</label>
+        <textarea 
+          id="seoDescription" 
+          placeholder="A compelling 150-160 character description for search engines..."
+          rows="3"
+        ></textarea>
+        <p class="form-hint" id="seoCounter">0 / 160 characters</p>
+      </div>
+      
+      <!-- Affiliate Products Section -->
+      <div class="affiliate-section">
+        <h3>🔗 Affiliate Products (Optional)</h3>
+        <div id="affiliateProducts"></div>
+        <button type="button" class="btn-add-product" onclick="addAffiliateProduct()">+ Add Product</button>
+      </div>
+      
+      <!-- Submit Buttons -->
+      <div class="submit-section">
+        <button type="button" class="btn btn-secondary" onclick="previewPost()">Preview</button>
+        <button type="submit" class="btn btn-primary" id="submitBtn">
+          🚀 Publish Post
+        </button>
+      </div>
+    </form>
+    
+    <!-- Preview Section -->
+    <div class="markdown-preview" id="previewSection">
+      <h3>📄 Preview</h3>
+      <div class="preview-content" id="previewContent"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Configuration
+const N8N_WEBHOOK_URL = 'YOUR_N8N_WEBHOOK_URL_HERE'; // Replace with your n8n webhook URL
+
+// State
+let tags = [];
+let affiliateProducts = [];
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+  setupTagInput();
+  setupSEOCounter();
+  setupFormSubmit();
+});
+
+// Tag Management
+function setupTagInput() {
+  const tagInput = document.getElementById('tagInput');
+  const tagsContainer = document.getElementById('tagsContainer');
+  
+  tagInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const tag = tagInput.value.trim();
+      if (tag && !tags.includes(tag)) {
+        tags.push(tag);
+        renderTags();
+        tagInput.value = '';
+      }
+    }
+  });
+}
+
+function renderTags() {
+  const tagsContainer = document.getElementById('tagsContainer');
+  const tagInput = document.getElementById('tagInput');
+  
+  const tagElements = tags.map((tag, index) => `
+    <div class="tag">
+      ${tag}
+      <button type="button" onclick="removeTag(${index})">×</button>
+    </div>
+  `).join('');
+  
+  tagsContainer.innerHTML = tagElements + tagInput.outerHTML;
+  setupTagInput(); // Re-attach event listener
+}
+
+function removeTag(index) {
+  tags.splice(index, 1);
+  renderTags();
+}
+
+// SEO Counter
+function setupSEOCounter() {
+  const seoDescription = document.getElementById('seoDescription');
+  const seoCounter = document.getElementById('seoCounter');
+  
+  seoDescription.addEventListener('input', () => {
+    const length = seoDescription.value.length;
+    seoCounter.textContent = `${length} / 160 characters`;
+    seoCounter.style.color = length > 160 ? '#DC2626' : length > 150 ? '#F59E0B' : '#6B7280';
+  });
+}
+
+// Affiliate Products
+function addAffiliateProduct() {
+  const productHTML = `
+    <div class="affiliate-product" id="product-${affiliateProducts.length}">
+      <div class="affiliate-product-header">
+        <strong>Product ${affiliateProducts.length + 1}</strong>
+        <button type="button" class="remove-product-btn" onclick="removeProduct(${affiliateProducts.length})">Remove</button>
+      </div>
+      <div class="form-group">
+        <label>Product Name</label>
+        <input type="text" class="product-name" placeholder="e.g., Modern Velvet Sofa" />
+      </div>
+      <div class="form-group">
+        <label>Affiliate Link</label>
+        <input type="url" class="product-link" placeholder="https://amzn.to/..." />
+      </div>
+      <div class="form-group">
+        <label>Rating (0-5)</label>
+        <input type="number" class="product-rating" min="0" max="5" step="0.1" placeholder="4.5" />
+      </div>
+      <div class="form-group">
+        <label>Price (Optional)</label>
+        <input type="text" class="product-price" placeholder="$99.99" />
+      </div>
+    </div>
+  `;
+  
+  document.getElementById('affiliateProducts').insertAdjacentHTML('beforeend', productHTML);
+  affiliateProducts.push({});
+}
+
+function removeProduct(index) {
+  document.getElementById(`product-${index}`).remove();
+  affiliateProducts.splice(index, 1);
+}
+
+// Preview
+function previewPost() {
+  const content = document.getElementById('content').value;
+  const previewSection = document.getElementById('previewSection');
+  const previewContent = document.getElementById('previewContent');
+  
+  // Simple markdown rendering (you can use a library like marked.js for better rendering)
+  const html = content
+    .replace(/## (.*)/g, '<h2>$1</h2>')
+    .replace(/### (.*)/g, '<h3>$1</h3>')
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/\n\n/g, '</p><p>')
+    .replace(/^(.+)$/gm, '<p>$1</p>');
+  
+  previewContent.innerHTML = html;
+  previewSection.classList.add('show');
+  previewSection.scrollIntoView({ behavior: 'smooth' });
+}
+
+// Form Submit
+function setupFormSubmit() {
+  const form = document.getElementById('blogForm');
+  
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const submitBtn = document.getElementById('submitBtn');
+    const statusMessage = document.getElementById('statusMessage');
+    
+    // Disable submit button
+    submitBtn.disabled = true;
+    submitBtn.textContent = '⏳ Publishing...';
+    
+    // Collect form data
+    const formData = {
+      title: document.getElementById('title').value,
+      category: document.getElementById('category').value,
+      tags: tags,
+      author: {
+        name: document.getElementById('authorName').value,
+        role: document.getElementById('authorRole').value,
+        avatar: '/content/images/authors/default.jpg'
+      },
+      content: document.getElementById('content').value,
+      seo: {
+        description: document.getElementById('seoDescription').value
+      },
+      affiliate: collectAffiliateProducts()
+    };
+    
+    try {
+      // Send to n8n webhook
+      const response = await fetch(N8N_WEBHOOK_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+      
+      const result = await response.json();
+      
+      if (response.ok && result.success) {
+        // Success
+        statusMessage.className = 'status-message success';
+        statusMessage.textContent = `✅ Success! Your post "${result.post.title}" has been published. View it at: ${result.post.url}`;
+        
+        // Reset form
+        form.reset();
+        tags = [];
+        affiliateProducts = [];
+        renderTags();
+        document.getElementById('affiliateProducts').innerHTML = '';
+      } else {
+        throw new Error(result.message || 'Publication failed');
+      }
+    } catch (error) {
+      // Error
+      statusMessage.className = 'status-message error';
+      statusMessage.textContent = `❌ Error: ${error.message}`;
+    } finally {
+      // Re-enable submit button
+      submitBtn.disabled = false;
+      submitBtn.textContent = '🚀 Publish Post';
+      statusMessage.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+}
+
+function collectAffiliateProducts() {
+  const products = [];
+  document.querySelectorAll('.affiliate-product').forEach((productEl) => {
+    const name = productEl.querySelector('.product-name').value;
+    const link = productEl.querySelector('.product-link').value;
+    const rating = parseFloat(productEl.querySelector('.product-rating').value) || 0;
+    const price = productEl.querySelector('.product-price').value;
+    
+    if (name && link) {
+      products.push({ name, affiliate_link: link, rating, price });
+    }
+  });
+  return products;
+}
+</script>
+
+</body>
+</html>
