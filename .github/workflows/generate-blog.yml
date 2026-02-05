@@ -1,0 +1,43 @@
+name: Generate Blog Content
+on:
+  push:
+    paths:
+      - "content/posts/**/*.md"
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: |
+          npm install js-yaml gray-matter marked
+
+      - name: Generate index.json
+        run: node scripts/generate-index.js
+
+      - name: Generate HTML posts from markdown
+        run: node scripts/generate-posts.js
+
+      - name: Generate sitemap
+        run: node scripts/generate-sitemap.js
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add content/posts/index.json
+          git add posts/*.html
+          git add sitemap.xml
+          git commit -m "🤖 Auto-generate blog content [skip ci]" || echo "No changes to commit"
+          git push
