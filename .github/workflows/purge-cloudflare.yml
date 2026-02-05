@@ -7,9 +7,11 @@ jobs:
   purge_cache:
     runs-on: ubuntu-latest
     steps:
+      # Step 1: Checkout your repo (optional, needed if you want to use git)
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      # Step 2: Purge Cloudflare cache
       - name: Purge Cloudflare Cache
         run: |
           curl -X POST "https://api.cloudflare.com/client/v4/zones/${{ secrets.CF_ZONE_ID }}/purge_cache" \
