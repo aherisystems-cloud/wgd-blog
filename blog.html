@@ -312,6 +312,12 @@ img {
   grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
   gap: 32px;
   animation: fadeIn 0.6s ease;
+  transition: var(--transition);
+}
+
+.grid.list-view {
+  grid-template-columns: 1fr;
+  gap: 24px;
 }
 
 /* ====== Card Styles ====== */
@@ -325,6 +331,11 @@ img {
   display: flex;
   flex-direction: column;
   position: relative;
+}
+
+.grid.list-view .card {
+  flex-direction: row;
+  max-height: 280px;
 }
 
 .card::before {
@@ -354,6 +365,12 @@ img {
   overflow: hidden;
   aspect-ratio: 16 / 10;
   background: var(--gray-100);
+}
+
+.grid.list-view .card-image-wrapper {
+  width: 400px;
+  min-width: 400px;
+  aspect-ratio: auto;
 }
 
 .card-image {
@@ -565,6 +582,8 @@ img {
   border-radius: 16px;
   box-shadow: var(--shadow-xl);
   background: white;
+  margin: 0 auto;
+  display: block;
 }
 
 /* ====== Exit Intent Popup ====== */
@@ -646,6 +665,12 @@ img {
 
 .exit-popup-content {
   padding: 16px;
+}
+
+.exit-popup-content iframe {
+  width: 100%;
+  min-height: 500px;
+  border: none;
 }
 
 /* ====== Footer ====== */
@@ -744,6 +769,17 @@ img {
     gap: 24px;
   }
   
+  .grid.list-view .card {
+    flex-direction: column;
+    max-height: none;
+  }
+  
+  .grid.list-view .card-image-wrapper {
+    width: 100%;
+    min-width: auto;
+    aspect-ratio: 16 / 10;
+  }
+  
   .filter-header {
     flex-direction: column;
     align-items: flex-start;
@@ -836,7 +872,7 @@ img {
   <!-- NEWSLETTER EMBEDDED -->
   <section class="newsletter">
     <div class="newsletter-content">
-      <iframe width="540" height="305" src="https://43949154.sibforms.com/serve/MUIFAPyQ9_bfSXkPWBO8zw0Q8-K6p-lh52NEPxUZW_KW6Bxr7jNKf0aSLx8H6MkxHztBHikhDrVG-vaj_YSAWy1s5zR5j1tWjnVfjysGhT_YteJU9De4l5EMFWBrXjCI1OaRRLMUy3jkmzn-AYuBCQPT_hadcWRpGmlfHEOPG5WjWTGWGGAczSj98E6CwfwSTzliF2Zk30_4IryF" frameborder="0" scrolling="auto" allowfullscreen style="display: block;margin-left: auto;margin-right: auto;max-width: 100%;"></iframe>
+      <iframe width="540" height="550" src="https://43949154.sibforms.com/serve/MUIFAPyQ9_bfSXkPWBO8zw0Q8-K6p-lh52NEPxUZW_KW6Bxr7jNKf0aSLx8H6MkxHztBHikhDrVG-vaj_YSAWy1s5zR5j1tWjnVfjysGhT_YteJU9De4l5EMFWBrXjCI1OaRRLMUy3jkmzn-AYuBCQPT_hadcWRpGmlfHEOPG5WjWTGWGGAczSj98E6CwfwSTzliF2Zk30_4IryF" frameborder="0" scrolling="no" allowfullscreen style="display: block;margin-left: auto;margin-right: auto;max-width: 100%;"></iframe>
     </div>
   </section>
 
@@ -851,7 +887,7 @@ img {
       <p>Get exclusive home decor tips & inspiration</p>
     </div>
     <div class="exit-popup-content">
-      <iframe width="100%" height="420" src="https://43949154.sibforms.com/serve/MUIFAPyQ9_bfSXkPWBO8zw0Q8-K6p-lh52NEPxUZW_KW6Bxr7jNKf0aSLx8H6MkxHztBHikhDrVG-vaj_YSAWy1s5zR5j1tWjnVfjysGhT_YteJU9De4l5EMFWBrXjCI1OaRRLMUy3jkmzn-AYuBCQPT_hadcWRpGmlfHEOPG5WjWTGWGGAczSj98E6CwfwSTzliF2Zk30_4IryF" frameborder="0" scrolling="auto" allowfullscreen></iframe>
+      <iframe width="100%" height="550" src="https://43949154.sibforms.com/serve/MUIFAPyQ9_bfSXkPWBO8zw0Q8-K6p-lh52NEPxUZW_KW6Bxr7jNKf0aSLx8H6MkxHztBHikhDrVG-vaj_YSAWy1s5zR5j1tWjnVfjysGhT_YteJU9De4l5EMFWBrXjCI1OaRRLMUy3jkmzn-AYuBCQPT_hadcWRpGmlfHEOPG5WjWTGWGGAczSj98E6CwfwSTzliF2Zk30_4IryF" frameborder="0" scrolling="no" allowfullscreen></iframe>
     </div>
   </div>
 </div>
@@ -1088,11 +1124,23 @@ document.getElementById('searchInput').addEventListener('input', (e) => {
   `).join('');
 });
 
-// View toggle
+// View toggle - FIXED
 document.querySelectorAll('.view-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
+  btn.addEventListener('click', (e) => {
+    // Remove active from all buttons
     document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+    // Add active to clicked button
     btn.classList.add('active');
+    
+    // Get the posts container
+    const postsContainer = document.getElementById('posts');
+    
+    // Toggle view based on button data-view attribute
+    if (btn.dataset.view === 'list') {
+      postsContainer.classList.add('list-view');
+    } else {
+      postsContainer.classList.remove('list-view');
+    }
   });
 });
 
