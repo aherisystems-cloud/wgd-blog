@@ -8,6 +8,7 @@ media_folder: "content/images"
 public_folder: "/content/images"
 
 collections:
+ collections:
   - name: "posts"
     label: "Blog Posts"
     folder: "content/posts"
@@ -15,8 +16,39 @@ collections:
     slug: "{{slug}}"
     fields:
       - { label: "Title", name: "title", widget: "string" }
-      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Slug", name: "slug", widget: "string" }
       - { label: "Publish Date", name: "date", widget: "datetime" }
-      - { label: "Featured Image", name: "image", widget: "image", required: false }
+
+      - label: "Author"
+        name: "author"
+        widget: "object"
+        fields:
+          - { label: "Name", name: "name", widget: "string" }
+          - { label: "Role", name: "role", widget: "string" }
+          - { label: "Avatar", name: "avatar", widget: "image" }
+
+      - label: "SEO"
+        name: "seo"
+        widget: "object"
+        fields:
+          - { label: "SEO Title", name: "title", widget: "string" }
+          - { label: "SEO Description", name: "description", widget: "text" }
+
+      - label: "Featured Image"
+        name: "featured_image"
+        widget: "object"
+        fields:
+          - { label: "Image", name: "src", widget: "image" }
+          - { label: "Alt Text", name: "alt", widget: "string" }
+
+      - label: "Affiliate Products"
+        name: "affiliate"
+        widget: "list"
+        fields:
+          - { label: "Product Name", name: "name", widget: "string" }
+          - { label: "Affiliate Link", name: "affiliate_link", widget: "string" }
+          - { label: "Rating", name: "rating", widget: "number", value_type: "float" }
+
       - { label: "Body", name: "body", widget: "markdown" }
+
 
