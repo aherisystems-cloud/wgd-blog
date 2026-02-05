@@ -1,1 +1,1305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Blog - Wow Glam Decor</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
+<style>
+/* ====== CSS Variables ====== */
+:root {
+  --purple-primary: #7B1FA2;
+  --purple-dark: #4A0072;
+  --purple-light: #9C4DCC;
+  --white: #FFFFFF;
+  --off-white: #FAFAFA;
+  --gray-100: #F5F5F5;
+  --gray-200: #EEEEEE;
+  --gray-300: #E0E0E0;
+  --gray-600: #757575;
+  --gray-800: #424242;
+  --gray-900: #212121;
+  --shadow-sm: 0 2px 8px rgba(123, 31, 162, 0.08);
+  --shadow-md: 0 8px 24px rgba(123, 31, 162, 0.12);
+  --shadow-lg: 0 16px 48px rgba(123, 31, 162, 0.18);
+  --shadow-xl: 0 24px 64px rgba(123, 31, 162, 0.24);
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ====== Base Reset & Typography ====== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Nunito', system-ui, -apple-system, sans-serif;
+  background: var(--off-white);
+  color: var(--gray-900);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+img {
+  width: 100%;
+  display: block;
+}
+
+/* ====== Header Navigation ====== */
+.navbar {
+  background: var(--white);
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.nav-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  height: 48px;
+  width: auto;
+}
+
+.nav-links {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+}
+
+.nav-links a {
+  font-weight: 600;
+  color: var(--gray-800);
+  transition: var(--transition-fast);
+  position: relative;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--purple-primary);
+  transition: var(--transition);
+}
+
+.nav-links a:hover {
+  color: var(--purple-primary);
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+/* ====== Search Bar ====== */
+.search-container {
+  position: relative;
+  max-width: 300px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 40px 10px 16px;
+  border: 2px solid var(--gray-200);
+  border-radius: 24px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  transition: var(--transition);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--purple-primary);
+  box-shadow: 0 0 0 3px rgba(123, 31, 162, 0.1);
+}
+
+.search-icon {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--gray-600);
+}
+
+/* ====== Hero Section ====== */
+.hero {
+  background: linear-gradient(135deg, var(--purple-dark) 0%, var(--purple-primary) 100%);
+  color: var(--white);
+  padding: 80px 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -30%;
+  left: -5%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.hero-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+.hero h1 {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 800;
+  margin-bottom: 16px;
+  letter-spacing: -0.5px;
+  animation: fadeInUp 0.8s ease;
+}
+
+.hero p {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  opacity: 0.95;
+  max-width: 700px;
+  font-weight: 400;
+  animation: fadeInUp 0.8s ease 0.2s both;
+}
+
+/* ====== Main Container ====== */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 48px 24px;
+}
+
+/* ====== Filter Section ====== */
+.filter-section {
+  margin-bottom: 48px;
+}
+
+.filter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.filter-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--gray-900);
+}
+
+.view-toggle {
+  display: flex;
+  gap: 8px;
+  background: var(--gray-100);
+  padding: 4px;
+  border-radius: 12px;
+}
+
+.view-btn {
+  padding: 8px 16px;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 600;
+  transition: var(--transition-fast);
+  color: var(--gray-600);
+}
+
+.view-btn.active {
+  background: var(--white);
+  color: var(--purple-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  animation: fadeIn 0.5s ease;
+}
+
+.filter {
+  padding: 12px 24px;
+  border-radius: 28px;
+  background: var(--white);
+  border: 2px solid var(--gray-200);
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.filter::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: var(--purple-primary);
+  transform: translate(-50%, -50%);
+  transition: width 0.4s ease, height 0.4s ease;
+  z-index: 0;
+}
+
+.filter span {
+  position: relative;
+  z-index: 1;
+}
+
+.filter:hover {
+  border-color: var(--purple-light);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.filter.active {
+  background: var(--purple-primary);
+  color: var(--white);
+  border-color: var(--purple-primary);
+  box-shadow: var(--shadow-md);
+}
+
+.filter.active::before {
+  width: 100%;
+  height: 100%;
+}
+
+/* ====== Posts Grid ====== */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 32px;
+  animation: fadeIn 0.6s ease;
+}
+
+/* ====== Card Styles ====== */
+.card {
+  background: var(--white);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, var(--purple-primary), var(--purple-light));
+  opacity: 0;
+  transition: var(--transition);
+  z-index: 0;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
+}
+
+.card:hover::before {
+  opacity: 0.03;
+}
+
+.card-image-wrapper {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+  background: var(--gray-100);
+}
+
+.card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 0;
+}
+
+.card:hover .card-image {
+  transform: scale(1.08);
+}
+
+.card-category-badge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background: var(--white);
+  color: var(--purple-primary);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: var(--shadow-md);
+  z-index: 2;
+}
+
+.card-content {
+  padding: 24px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+}
+
+.card h3 {
+  font-size: 1.375rem;
+  font-weight: 700;
+  line-height: 1.4;
+  margin-bottom: 12px;
+  color: var(--gray-900);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--gray-600);
+  margin-bottom: 16px;
+  flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 13px;
+  color: var(--gray-600);
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.meta-dot {
+  width: 3px;
+  height: 3px;
+  background: var(--gray-600);
+  border-radius: 50%;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 16px;
+  border-top: 1px solid var(--gray-200);
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tag {
+  font-size: 11px;
+  background: var(--gray-100);
+  color: var(--gray-800);
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: var(--transition-fast);
+}
+
+.card:hover .tag {
+  background: rgba(123, 31, 162, 0.1);
+  color: var(--purple-primary);
+}
+
+.read-more {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--purple-primary);
+  transition: var(--transition-fast);
+}
+
+.card:hover .read-more {
+  gap: 10px;
+}
+
+/* ====== Load More Section ====== */
+.load-more {
+  text-align: center;
+  margin: 64px 0 32px;
+}
+
+.load-more button {
+  padding: 16px 48px;
+  border-radius: 28px;
+  border: 2px solid var(--purple-primary);
+  background: var(--white);
+  color: var(--purple-primary);
+  font-family: 'Nunito', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.load-more button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 28px;
+  background: var(--purple-primary);
+  transform: translate(-50%, -50%);
+  transition: width 0.4s ease, height 0.4s ease;
+  z-index: 0;
+}
+
+.load-more button span {
+  position: relative;
+  z-index: 1;
+}
+
+.load-more button:hover {
+  color: var(--white);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.load-more button:hover::before {
+  width: 100%;
+  height: 100%;
+}
+
+/* ====== Newsletter Section ====== */
+.newsletter {
+  background: linear-gradient(135deg, var(--purple-primary), var(--purple-light));
+  border-radius: 24px;
+  padding: 48px;
+  margin: 64px 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.newsletter::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.newsletter-content {
+  position: relative;
+  z-index: 2;
+}
+
+.newsletter h2 {
+  color: var(--white);
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+
+.newsletter p {
+  color: rgba(255,255,255,0.9);
+  font-size: 1.125rem;
+  margin-bottom: 32px;
+}
+
+.newsletter-form {
+  display: flex;
+  gap: 12px;
+  max-width: 500px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.newsletter-input {
+  flex: 1;
+  min-width: 250px;
+  padding: 16px 20px;
+  border: none;
+  border-radius: 28px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 15px;
+}
+
+.newsletter-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255,255,255,0.3);
+}
+
+.newsletter-btn {
+  padding: 16px 36px;
+  border: none;
+  border-radius: 28px;
+  background: var(--white);
+  color: var(--purple-primary);
+  font-family: 'Nunito', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: var(--shadow-md);
+}
+
+.newsletter-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ====== Footer ====== */
+.footer {
+  background: var(--gray-900);
+  color: var(--white);
+  padding: 48px 24px 24px;
+  margin-top: 64px;
+}
+
+.footer-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 32px;
+  margin-bottom: 32px;
+}
+
+.footer-section h3 {
+  font-size: 1.125rem;
+  margin-bottom: 16px;
+  font-weight: 700;
+}
+
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footer-links a {
+  color: rgba(255,255,255,0.7);
+  transition: var(--transition-fast);
+}
+
+.footer-links a:hover {
+  color: var(--white);
+  padding-left: 4px;
+}
+
+.footer-bottom {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  text-align: center;
+  color: rgba(255,255,255,0.6);
+  font-size: 14px;
+}
+
+/* ====== Animations ====== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ====== Skeleton Loading ====== */
+.skeleton {
+  animation: skeleton-loading 1.5s infinite ease-in-out;
+  background: linear-gradient(90deg, var(--gray-200) 25%, var(--gray-100) 50%, var(--gray-200) 75%);
+  background-size: 200% 100%;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* ====== Responsive ====== */
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+  }
+  
+  .hero {
+    padding: 48px 24px;
+  }
+  
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  
+  .filter-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .newsletter {
+    padding: 32px 24px;
+  }
+  
+  .newsletter-form {
+    flex-direction: column;
+  }
+  
+  .newsletter-input {
+    width: 100%;
+  }
+}
+
+/* ====== Scrollbar Styling ====== */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--gray-100);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--purple-light);
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--purple-primary);
+}
+
+/* ====== Exit Intent Popup ====== */
+.exit-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.exit-popup-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.exit-popup {
+  background: var(--white);
+  border-radius: 24px;
+  padding: 0;
+  max-width: 600px;
+  width: 90%;
+  position: relative;
+  transform: scale(0.9) translateY(-20px);
+  transition: transform 0.3s ease;
+  box-shadow: 0 24px 64px rgba(123, 31, 162, 0.3);
+  overflow: hidden;
+}
+
+.exit-popup-overlay.active .exit-popup {
+  transform: scale(1) translateY(0);
+}
+
+.exit-popup-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: var(--gray-800);
+  transition: var(--transition);
+  z-index: 10;
+  box-shadow: var(--shadow-md);
+}
+
+.exit-popup-close:hover {
+  background: var(--white);
+  transform: rotate(90deg);
+  color: var(--purple-primary);
+}
+
+.exit-popup-header {
+  background: linear-gradient(135deg, var(--purple-primary), var(--purple-light));
+  padding: 32px 24px;
+  text-align: center;
+  color: var(--white);
+  position: relative;
+  overflow: hidden;
+}
+
+.exit-popup-header::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.exit-popup-header h2 {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 2;
+}
+
+.exit-popup-header p {
+  font-size: 1.125rem;
+  opacity: 0.95;
+  position: relative;
+  z-index: 2;
+}
+
+.exit-popup-body {
+  padding: 24px;
+}
+
+.exit-popup-body iframe {
+  border-radius: 12px;
+  box-shadow: none !important;
+}
+
+@media (max-width: 768px) {
+  .exit-popup {
+    width: 95%;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  
+  .exit-popup-header h2 {
+    font-size: 1.5rem;
+  }
+  
+  .exit-popup-header p {
+    font-size: 1rem;
+  }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- NAVIGATION -->
+<nav class="navbar">
+  <div class="nav-container">
+    <img src="/mnt/user-data/uploads/WGD_LOGO.jpg" alt="Wow Glam Decor" class="logo">
+    <div class="nav-links">
+      <a href="#home">Home</a>
+      <a href="#blog">Blog</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div class="search-container">
+      <input type="text" class="search-input" placeholder="Search articles..." id="searchInput">
+      <span class="search-icon">🔍</span>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <h1>Transform Your Space with Style</h1>
+    <p>Discover expert tips, stunning inspiration, and honest reviews to create the home of your dreams.</p>
+  </div>
+</section>
+
+<!-- MAIN CONTENT -->
+<div class="container">
+
+  <!-- FILTERS -->
+  <section class="filter-section">
+    <div class="filter-header">
+      <h2 class="filter-title">Explore Articles</h2>
+      <div class="view-toggle">
+        <button class="view-btn active" data-view="grid">Grid</button>
+        <button class="view-btn" data-view="list">List</button>
+      </div>
+    </div>
+    <div class="filters" id="filters"></div>
+  </section>
+
+  <!-- POSTS GRID -->
+  <div class="grid" id="posts"></div>
+
+  <!-- LOAD MORE -->
+  <div class="load-more">
+    <button id="loadMore"><span>Load More Articles</span></button>
+  </div>
+
+  <!-- NEWSLETTER - EMBEDDED BREVO FORM -->
+  <section class="newsletter">
+    <div class="newsletter-content">
+      <iframe width="540" height="305" src="https://43949154.sibforms.com/serve/MUIFAPyQ9_bfSXkPWBO8zw0Q8-K6p-lh52NEPxUZW_KW6Bxr7jNKf0aSLx8H6MkxHztBHikhDrVG-vaj_YSAWy1s5zR5j1tWjnVfjysGhT_YteJU9De4l5EMFWBrXjCI1OaRRLMUy3jkmzn-AYuBCQPT_hadcWRpGmlfHEOPG5WjWTGWGGAczSj98E6CwfwSTzliF2Zk30_4IryF" frameborder="0" scrolling="auto" allowfullscreen style="display: block;margin-left: auto;margin-right: auto;max-width: 100%; border-radius: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.15);"></iframe>
+    </div>
+  </section>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-content">
+    <div class="footer-section">
+      <h3>Wow Glam Decor</h3>
+      <p style="color: rgba(255,255,255,0.7); font-size: 14px;">Transforming houses into dream homes, one room at a time.</p>
+    </div>
+    <div class="footer-section">
+      <h3>Quick Links</h3>
+      <div class="footer-links">
+        <a href="#home">Home</a>
+        <a href="#blog">Blog</a>
+        <a href="#about">About Us</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+    <div class="footer-section">
+      <h3>Categories</h3>
+      <div class="footer-links">
+        <a href="#living-room">Living Room</a>
+        <a href="#bedroom">Bedroom</a>
+        <a href="#kitchen">Kitchen</a>
+        <a href="#diy">DIY Projects</a>
+      </div>
+    </div>
+    <div class="footer-section">
+      <h3>Connect</h3>
+      <div class="footer-links">
+        <a href="#instagram">Instagram</a>
+        <a href="#pinterest">Pinterest</a>
+        <a href="#facebook">Facebook</a>
+        <a href="#youtube">YouTube</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2026 Wow Glam Decor. All rights reserved.</p>
+  </div>
+</footer>
+
+<!-- SCROLL TO TOP -->
+<div class="scroll-top" id="scrollTop">↑</div>
+
+<!-- EXIT INTENT POPUP -->
+<div class="exit-popup-overlay" id="exitPopup">
+  <div class="exit-popup">
+    <button class="exit-popup-close" id="closeExitPopup">×</button>
+    <div class="exit-popup-header">
+      <h2>Wait! Don't Miss Out! 🎨</h2>
+      <p>Join 10,000+ home decor lovers getting exclusive tips</p>
+    </div>
+    <div class="exit-popup-body">
+      <iframe width="540" height="305" src="https://43949154.sibforms.com/serve/MUIFAPyQ9_bfSXkPWBO8zw0Q8-K6p-lh52NEPxUZW_KW6Bxr7jNKf0aSLx8H6MkxHztBHikhDrVG-vaj_YSAWy1s5zR5j1tWjnVfjysGhT_YteJU9De4l5EMFWBrXjCI1OaRRLMUy3jkmzn-AYuBCQPT_hadcWRpGmlfHEOPG5WjWTGWGGAczSj98E6CwfwSTzliF2Zk30_4IryF" frameborder="0" scrolling="auto" allowfullscreen style="display: block;margin-left: auto;margin-right: auto;max-width: 100%; border: none;"></iframe>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+<script>
+const POSTS_PER_PAGE = 9;
+let allPosts = [];
+let visibleCount = POSTS_PER_PAGE;
+let activeCategory = "All";
+
+// Sample data (replace with your actual data fetch)
+const samplePosts = [
+  {
+    slug: "modern-minimalist-living-room",
+    title: "10 Modern Minimalist Living Room Ideas That'll Transform Your Space",
+    description: "Discover how to create a serene, clutter-free living room with these expert-approved minimalist design tips and tricks.",
+    image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&q=80",
+    category: "Living Room",
+    author: "Sarah Martinez",
+    date: "Feb 3, 2026",
+    readTime: "5 min read",
+    tags: ["Minimalism", "Modern", "Budget-Friendly"]
+  },
+  {
+    slug: "bedroom-color-schemes",
+    title: "5 Bedroom Color Schemes That Promote Better Sleep",
+    description: "Science-backed color palettes that will help you create the ultimate relaxing bedroom sanctuary.",
+    image: "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=800&q=80",
+    category: "Bedroom",
+    author: "Emma Chen",
+    date: "Feb 1, 2026",
+    readTime: "7 min read",
+    tags: ["Color Theory", "Sleep", "Wellness"]
+  },
+  {
+    slug: "diy-wall-art",
+    title: "15 Stunning DIY Wall Art Ideas You Can Make This Weekend",
+    description: "No artistic skills required! These gorgeous wall art projects are perfect for beginners and won't break the bank.",
+    image: "https://images.unsplash.com/photo-1513519245088-0e12902e35ca?w=800&q=80",
+    category: "DIY",
+    author: "Michael Roberts",
+    date: "Jan 30, 2026",
+    readTime: "10 min read",
+    tags: ["DIY", "Wall Art", "Budget-Friendly"]
+  },
+  {
+    slug: "small-kitchen-storage",
+    title: "Maximize Your Small Kitchen: 20 Clever Storage Hacks",
+    description: "Turn your tiny kitchen into an organized, functional space with these genius storage solutions.",
+    image: "https://images.unsplash.com/photo-1556911220-bff31c812dba?w=800&q=80",
+    category: "Kitchen",
+    author: "Lisa Thompson",
+    date: "Jan 28, 2026",
+    readTime: "8 min read",
+    tags: ["Storage", "Small Spaces", "Organization"]
+  },
+  {
+    slug: "boho-bedroom-makeover",
+    title: "Complete Boho Bedroom Makeover on a $500 Budget",
+    description: "Follow our step-by-step guide to create a dreamy bohemian bedroom without spending a fortune.",
+    image: "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800&q=80",
+    category: "Bedroom",
+    author: "Sarah Martinez",
+    date: "Jan 25, 2026",
+    readTime: "12 min read",
+    tags: ["Boho", "Budget", "Makeover"]
+  },
+  {
+    slug: "indoor-plants-guide",
+    title: "The Ultimate Guide to Low-Maintenance Indoor Plants",
+    description: "Perfect for busy people and plant newbies – these hardy plants will thrive even if you forget to water them.",
+    image: "https://images.unsplash.com/photo-1463320726281-696a485928c7?w=800&q=80",
+    category: "Living Room",
+    author: "Emma Chen",
+    date: "Jan 23, 2026",
+    readTime: "6 min read",
+    tags: ["Plants", "Green Living", "Beginner-Friendly"]
+  }
+];
+
+// Initialize
+allPosts = samplePosts;
+renderFilters();
+renderPosts();
+
+function renderFilters() {
+  const categories = ["All", ...new Set(allPosts.map(p => p.category).filter(Boolean))];
+  const container = document.getElementById('filters');
+  container.innerHTML = categories.map(cat =>
+    `<div class="filter ${cat === 'All' ? 'active' : ''}" onclick="filterCategory('${cat}')">
+      <span>${cat}</span>
+    </div>`
+  ).join('');
+}
+
+function filterCategory(cat) {
+  activeCategory = cat;
+  document.querySelectorAll('.filter').forEach(f => f.classList.remove('active'));
+  event.target.closest('.filter').classList.add('active');
+  visibleCount = POSTS_PER_PAGE;
+  renderPosts();
+}
+
+function renderPosts() {
+  const container = document.getElementById('posts');
+  const filtered = activeCategory === "All"
+    ? allPosts
+    : allPosts.filter(p => p.category === activeCategory);
+
+  container.innerHTML = filtered.slice(0, visibleCount).map(post => `
+    <a class="card" href="/post.html?post=${post.slug}">
+      <div class="card-image-wrapper">
+        <img src="${post.image || 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=800&q=80'}" 
+             alt="${post.title}" 
+             class="card-image">
+        <div class="card-category-badge">${post.category || 'Decor'}</div>
+      </div>
+      <div class="card-content">
+        <h3>${post.title}</h3>
+        <p>${post.description || ''}</p>
+        <div class="card-meta">
+          <span class="meta-item">${post.author || 'Editorial Team'}</span>
+          <span class="meta-dot"></span>
+          <span class="meta-item">${post.date}</span>
+          <span class="meta-dot"></span>
+          <span class="meta-item">${post.readTime || '5 min read'}</span>
+        </div>
+        <div class="card-footer">
+          <div class="tags">
+            ${(post.tags || []).slice(0, 2).map(t => `<span class="tag">${t}</span>`).join('')}
+          </div>
+          <div class="read-more">
+            Read More →
+          </div>
+        </div>
+      </div>
+    </a>
+  `).join('');
+  
+  // Hide load more if all posts shown
+  const loadMoreBtn = document.getElementById('loadMore');
+  if (visibleCount >= filtered.length) {
+    loadMoreBtn.style.display = 'none';
+  } else {
+    loadMoreBtn.style.display = 'block';
+  }
+}
+
+// Load More functionality
+document.getElementById('loadMore').onclick = () => {
+  visibleCount += POSTS_PER_PAGE;
+  renderPosts();
+};
+
+// Search functionality
+document.getElementById('searchInput').addEventListener('input', (e) => {
+  const searchTerm = e.target.value.toLowerCase();
+  const filtered = allPosts.filter(post => 
+    post.title.toLowerCase().includes(searchTerm) ||
+    (post.description && post.description.toLowerCase().includes(searchTerm)) ||
+    (post.tags && post.tags.some(tag => tag.toLowerCase().includes(searchTerm)))
+  );
+  
+  const container = document.getElementById('posts');
+  container.innerHTML = filtered.slice(0, visibleCount).map(post => `
+    <a class="card" href="/post.html?post=${post.slug}">
+      <div class="card-image-wrapper">
+        <img src="${post.image || 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=800&q=80'}" 
+             alt="${post.title}" 
+             class="card-image">
+        <div class="card-category-badge">${post.category || 'Decor'}</div>
+      </div>
+      <div class="card-content">
+        <h3>${post.title}</h3>
+        <p>${post.description || ''}</p>
+        <div class="card-meta">
+          <span class="meta-item">${post.author || 'Editorial Team'}</span>
+          <span class="meta-dot"></span>
+          <span class="meta-item">${post.date}</span>
+          <span class="meta-dot"></span>
+          <span class="meta-item">${post.readTime || '5 min read'}</span>
+        </div>
+        <div class="card-footer">
+          <div class="tags">
+            ${(post.tags || []).slice(0, 2).map(t => `<span class="tag">${t}</span>`).join('')}
+          </div>
+          <div class="read-more">
+            Read More →
+          </div>
+        </div>
+      </div>
+    </a>
+  `).join('');
+});
+
+// View toggle (optional - you can implement list view)
+document.querySelectorAll('.view-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    // Implement list/grid view switching here if needed
+  });
+});
+
+// Newsletter form
+document.querySelector('.newsletter-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  alert('Thanks for subscribing! 🎉');
+  e.target.reset();
+});
+
+// ====== EXIT INTENT POPUP ======
+let exitIntentShown = false;
+const exitPopup = document.getElementById('exitPopup');
+const closeExitPopup = document.getElementById('closeExitPopup');
+
+// Function to show popup
+function showExitPopup() {
+  if (!exitIntentShown) {
+    exitPopup.classList.add('active');
+    exitIntentShown = true;
+    // Store in session so it doesn't show again this session
+    sessionStorage.setItem('exitPopupShown', 'true');
+  }
+}
+
+// Function to hide popup
+function hideExitPopup() {
+  exitPopup.classList.remove('active');
+}
+
+// Exit intent detection (when mouse leaves top of page)
+document.addEventListener('mouseleave', (e) => {
+  // Check if already shown in this session
+  if (sessionStorage.getItem('exitPopupShown')) return;
+  
+  // Only trigger when mouse leaves from top (exiting browser)
+  if (e.clientY < 10) {
+    showExitPopup();
+  }
+});
+
+// Optional: Show popup after 30 seconds of inactivity (uncomment if desired)
+/*
+let inactivityTimer;
+function resetInactivityTimer() {
+  clearTimeout(inactivityTimer);
+  inactivityTimer = setTimeout(() => {
+    if (!sessionStorage.getItem('exitPopupShown')) {
+      showExitPopup();
+    }
+  }, 30000); // 30 seconds
+}
+
+document.addEventListener('mousemove', resetInactivityTimer);
+document.addEventListener('keypress', resetInactivityTimer);
+resetInactivityTimer();
+*/
+
+// Optional: Show popup after scrolling 50% down the page (uncomment if desired)
+/*
+let scrollPopupShown = false;
+window.addEventListener('scroll', () => {
+  if (scrollPopupShown || sessionStorage.getItem('exitPopupShown')) return;
+  
+  const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+  if (scrollPercent > 50) {
+    showExitPopup();
+    scrollPopupShown = true;
+  }
+});
+*/
+
+// Close popup when clicking X button
+closeExitPopup.addEventListener('click', hideExitPopup);
+
+// Close popup when clicking outside
+exitPopup.addEventListener('click', (e) => {
+  if (e.target === exitPopup) {
+    hideExitPopup();
+  }
+});
+
+// Close popup with ESC key
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && exitPopup.classList.contains('active')) {
+    hideExitPopup();
+  }
+});
+
+// Listen for successful form submission in iframe (optional)
+window.addEventListener('message', (event) => {
+  // Check if message is from Brevo form
+  if (event.data && event.data.type === 'brevo-form-success') {
+    hideExitPopup();
+    // Optional: Show thank you message
+    setTimeout(() => {
+      alert('🎉 Welcome to the Wow Glam Decor family!');
+    }, 300);
+  }
+});
+
+</script>
+
+</body>
+</html>
