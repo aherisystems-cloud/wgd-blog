@@ -2,11 +2,84 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<title>Blog - Wow Glam Decor</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<!-- Primary SEO Meta Tags -->
+<title>Home Decor Blog - Expert Interior Design Tips & Product Reviews | Wow Glam Decor</title>
+<meta name="title" content="Home Decor Blog - Expert Tips & Reviews | Wow Glam Decor" />
+<meta name="description" content="Discover expert home decor tips, honest product reviews, and stunning room transformations. From minimalist living rooms to cozy bedrooms - transform your space on any budget." />
+<meta name="keywords" content="home decor blog, interior design tips, room makeover ideas, furniture reviews, DIY home projects, minimalist design, bedroom decor, living room ideas, kitchen organization" />
+<meta name="author" content="Wow Glam Decor Editorial Team" />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<link rel="canonical" href="https://wowglamdecor.com/blog" />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://wowglamdecor.com/blog" />
+<meta property="og:title" content="Home Decor Blog - Expert Interior Design Tips | Wow Glam Decor" />
+<meta property="og:description" content="Discover expert home decor tips, honest product reviews, and stunning room transformations. Transform your space on any budget." />
+<meta property="og:image" content="https://wowglamdecor.com/images/blog-og-image.jpg" />
+<meta property="og:site_name" content="Wow Glam Decor" />
+<meta property="og:locale" content="en_US" />
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content="https://wowglamdecor.com/blog" />
+<meta property="twitter:title" content="Home Decor Blog - Expert Tips | Wow Glam Decor" />
+<meta property="twitter:description" content="Expert home decor tips, honest product reviews, and stunning room transformations." />
+<meta property="twitter:image" content="https://wowglamdecor.com/images/blog-twitter-card.jpg" />
+<meta name="twitter:creator" content="@wowglamdecor" />
+
+<!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Structured Data for AIEO -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "name": "Wow Glam Decor Blog",
+  "description": "Expert home decor tips, product reviews, and interior design inspiration",
+  "url": "https://wowglamdecor.com/blog",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Wow Glam Decor",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://wowglamdecor.com/logo.jpg",
+      "width": 600,
+      "height": 60
+    },
+    "sameAs": [
+      "https://www.facebook.com/wowglamdecor",
+      "https://www.instagram.com/wowglamdecor",
+      "https://www.pinterest.com/wowglamdecor"
+    ]
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://wowglamdecor.com"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog"
+    }
+  ]
+}
+</script>
 
 <style>
 /* ====== CSS Variables ====== */
@@ -22,6 +95,8 @@
   --gray-600: #757575;
   --gray-800: #424242;
   --gray-900: #212121;
+  --accent-gold: #FFD700;
+  --accent-coral: #FF6B6B;
   --shadow-sm: 0 2px 8px rgba(123, 31, 162, 0.08);
   --shadow-md: 0 8px 24px rgba(123, 31, 162, 0.12);
   --shadow-lg: 0 16px 48px rgba(123, 31, 162, 0.18);
@@ -196,11 +271,60 @@ img {
   animation: fadeInUp 0.8s ease 0.2s both;
 }
 
+/* ====== Breadcrumbs for SEO ====== */
+.breadcrumbs {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 16px 24px;
+  font-size: 14px;
+  color: var(--gray-600);
+}
+
+.breadcrumbs a {
+  color: var(--purple-primary);
+  transition: var(--transition-fast);
+}
+
+.breadcrumbs a:hover {
+  color: var(--purple-dark);
+}
+
+.breadcrumbs span {
+  margin: 0 8px;
+}
+
 /* ====== Main Container ====== */
 .container {
   max-width: 1400px;
   margin: 0 auto;
   padding: 48px 24px;
+}
+
+/* ====== Affiliate Disclosure Banner ====== */
+.affiliate-disclosure {
+  background: rgba(123, 31, 162, 0.05);
+  border-left: 4px solid var(--purple-primary);
+  padding: 16px 20px;
+  margin-bottom: 32px;
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--gray-800);
+  line-height: 1.6;
+}
+
+.affiliate-disclosure strong {
+  color: var(--purple-primary);
+  font-weight: 700;
+}
+
+.affiliate-disclosure a {
+  color: var(--purple-primary);
+  text-decoration: underline;
+  transition: var(--transition-fast);
+}
+
+.affiliate-disclosure a:hover {
+  color: var(--purple-dark);
 }
 
 /* ====== Filter Section ====== */
@@ -500,6 +624,85 @@ img {
   gap: 10px;
 }
 
+/* ====== Affiliate Product Sidebar ====== */
+.sidebar-products {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: var(--shadow-md);
+  margin-bottom: 32px;
+}
+
+.sidebar-products h3 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  margin-bottom: 20px;
+  color: var(--gray-900);
+}
+
+.sidebar-product {
+  display: flex;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--gray-200);
+  transition: var(--transition);
+}
+
+.sidebar-product:last-child {
+  border-bottom: none;
+}
+
+.sidebar-product:hover {
+  transform: translateX(4px);
+}
+
+.sidebar-product-image {
+  width: 80px;
+  height: 80px;
+  border-radius: 12px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.sidebar-product-info h4 {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: var(--gray-900);
+  line-height: 1.4;
+}
+
+.sidebar-product-rating {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.sidebar-stars {
+  color: var(--accent-gold);
+  font-size: 12px;
+}
+
+.sidebar-reviews {
+  font-size: 11px;
+  color: var(--gray-600);
+}
+
+.sidebar-product-price {
+  font-size: 16px;
+  font-weight: 900;
+  color: var(--purple-primary);
+}
+
+.sidebar-product-cta {
+  font-size: 12px;
+  color: var(--purple-primary);
+  font-weight: 700;
+  margin-top: 8px;
+  display: inline-block;
+}
+
 /* ====== Load More Section ====== */
 .load-more {
   text-align: center;
@@ -722,6 +925,21 @@ img {
   font-size: 14px;
 }
 
+.footer-disclosure {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px 0;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.5);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.footer-disclosure a {
+  color: rgba(255,255,255,0.7);
+  text-decoration: underline;
+}
+
 /* ====== Animations ====== */
 @keyframes fadeIn {
   from {
@@ -797,6 +1015,10 @@ img {
   .exit-popup {
     max-width: 95%;
   }
+  
+  .sidebar-products {
+    display: none;
+  }
 }
 
 /* ====== Scrollbar Styling ====== */
@@ -824,18 +1046,27 @@ img {
 <!-- NAVIGATION -->
 <nav class="navbar">
   <div class="nav-container">
-    <img src="/mnt/user-data/uploads/WGD_LOGO.jpg" alt="Wow Glam Decor" class="logo">
+    <a href="/" aria-label="Wow Glam Decor Homepage">
+      <img src="https://via.placeholder.com/200x50/7B1FA2/FFFFFF?text=WOW+GLAM+DECOR" alt="Wow Glam Decor - Home Interior Design Blog Logo" class="logo">
+    </a>
     <div class="nav-links">
-      <a href="#home">Home</a>
-      <a href="#blog">Blog</a>
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
+      <a href="/">Home</a>
+      <a href="/blog.html">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
     </div>
     <div class="search-container">
-      <input type="text" class="search-input" placeholder="Search articles..." id="searchInput">
-      <span class="search-icon">🔍</span>
+      <input type="text" class="search-input" placeholder="Search articles..." id="searchInput" aria-label="Search blog articles">
+      <span class="search-icon" aria-hidden="true">🔍</span>
     </div>
   </div>
+</nav>
+
+<!-- BREADCRUMBS for SEO -->
+<nav class="breadcrumbs" aria-label="Breadcrumb navigation">
+  <a href="/" itemprop="url"><span itemprop="title">Home</span></a>
+  <span aria-hidden="true">›</span>
+  <span itemprop="title">Blog</span>
 </nav>
 
 <!-- HERO -->
@@ -849,45 +1080,120 @@ img {
 <!-- MAIN CONTENT -->
 <div class="container">
 
-  <!-- FILTERS -->
-  <section class="filter-section">
-    <div class="filter-header">
-      <h2 class="filter-title">Explore Articles</h2>
-      <div class="view-toggle">
-        <button class="view-btn active" data-view="grid">Grid</button>
-        <button class="view-btn" data-view="list">List</button>
+  <!-- AFFILIATE DISCLOSURE -->
+  <div class="affiliate-disclosure">
+    <strong>💡 Affiliate Disclosure:</strong> This page contains affiliate links. If you purchase through our links, we may earn a small commission at no extra cost to you. We only recommend products we genuinely use and love. <a href="/affiliate-disclosure" rel="nofollow">Read our full disclosure policy</a>.
+  </div>
+
+  <!-- MAIN CONTENT GRID WITH SIDEBAR -->
+  <div style="display: grid; grid-template-columns: 1fr 320px; gap: 48px; align-items: start;">
+    
+    <!-- LEFT: POSTS -->
+    <div>
+      <!-- FILTERS -->
+      <section class="filter-section">
+        <div class="filter-header">
+          <h2 class="filter-title">Explore Articles</h2>
+          <div class="view-toggle">
+            <button class="view-btn active" data-view="grid" aria-label="Grid view">Grid</button>
+            <button class="view-btn" data-view="list" aria-label="List view">List</button>
+          </div>
+        </div>
+        <div class="filters" id="filters" role="tablist"></div>
+      </section>
+
+      <!-- POSTS GRID -->
+      <div class="grid" id="posts" role="main"></div>
+
+      <!-- LOAD MORE -->
+      <div class="load-more">
+        <button id="loadMore" aria-label="Load more articles"><span>Load More Articles</span></button>
       </div>
     </div>
-    <div class="filters" id="filters"></div>
-  </section>
-
-  <!-- POSTS GRID -->
-  <div class="grid" id="posts"></div>
-
-  <!-- LOAD MORE -->
-  <div class="load-more">
-    <button id="loadMore"><span>Load More Articles</span></button>
+    
+    <!-- RIGHT: SIDEBAR WITH AFFILIATE PRODUCTS -->
+    <aside class="sidebar-products" aria-label="Featured products">
+      <h3>🌟 Editor's Picks</h3>
+      
+      <!-- Product 1 -->
+      <a href="https://amzn.to/example1" target="_blank" rel="nofollow sponsored noopener" class="sidebar-product">
+        <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=200&q=80" alt="Modern arc floor lamp with marble base for living room" class="sidebar-product-image" loading="lazy">
+        <div class="sidebar-product-info">
+          <h4>Modern Arc Floor Lamp</h4>
+          <div class="sidebar-product-rating">
+            <span class="sidebar-stars" aria-label="5 star rating">★★★★★</span>
+            <span class="sidebar-reviews">(2,847)</span>
+          </div>
+          <div class="sidebar-product-price">$129.99</div>
+          <span class="sidebar-product-cta">View on Amazon →</span>
+        </div>
+      </a>
+      
+      <!-- Product 2 -->
+      <a href="https://amzn.to/example2" target="_blank" rel="nofollow sponsored noopener" class="sidebar-product">
+        <img src="https://images.unsplash.com/photo-1540574163026-643ea20ade25?w=200&q=80" alt="Chunky knit throw blanket for cozy bedroom decor" class="sidebar-product-image" loading="lazy">
+        <div class="sidebar-product-info">
+          <h4>Chunky Knit Blanket</h4>
+          <div class="sidebar-product-rating">
+            <span class="sidebar-stars" aria-label="5 star rating">★★★★★</span>
+            <span class="sidebar-reviews">(1,523)</span>
+          </div>
+          <div class="sidebar-product-price">$59.99</div>
+          <span class="sidebar-product-cta">View on Amazon →</span>
+        </div>
+      </a>
+      
+      <!-- Product 3 -->
+      <a href="https://amzn.to/example3" target="_blank" rel="nofollow sponsored noopener" class="sidebar-product">
+        <img src="https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=200&q=80" alt="Abstract canvas wall art set for modern home decoration" class="sidebar-product-image" loading="lazy">
+        <div class="sidebar-product-info">
+          <h4>Canvas Wall Art (3pc)</h4>
+          <div class="sidebar-product-rating">
+            <span class="sidebar-stars" aria-label="5 star rating">★★★★★</span>
+            <span class="sidebar-reviews">(3,192)</span>
+          </div>
+          <div class="sidebar-product-price">$79.99</div>
+          <span class="sidebar-product-cta">View on Amazon →</span>
+        </div>
+      </a>
+      
+      <!-- Product 4 -->
+      <a href="https://amzn.to/example4" target="_blank" rel="nofollow sponsored noopener" class="sidebar-product">
+        <img src="https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?w=200&q=80" alt="Minimalist desk organizer for home office setup" class="sidebar-product-image" loading="lazy">
+        <div class="sidebar-product-info">
+          <h4>Desk Organizer Set</h4>
+          <div class="sidebar-product-rating">
+            <span class="sidebar-stars" aria-label="4.5 star rating">★★★★½</span>
+            <span class="sidebar-reviews">(987)</span>
+          </div>
+          <div class="sidebar-product-price">$39.99</div>
+          <span class="sidebar-product-cta">View on Amazon →</span>
+        </div>
+      </a>
+      
+    </aside>
+    
   </div>
 
   <!-- NEWSLETTER EMBEDDED -->
   <section class="newsletter">
     <div class="newsletter-content">
-      <iframe width="540" height="550" src="https://43949154.sibforms.com/serve/MUIFAPyQ9_bfSXkPWBO8zw0Q8-K6p-lh52NEPxUZW_KW6Bxr7jNKf0aSLx8H6MkxHztBHikhDrVG-vaj_YSAWy1s5zR5j1tWjnVfjysGhT_YteJU9De4l5EMFWBrXjCI1OaRRLMUy3jkmzn-AYuBCQPT_hadcWRpGmlfHEOPG5WjWTGWGGAczSj98E6CwfwSTzliF2Zk30_4IryF" frameborder="0" scrolling="no" allowfullscreen style="display: block;margin-left: auto;margin-right: auto;max-width: 100%;"></iframe>
+      <iframe width="540" height="550" src="https://43949154.sibforms.com/serve/MUIFAPyQ9_bfSXkPWBO8zw0Q8-K6p-lh52NEPxUZW_KW6Bxr7jNKf0aSLx8H6MkxHztBHikhDrVG-vaj_YSAWy1s5zR5j1tWjnVfjysGhT_YteJU9De4l5EMFWBrXjCI1OaRRLMUy3jkmzn-AYuBCQPT_hadcWRpGmlfHEOPG5WjWTGWGGAczSj98E6CwfwSTzliF2Zk30_4IryF" frameborder="0" scrolling="no" allowfullscreen style="display: block;margin-left: auto;margin-right: auto;max-width: 100%;" title="Newsletter signup form"></iframe>
     </div>
   </section>
 
 </div>
 
 <!-- EXIT INTENT POPUP -->
-<div class="exit-popup-overlay" id="exitPopup">
+<div class="exit-popup-overlay" id="exitPopup" role="dialog" aria-modal="true" aria-labelledby="popup-title">
   <div class="exit-popup">
-    <div class="exit-popup-close" id="closePopup">×</div>
+    <button class="exit-popup-close" id="closePopup" aria-label="Close popup">×</button>
     <div class="exit-popup-header">
-      <h2>Wait! Don't Miss Out! 🏠✨</h2>
+      <h2 id="popup-title">Wait! Don't Miss Out! 🏠✨</h2>
       <p>Get exclusive home decor tips & inspiration</p>
     </div>
     <div class="exit-popup-content">
-      <iframe width="100%" height="550" src="https://43949154.sibforms.com/serve/MUIFAPyQ9_bfSXkPWBO8zw0Q8-K6p-lh52NEPxUZW_KW6Bxr7jNKf0aSLx8H6MkxHztBHikhDrVG-vaj_YSAWy1s5zR5j1tWjnVfjysGhT_YteJU9De4l5EMFWBrXjCI1OaRRLMUy3jkmzn-AYuBCQPT_hadcWRpGmlfHEOPG5WjWTGWGGAczSj98E6CwfwSTzliF2Zk30_4IryF" frameborder="0" scrolling="no" allowfullscreen></iframe>
+      <iframe width="100%" height="550" src="https://43949154.sibforms.com/serve/MUIFAPyQ9_bfSXkPWBO8zw0Q8-K6p-lh52NEPxUZW_KW6Bxr7jNKf0aSLx8H6MkxHztBHikhDrVG-vaj_YSAWy1s5zR5j1tWjnVfjysGhT_YteJU9De4l5EMFWBrXjCI1OaRRLMUy3jkmzn-AYuBCQPT_hadcWRpGmlfHEOPG5WjWTGWGGAczSj98E6CwfwSTzliF2Zk30_4IryF" frameborder="0" scrolling="no" allowfullscreen title="Newsletter signup form"></iframe>
     </div>
   </div>
 </div>
@@ -902,37 +1208,40 @@ img {
     <div class="footer-section">
       <h3>Quick Links</h3>
       <div class="footer-links">
-        <a href="#home">Home</a>
-        <a href="#blog">Blog</a>
-        <a href="#about">About Us</a>
-        <a href="#contact">Contact</a>
+        <a href="/">Home</a>
+        <a href="/blog.html">Blog</a>
+        <a href="/about">About Us</a>
+        <a href="/contact">Contact</a>
       </div>
     </div>
     <div class="footer-section">
       <h3>Categories</h3>
       <div class="footer-links">
-        <a href="#living-room">Living Room</a>
-        <a href="#bedroom">Bedroom</a>
-        <a href="#kitchen">Kitchen</a>
-        <a href="#diy">DIY Projects</a>
+        <a href="/category/living-room">Living Room</a>
+        <a href="/category/bedroom">Bedroom</a>
+        <a href="/category/kitchen">Kitchen</a>
+        <a href="/category/diy">DIY Projects</a>
       </div>
     </div>
     <div class="footer-section">
-      <h3>Connect</h3>
+      <h3>Legal</h3>
       <div class="footer-links">
-        <a href="#instagram">Instagram</a>
-        <a href="#pinterest">Pinterest</a>
-        <a href="#facebook">Facebook</a>
-        <a href="#youtube">YouTube</a>
+        <a href="/privacy-policy" rel="nofollow">Privacy Policy</a>
+        <a href="/terms" rel="nofollow">Terms of Service</a>
+        <a href="/affiliate-disclosure" rel="nofollow">Affiliate Disclosure</a>
+        <a href="/contact">Contact Us</a>
       </div>
     </div>
   </div>
+  
+  <div class="footer-disclosure">
+    <p><strong>Affiliate Disclaimer:</strong> Wow Glam Decor is a participant in the Amazon Services LLC Associates Program and other affiliate advertising programs. We earn from qualifying purchases through affiliate links at no additional cost to you. We only recommend products we personally use or thoroughly research. Prices and availability are subject to change.</p>
+  </div>
+  
   <div class="footer-bottom">
     <p>&copy; 2026 Wow Glam Decor. All rights reserved.</p>
   </div>
 </footer>
-
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
 <script>
 const POSTS_PER_PAGE = 9;
@@ -940,7 +1249,7 @@ let allPosts = [];
 let visibleCount = POSTS_PER_PAGE;
 let activeCategory = "All";
 
-// Sample data
+// Sample data with SEO-optimized descriptions
 const samplePosts = [
   {
     slug: "modern-minimalist-living-room",
@@ -1019,16 +1328,20 @@ function renderFilters() {
   const categories = ["All", ...new Set(allPosts.map(p => p.category).filter(Boolean))];
   const container = document.getElementById('filters');
   container.innerHTML = categories.map(cat =>
-    `<div class="filter ${cat === 'All' ? 'active' : ''}" onclick="filterCategory('${cat}')">
+    `<button class="filter ${cat === 'All' ? 'active' : ''}" onclick="filterCategory('${cat}')" role="tab" aria-selected="${cat === 'All' ? 'true' : 'false'}">
       <span>${cat}</span>
-    </div>`
+    </button>`
   ).join('');
 }
 
 function filterCategory(cat) {
   activeCategory = cat;
-  document.querySelectorAll('.filter').forEach(f => f.classList.remove('active'));
+  document.querySelectorAll('.filter').forEach(f => {
+    f.classList.remove('active');
+    f.setAttribute('aria-selected', 'false');
+  });
   event.target.closest('.filter').classList.add('active');
+  event.target.closest('.filter').setAttribute('aria-selected', 'true');
   visibleCount = POSTS_PER_PAGE;
   renderPosts();
 }
@@ -1040,33 +1353,42 @@ function renderPosts() {
     : allPosts.filter(p => p.category === activeCategory);
 
   container.innerHTML = filtered.slice(0, visibleCount).map(post => `
-    <a class="card" href="/post.html?post=${post.slug}">
-      <div class="card-image-wrapper">
-        <img src="${post.image || 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=800&q=80'}" 
-             alt="${post.title}" 
-             class="card-image">
-        <div class="card-category-badge">${post.category || 'Decor'}</div>
-      </div>
-      <div class="card-content">
-        <h3>${post.title}</h3>
-        <p>${post.description || ''}</p>
-        <div class="card-meta">
-          <span class="meta-item">${post.author || 'Editorial Team'}</span>
-          <span class="meta-dot"></span>
-          <span class="meta-item">${post.date}</span>
-          <span class="meta-dot"></span>
-          <span class="meta-item">${post.readTime || '5 min read'}</span>
+    <article class="card" itemscope itemtype="https://schema.org/BlogPosting">
+      <a href="/post.html?post=${post.slug}" itemprop="url">
+        <div class="card-image-wrapper">
+          <img src="${post.image || 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=800&q=80'}" 
+               alt="${post.title}" 
+               class="card-image"
+               itemprop="image"
+               loading="lazy">
+          <div class="card-category-badge">${post.category || 'Decor'}</div>
         </div>
-        <div class="card-footer">
-          <div class="tags">
-            ${(post.tags || []).slice(0, 2).map(t => `<span class="tag">${t}</span>`).join('')}
+        <div class="card-content">
+          <h3 itemprop="headline">${post.title}</h3>
+          <p itemprop="description">${post.description || ''}</p>
+          <div class="card-meta">
+            <span class="meta-item" itemprop="author" itemscope itemtype="https://schema.org/Person">
+              <span itemprop="name">${post.author || 'Editorial Team'}</span>
+            </span>
+            <span class="meta-dot"></span>
+            <span class="meta-item">
+              <time itemprop="datePublished" datetime="${post.date}">${post.date}</time>
+            </span>
+            <span class="meta-dot"></span>
+            <span class="meta-item">${post.readTime || '5 min read'}</span>
           </div>
-          <div class="read-more">
-            Read More →
+          <div class="card-footer">
+            <div class="tags">
+              ${(post.tags || []).slice(0, 2).map(t => `<span class="tag" itemprop="keywords">${t}</span>`).join('')}
+            </div>
+            <div class="read-more">
+              Read More →
+            </div>
           </div>
         </div>
-      </div>
-    </a>
+      </a>
+      <meta itemprop="mainEntityOfPage" content="https://wowglamdecor.com/post.html?post=${post.slug}">
+    </article>
   `).join('');
   
   const loadMoreBtn = document.getElementById('loadMore');
@@ -1083,45 +1405,57 @@ document.getElementById('loadMore').onclick = () => {
   renderPosts();
 };
 
-// Search
+// Search with debouncing for performance
+let searchTimeout;
 document.getElementById('searchInput').addEventListener('input', (e) => {
-  const searchTerm = e.target.value.toLowerCase();
-  const filtered = allPosts.filter(post => 
-    post.title.toLowerCase().includes(searchTerm) ||
-    (post.description && post.description.toLowerCase().includes(searchTerm)) ||
-    (post.tags && post.tags.some(tag => tag.toLowerCase().includes(searchTerm)))
-  );
-  
-  const container = document.getElementById('posts');
-  container.innerHTML = filtered.slice(0, visibleCount).map(post => `
-    <a class="card" href="/post.html?post=${post.slug}">
-      <div class="card-image-wrapper">
-        <img src="${post.image || 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=800&q=80'}" 
-             alt="${post.title}" 
-             class="card-image">
-        <div class="card-category-badge">${post.category || 'Decor'}</div>
-      </div>
-      <div class="card-content">
-        <h3>${post.title}</h3>
-        <p>${post.description || ''}</p>
-        <div class="card-meta">
-          <span class="meta-item">${post.author || 'Editorial Team'}</span>
-          <span class="meta-dot"></span>
-          <span class="meta-item">${post.date}</span>
-          <span class="meta-dot"></span>
-          <span class="meta-item">${post.readTime || '5 min read'}</span>
-        </div>
-        <div class="card-footer">
-          <div class="tags">
-            ${(post.tags || []).slice(0, 2).map(t => `<span class="tag">${t}</span>`).join('')}
+  clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(() => {
+    const searchTerm = e.target.value.toLowerCase();
+    const filtered = allPosts.filter(post => 
+      post.title.toLowerCase().includes(searchTerm) ||
+      (post.description && post.description.toLowerCase().includes(searchTerm)) ||
+      (post.tags && post.tags.some(tag => tag.toLowerCase().includes(searchTerm)))
+    );
+    
+    const container = document.getElementById('posts');
+    container.innerHTML = filtered.slice(0, visibleCount).map(post => `
+      <article class="card" itemscope itemtype="https://schema.org/BlogPosting">
+        <a href="/post.html?post=${post.slug}" itemprop="url">
+          <div class="card-image-wrapper">
+            <img src="${post.image || 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=800&q=80'}" 
+                 alt="${post.title}" 
+                 class="card-image"
+                 itemprop="image"
+                 loading="lazy">
+            <div class="card-category-badge">${post.category || 'Decor'}</div>
           </div>
-          <div class="read-more">
-            Read More →
+          <div class="card-content">
+            <h3 itemprop="headline">${post.title}</h3>
+            <p itemprop="description">${post.description || ''}</p>
+            <div class="card-meta">
+              <span class="meta-item" itemprop="author" itemscope itemtype="https://schema.org/Person">
+                <span itemprop="name">${post.author || 'Editorial Team'}</span>
+              </span>
+              <span class="meta-dot"></span>
+              <span class="meta-item">
+                <time itemprop="datePublished" datetime="${post.date}">${post.date}</time>
+              </span>
+              <span class="meta-dot"></span>
+              <span class="meta-item">${post.readTime || '5 min read'}</span>
+            </div>
+            <div class="card-footer">
+              <div class="tags">
+                ${(post.tags || []).slice(0, 2).map(t => `<span class="tag" itemprop="keywords">${t}</span>`).join('')}
+              </div>
+              <div class="read-more">
+                Read More →
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-    </a>
-  `).join('');
+        </a>
+      </article>
+    `).join('');
+  }, 300);
 });
 
 // View toggle - FIXED
@@ -1210,7 +1544,29 @@ document.addEventListener('scroll', resetInactivityTimer);
 document.addEventListener('keypress', resetInactivityTimer);
 
 resetInactivityTimer();
+
+// Track affiliate clicks for analytics
+document.querySelectorAll('a[rel*="sponsored"]').forEach(link => {
+  link.addEventListener('click', function() {
+    // Google Analytics 4 event tracking (uncomment when GA4 is set up)
+    // gtag('event', 'affiliate_click', {
+    //   'link_url': this.href,
+    //   'product_name': this.querySelector('h4')?.textContent || 'Unknown',
+    //   'location': 'sidebar'
+    // });
+    console.log('Affiliate click:', this.href);
+  });
+});
 </script>
+
+<!-- Google Analytics 4 (Replace G-XXXXXXXXXX with your ID) -->
+<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX');
+</script> -->
 
 </body>
 </html>
