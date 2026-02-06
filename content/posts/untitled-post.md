@@ -1,7 +1,7 @@
 ---
 title: "Untitled Post"
 slug: "untitled-post"
-date: "2026-02-06T07:10:11.533Z"
+date: "2026-02-06T07:14:16.428Z"
 category: "general"
 tags:
   - "interior design"
