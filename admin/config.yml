@@ -1,8 +1,6 @@
 backend:
-  name: github
-  repo: aherisystems-cloud/wgd-blog
+  name: git-gateway
   branch: main
-  client_id: Ov23litbfWQD8obeUprf
 
 media_folder: "content/images"
 public_folder: "/content/images"
