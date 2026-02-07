@@ -1172,7 +1172,7 @@ async function generateAIContent() {
   }
   
   // FIXED: Check for valid API key
-  if (!GROQ_API_KEY || GROQ_API_KEY.startsWith('YOUR_') || GROQ_API_KEY.length < 50) {
+  if (!GROQ_API_KEY || GROQ_API_KEY === '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') {
     showMessage('❌ Groq API key not configured. Please update the API key in the HTML file.', 'error');
     return;
   }
@@ -1260,7 +1260,7 @@ async function aiImprove() {
   }
   
   // FIXED: Check for valid API key
-  if (!GROQ_API_KEY || GROQ_API_KEY.startsWith('YOUR_') || GROQ_API_KEY.length < 50) {
+  if (!GROQ_API_KEY || GROQ_API_KEY === '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') {
     showMessage('❌ Groq API key not configured. Please update the API key in the HTML file.', 'error');
     return;
   }
@@ -1338,7 +1338,7 @@ async function aiSEO() {
   }
   
   // If no API key, use fallback
-  if (!GROQ_API_KEY || GROQ_API_KEY.startsWith('YOUR_') || GROQ_API_KEY.length < 50) {
+  if (!GROQ_API_KEY || GROQ_API_KEY === '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') {
     autoGenerateSEO();
     return;
   }
