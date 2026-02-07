@@ -67,13 +67,4 @@ STEP 4: Test
 
 */
 
-// ===========================================
-// EXAMPLE (DO NOT USE THESE VALUES!)
-// ===========================================
-/*
-window.ENV = {
-  GROQ_API_KEY: 'gsk_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnop',
-  GROQ_MODEL: 'llama-3.3-70b-versatile',
-  N8N_WEBHOOK_URL: 'https://myinstance.app.n8n.cloud/webhook/publish-blog'
-};
-*/
+
