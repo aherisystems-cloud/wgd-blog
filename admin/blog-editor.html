@@ -6,7 +6,19 @@
 <title>🚀 AI-Powered Blog Editor | Wow Glam Decor</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <!-- Load configuration -->
-<script src="config.js"></script>
+<script>
+// Configuration - REPLACE THE PLACEHOLDERS WITH YOUR ACTUAL KEYS
+window.ENV = {
+  GROQ_API_KEY: 'YOUR_GROQ_API_KEY_HERE',  // Get from https://console.groq.com/keys
+  GROQ_MODEL: 'llama-3.3-70b-versatile',    // Best quality model
+  N8N_WEBHOOK_URL: 'http://localhost:5678/webhook/publish-blog'  // Get from your n8n workflow
+};
+
+// Debug logging (remove after testing)
+console.log('✅ Config loaded');
+console.log('Key present:', !!window.ENV.GROQ_API_KEY);
+console.log('Key length:', window.ENV.GROQ_API_KEY ? window.ENV.GROQ_API_KEY.length : 0);
+</script>
 
 <style>
 * {
@@ -926,7 +938,7 @@ async function generateAIContent() {
     return;
   }
   
-  if (!GROQ_API_KEY || GROQ_API_KEY === 'YOUR_GROQ_API_KEY_HERE') {
+  if (!GROQ_API_KEY || GROQ_API_KEY === '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') {
     showMessage('❌ Groq API key not configured. Please update config.js with your API key.', 'error');
     return;
   }
@@ -1012,7 +1024,7 @@ async function aiImprove() {
     return;
   }
   
-  if (!GROQ_API_KEY || GROQ_API_KEY === 'YOUR_GROQ_API_KEY_HERE') {
+  if (!GROQ_API_KEY || GROQ_API_KEY === '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') {
     showMessage('❌ Groq API key not configured. Please update config.js', 'error');
     return;
   }
@@ -1089,7 +1101,7 @@ async function aiSEO() {
   }
   
   // If no API key, use fallback
-  if (!GROQ_API_KEY || GROQ_API_KEY === 'YOUR_GROQ_API_KEY_HERE') {
+  if (!GROQ_API_KEY || GROQ_API_KEY === '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') {
     autoGenerateSEO();
     return;
   }
