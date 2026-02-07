@@ -861,10 +861,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Helper function to call Groq via n8n webhook
 async function callGroqViaWebhook(prompt) {
-  if (!N8N_GROQ_WEBHOOK) {
-    throw new Error('n8n Groq webhook URL not configured');
-  }
-  
   const response = await fetch(N8N_GROQ_WEBHOOK, {
     method: 'POST',
     headers: {
@@ -916,7 +912,7 @@ function setupAffiliateLinks() {
     </div>
   `).join('');
   
-  grid.innerHTML = html || '<p style="color: #6B7280;">No affiliate links configured. Add them in the window.AFFILIATE_LINKS object.</p>';
+  grid.innerHTML = html || '<p style="color: #6B7280;">No affiliate links. Add them in the window.AFFILIATE_LINKS object.</p>';
 }
 
 function updateSelectedAffiliates() {
