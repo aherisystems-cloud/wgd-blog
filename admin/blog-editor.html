@@ -729,7 +729,7 @@ Wrap up with a strong conclusion..."
 </div>
 
 <script data-cfasync="false">
-// Configuration loaded from config.js
+// Configuration loaded from window.ENV
 const GROQ_API_KEY = window.ENV?.GROQ_API_KEY || '';
 const N8N_WEBHOOK_URL = window.ENV?.N8N_WEBHOOK_URL || '';
 const GROQ_MODEL = window.ENV?.GROQ_MODEL || 'llama-3.3-70b-versatile';
@@ -938,8 +938,8 @@ async function generateAIContent() {
     return;
   }
   
-  if (!GROQ_API_KEY || GROQ_API_KEY === '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') {
-    showMessage('❌ Groq API key not configured. Please update config.js with your API key.', 'error');
+  if (!GROQ_API_KEY || GROQ_API_KEY === 'YOUR_GROQ_API_KEY_HERE' || GROQ_API_KEY.length < 20) {
+    showMessage('❌ Groq API key not configured. Please update the API key in the HTML file.', 'error');
     return;
   }
   
@@ -1024,8 +1024,8 @@ async function aiImprove() {
     return;
   }
   
-  if (!GROQ_API_KEY || GROQ_API_KEY === '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') {
-    showMessage('❌ Groq API key not configured. Please update config.js', 'error');
+  if (!GROQ_API_KEY || GROQ_API_KEY === 'YOUR_GROQ_API_KEY_HERE' || GROQ_API_KEY.length < 20) {
+    showMessage('❌ Groq API key not configured. Please update the API key in the HTML file.', 'error');
     return;
   }
   
@@ -1101,7 +1101,7 @@ async function aiSEO() {
   }
   
   // If no API key, use fallback
-  if (!GROQ_API_KEY || GROQ_API_KEY === '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') {
+  if (!GROQ_API_KEY || GROQ_API_KEY === 'YOUR_GROQ_API_KEY_HERE' || GROQ_API_KEY.length < 20) {
     autoGenerateSEO();
     return;
   }
