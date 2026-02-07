@@ -1,0 +1,39 @@
+# API Keys and Sensitive Configuration
+admin/config.js
+
+# Node modules
+node_modules/
+.npm/
+.cache/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build outputs
+dist/
+build/
+.temp/
+
+# Backup files
+*.bak
+*.backup
+*-old.*
