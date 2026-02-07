@@ -9,15 +9,42 @@
 <script>
 // Configuration - REPLACE THE PLACEHOLDERS WITH YOUR ACTUAL KEYS
 window.ENV = {
-  GROQ_API_KEY: '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',  // Get from https://console.groq.com/keys
+  GROQ_API_KEY: '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',  // Your actual API key
   GROQ_MODEL: 'llama-3.3-70b-versatile',    // Best quality model
   N8N_WEBHOOK_URL: 'http://localhost:5678/webhook/publish-blog'  // Get from your n8n workflow
 };
 
-// Debug logging (remove after testing)
+// Affiliate Links Database
+window.AFFILIATE_LINKS = {
+  // Furniture stores
+  'wayfair': 'https://www.wayfair.com/?refid=YOUR_AFFILIATE_ID',
+  'ikea': 'https://www.ikea.com/us/en/?affiliate=YOUR_AFFILIATE_ID',
+  'west elm': 'https://www.westelm.com/?cm_sp=YOUR_AFFILIATE_ID',
+  'cb2': 'https://www.cb2.com/?affiliate=YOUR_AFFILIATE_ID',
+  'article': 'https://www.article.com/?ref=YOUR_AFFILIATE_ID',
+  
+  // Amazon (by category)
+  'amazon furniture': 'https://amzn.to/YOUR_FURNITURE_LINK',
+  'amazon decor': 'https://amzn.to/YOUR_DECOR_LINK',
+  'amazon lighting': 'https://amzn.to/YOUR_LIGHTING_LINK',
+  'amazon rugs': 'https://amzn.to/YOUR_RUGS_LINK',
+  'amazon storage': 'https://amzn.to/YOUR_STORAGE_LINK',
+  
+  // Decor & accessories
+  'target home': 'https://www.target.com/c/home/-/N-5xtnr?ref=YOUR_ID',
+  'pottery barn': 'https://www.potterybarn.com/?cm_sp=YOUR_ID',
+  'crate and barrel': 'https://www.crateandbarrel.com/?affiliate=YOUR_ID',
+  'anthropologie home': 'https://www.anthropologie.com/home?ref=YOUR_ID',
+  'world market': 'https://www.worldmarket.com/?affiliate=YOUR_ID',
+  
+  // Add your own affiliate links here
+};
+
+// Debug logging
 console.log('✅ Config loaded');
 console.log('Key present:', !!window.ENV.GROQ_API_KEY);
 console.log('Key length:', window.ENV.GROQ_API_KEY ? window.ENV.GROQ_API_KEY.length : 0);
+console.log('Affiliate links loaded:', Object.keys(window.AFFILIATE_LINKS).length);
 </script>
 
 <style>
@@ -470,6 +497,60 @@ body {
   min-width: 120px;
 }
 
+.affiliate-section {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 165, 0, 0.1));
+  border: 2px solid #FFA500;
+  border-radius: 16px;
+  padding: 24px;
+  margin-top: 24px;
+}
+
+.affiliate-section h3 {
+  color: #1A1D2E;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.affiliate-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.affiliate-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #E5E7EB;
+}
+
+.affiliate-item label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  flex: 1;
+}
+
+.affiliate-item input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.affiliate-count {
+  background: #FFA500;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
 @media (max-width: 1024px) {
   .form-grid {
     grid-template-columns: 1fr;
@@ -489,7 +570,8 @@ body {
   <div class="tabs">
     <button class="tab active" onclick="switchTab(0)">📝 Content</button>
     <button class="tab" onclick="switchTab(1)">🎯 SEO & Meta</button>
-    <button class="tab" onclick="switchTab(2)">👁️ Preview</button>
+    <button class="tab" onclick="switchTab(2)">💰 Affiliate Links</button>
+    <button class="tab" onclick="switchTab(3)">👁️ Preview</button>
   </div>
   
   <form id="blogForm">
@@ -619,6 +701,10 @@ Wrap up with a strong conclusion..."
                 <span>Headings</span>
                 <span id="headingScore">❌</span>
               </div>
+              <div class="seo-item">
+                <span>Affiliate Links</span>
+                <span id="affiliateScore">0</span>
+              </div>
             </div>
           </div>
           
@@ -700,7 +786,32 @@ Wrap up with a strong conclusion..."
       </div>
     </div>
     
-    <!-- TAB 3: PREVIEW -->
+    <!-- TAB 3: AFFILIATE LINKS -->
+    <div class="tab-content">
+      <div class="affiliate-section">
+        <h3>💰 Affiliate Link Manager</h3>
+        <p style="margin-bottom: 20px; color: #6B7280;">
+          Select which stores to automatically link in your content. Links will be intelligently inserted when relevant products are mentioned.
+        </p>
+        
+        <div class="affiliate-grid" id="affiliateLinksGrid">
+          <!-- Will be populated by JavaScript -->
+        </div>
+        
+        <button type="button" class="btn btn-ai" onclick="insertAffiliateLinks()" style="margin-top: 20px; width: 100%;">
+          🔗 Auto-Insert Affiliate Links
+        </button>
+      </div>
+      
+      <div class="preview-panel" style="margin-top: 24px;">
+        <h3>📊 Affiliate Link Stats</h3>
+        <div id="affiliateStats" style="padding: 16px;">
+          <p>No affiliate links inserted yet. Use the button above to automatically add them to your content.</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- TAB 4: PREVIEW -->
     <div class="tab-content">
       <div class="preview-panel" style="max-height: none;">
         <h3>📄 Live Preview</h3>
@@ -733,16 +844,20 @@ Wrap up with a strong conclusion..."
 const GROQ_API_KEY = window.ENV?.GROQ_API_KEY || '';
 const N8N_WEBHOOK_URL = window.ENV?.N8N_WEBHOOK_URL || '';
 const GROQ_MODEL = window.ENV?.GROQ_MODEL || 'llama-3.3-70b-versatile';
+const AFFILIATE_LINKS = window.AFFILIATE_LINKS || {};
 
 // State
 let tags = [];
 let currentTab = 0;
+let selectedAffiliateLinks = [];
+let insertedAffiliateLinks = [];
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
   setupTagInput();
   setupCounters();
   setupFormSubmit();
+  setupAffiliateLinks();
   updatePreview();
 });
 
@@ -761,9 +876,121 @@ function switchTab(index) {
   
   currentTab = index;
   
-  if (index === 2) {
+  if (index === 3) { // Preview tab
     updatePreview();
   }
+}
+
+// Affiliate Links Setup
+function setupAffiliateLinks() {
+  const grid = document.getElementById('affiliateLinksGrid');
+  
+  const html = Object.keys(AFFILIATE_LINKS).map((key, index) => `
+    <div class="affiliate-item">
+      <label>
+        <input type="checkbox" id="affiliate_${index}" value="${key}" onchange="updateSelectedAffiliates()">
+        <span style="text-transform: capitalize;">${key.replace(/-/g, ' ')}</span>
+      </label>
+      <span class="affiliate-count" style="display: none;" id="count_${index}">0</span>
+    </div>
+  `).join('');
+  
+  grid.innerHTML = html || '<p style="color: #6B7280;">No affiliate links configured. Add them in the window.AFFILIATE_LINKS object.</p>';
+}
+
+function updateSelectedAffiliates() {
+  selectedAffiliateLinks = [];
+  Object.keys(AFFILIATE_LINKS).forEach((key, index) => {
+    const checkbox = document.getElementById(`affiliate_${index}`);
+    if (checkbox && checkbox.checked) {
+      selectedAffiliateLinks.push(key);
+    }
+  });
+}
+
+function insertAffiliateLinks() {
+  const content = document.getElementById('content').value;
+  
+  if (!content) {
+    showMessage('Please write some content first', 'error');
+    return;
+  }
+  
+  if (selectedAffiliateLinks.length === 0) {
+    showMessage('Please select at least one affiliate link to insert', 'error');
+    return;
+  }
+  
+  let updatedContent = content;
+  insertedAffiliateLinks = [];
+  
+  // Smart link insertion logic
+  selectedAffiliateLinks.forEach(key => {
+    const linkUrl = AFFILIATE_LINKS[key];
+    const storeName = key.replace(/-/g, ' ');
+    
+    // Create regex to find mentions (case insensitive)
+    const regex = new RegExp(`\\b(${storeName})\\b(?!\\])`, 'gi');
+    
+    // Count matches
+    const matches = content.match(regex);
+    if (matches) {
+      // Replace first mention in each section with markdown link
+      let replaced = false;
+      updatedContent = updatedContent.replace(regex, (match) => {
+        if (!replaced) {
+          replaced = true;
+          insertedAffiliateLinks.push({key, count: matches.length});
+          return `[${match}](${linkUrl})`;
+        }
+        return match;
+      });
+    }
+  });
+  
+  // Update content
+  document.getElementById('content').value = updatedContent;
+  
+  // Update stats
+  updateAffiliateStats();
+  updateQualityScore();
+  
+  showMessage(`✅ Inserted ${insertedAffiliateLinks.length} affiliate links!`, 'success');
+}
+
+function updateAffiliateStats() {
+  const statsDiv = document.getElementById('affiliateStats');
+  
+  if (insertedAffiliateLinks.length === 0) {
+    statsDiv.innerHTML = '<p>No affiliate links inserted yet.</p>';
+    return;
+  }
+  
+  const html = `
+    <div style="display: grid; gap: 12px;">
+      ${insertedAffiliateLinks.map(link => `
+        <div style="display: flex; justify-content: space-between; padding: 8px; background: #F9FAFB; border-radius: 8px;">
+          <span style="text-transform: capitalize;">${link.key.replace(/-/g, ' ')}</span>
+          <span style="font-weight: 700; color: #10B981;">${link.count} mention${link.count > 1 ? 's' : ''}</span>
+        </div>
+      `).join('')}
+    </div>
+    <div style="margin-top: 16px; padding: 12px; background: #D1FAE5; border-radius: 8px; text-align: center;">
+      <strong>Total: ${insertedAffiliateLinks.reduce((sum, link) => sum + link.count, 0)} affiliate links inserted</strong>
+    </div>
+  `;
+  
+  statsDiv.innerHTML = html;
+  
+  // Update counts in grid
+  insertedAffiliateLinks.forEach(link => {
+    const index = Object.keys(AFFILIATE_LINKS).indexOf(link.key);
+    const countEl = document.getElementById(`count_${index}`);
+    if (countEl) {
+      countEl.textContent = link.count;
+      countEl.style.display = 'block';
+    }
+  });
 }
 
 // Tag Management
@@ -883,6 +1110,7 @@ function updateQualityScore() {
   const content = document.getElementById('content').value;
   const words = content.trim().split(/\s+/).filter(w => w.length > 0).length;
   const headings = (content.match(/^##\s/gm) || []).length;
+  const affiliateLinks = (content.match(/\[.*?\]\(http.*?\)/g) || []).length;
   
   let score = 0;
   
@@ -895,14 +1123,18 @@ function updateQualityScore() {
   else if (words >= 1000) score += 25;
   else if (words >= 500) score += 15;
   
-  // Headings (25 points)
-  if (headings >= 5) score += 25;
-  else if (headings >= 3) score += 15;
+  // Headings (20 points)
+  if (headings >= 5) score += 20;
+  else if (headings >= 3) score += 12;
   else if (headings >= 1) score += 5;
   
-  // Tags (15 points)
-  if (tags.length >= 3) score += 15;
+  // Tags (10 points)
+  if (tags.length >= 3) score += 10;
   else if (tags.length >= 1) score += 5;
+  
+  // Affiliate links (10 points)
+  if (affiliateLinks >= 3) score += 10;
+  else if (affiliateLinks >= 1) score += 5;
   
   // Update UI
   const scoreCircle = document.getElementById('scoreCircle');
@@ -919,6 +1151,7 @@ function updateQualityScore() {
     words >= 1000 ? '✅' : words >= 500 ? '⚠️' : '❌';
   document.getElementById('headingScore').textContent = 
     headings >= 3 ? '✅' : headings >= 1 ? '⚠️' : '❌';
+  document.getElementById('affiliateScore').textContent = affiliateLinks;
 }
 
 // AI Functions
@@ -938,7 +1171,8 @@ async function generateAIContent() {
     return;
   }
   
-  if (!GROQ_API_KEY || GROQ_API_KEY === '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' || GROQ_API_KEY.length < 20) {
+  // FIXED: Check for valid API key
+  if (!GROQ_API_KEY || GROQ_API_KEY.startsWith('YOUR_') || GROQ_API_KEY.length < 50) {
     showMessage('❌ Groq API key not configured. Please update the API key in the HTML file.', 'error');
     return;
   }
@@ -977,6 +1211,7 @@ Requirements:
 - Include a strong introduction and conclusion
 - Use bullet points where appropriate
 - Structure: Intro → 5-7 Main Sections → Conclusion
+- Naturally mention relevant stores/brands (Wayfair, IKEA, West Elm, Target, Amazon, etc.) where appropriate for affiliate linking
 
 Write ONLY the blog post content in markdown format. Do not include any preamble or explanation.`
         }],
@@ -1006,7 +1241,7 @@ Write ONLY the blog post content in markdown format. Do not include any preamble
     updateSEODescCounter();
     updateQualityScore();
     
-    showMessage('✅ Content generated successfully! Review and edit as needed.', 'success');
+    showMessage('✅ Content generated successfully! Now add affiliate links in the Affiliate Links tab.', 'success');
   } catch (error) {
     console.error('AI Error:', error);
     showMessage(`❌ AI generation failed: ${error.message}. Please check your API key and try again.`, 'error');
@@ -1024,7 +1259,8 @@ async function aiImprove() {
     return;
   }
   
-  if (!GROQ_API_KEY || GROQ_API_KEY === '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' || GROQ_API_KEY.length < 20) {
+  // FIXED: Check for valid API key
+  if (!GROQ_API_KEY || GROQ_API_KEY.startsWith('YOUR_') || GROQ_API_KEY.length < 50) {
     showMessage('❌ Groq API key not configured. Please update the API key in the HTML file.', 'error');
     return;
   }
@@ -1059,6 +1295,7 @@ Improvements to make:
 - Fix any grammar or style issues
 - Keep the same markdown formatting
 - Maintain the same approximate length
+- Preserve any existing affiliate links (markdown format [text](url))
 
 Return ONLY the improved content, no explanations.`
         }],
@@ -1101,7 +1338,7 @@ async function aiSEO() {
   }
   
   // If no API key, use fallback
-  if (!GROQ_API_KEY || GROQ_API_KEY === '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' || GROQ_API_KEY.length < 20) {
+  if (!GROQ_API_KEY || GROQ_API_KEY.startsWith('YOUR_') || GROQ_API_KEY.length < 50) {
     autoGenerateSEO();
     return;
   }
@@ -1198,10 +1435,11 @@ function updatePreview() {
     return;
   }
   
-  // Simple markdown rendering
+  // Simple markdown rendering with affiliate link support
   const html = content
     .replace(/^## (.*$)/gm, '<h2>$1</h2>')
     .replace(/^### (.*$)/gm, '<h3>$1</h3>')
+    .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" style="color: #667eea; text-decoration: underline;">$1</a>')
     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
     .replace(/\*(.*?)\*/g, '<em>$1</em>')
     .replace(/^\- (.*$)/gm, '<li>$1</li>')
@@ -1241,6 +1479,8 @@ function saveDraft() {
     seoDescription: document.getElementById('seoDescription').value,
     authorName: document.getElementById('authorName').value,
     authorRole: document.getElementById('authorRole').value,
+    selectedAffiliateLinks: selectedAffiliateLinks,
+    insertedAffiliateLinks: insertedAffiliateLinks,
     savedAt: new Date().toISOString()
   };
   
@@ -1262,6 +1502,21 @@ function loadDraft() {
     document.getElementById('seoDescription').value = data.seoDescription || '';
     document.getElementById('authorName').value = data.authorName || 'Wow Glam Decor Editorial Team';
     document.getElementById('authorRole').value = data.authorRole || 'Interior Design Expert';
+    
+    // Restore affiliate link selections
+    if (data.selectedAffiliateLinks) {
+      selectedAffiliateLinks = data.selectedAffiliateLinks;
+      selectedAffiliateLinks.forEach(key => {
+        const index = Object.keys(AFFILIATE_LINKS).indexOf(key);
+        const checkbox = document.getElementById(`affiliate_${index}`);
+        if (checkbox) checkbox.checked = true;
+      });
+    }
+    
+    if (data.insertedAffiliateLinks) {
+      insertedAffiliateLinks = data.insertedAffiliateLinks;
+      updateAffiliateStats();
+    }
     
     updateCounters();
     showMessage('📥 Draft loaded from ' + new Date(data.savedAt).toLocaleString(), 'info');
@@ -1292,6 +1547,10 @@ function setupFormSubmit() {
       seo: {
         title: document.getElementById('seoTitle').value,
         description: document.getElementById('seoDescription').value
+      },
+      affiliateLinks: {
+        inserted: insertedAffiliateLinks,
+        count: insertedAffiliateLinks.reduce((sum, link) => sum + link.count, 0)
       }
     };
     
