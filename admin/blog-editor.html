@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>🚀 AI-Powered Blog Editor | Wow Glam Decor</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Load configuration -->
+<script src="config.js"></script>
 
 <style>
 * {
@@ -715,9 +717,10 @@ Wrap up with a strong conclusion..."
 </div>
 
 <script>
-// Configuration
-const N8N_WEBHOOK_URL = 'YOUR_N8N_WEBHOOK_URL_HERE';
-const ANTHROPIC_API_KEY = 'YOUR_ANTHROPIC_API_KEY'; // Or use n8n endpoint
+// Configuration loaded from config.js
+const GROQ_API_KEY = window.ENV?.GROQ_API_KEY || '';
+const N8N_WEBHOOK_URL = window.ENV?.N8N_WEBHOOK_URL || '';
+const GROQ_MODEL = window.ENV?.GROQ_MODEL || 'llama-3.3-70b-versatile';
 
 // State
 let tags = [];
@@ -907,6 +910,10 @@ function updateQualityScore() {
 }
 
 // AI Functions
+const N8N_WEBHOOK_URL = window.ENV?.N8N_WEBHOOK_URL || '';
+const GROQ_MODEL = window.ENV?.GROQ_MODEL || 'llama-3.3-70b-versatile';
+
+// AI Content Generation with Groq
 async function generateAIContent() {
   const topic = document.getElementById('aiTopic').value.trim();
   const category = document.getElementById('category').value;
@@ -921,24 +928,27 @@ async function generateAIContent() {
     return;
   }
   
+  if (!GROQ_API_KEY || GROQ_API_KEY === 'YOUR_GROQ_API_KEY_HERE') {
+    showMessage('❌ Groq API key not configured. Please update config.js with your API key.', 'error');
+    return;
+  }
+  
   const btn = document.getElementById('aiGenerateBtn');
   const originalHTML = btn.innerHTML;
   btn.innerHTML = '<span class="loading-spinner"></span> Generating...';
   btn.disabled = true;
   
-  showMessage('🤖 AI is generating your content... This may take 30-60 seconds.', 'info');
+  showMessage('🤖 AI is generating your content... This may take 10-20 seconds.', 'info');
   
   try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
+    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': ANTHROPIC_API_KEY,
-        'anthropic-version': '2023-06-01'
+        'Authorization': `Bearer ${GROQ_API_KEY}`
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 4000,
+        model: GROQ_MODEL,
         messages: [{
           role: 'user',
           content: `You are a professional interior design blogger writing for Wow Glam Decor.
@@ -959,12 +969,19 @@ Requirements:
 - Structure: Intro → 5-7 Main Sections → Conclusion
 
 Write ONLY the blog post content in markdown format. Do not include any preamble or explanation.`
-        }]
+        }],
+        temperature: 0.7,
+        max_tokens: 4000
       })
     });
     
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error?.message || `API request failed with status ${response.status}`);
+    }
+    
     const data = await response.json();
-    const content = data.content[0].text;
+    const content = data.choices[0].message.content;
     
     // Set the content
     document.getElementById('content').value = content;
@@ -982,13 +999,14 @@ Write ONLY the blog post content in markdown format. Do not include any preamble
     showMessage('✅ Content generated successfully! Review and edit as needed.', 'success');
   } catch (error) {
     console.error('AI Error:', error);
-    showMessage('❌ AI generation failed. Please try again or write manually.', 'error');
+    showMessage(`❌ AI generation failed: ${error.message}. Please check your API key and try again.`, 'error');
   } finally {
     btn.innerHTML = originalHTML;
     btn.disabled = false;
   }
 }
 
+// AI Improve Content
 async function aiImprove() {
   const content = document.getElementById('content').value;
   if (!content) {
@@ -996,12 +1014,73 @@ async function aiImprove() {
     return;
   }
   
+  if (!GROQ_API_KEY || GROQ_API_KEY === 'YOUR_GROQ_API_KEY_HERE') {
+    showMessage('❌ Groq API key not configured. Please update config.js', 'error');
+    return;
+  }
+  
+  const btn = event.target;
+  const originalHTML = btn.innerHTML;
+  btn.innerHTML = '<span class="loading-spinner"></span> Improving...';
+  btn.disabled = true;
+  
   showMessage('🤖 AI is improving your content...', 'info');
   
-  // Implementation similar to generateAIContent
-  // This would send current content to Claude for improvement
+  try {
+    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${GROQ_API_KEY}`
+      },
+      body: JSON.stringify({
+        model: GROQ_MODEL,
+        messages: [{
+          role: 'user',
+          content: `You are an expert editor for an interior design blog. Improve the following blog post content while maintaining its core message and structure:
+
+${content}
+
+Improvements to make:
+- Enhance readability and flow
+- Add more engaging language
+- Improve transitions between sections
+- Ensure consistent tone (professional yet friendly)
+- Fix any grammar or style issues
+- Keep the same markdown formatting
+- Maintain the same approximate length
+
+Return ONLY the improved content, no explanations.`
+        }],
+        temperature: 0.7,
+        max_tokens: 4000
+      })
+    });
+    
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error?.message || 'API request failed');
+    }
+    
+    const data = await response.json();
+    const improvedContent = data.choices[0].message.content;
+    
+    document.getElementById('content').value = improvedContent;
+    
+    updateWordCount();
+    updateQualityScore();
+    
+    showMessage('✅ Content improved successfully!', 'success');
+  } catch (error) {
+    console.error('AI Error:', error);
+    showMessage(`❌ Content improvement failed: ${error.message}`, 'error');
+  } finally {
+    btn.innerHTML = originalHTML;
+    btn.disabled = false;
+  }
 }
 
+// AI Generate SEO Metadata
 async function aiSEO() {
   const title = document.getElementById('title').value;
   const content = document.getElementById('content').value;
@@ -1011,7 +1090,78 @@ async function aiSEO() {
     return;
   }
   
-  // Auto-generate SEO metadata
+  // If no API key, use fallback
+  if (!GROQ_API_KEY || GROQ_API_KEY === 'YOUR_GROQ_API_KEY_HERE') {
+    autoGenerateSEO();
+    return;
+  }
+  
+  showMessage('🤖 AI is generating SEO metadata...', 'info');
+  
+  try {
+    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${GROQ_API_KEY}`
+      },
+      body: JSON.stringify({
+        model: GROQ_MODEL,
+        messages: [{
+          role: 'user',
+          content: `Create SEO-optimized metadata for this blog post.
+
+Title: ${title}
+
+Content preview:
+${content.substring(0, 500)}...
+
+Generate:
+1. SEO Title (50-60 characters, include main keyword, engaging)
+2. Meta Description (140-155 characters, compelling and keyword-rich)
+
+Format your response as JSON:
+{
+  "seoTitle": "...",
+  "metaDescription": "..."
+}
+
+Return ONLY the JSON, nothing else.`
+        }],
+        temperature: 0.5,
+        max_tokens: 200
+      })
+    });
+    
+    if (!response.ok) {
+      throw new Error('API request failed');
+    }
+    
+    const data = await response.json();
+    const jsonMatch = data.choices[0].message.content.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) throw new Error('Invalid response format');
+    
+    const result = JSON.parse(jsonMatch[0]);
+    
+    document.getElementById('seoTitle').value = result.seoTitle;
+    document.getElementById('seoDescription').value = result.metaDescription;
+    
+    updateSEOTitleCounter();
+    updateSEODescCounter();
+    
+    showMessage('✅ SEO metadata generated!', 'success');
+  } catch (error) {
+    console.error('AI SEO Error:', error);
+    // Fallback to simple generation
+    autoGenerateSEO();
+  }
+}
+
+// Simple auto-generate SEO (fallback without AI)
+function autoGenerateSEO() {
+  const title = document.getElementById('title').value;
+  const content = document.getElementById('content').value;
+  
   const excerpt = content
     .replace(/^#+\s/gm, '')
     .split('\n\n')[0]
@@ -1027,9 +1177,6 @@ async function aiSEO() {
   showMessage('✅ SEO metadata auto-generated!', 'success');
 }
 
-function autoGenerateSEO() {
-  aiSEO();
-}
 
 // Preview
 function updatePreview() {
