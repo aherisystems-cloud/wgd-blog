@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>🚀 AI-Powered Blog Editor | Wow Glam Decor</title>
-<link href="https://fonts.googleapis.com/css2?family=nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <!-- Load configuration -->
 <script src="config.js"></script>
 
@@ -16,7 +16,7 @@
 }
 
 body {
-  font-family: 'nunito', system-ui, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   min-height: 100vh;
   padding: 40px 20px;
@@ -90,7 +90,7 @@ body {
   padding: 20px;
   text-align: center;
   font-weight: 700;
-  cursor: ponunito;
+  cursor: pointer;
   border: none;
   background: transparent;
   transition: all 0.3s;
@@ -152,7 +152,7 @@ body {
   padding: 14px 16px;
   border: 2px solid #E5E7EB;
   border-radius: 12px;
-  font-family: 'nunito', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 0.95rem;
   transition: all 0.2s;
 }
@@ -214,9 +214,9 @@ body {
   border-radius: 12px;
   font-weight: 700;
   font-size: 0.95rem;
-  cursor: ponunito;
+  cursor: pointer;
   transition: all 0.2s;
-  font-family: 'nunito', sans-serif;
+  font-family: 'Inter', sans-serif;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -433,7 +433,7 @@ body {
   background: none;
   border: none;
   color: white;
-  cursor: ponunito;
+  cursor: pointer;
   font-size: 1.1rem;
   padding: 0;
   width: 20px;
@@ -453,7 +453,7 @@ body {
   flex: 1;
   border: none;
   outline: none;
-  font-family: 'nunito', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 0.95rem;
   min-width: 120px;
 }
@@ -626,8 +626,8 @@ Wrap up with a strong conclusion..."
             <input 
               type="text" 
               id="authorRole" 
-              placeholder="e.g., nunitoior Design Expert"
-              value="nunitoior Design Expert"
+              placeholder="e.g., Interior Design Expert"
+              value="Interior Design Expert"
             />
           </div>
         </div>
@@ -716,7 +716,7 @@ Wrap up with a strong conclusion..."
   </form>
 </div>
 
-<script>
+<script data-cfasync="false">
 // Configuration loaded from config.js
 const GROQ_API_KEY = window.ENV?.GROQ_API_KEY || '';
 const N8N_WEBHOOK_URL = window.ENV?.N8N_WEBHOOK_URL || '';
@@ -910,8 +910,6 @@ function updateQualityScore() {
 }
 
 // AI Functions
-const N8N_WEBHOOK_URL = window.ENV?.N8N_WEBHOOK_URL || '';
-const GROQ_MODEL = window.ENV?.GROQ_MODEL || 'llama-3.3-70b-versatile';
 
 // AI Content Generation with Groq
 async function generateAIContent() {
@@ -951,7 +949,7 @@ async function generateAIContent() {
         model: GROQ_MODEL,
         messages: [{
           role: 'user',
-          content: `You are a professional nunitoior design blogger writing for Wow Glam Decor.
+          content: `You are a professional interior design blogger writing for Wow Glam Decor.
 
 Create a comprehensive, engaging blog post about: ${topic}
 
@@ -1037,7 +1035,7 @@ async function aiImprove() {
         model: GROQ_MODEL,
         messages: [{
           role: 'user',
-          content: `You are an expert editor for an nunitoior design blog. Improve the following blog post content while maintaining its core message and structure:
+          content: `You are an expert editor for an interior design blog. Improve the following blog post content while maintaining its core message and structure:
 
 ${content}
 
@@ -1251,7 +1249,7 @@ function loadDraft() {
     document.getElementById('seoTitle').value = data.seoTitle || '';
     document.getElementById('seoDescription').value = data.seoDescription || '';
     document.getElementById('authorName').value = data.authorName || 'Wow Glam Decor Editorial Team';
-    document.getElementById('authorRole').value = data.authorRole || 'nunitoior Design Expert';
+    document.getElementById('authorRole').value = data.authorRole || 'Interior Design Expert';
     
     updateCounters();
     showMessage('📥 Draft loaded from ' + new Date(data.savedAt).toLocaleString(), 'info');
