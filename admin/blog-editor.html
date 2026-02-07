@@ -1,1589 +1,263 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>🚀 AI-Powered Blog Editor | Wow Glam Decor</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<!-- Load configuration -->
-<script>
-// Configuration - REPLACE WITH YOUR n8n WEBHOOK URLs
-window.ENV = {
-  // IMPORTANT: Use the TEST webhook URL from n8n (it includes /webhook-test/ in the path)
-  // You can find this in n8n by clicking on the Webhook node
-  N8N_GROQ_WEBHOOK: 'http://localhost:5678/webhook-test/groq-generate',  // Note: webhook-test for testing
-  N8N_PUBLISH_WEBHOOK: 'http://localhost:5678/webhook/publish-blog'  // Your n8n publish webhook
-};
-
-// Affiliate Links Database
-window.AFFILIATE_LINKS = {
-  // Furniture stores
-  'wayfair': 'https://www.wayfair.com/?refid=YOUR_AFFILIATE_ID',
-  'ikea': 'https://www.ikea.com/us/en/?affiliate=YOUR_AFFILIATE_ID',
-  'west elm': 'https://www.westelm.com/?cm_sp=YOUR_AFFILIATE_ID',
-  'cb2': 'https://www.cb2.com/?affiliate=YOUR_AFFILIATE_ID',
-  'article': 'https://www.article.com/?ref=YOUR_AFFILIATE_ID',
-  
-  // Amazon (by category)
-  'amazon furniture': 'https://amzn.to/YOUR_FURNITURE_LINK',
-  'amazon decor': 'https://amzn.to/YOUR_DECOR_LINK',
-  'amazon lighting': 'https://amzn.to/YOUR_LIGHTING_LINK',
-  'amazon rugs': 'https://amzn.to/YOUR_RUGS_LINK',
-  'amazon storage': 'https://amzn.to/YOUR_STORAGE_LINK',
-  
-  // Decor & accessories
-  'target home': 'https://www.target.com/c/home/-/N-5xtnr?ref=YOUR_ID',
-  'pottery barn': 'https://www.potterybarn.com/?cm_sp=YOUR_ID',
-  'crate and barrel': 'https://www.crateandbarrel.com/?affiliate=YOUR_ID',
-  'anthropologie home': 'https://www.anthropologie.com/home?ref=YOUR_ID',
-  'world market': 'https://www.worldmarket.com/?affiliate=YOUR_ID',
-  
-  // Add your own affiliate links here
-};
-
-// Debug logging
-console.log('✅ Config loaded');
-console.log('Groq webhook:', window.ENV.N8N_GROQ_WEBHOOK);
-console.log('Publish webhook:', window.ENV.N8N_PUBLISH_WEBHOOK);
-console.log('Affiliate links loaded:', Object.keys(window.AFFILIATE_LINKS).length);
-</script>
-
-<style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: 'Inter', system-ui, sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  min-height: 100vh;
-  padding: 40px 20px;
-}
-
-.container {
-  max-width: 1400px;
-  margin: 0 auto;
-  background: white;
-  border-radius: 24px;
-  box-shadow: 0 24px 72px rgba(0,0,0,0.3);
-  overflow: hidden;
-}
-
-.header {
-  background: linear-gradient(135deg, #1A1D2E, #2D3250);
-  color: white;
-  padding: 48px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-
-.header::before {
-  content: '✨';
-  position: absolute;
-  font-size: 120px;
-  opacity: 0.1;
-  top: -20px;
-  right: 40px;
-  animation: float 6s ease-in-out infinite;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-20px); }
-}
-
-.header h1 {
-  font-size: 2.5rem;
-  margin-bottom: 12px;
-  font-weight: 800;
-}
-
-.header .subtitle {
-  font-size: 1.125rem;
-  opacity: 0.9;
-}
-
-.ai-badge {
-  display: inline-block;
-  background: linear-gradient(135deg, #FFD700, #FFA500);
-  color: #1A1D2E;
-  padding: 6px 16px;
-  border-radius: 20px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  margin-top: 12px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.tabs {
-  display: flex;
-  background: #F9FAFB;
-  border-bottom: 2px solid #E5E7EB;
-}
-
-.tab {
-  flex: 1;
-  padding: 20px;
-  text-align: center;
-  font-weight: 700;
-  cursor: pointer;
-  border: none;
-  background: transparent;
-  transition: all 0.3s;
-  font-size: 1rem;
-  position: relative;
-}
-
-.tab.active {
-  background: white;
-  color: #667eea;
-}
-
-.tab.active::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: #667eea;
-}
-
-.tab-content {
-  display: none;
-  padding: 48px;
-}
-
-.tab-content.active {
-  display: block;
-}
-
-.form-grid {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 32px;
-}
-
-.form-group {
-  margin-bottom: 24px;
-}
-
-.form-group label {
-  display: block;
-  font-weight: 700;
-  margin-bottom: 8px;
-  color: #1A1D2E;
-  font-size: 0.95rem;
-}
-
-.form-group label .required {
-  color: #DC2626;
-  margin-left: 4px;
-}
-
-.form-group input,
-.form-group select,
-.form-group textarea {
-  width: 100%;
-  padding: 14px 16px;
-  border: 2px solid #E5E7EB;
-  border-radius: 12px;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.95rem;
-  transition: all 0.2s;
-}
-
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-  outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-}
-
-.form-group textarea {
-  min-height: 500px;
-  font-family: 'Monaco', 'Courier New', monospace;
-  resize: vertical;
-  line-height: 1.6;
-}
-
-.form-hint {
-  font-size: 0.85rem;
-  color: #6B7280;
-  margin-top: 6px;
-}
-
-.counter {
-  font-weight: 600;
-  font-size: 0.9rem;
-}
-
-.counter.good { color: #10B981; }
-.counter.warning { color: #F59E0B; }
-.counter.bad { color: #DC2626; }
-
-.ai-assistant {
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
-  border: 2px solid #667eea;
-  border-radius: 16px;
-  padding: 24px;
-  margin-bottom: 32px;
-}
-
-.ai-assistant h3 {
-  margin-bottom: 16px;
-  color: #1A1D2E;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.ai-controls {
-  display: grid;
-  gap: 12px;
-}
-
-.btn {
-  padding: 14px 24px;
-  border: none;
-  border-radius: 12px;
-  font-weight: 700;
-  font-size: 0.95rem;
-  cursor: pointer;
-  transition: all 0.2s;
-  font-family: 'Inter', sans-serif;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
-.btn-primary {
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  color: white;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-}
-
-.btn-primary:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
-}
-
-.btn-primary:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.btn-secondary {
-  background: #F3F4F6;
-  color: #1F2937;
-  border: 2px solid #E5E7EB;
-}
-
-.btn-secondary:hover {
-  background: #E5E7EB;
-}
-
-.btn-ai {
-  background: linear-gradient(135deg, #FFD700, #FFA500);
-  color: #1A1D2E;
-  font-weight: 800;
-}
-
-.btn-ai:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5);
-}
-
-.status-message {
-  padding: 16px 20px;
-  border-radius: 12px;
-  margin-bottom: 24px;
-  font-weight: 600;
-  display: none;
-  animation: slideDown 0.3s ease;
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.status-message.success {
-  background: #D1FAE5;
-  color: #065F46;
-  border: 2px solid #10B981;
-  display: block;
-}
-
-.status-message.error {
-  background: #FEE2E2;
-  color: #991B1B;
-  border: 2px solid #DC2626;
-  display: block;
-}
-
-.status-message.info {
-  background: #DBEAFE;
-  color: #1E40AF;
-  border: 2px solid #3B82F6;
-  display: block;
-}
-
-.seo-score {
-  background: white;
-  border: 2px solid #E5E7EB;
-  border-radius: 16px;
-  padding: 24px;
-  margin-top: 24px;
-}
-
-.seo-score h3 {
-  margin-bottom: 16px;
-  color: #1A1D2E;
-}
-
-.score-circle {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2.5rem;
-  font-weight: 900;
-  margin: 0 auto 20px;
-  border: 8px solid;
-}
-
-.score-circle.grade-a { background: #D1FAE5; color: #065F46; border-color: #10B981; }
-.score-circle.grade-b { background: #DBEAFE; color: #1E40AF; border-color: #3B82F6; }
-.score-circle.grade-c { background: #FEF3C7; color: #92400E; border-color: #F59E0B; }
-.score-circle.grade-d { background: #FEE2E2; color: #991B1B; border-color: #DC2626; }
-
-.seo-details {
-  margin-top: 16px;
-}
-
-.seo-item {
-  display: flex;
-  justify-content: space-between;
-  padding: 8px 0;
-  border-bottom: 1px solid #E5E7EB;
-}
-
-.seo-item:last-child {
-  border-bottom: none;
-}
-
-.preview-panel {
-  background: #F9FAFB;
-  border: 2px solid #E5E7EB;
-  border-radius: 16px;
-  padding: 24px;
-  max-height: 600px;
-  overflow-y: auto;
-}
-
-.preview-panel h3 {
-  margin-bottom: 16px;
-  color: #1A1D2E;
-}
-
-.preview-content {
-  background: white;
-  padding: 24px;
-  border-radius: 12px;
-  font-family: Georgia, serif;
-  line-height: 1.8;
-}
-
-.preview-content h2 {
-  margin: 24px 0 12px;
-  color: #1A1D2E;
-  font-size: 1.75rem;
-}
-
-.preview-content h3 {
-  margin: 20px 0 10px;
-  color: #374151;
-  font-size: 1.25rem;
-}
-
-.preview-content p {
-  margin-bottom: 16px;
-}
-
-.submit-section {
-  margin-top: 48px;
-  padding-top: 32px;
-  border-top: 2px solid #E5E7EB;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 16px;
-}
-
-.loading-spinner {
-  display: inline-block;
-  width: 16px;
-  height: 16px;
-  border: 2px solid rgba(255,255,255,0.3);
-  border-top-color: white;
-  border-radius: 50%;
-  animation: spin 0.6s linear infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-.tags-input {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  padding: 12px;
-  border: 2px solid #E5E7EB;
-  border-radius: 12px;
-  min-height: 52px;
-}
-
-.tag {
-  background: #667eea;
-  color: white;
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 0.85rem;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.tag button {
-  background: none;
-  border: none;
-  color: white;
-  cursor: pointer;
-  font-size: 1.1rem;
-  padding: 0;
-  width: 20px;
-  height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  transition: background 0.2s;
-}
-
-.tag button:hover {
-  background: rgba(255,255,255,0.2);
-}
-
-.tag-input-field {
-  flex: 1;
-  border: none;
-  outline: none;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.95rem;
-  min-width: 120px;
-}
-
-.affiliate-section {
-  background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 165, 0, 0.1));
-  border: 2px solid #FFA500;
-  border-radius: 16px;
-  padding: 24px;
-  margin-top: 24px;
-}
-
-.affiliate-section h3 {
-  color: #1A1D2E;
-  margin-bottom: 16px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.affiliate-grid {
-  display: grid;
-  gap: 12px;
-}
-
-.affiliate-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px;
-  background: white;
-  border-radius: 8px;
-  border: 1px solid #E5E7EB;
-}
-
-.affiliate-item label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  flex: 1;
-}
-
-.affiliate-item input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
-  cursor: pointer;
-}
-
-.affiliate-count {
-  background: #FFA500;
-  color: white;
-  padding: 4px 12px;
-  border-radius: 12px;
-  font-size: 0.85rem;
-  font-weight: 700;
-}
-
-@media (max-width: 1024px) {
-  .form-grid {
-    grid-template-columns: 1fr;
-  }
-}
-</style>
-</head>
-<body>
-
-<div class="container">
-  <div class="header">
-    <h1>🚀 AI-Powered Blog Editor</h1>
-    <p class="subtitle">Create world-class blog posts in minutes</p>
-    <span class="ai-badge">✨ AI Enhanced via n8n</span>
-  </div>
-  
-  <div class="tabs">
-    <button class="tab active" onclick="switchTab(0)">📝 Content</button>
-    <button class="tab" onclick="switchTab(1)">🎯 SEO & Meta</button>
-    <button class="tab" onclick="switchTab(2)">💰 Affiliate Links</button>
-    <button class="tab" onclick="switchTab(3)">👁️ Preview</button>
-  </div>
-  
-  <form id="blogForm">
-    <!-- TAB 1: CONTENT -->
-    <div class="tab-content active">
-      <div id="statusMessage" class="status-message"></div>
-      
-      <div class="form-grid">
-        <div>
-          <!-- AI Assistant -->
-          <div class="ai-assistant">
-            <h3>🤖 AI Content Assistant</h3>
-            <div class="ai-controls">
-              <div class="form-group" style="margin-bottom: 12px;">
-                <label>Quick AI Generation</label>
-                <input 
-                  type="text" 
-                  id="aiTopic" 
-                  placeholder="e.g., 10 Modern Living Room Ideas for Small Spaces"
-                />
-                <p class="form-hint">Enter a topic and let AI write the entire post</p>
-              </div>
-              <button type="button" class="btn btn-ai" id="aiGenerateBtn" onclick="generateAIContent()">
-                <span>✨ Generate Full Article</span>
-              </button>
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                <button type="button" class="btn btn-secondary" onclick="aiImprove()">
-                  💡 Improve Content
-                </button>
-                <button type="button" class="btn btn-secondary" onclick="aiSEO()">
-                  🎯 Optimize SEO
-                </button>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Title -->
-          <div class="form-group">
-            <label>Post Title <span class="required">*</span></label>
-            <input 
-              type="text" 
-              id="title" 
-              placeholder="e.g., 10 Modern Minimalist Living Room Ideas"
-              required
-              oninput="updateTitleCounter()"
-            />
-            <p class="form-hint">
-              <span id="titleCounter" class="counter">0 / 60 characters</span>
-            </p>
-          </div>
-          
-          <!-- Category -->
-          <div class="form-group">
-            <label>Category <span class="required">*</span></label>
-            <select id="category" required>
-              <option value="">Select a category...</option>
-              <option value="Living Room">Living Room</option>
-              <option value="Bedroom">Bedroom</option>
-              <option value="Kitchen">Kitchen</option>
-              <option value="DIY">DIY</option>
-              <option value="Home Tech">Home Tech</option>
-              <option value="Furniture">Furniture</option>
-            </select>
-          </div>
-          
-          <!-- Tags -->
-          <div class="form-group">
-            <label>Tags</label>
-            <div class="tags-input" id="tagsContainer">
-              <input 
-                type="text" 
-                class="tag-input-field" 
-                id="tagInput"
-                placeholder="Type a tag and press Enter"
-              />
-            </div>
-          </div>
-          
-          <!-- Content -->
-          <div class="form-group">
-            <label>Blog Content (Markdown) <span class="required">*</span></label>
-            <textarea 
-              id="content" 
-              placeholder="## Introduction
-
-Write your engaging introduction here...
-
-### Main Point 1
-
-Add your first key insight...
-
-### Main Point 2
-
-Continue with valuable content...
-
-## Conclusion
-
-Wrap up with a strong conclusion..."
-              required
-              oninput="updateWordCount()"
-            ></textarea>
-            <p class="form-hint">
-              <span id="wordCounter" class="counter">0 words</span> | 
-              <span id="readingTime" class="counter">0 min read</span>
-            </p>
-          </div>
-        </div>
-        
-        <!-- Sidebar -->
-        <div>
-          <!-- Quick Stats -->
-          <div class="seo-score">
-            <h3>📊 Content Quality</h3>
-            <div class="score-circle grade-d" id="scoreCircle">
-              <span id="seoScore">0</span>
-            </div>
-            <div class="seo-details" id="seoDetails">
-              <div class="seo-item">
-                <span>Title</span>
-                <span id="titleScore">❌</span>
-              </div>
-              <div class="seo-item">
-                <span>Content Length</span>
-                <span id="contentScore">❌</span>
-              </div>
-              <div class="seo-item">
-                <span>Headings</span>
-                <span id="headingScore">❌</span>
-              </div>
-              <div class="seo-item">
-                <span>Affiliate Links</span>
-                <span id="affiliateScore">0</span>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Author Info -->
-          <div class="form-group" style="margin-top: 24px;">
-            <label>Author Name</label>
-            <input 
-              type="text" 
-              id="authorName" 
-              placeholder="e.g., Sarah Martinez"
-              value="Wow Glam Decor Editorial Team"
-            />
-          </div>
-          
-          <div class="form-group">
-            <label>Author Role</label>
-            <input 
-              type="text" 
-              id="authorRole" 
-              placeholder="e.g., Interior Design Expert"
-              value="Interior Design Expert"
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <!-- TAB 2: SEO & META -->
-    <div class="tab-content">
-      <div class="form-grid">
-        <div>
-          <div class="form-group">
-            <label>SEO Meta Title</label>
-            <input 
-              type="text" 
-              id="seoTitle" 
-              placeholder="Auto-generated from post title"
-              oninput="updateSEOTitleCounter()"
-            />
-            <p class="form-hint">
-              <span id="seoTitleCounter" class="counter">0 / 60 characters</span>
-            </p>
-          </div>
-          
-          <div class="form-group">
-            <label>SEO Meta Description</label>
-            <textarea 
-              id="seoDescription" 
-              placeholder="A compelling 150-160 character description..."
-              rows="4"
-              oninput="updateSEODescCounter()"
-            ></textarea>
-            <p class="form-hint">
-              <span id="seoDescCounter" class="counter">0 / 160 characters</span>
-            </p>
-          </div>
-          
-          <button type="button" class="btn btn-secondary" onclick="autoGenerateSEO()">
-            ✨ Auto-Generate SEO
-          </button>
-        </div>
-        
-        <div>
-          <div class="preview-panel">
-            <h3>🔍 Google Preview</h3>
-            <div style="font-family: Arial, sans-serif;">
-              <div style="color: #1a0dab; font-size: 20px; margin-bottom: 4px; line-height: 1.3;" id="googleTitle">
-                Your title will appear here
-              </div>
-              <div style="color: #006621; font-size: 14px; margin-bottom: 8px;" id="googleUrl">
-                wowglamdecor.com › posts › your-slug
-              </div>
-              <div style="color: #545454; font-size: 14px; line-height: 1.5;" id="googleDesc">
-                Your meta description will appear here...
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <!-- TAB 3: AFFILIATE LINKS -->
-    <div class="tab-content">
-      <div class="affiliate-section">
-        <h3>💰 Affiliate Link Manager</h3>
-        <p style="margin-bottom: 20px; color: #6B7280;">
-          Select which stores to automatically link in your content. Links will be intelligently inserted when relevant products are mentioned.
-        </p>
-        
-        <div class="affiliate-grid" id="affiliateLinksGrid">
-          <!-- Will be populated by JavaScript -->
-        </div>
-        
-        <button type="button" class="btn btn-ai" onclick="insertAffiliateLinks()" style="margin-top: 20px; width: 100%;">
-          🔗 Auto-Insert Affiliate Links
-        </button>
-      </div>
-      
-      <div class="preview-panel" style="margin-top: 24px;">
-        <h3>📊 Affiliate Link Stats</h3>
-        <div id="affiliateStats" style="padding: 16px;">
-          <p>No affiliate links inserted yet. Use the button above to automatically add them to your content.</p>
-        </div>
-      </div>
-    </div>
-    
-    <!-- TAB 4: PREVIEW -->
-    <div class="tab-content">
-      <div class="preview-panel" style="max-height: none;">
-        <h3>📄 Live Preview</h3>
-        <div class="preview-content" id="previewContent">
-          <p>Your blog post preview will appear here...</p>
-        </div>
-      </div>
-      <button type="button" class="btn btn-secondary" onclick="updatePreview()" style="margin-top: 20px; width: 100%;">
-        🔄 Refresh Preview
-      </button>
-    </div>
-    
-    <!-- Submit Buttons (visible on all tabs) -->
-    <div class="submit-section">
-      <button type="button" class="btn btn-secondary" onclick="saveDraft()">
-        💾 Save Draft
-      </button>
-      <button type="button" class="btn btn-secondary" onclick="checkSEO()">
-        🎯 Check SEO
-      </button>
-      <button type="submit" class="btn btn-primary" id="submitBtn">
-        🚀 Publish Post
-      </button>
-    </div>
-  </form>
-</div>
-
 <script data-cfasync="false">
-// Configuration loaded from window.ENV
+/* =========================
+   CONFIG
+========================= */
 const N8N_GROQ_WEBHOOK = window.ENV?.N8N_GROQ_WEBHOOK || '';
 const N8N_PUBLISH_WEBHOOK = window.ENV?.N8N_PUBLISH_WEBHOOK || '';
 const AFFILIATE_LINKS = window.AFFILIATE_LINKS || {};
 
-// State
+/* =========================
+   STATE
+========================= */
 let tags = [];
 let currentTab = 0;
 let selectedAffiliateLinks = [];
 let insertedAffiliateLinks = [];
 
-// Initialize
+/* =========================
+   INIT
+========================= */
 document.addEventListener('DOMContentLoaded', () => {
   setupTagInput();
   setupCounters();
   setupFormSubmit();
   setupAffiliateLinks();
+  restoreDraft();
   updatePreview();
 });
 
-// Helper function to call Groq via n8n webhook
-async function callGroqViaWebhook(prompt) {
-  console.log('🔗 Calling webhook:', N8N_GROQ_WEBHOOK);
-  console.log('📤 Sending prompt:', prompt.substring(0, 100) + '...');
-  
-  try {
-    const response = await fetch(N8N_GROQ_WEBHOOK, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify({ prompt })
-    });
-    
-    console.log('📥 Response status:', response.status);
-    console.log('📥 Response headers:', [...response.headers.entries()]);
-    
-    // Get response text first
-    const responseText = await response.text();
-    console.log('📥 Raw response:', responseText);
-    
-    if (!response.ok) {
-      console.error('❌ Error response:', responseText);
-      throw new Error(`Webhook failed (${response.status}): ${responseText || 'No error message'}`);
-    }
-    
-    // Try to parse JSON
-    let data;
-    try {
-      data = JSON.parse(responseText);
-      console.log('✅ Parsed data:', data);
-    } catch (e) {
-      console.error('❌ Failed to parse JSON:', e);
-      throw new Error(`Invalid JSON response: ${responseText.substring(0, 200)}`);
-    }
-    
-    // Return content - handle both {content: ...} and direct string
-    if (data.content) {
-      return data.content;
-    } else if (typeof data === 'string') {
-      return data;
-    } else {
-      console.error('❌ Unexpected response format:', data);
-      throw new Error('Response missing "content" field');
-    }
-  } catch (error) {
-    console.error('❌ Webhook error:', error);
-    throw error;
-  }
+/* =========================
+   UI HELPERS
+========================= */
+function showMessage(text, type = 'info') {
+  const el = document.getElementById('statusMessage');
+  el.className = `status-message ${type}`;
+  el.textContent = text;
+  el.style.display = 'block';
 }
 
-// Tab Management
 function switchTab(index) {
-  const tabs = document.querySelectorAll('.tab');
-  const contents = document.querySelectorAll('.tab-content');
-  
-  tabs.forEach((tab, i) => {
-    tab.classList.toggle('active', i === index);
-  });
-  
-  contents.forEach((content, i) => {
-    content.classList.toggle('active', i === index);
-  });
-  
+  document.querySelectorAll('.tab').forEach((t, i) =>
+    t.classList.toggle('active', i === index)
+  );
+  document.querySelectorAll('.tab-content').forEach((c, i) =>
+    c.classList.toggle('active', i === index)
+  );
   currentTab = index;
-  
-  if (index === 3) { // Preview tab
-    updatePreview();
-  }
+  if (index === 3) updatePreview();
 }
 
-// Affiliate Links Setup
-function setupAffiliateLinks() {
-  const grid = document.getElementById('affiliateLinksGrid');
-  
-  const html = Object.keys(AFFILIATE_LINKS).map((key, index) => `
-    <div class="affiliate-item">
-      <label>
-        <input type="checkbox" id="affiliate_${index}" value="${key}" onchange="updateSelectedAffiliates()">
-        <span style="text-transform: capitalize;">${key.replace(/-/g, ' ')}</span>
-      </label>
-      <span class="affiliate-count" style="display: none;" id="count_${index}">0</span>
-    </div>
-  `).join('');
-  
-  grid.innerHTML = html || '<p style="color: #6B7280;">No affiliate links configured. Add them in the window.AFFILIATE_LINKS object.</p>';
-}
+/* =========================
+   FORM SUBMIT
+========================= */
+function setupFormSubmit() {
+  document.getElementById('blogForm').addEventListener('submit', async e => {
+    e.preventDefault();
 
-function updateSelectedAffiliates() {
-  selectedAffiliateLinks = [];
-  Object.keys(AFFILIATE_LINKS).forEach((key, index) => {
-    const checkbox = document.getElementById(`affiliate_${index}`);
-    if (checkbox && checkbox.checked) {
-      selectedAffiliateLinks.push(key);
-    }
-  });
-}
+    showMessage('🚀 Publishing post...', 'info');
 
-function insertAffiliateLinks() {
-  const content = document.getElementById('content').value;
-  
-  if (!content) {
-    showMessage('Please write some content first', 'error');
-    return;
-  }
-  
-  if (selectedAffiliateLinks.length === 0) {
-    showMessage('Please select at least one affiliate link to insert', 'error');
-    return;
-  }
-  
-  let updatedContent = content;
-  insertedAffiliateLinks = [];
-  
-  // Smart link insertion logic
-  selectedAffiliateLinks.forEach(key => {
-    const linkUrl = AFFILIATE_LINKS[key];
-    const storeName = key.replace(/-/g, ' ');
-    
-    // Create regex to find mentions (case insensitive)
-    const regex = new RegExp(`\\b(${storeName})\\b(?!\\])`, 'gi');
-    
-    // Count matches
-    const matches = content.match(regex);
-    if (matches) {
-      // Replace first mention in each section with markdown link
-      let replaced = false;
-      updatedContent = updatedContent.replace(regex, (match) => {
-        if (!replaced) {
-          replaced = true;
-          insertedAffiliateLinks.push({key, count: matches.length});
-          return `[${match}](${linkUrl})`;
-        }
-        return match;
+    const payload = {
+      title: title.value,
+      content: content.value,
+      category: category.value,
+      tags,
+      seoTitle: seoTitle.value,
+      seoDescription: seoDescription.value,
+      authorName: authorName.value,
+      authorRole: authorRole.value,
+      affiliateLinks: insertedAffiliateLinks,
+      createdAt: new Date().toISOString()
+    };
+
+    try {
+      const res = await fetch(N8N_PUBLISH_WEBHOOK, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
       });
+
+      if (!res.ok) throw new Error(await res.text());
+      localStorage.removeItem('wgd_draft');
+
+      showMessage('✅ Post published successfully!', 'success');
+    } catch (err) {
+      showMessage(`❌ Publish failed: ${err.message}`, 'error');
     }
   });
-  
-  // Update content
-  document.getElementById('content').value = updatedContent;
-  
-  // Update stats
-  updateAffiliateStats();
-  updateQualityScore();
-  
-  showMessage(`✅ Inserted ${insertedAffiliateLinks.length} affiliate links!`, 'success');
 }
 
-function updateAffiliateStats() {
-  const statsDiv = document.getElementById('affiliateStats');
-  
-  if (insertedAffiliateLinks.length === 0) {
-    statsDiv.innerHTML = '<p>No affiliate links inserted yet.</p>';
-    return;
+/* =========================
+   DRAFTS
+========================= */
+function saveDraft() {
+  const draft = {
+    title: title.value,
+    content: content.value,
+    category: category.value,
+    tags,
+    seoTitle: seoTitle.value,
+    seoDescription: seoDescription.value,
+    authorName: authorName.value,
+    authorRole: authorRole.value
+  };
+  localStorage.setItem('wgd_draft', JSON.stringify(draft));
+  showMessage('💾 Draft saved locally', 'success');
+}
+
+function restoreDraft() {
+  const raw = localStorage.getItem('wgd_draft');
+  if (!raw) return;
+  const d = JSON.parse(raw);
+  title.value = d.title || '';
+  content.value = d.content || '';
+  category.value = d.category || '';
+  tags = d.tags || [];
+  seoTitle.value = d.seoTitle || '';
+  seoDescription.value = d.seoDescription || '';
+  authorName.value = d.authorName || '';
+  authorRole.value = d.authorRole || '';
+  renderTags();
+}
+
+/* =========================
+   GROQ VIA N8N
+========================= */
+async function callGroqViaWebhook(prompt) {
+  const res = await fetch(N8N_GROQ_WEBHOOK, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ prompt })
+  });
+
+  const text = await res.text();
+  if (!res.ok) throw new Error(text);
+
+  try {
+    const json = JSON.parse(text);
+    if (Array.isArray(json) && json[0]?.content) return json[0].content;
+    if (json.content) return json.content;
+    return text;
+  } catch {
+    return text;
   }
-  
-  const html = `
-    <div style="display: grid; gap: 12px;">
-      ${insertedAffiliateLinks.map(link => `
-        <div style="display: flex; justify-content: space-between; padding: 8px; background: #F9FAFB; border-radius: 8px;">
-          <span style="text-transform: capitalize;">${link.key.replace(/-/g, ' ')}</span>
-          <span style="font-weight: 700; color: #10B981;">${link.count} mention${link.count > 1 ? 's' : ''}</span>
-        </div>
-      `).join('')}
-    </div>
-    <div style="margin-top: 16px; padding: 12px; background: #D1FAE5; border-radius: 8px; text-align: center;">
-      <strong>Total: ${insertedAffiliateLinks.reduce((sum, link) => sum + link.count, 0)} affiliate links inserted</strong>
-    </div>
-  `;
-  
-  statsDiv.innerHTML = html;
-  
-  // Update counts in grid
-  insertedAffiliateLinks.forEach(link => {
-    const index = Object.keys(AFFILIATE_LINKS).indexOf(link.key);
-    const countEl = document.getElementById(`count_${index}`);
-    if (countEl) {
-      countEl.textContent = link.count;
-      countEl.style.display = 'block';
-    }
-  });
 }
 
-// Tag Management
+/* =========================
+   AI FUNCTIONS
+========================= */
+async function generateAIContent() {
+  if (!aiTopic.value || !category.value)
+    return showMessage('Topic and category required', 'error');
+
+  showMessage('🤖 Generating content...', 'info');
+
+  try {
+    const result = await callGroqViaWebhook(`
+Write a 1500–2000 word markdown blog post about:
+${aiTopic.value}
+Category: ${category.value}
+`);
+
+    content.value = result;
+    title.value = aiTopic.value;
+    updateCountersAll();
+
+    showMessage('✅ Content generated', 'success');
+  } catch (e) {
+    showMessage(e.message, 'error');
+  }
+}
+
+async function aiImprove(event) {
+  const btn = event.currentTarget;
+  btn.disabled = true;
+
+  try {
+    content.value = await callGroqViaWebhook(
+      `Improve this content:\n${content.value}`
+    );
+    updateCountersAll();
+    showMessage('✨ Content improved', 'success');
+  } catch (e) {
+    showMessage(e.message, 'error');
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+async function aiSEO() {
+  showMessage('🤖 Generating SEO...', 'info');
+
+  const response = await callGroqViaWebhook(`
+Return JSON:
+{
+ "seoTitle": "...",
+ "metaDescription": "..."
+}
+For:
+${title.value}
+${content.value.slice(0, 500)}
+`);
+
+  const parsed = JSON.parse(response);
+  seoTitle.value = parsed.seoTitle;
+  seoDescription.value = parsed.metaDescription;
+  updateGooglePreview();
+}
+
+/* =========================
+   PREVIEW (MARKDOWN → HTML)
+========================= */
+function updatePreview() {
+  let html = content.value
+    .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+    .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+    .replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>')
+    .replace(/\n/gim, '<br>');
+
+  previewContent.innerHTML = html || '<p>No content yet</p>';
+}
+
+/* =========================
+   TAGS
+========================= */
 function setupTagInput() {
-  const tagInput = document.getElementById('tagInput');
-  
-  tagInput.addEventListener('keypress', (e) => {
+  tagInput.addEventListener('keydown', e => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      const tag = tagInput.value.trim();
-      if (tag && !tags.includes(tag)) {
-        tags.push(tag);
-        renderTags();
+      if (tagInput.value && !tags.includes(tagInput.value)) {
+        tags.push(tagInput.value);
         tagInput.value = '';
+        renderTags();
       }
     }
   });
 }
 
 function renderTags() {
-  const tagsContainer = document.getElementById('tagsContainer');
-  const tagInput = document.getElementById('tagInput');
-  
-  const tagElements = tags.map((tag, index) => `
-    <div class="tag">
-      ${tag}
-      <button type="button" onclick="removeTag(${index})">×</button>
-    </div>
-  `).join('');
-  
-  tagsContainer.innerHTML = tagElements + tagInput.outerHTML;
+  tagsContainer.innerHTML =
+    tags.map((t, i) =>
+      `<div class="tag">${t}<button onclick="removeTag(${i})">×</button></div>`
+    ).join('') + tagInput.outerHTML;
   setupTagInput();
 }
 
-function removeTag(index) {
-  tags.splice(index, 1);
+function removeTag(i) {
+  tags.splice(i, 1);
   renderTags();
 }
 
-// Counters
-function setupCounters() {
-  updateTitleCounter();
+/* =========================
+   SEO CHECK
+========================= */
+function checkSEO() {
+  updateQualityScore();
+  showMessage('📊 SEO checked', 'success');
+}
+
+function updateCountersAll() {
   updateWordCount();
-  updateSEOTitleCounter();
-  updateSEODescCounter();
+  updateTitleCounter();
   updateQualityScore();
 }
-
-function updateTitleCounter() {
-  const title = document.getElementById('title').value;
-  const counter = document.getElementById('titleCounter');
-  const length = title.length;
-  
-  counter.textContent = `${length} / 60 characters`;
-  counter.className = 'counter ' + (length > 60 ? 'bad' : length > 50 ? 'warning' : length > 40 ? 'good' : '');
-  
-  updateGooglePreview();
-  updateQualityScore();
-}
-
-function updateWordCount() {
-  const content = document.getElementById('content').value;
-  const words = content.trim().split(/\s+/).filter(w => w.length > 0).length;
-  const readingTime = Math.ceil(words / 200);
-  
-  document.getElementById('wordCounter').textContent = `${words} words`;
-  document.getElementById('readingTime').textContent = `${readingTime} min read`;
-  
-  const counter = document.getElementById('wordCounter');
-  counter.className = 'counter ' + (words >= 1000 ? 'good' : words >= 500 ? 'warning' : 'bad');
-  
-  updateQualityScore();
-}
-
-function updateSEOTitleCounter() {
-  const seoTitle = document.getElementById('seoTitle').value;
-  const counter = document.getElementById('seoTitleCounter');
-  const length = seoTitle.length;
-  
-  counter.textContent = `${length} / 60 characters`;
-  counter.className = 'counter ' + (length > 60 ? 'bad' : length > 50 ? 'warning' : length >= 40 ? 'good' : '');
-  
-  updateGooglePreview();
-}
-
-function updateSEODescCounter() {
-  const seoDesc = document.getElementById('seoDescription').value;
-  const counter = document.getElementById('seoDescCounter');
-  const length = seoDesc.length;
-  
-  counter.textContent = `${length} / 160 characters`;
-  counter.className = 'counter ' + (length > 160 ? 'bad' : length > 150 ? 'warning' : length >= 120 ? 'good' : '');
-  
-  updateGooglePreview();
-}
-
-function updateGooglePreview() {
-  const title = document.getElementById('seoTitle').value || document.getElementById('title').value;
-  const description = document.getElementById('seoDescription').value;
-  const slug = createSlug(document.getElementById('title').value);
-  
-  document.getElementById('googleTitle').textContent = title || 'Your title will appear here';
-  document.getElementById('googleUrl').textContent = `wowglamdecor.com › posts › ${slug || 'your-slug'}`;
-  document.getElementById('googleDesc').textContent = description || 'Your meta description will appear here...';
-}
-
-function createSlug(text) {
-  return text
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-    .substring(0, 60);
-}
-
-function updateQualityScore() {
-  const title = document.getElementById('title').value;
-  const content = document.getElementById('content').value;
-  const words = content.trim().split(/\s+/).filter(w => w.length > 0).length;
-  const headings = (content.match(/^##\s/gm) || []).length;
-  const affiliateLinks = (content.match(/\[.*?\]\(http.*?\)/g) || []).length;
-  
-  let score = 0;
-  
-  // Title (25 points)
-  if (title.length >= 40 && title.length <= 60) score += 25;
-  else if (title.length > 0) score += 10;
-  
-  // Content length (35 points)
-  if (words >= 1500) score += 35;
-  else if (words >= 1000) score += 25;
-  else if (words >= 500) score += 15;
-  
-  // Headings (20 points)
-  if (headings >= 5) score += 20;
-  else if (headings >= 3) score += 12;
-  else if (headings >= 1) score += 5;
-  
-  // Tags (10 points)
-  if (tags.length >= 3) score += 10;
-  else if (tags.length >= 1) score += 5;
-  
-  // Affiliate links (10 points)
-  if (affiliateLinks >= 3) score += 10;
-  else if (affiliateLinks >= 1) score += 5;
-  
-  // Update UI
-  const scoreCircle = document.getElementById('scoreCircle');
-  const seoScoreEl = document.getElementById('seoScore');
-  
-  seoScoreEl.textContent = score;
-  scoreCircle.className = 'score-circle ' + 
-    (score >= 80 ? 'grade-a' : score >= 60 ? 'grade-b' : score >= 40 ? 'grade-c' : 'grade-d');
-  
-  // Update detail scores
-  document.getElementById('titleScore').textContent = 
-    (title.length >= 40 && title.length <= 60) ? '✅' : '❌';
-  document.getElementById('contentScore').textContent = 
-    words >= 1000 ? '✅' : words >= 500 ? '⚠️' : '❌';
-  document.getElementById('headingScore').textContent = 
-    headings >= 3 ? '✅' : headings >= 1 ? '⚠️' : '❌';
-  document.getElementById('affiliateScore').textContent = affiliateLinks;
-}
-
-// AI Functions
-
-// AI Content Generation via n8n
-async function generateAIContent() {
-  const topic = document.getElementById('aiTopic').value.trim();
-  const category = document.getElementById('category').value;
-  
-  if (!topic) {
-    showMessage('Please enter a topic first', 'error');
-    return;
-  }
-  
-  if (!category) {
-    showMessage('Please select a category first', 'error');
-    return;
-  }
-  
-  const btn = document.getElementById('aiGenerateBtn');
-  const originalHTML = btn.innerHTML;
-  btn.innerHTML = '<span class="loading-spinner"></span> Generating...';
-  btn.disabled = true;
-  
-  showMessage('🤖 AI is generating your content via n8n... This may take 10-20 seconds.', 'info');
-  
-  try {
-    const prompt = `You are a professional interior design blogger writing for Wow Glam Decor.
-
-Create a comprehensive, engaging blog post about: ${topic}
-
-Category: ${category}
-Target word count: 1500-2000 words
-Tone: Professional yet friendly, inspirational
-
-Requirements:
-- Use markdown formatting (## for main headings, ### for subheadings)
-- Include practical tips and actionable advice
-- Add relevant examples and inspiration
-- Write in an engaging, conversational style
-- Include a strong introduction and conclusion
-- Use bullet points where appropriate
-- Structure: Intro → 5-7 Main Sections → Conclusion
-- Naturally mention relevant stores/brands (Wayfair, IKEA, West Elm, Target, Amazon, etc.) where appropriate for affiliate linking
-
-Write ONLY the blog post content in markdown format. Do not include any preamble or explanation.`;
-    
-    const content = await callGroqViaWebhook(prompt);
-    
-    // Set the content
-    document.getElementById('content').value = content;
-    document.getElementById('title').value = topic;
-    
-    // Auto-generate SEO
-    const excerpt = content.substring(0, 155).replace(/[#*\[\]]/g, '') + '...';
-    document.getElementById('seoDescription').value = excerpt;
-    
-    updateWordCount();
-    updateTitleCounter();
-    updateSEODescCounter();
-    updateQualityScore();
-    
-    showMessage('✅ Content generated successfully! Now add affiliate links in the Affiliate Links tab.', 'success');
-  } catch (error) {
-    console.error('AI Error:', error);
-    showMessage(`❌ AI generation failed: ${error.message}`, 'error');
-  } finally {
-    btn.innerHTML = originalHTML;
-    btn.disabled = false;
-  }
-}
-
-// AI Improve Content
-async function aiImprove() {
-  const content = document.getElementById('content').value;
-  if (!content) {
-    showMessage('Please write some content first', 'error');
-    return;
-  }
-  
-  const btn = event.target;
-  const originalHTML = btn.innerHTML;
-  btn.innerHTML = '<span class="loading-spinner"></span> Improving...';
-  btn.disabled = true;
-  
-  showMessage('🤖 AI is improving your content via n8n...', 'info');
-  
-  try {
-    const prompt = `You are an expert editor for an interior design blog. Improve the following blog post content while maintaining its core message and structure:
-
-${content}
-
-Improvements to make:
-- Enhance readability and flow
-- Add more engaging language
-- Improve transitions between sections
-- Ensure consistent tone (professional yet friendly)
-- Fix any grammar or style issues
-- Keep the same markdown formatting
-- Maintain the same approximate length
-- Preserve any existing affiliate links (markdown format [text](url))
-
-Return ONLY the improved content, no explanations.`;
-    
-    const improvedContent = await callGroqViaWebhook(prompt);
-    
-    document.getElementById('content').value = improvedContent;
-    
-    updateWordCount();
-    updateQualityScore();
-    
-    showMessage('✅ Content improved successfully!', 'success');
-  } catch (error) {
-    console.error('AI Error:', error);
-    showMessage(`❌ Content improvement failed: ${error.message}`, 'error');
-  } finally {
-    btn.innerHTML = originalHTML;
-    btn.disabled = false;
-  }
-}
-
-// AI Generate SEO Metadata
-async function aiSEO() {
-  const title = document.getElementById('title').value;
-  const content = document.getElementById('content').value;
-  
-  if (!title || !content) {
-    showMessage('Please add title and content first', 'error');
-    return;
-  }
-  
-  showMessage('🤖 AI is generating SEO metadata via n8n...', 'info');
-  
-  try {
-    const prompt = `Create SEO-optimized metadata for this blog post.
-
-Title: ${title}
-
-Content preview:
-${content.substring(0, 500)}...
-
-Generate:
-1. SEO Title (50-60 characters, include main keyword, engaging)
-2. Meta Description (140-155 characters, compelling and keyword-rich)
-
-Format your response as JSON:
-{
-  "seoTitle": "...",
-  "metaDescription": "..."
-}
-
-Return ONLY the JSON, nothing else.`;
-    
-    const response = await callGroqViaWebhook(prompt);
-    const jsonMatch = response.match(/\{[\s\S]*\}/);
-    
-    if (!jsonMatch) {
-      throw new Error('Invalid response format');
-    }
-    
-    const result = JSON.parse(jsonMatch[0]);
-    
-    document.getElementById('seoTitle').value = result.seoTitle;
-    document.getElementById('seoDescription').value = result.metaDescription;
-    
-    updateSEOTitleCounter();
-    updateSEODescCounter();
-    
-    showMessage('✅ SEO metadata generated!', 'success');
-  } catch (error) {
-    console.error('AI SEO Error:', error);
-    // Fallback to simple generation
-    autoGenerateSEO();
-  }
-}
-
-// Simple auto-generate SEO (fallback without AI)
-function autoGenerateSEO() {
-  const title = document.getElementById('title').value;
-  const content = document.getElementById('content').value;
-  
-  const excerpt = content
-    .replace(/^#+\s/gm, '')
-    .split('\n\n')[0]
-    .substring(0, 155)
-    .replace(/[#*\[\]]/g, '') + '...';
-  
-  document.getElementById('seoTitle').value = title.substring(0, 50) + ' | Wow Glam Decor';
-  document.getElementById('seoDescription').value = excerpt;
-  
-  updateSEOTitleCounter();
-  updateSEODescCounter();
-  
-  showMessage('✅ SEO metadata auto-generated!', 'success');
-}
-
-// Preview
-function updatePreview() {
-  const content = document.getElementById('content').value;
-  const previewContent = document.getElementById('previewContent');
-  
-  if (!content) {
-    previewContent.innerHTML = '<p>Your blog post preview will appear here...</p>';
-    return;
-  }
-  
-  // Simple markdown rendering with affiliate link support
-  const html = content
-    .replace(/^## (.*$)/gm, '<h2>$1</h2>')
-    .replace(/^### (.*$)/gm, '<h3>$1</h3>')
-    .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" style="color: #667eea; text-decoration: underline;">$1</a>')
-    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.*?)\*/g, '<em>$1</em>')
-    .replace(/^\- (.*$)/gm, '<li>$1</li>')
-    .replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>')
-    .split('\n\n')
-    .map(p => p.trim() && !p.startsWith('<') ? `<p>${p}</p>` : p)
-    .join('');
-  
-  previewContent.innerHTML = html;
-}
-
-// SEO Check
-async function checkSEO() {
-  updateQualityScore();
-  
-  const score = parseInt(document.getElementById('seoScore').textContent);
-  
-  if (score >= 80) {
-    showMessage('✅ Excellent SEO! Your post is ready to publish.', 'success');
-  } else if (score >= 60) {
-    showMessage('⚠️ Good SEO, but could be improved. Check the suggestions.', 'info');
-  } else {
-    showMessage('❌ SEO needs improvement. Please address the issues highlighted.', 'error');
-  }
-  
-  switchTab(1); // Switch to SEO tab
-}
-
-// Save Draft
-function saveDraft() {
-  const draft = {
-    title: document.getElementById('title').value,
-    category: document.getElementById('category').value,
-    tags: tags,
-    content: document.getElementById('content').value,
-    seoTitle: document.getElementById('seoTitle').value,
-    seoDescription: document.getElementById('seoDescription').value,
-    authorName: document.getElementById('authorName').value,
-    authorRole: document.getElementById('authorRole').value,
-    selectedAffiliateLinks: selectedAffiliateLinks,
-    insertedAffiliateLinks: insertedAffiliateLinks,
-    savedAt: new Date().toISOString()
-  };
-  
-  localStorage.setItem('wgd_blog_draft', JSON.stringify(draft));
-  showMessage('💾 Draft saved successfully!', 'success');
-}
-
-// Load Draft (call on page load if exists)
-function loadDraft() {
-  const draft = localStorage.getItem('wgd_blog_draft');
-  if (draft) {
-    const data = JSON.parse(draft);
-    document.getElementById('title').value = data.title || '';
-    document.getElementById('category').value = data.category || '';
-    tags = data.tags || [];
-    renderTags();
-    document.getElementById('content').value = data.content || '';
-    document.getElementById('seoTitle').value = data.seoTitle || '';
-    document.getElementById('seoDescription').value = data.seoDescription || '';
-    document.getElementById('authorName').value = data.authorName || 'Wow Glam Decor Editorial Team';
-    document.getElementById('authorRole').value = data.authorRole || 'Interior Design Expert';
-    
-    // Restore affiliate link selections
-    if (data.selectedAffiliateLinks) {
-      selectedAffiliateLinks = data.selectedAffiliateLinks;
-      selectedAffiliateLinks.forEach(key => {
-        const index = Object.keys(AFFILIATE_LINKS).indexOf(key);
-        const checkbox = document.getElementById(`affiliate_${index}`);
-        if (checkbox) checkbox.checked = true;
-      });
-    }
-    
-    if (data.insertedAffiliateLinks) {
-      insertedAffiliateLinks = data.insertedAffiliateLinks;
-      updateAffiliateStats();
-    }
-    
-    updateCounters();
-    showMessage('📥 Draft loaded from ' + new Date(data.savedAt).toLocaleString(), 'info');
-  }
-}
-
-// Form Submit
-function setupFormSubmit() {
-  const form = document.getElementById('blogForm');
-  
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    const submitBtn = document.getElementById('submitBtn');
-    const originalHTML = submitBtn.innerHTML;
-    submitBtn.innerHTML = '<span class="loading-spinner"></span> Publishing...';
-    submitBtn.disabled = true;
-    
-    const formData = {
-      title: document.getElementById('title').value,
-      category: document.getElementById('category').value,
-      tags: tags,
-      content: document.getElementById('content').value,
-      author: {
-        name: document.getElementById('authorName').value,
-        role: document.getElementById('authorRole').value
-      },
-      seo: {
-        title: document.getElementById('seoTitle').value,
-        description: document.getElementById('seoDescription').value
-      },
-      affiliateLinks: {
-        inserted: insertedAffiliateLinks,
-        count: insertedAffiliateLinks.reduce((sum, link) => sum + link.count, 0)
-      }
-    };
-    
-    try {
-      const response = await fetch(N8N_PUBLISH_WEBHOOK, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-      });
-      
-      const result = await response.json();
-      
-      if (response.ok && result.success) {
-        showMessage(`✅ Success! Post published: ${result.post.url}`, 'success');
-        
-        // Clear draft
-        localStorage.removeItem('wgd_blog_draft');
-        
-        // Show success details
-        setTimeout(() => {
-          if (confirm('Post published successfully! View it now?')) {
-            window.open(result.post.url, '_blank');
-          }
-        }, 2000);
-      } else {
-        throw new Error(result.message || result.error || 'Publication failed');
-      }
-    } catch (error) {
-      showMessage(`❌ Error: ${error.message}`, 'error');
-    } finally {
-      submitBtn.innerHTML = originalHTML;
-      submitBtn.disabled = false;
-    }
-  });
-}
-
-// Helper: Show Message
-function showMessage(message, type = 'info') {
-  const statusMessage = document.getElementById('statusMessage');
-  statusMessage.textContent = message;
-  statusMessage.className = `status-message ${type}`;
-  
-  // Auto-hide after 5 seconds for success/info
-  if (type === 'success' || type === 'info') {
-    setTimeout(() => {
-      statusMessage.style.display = 'none';
-    }, 5000);
-  }
-  
-  // Scroll to message
-  statusMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-}
-
-// Try to load draft on page load
-setTimeout(loadDraft, 500);
 </script>
-
-</body>
-</html>
