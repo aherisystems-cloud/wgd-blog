@@ -7,11 +7,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <!-- Load configuration -->
 <script>
-// Configuration - REPLACE THE PLACEHOLDERS WITH YOUR ACTUAL KEYS
+// Configuration - REPLACE WITH YOUR n8n WEBHOOK URLs
 window.ENV = {
-  GROQ_API_KEY: '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',  // Your actual API key
-  GROQ_MODEL: 'llama-3.3-70b-versatile',    // Best quality model
-  N8N_WEBHOOK_URL: 'http://localhost:5678/webhook/publish-blog'  // Get from your n8n workflow
+  N8N_GROQ_WEBHOOK: 'http://localhost:5678/webhook/groq-generate',  // Your n8n Groq webhook
+  N8N_PUBLISH_WEBHOOK: 'http://localhost:5678/webhook/publish-blog'  // Your n8n publish webhook
 };
 
 // Affiliate Links Database
@@ -42,8 +41,8 @@ window.AFFILIATE_LINKS = {
 
 // Debug logging
 console.log('✅ Config loaded');
-console.log('Key present:', !!window.ENV.GROQ_API_KEY);
-console.log('Key length:', window.ENV.GROQ_API_KEY ? window.ENV.GROQ_API_KEY.length : 0);
+console.log('Groq webhook:', window.ENV.N8N_GROQ_WEBHOOK);
+console.log('Publish webhook:', window.ENV.N8N_PUBLISH_WEBHOOK);
 console.log('Affiliate links loaded:', Object.keys(window.AFFILIATE_LINKS).length);
 </script>
 
@@ -564,7 +563,7 @@ body {
   <div class="header">
     <h1>🚀 AI-Powered Blog Editor</h1>
     <p class="subtitle">Create world-class blog posts in minutes</p>
-    <span class="ai-badge">✨ AI Enhanced</span>
+    <span class="ai-badge">✨ AI Enhanced via n8n</span>
   </div>
   
   <div class="tabs">
@@ -841,9 +840,8 @@ Wrap up with a strong conclusion..."
 
 <script data-cfasync="false">
 // Configuration loaded from window.ENV
-const GROQ_API_KEY = window.ENV?.GROQ_API_KEY || '';
-const N8N_WEBHOOK_URL = window.ENV?.N8N_WEBHOOK_URL || '';
-const GROQ_MODEL = window.ENV?.GROQ_MODEL || 'llama-3.3-70b-versatile';
+const N8N_GROQ_WEBHOOK = window.ENV?.N8N_GROQ_WEBHOOK || '';
+const N8N_PUBLISH_WEBHOOK = window.ENV?.N8N_PUBLISH_WEBHOOK || '';
 const AFFILIATE_LINKS = window.AFFILIATE_LINKS || {};
 
 // State
@@ -860,6 +858,29 @@ document.addEventListener('DOMContentLoaded', () => {
   setupAffiliateLinks();
   updatePreview();
 });
+
+// Helper function to call Groq via n8n webhook
+async function callGroqViaWebhook(prompt) {
+  if (!N8N_GROQ_WEBHOOK) {
+    throw new Error('n8n Groq webhook URL not configured');
+  }
+  
+  const response = await fetch(N8N_GROQ_WEBHOOK, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ prompt })
+  });
+  
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Webhook request failed: ${errorText}`);
+  }
+  
+  const data = await response.json();
+  return data.content;
+}
 
 // Tab Management
 function switchTab(index) {
@@ -1156,7 +1177,7 @@ function updateQualityScore() {
 
 // AI Functions
 
-// AI Content Generation with Groq
+// AI Content Generation via n8n
 async function generateAIContent() {
   const topic = document.getElementById('aiTopic').value.trim();
   const category = document.getElementById('category').value;
@@ -1171,31 +1192,15 @@ async function generateAIContent() {
     return;
   }
   
-  // FIXED: Check for valid API key
-  if (!GROQ_API_KEY || GROQ_API_KEY === 'YOUR_GROQ_API_KEY_HERE') {
-    showMessage('❌ Groq API key not configured. Please update the API key in the HTML file.', 'error');
-    return;
-  }
-  
   const btn = document.getElementById('aiGenerateBtn');
   const originalHTML = btn.innerHTML;
   btn.innerHTML = '<span class="loading-spinner"></span> Generating...';
   btn.disabled = true;
   
-  showMessage('🤖 AI is generating your content... This may take 10-20 seconds.', 'info');
+  showMessage('🤖 AI is generating your content via n8n... This may take 10-20 seconds.', 'info');
   
   try {
-    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${GROQ_API_KEY}`
-      },
-      body: JSON.stringify({
-        model: GROQ_MODEL,
-        messages: [{
-          role: 'user',
-          content: `You are a professional interior design blogger writing for Wow Glam Decor.
+    const prompt = `You are a professional interior design blogger writing for Wow Glam Decor.
 
 Create a comprehensive, engaging blog post about: ${topic}
 
@@ -1213,20 +1218,9 @@ Requirements:
 - Structure: Intro → 5-7 Main Sections → Conclusion
 - Naturally mention relevant stores/brands (Wayfair, IKEA, West Elm, Target, Amazon, etc.) where appropriate for affiliate linking
 
-Write ONLY the blog post content in markdown format. Do not include any preamble or explanation.`
-        }],
-        temperature: 0.7,
-        max_tokens: 4000
-      })
-    });
+Write ONLY the blog post content in markdown format. Do not include any preamble or explanation.`;
     
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error?.message || `API request failed with status ${response.status}`);
-    }
-    
-    const data = await response.json();
-    const content = data.choices[0].message.content;
+    const content = await callGroqViaWebhook(prompt);
     
     // Set the content
     document.getElementById('content').value = content;
@@ -1244,7 +1238,7 @@ Write ONLY the blog post content in markdown format. Do not include any preamble
     showMessage('✅ Content generated successfully! Now add affiliate links in the Affiliate Links tab.', 'success');
   } catch (error) {
     console.error('AI Error:', error);
-    showMessage(`❌ AI generation failed: ${error.message}. Please check your API key and try again.`, 'error');
+    showMessage(`❌ AI generation failed: ${error.message}`, 'error');
   } finally {
     btn.innerHTML = originalHTML;
     btn.disabled = false;
@@ -1259,31 +1253,15 @@ async function aiImprove() {
     return;
   }
   
-  // FIXED: Check for valid API key
-  if (!GROQ_API_KEY || GROQ_API_KEY === 'YOUR_GROQ_API_KEY_HERE') {
-    showMessage('❌ Groq API key not configured. Please update the API key in the HTML file.', 'error');
-    return;
-  }
-  
   const btn = event.target;
   const originalHTML = btn.innerHTML;
   btn.innerHTML = '<span class="loading-spinner"></span> Improving...';
   btn.disabled = true;
   
-  showMessage('🤖 AI is improving your content...', 'info');
+  showMessage('🤖 AI is improving your content via n8n...', 'info');
   
   try {
-    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${GROQ_API_KEY}`
-      },
-      body: JSON.stringify({
-        model: GROQ_MODEL,
-        messages: [{
-          role: 'user',
-          content: `You are an expert editor for an interior design blog. Improve the following blog post content while maintaining its core message and structure:
+    const prompt = `You are an expert editor for an interior design blog. Improve the following blog post content while maintaining its core message and structure:
 
 ${content}
 
@@ -1297,20 +1275,9 @@ Improvements to make:
 - Maintain the same approximate length
 - Preserve any existing affiliate links (markdown format [text](url))
 
-Return ONLY the improved content, no explanations.`
-        }],
-        temperature: 0.7,
-        max_tokens: 4000
-      })
-    });
+Return ONLY the improved content, no explanations.`;
     
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error?.message || 'API request failed');
-    }
-    
-    const data = await response.json();
-    const improvedContent = data.choices[0].message.content;
+    const improvedContent = await callGroqViaWebhook(prompt);
     
     document.getElementById('content').value = improvedContent;
     
@@ -1337,26 +1304,10 @@ async function aiSEO() {
     return;
   }
   
-  // If no API key, use fallback
-  if (!GROQ_API_KEY || GROQ_API_KEY === 'YOUR_GROQ_API_KEY_HERE') {
-    autoGenerateSEO();
-    return;
-  }
-  
-  showMessage('🤖 AI is generating SEO metadata...', 'info');
+  showMessage('🤖 AI is generating SEO metadata via n8n...', 'info');
   
   try {
-    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${GROQ_API_KEY}`
-      },
-      body: JSON.stringify({
-        model: GROQ_MODEL,
-        messages: [{
-          role: 'user',
-          content: `Create SEO-optimized metadata for this blog post.
+    const prompt = `Create SEO-optimized metadata for this blog post.
 
 Title: ${title}
 
@@ -1373,20 +1324,14 @@ Format your response as JSON:
   "metaDescription": "..."
 }
 
-Return ONLY the JSON, nothing else.`
-        }],
-        temperature: 0.5,
-        max_tokens: 200
-      })
-    });
+Return ONLY the JSON, nothing else.`;
     
-    if (!response.ok) {
-      throw new Error('API request failed');
+    const response = await callGroqViaWebhook(prompt);
+    const jsonMatch = response.match(/\{[\s\S]*\}/);
+    
+    if (!jsonMatch) {
+      throw new Error('Invalid response format');
     }
-    
-    const data = await response.json();
-    const jsonMatch = data.choices[0].message.content.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) throw new Error('Invalid response format');
     
     const result = JSON.parse(jsonMatch[0]);
     
@@ -1423,7 +1368,6 @@ function autoGenerateSEO() {
   
   showMessage('✅ SEO metadata auto-generated!', 'success');
 }
-
 
 // Preview
 function updatePreview() {
@@ -1555,7 +1499,7 @@ function setupFormSubmit() {
     };
     
     try {
-      const response = await fetch(N8N_WEBHOOK_URL, {
+      const response = await fetch(N8N_PUBLISH_WEBHOOK, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
