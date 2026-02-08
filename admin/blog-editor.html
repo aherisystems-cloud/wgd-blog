@@ -4,7 +4,9 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>⚡ Fast AI Blog Editor | Wow Glam Decor</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
 
 <script>
 // ============================================
@@ -29,7 +31,7 @@ window.AFFILIATE_LINKS = {
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: 'Nunito', system-ui, -apple-system, sans-serif;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   min-height: 100vh;
   padding: 40px 20px;
@@ -43,7 +45,7 @@ body {
   overflow: hidden;
 }
 .header {
-  background: linear-gradient(135deg, #1A1D2E, #2D3250);
+  background: linear-gradient(135deg, #7B1FA2, #9C4DCC);
   color: white;
   padding: 48px;
   text-align: center;
@@ -52,6 +54,10 @@ body {
   font-size: 2.5rem;
   margin-bottom: 12px;
   font-weight: 800;
+}
+.subtitle {
+  font-size: 1.1rem;
+  opacity: 0.95;
 }
 .ai-badge {
   display: inline-block;
@@ -89,10 +95,11 @@ body {
   background: transparent;
   transition: all 0.3s;
   font-size: 1rem;
+  font-family: 'Nunito', sans-serif;
 }
 .tab.active {
   background: white;
-  color: #667eea;
+  color: #7B1FA2;
 }
 .tab-content {
   display: none;
@@ -123,7 +130,7 @@ body {
   padding: 14px 16px;
   border: 2px solid #E5E7EB;
   border-radius: 12px;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 0.95rem;
   transition: all 0.2s;
 }
@@ -131,8 +138,8 @@ body {
 .form-group select:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #7B1FA2;
+  box-shadow: 0 0 0 3px rgba(123, 31, 162, 0.1);
 }
 .form-group textarea {
   min-height: 500px;
@@ -153,8 +160,8 @@ body {
 .counter.warning { color: #F59E0B; }
 .counter.bad { color: #DC2626; }
 .ai-assistant {
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
-  border: 2px solid #667eea;
+  background: linear-gradient(135deg, rgba(123, 31, 162, 0.1), rgba(156, 77, 204, 0.1));
+  border: 2px solid #7B1FA2;
   border-radius: 16px;
   padding: 24px;
   margin-bottom: 32px;
@@ -175,20 +182,20 @@ body {
   font-size: 0.95rem;
   cursor: pointer;
   transition: all 0.2s;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Nunito', sans-serif;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
 }
 .btn-primary {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #7B1FA2, #9C4DCC);
   color: white;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 4px 12px rgba(123, 31, 162, 0.4);
 }
 .btn-primary:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+  box-shadow: 0 6px 20px rgba(123, 31, 162, 0.5);
 }
 .btn-primary:disabled {
   opacity: 0.6;
@@ -292,18 +299,23 @@ body {
   background: white;
   padding: 24px;
   border-radius: 12px;
-  font-family: Georgia, serif;
+  font-family: 'Nunito', sans-serif;
   line-height: 1.8;
 }
 .preview-content h2 {
   margin: 24px 0 12px;
   color: #1A1D2E;
   font-size: 1.75rem;
+  font-weight: 800;
 }
 .preview-content h3 {
   margin: 20px 0 10px;
   color: #374151;
   font-size: 1.25rem;
+  font-weight: 700;
+}
+.preview-content p {
+  margin-bottom: 16px;
 }
 .submit-section {
   margin-top: 48px;
@@ -335,7 +347,7 @@ body {
   min-height: 52px;
 }
 .tag {
-  background: #667eea;
+  background: #7B1FA2;
   color: white;
   padding: 6px 12px;
   border-radius: 20px;
@@ -362,7 +374,7 @@ body {
   flex: 1;
   border: none;
   outline: none;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 0.95rem;
   min-width: 120px;
 }
@@ -394,6 +406,36 @@ body {
   font-size: 0.85rem;
   font-weight: 700;
 }
+.google-preview {
+  background: white;
+  border: 2px solid #E5E7EB;
+  border-radius: 16px;
+  padding: 24px;
+  margin-top: 24px;
+}
+.google-preview h3 {
+  margin-bottom: 16px;
+  color: #1A1D2E;
+}
+.google-preview-content {
+  font-family: Arial, sans-serif;
+}
+.google-title {
+  color: #1a0dab;
+  font-size: 20px;
+  margin-bottom: 4px;
+  font-weight: 400;
+}
+.google-url {
+  color: #006621;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+.google-desc {
+  color: #545454;
+  font-size: 14px;
+  line-height: 1.4;
+}
 @media (max-width: 1024px) {
   .form-grid { grid-template-columns: 1fr; }
 }
@@ -404,7 +446,7 @@ body {
 <div class="container">
   <div class="header">
     <h1>⚡ Fast AI Blog Editor</h1>
-    <p class="subtitle">Create world-class blog posts in minutes</p>
+    <p class="subtitle">Create world-class blog posts in minutes with your template</p>
     <span class="ai-badge">✨ Powered by Groq LLaMA 3.3</span>
   </div>
   
@@ -417,6 +459,7 @@ body {
     <button class="tab" onclick="switchTab(1)">🎯 SEO</button>
     <button class="tab" onclick="switchTab(2)">💰 Affiliate</button>
     <button class="tab" onclick="switchTab(3)">👁️ Preview</button>
+    <button class="tab" onclick="switchTab(4)">📄 Export</button>
   </div>
   
   <form id="blogForm">
@@ -548,7 +591,7 @@ Add your first key insight..."
               type="text" 
               id="seoTitle" 
               placeholder="Auto-generated from post title"
-              oninput="updateSEOTitleCounter()"
+              oninput="updateSEOTitleCounter(); updateGooglePreview();"
             />
             <p class="form-hint">
               <span id="seoTitleCounter" class="counter">0 / 60 characters</span>
@@ -561,29 +604,29 @@ Add your first key insight..."
               id="seoDescription" 
               placeholder="A compelling 150-160 character description..."
               rows="4"
-              oninput="updateSEODescCounter()"
+              oninput="updateSEODescCounter(); updateGooglePreview();"
             ></textarea>
             <p class="form-hint">
               <span id="seoDescCounter" class="counter">0 / 160 characters</span>
             </p>
           </div>
           
-          <button type="button" class="btn btn-secondary" onclick="autoGenerateSEO()">
-            ✨ Auto-Generate SEO
+          <button type="button" class="btn btn-ai" onclick="aiSEO()">
+            ✨ Generate SEO with AI
           </button>
         </div>
         
         <div>
-          <div class="preview-panel">
+          <div class="google-preview">
             <h3>🔍 Google Preview</h3>
-            <div style="font-family: Arial, sans-serif;">
-              <div style="color: #1a0dab; font-size: 20px; margin-bottom: 4px;" id="googleTitle">
+            <div class="google-preview-content">
+              <div class="google-title" id="googleTitle">
                 Your title will appear here
               </div>
-              <div style="color: #006621; font-size: 14px; margin-bottom: 8px;" id="googleUrl">
+              <div class="google-url" id="googleUrl">
                 wowglamdecor.com › posts › your-slug
               </div>
-              <div style="color: #545454; font-size: 14px;" id="googleDesc">
+              <div class="google-desc" id="googleDesc">
                 Your meta description will appear here...
               </div>
             </div>
@@ -625,19 +668,36 @@ Add your first key insight..."
       </div>
     </div>
     
-    <div class="submit-section">
-      <button type="button" class="btn btn-secondary" onclick="saveDraft()">
-        💾 Save Draft
-      </button>
-      <button type="button" class="btn btn-secondary" onclick="exportMarkdown()">
-        📥 Download MD
-      </button>
-      <button type="button" class="btn btn-secondary" onclick="copyToClipboard()">
-        📋 Copy HTML
-      </button>
-      <button type="button" class="btn btn-primary" onclick="copyMarkdown()">
-        🚀 Copy Markdown
-      </button>
+    <!-- TAB 5: EXPORT -->
+    <div class="tab-content">
+      <div style="max-width: 800px; margin: 0 auto;">
+        <h2 style="margin-bottom: 24px;">📥 Export Your Blog Post</h2>
+        
+        <div class="form-group">
+          <label>Author Name</label>
+          <input type="text" id="authorName" value="Sarah Mitchell" placeholder="Enter author name">
+        </div>
+        
+        <div class="form-group">
+          <label>Author Bio</label>
+          <textarea id="authorBio" rows="3" placeholder="Brief author bio...">Interior design enthusiast and home decor blogger with over 10 years of experience transforming spaces.</textarea>
+        </div>
+        
+        <div class="submit-section">
+          <button type="button" class="btn btn-secondary" onclick="saveDraft()">
+            💾 Save Draft
+          </button>
+          <button type="button" class="btn btn-secondary" onclick="exportMarkdown()">
+            📥 Download MD
+          </button>
+          <button type="button" class="btn btn-secondary" onclick="copyToClipboard()">
+            📋 Copy HTML
+          </button>
+          <button type="button" class="btn btn-primary" onclick="exportFullHTML()">
+            🚀 Export Full HTML
+          </button>
+        </div>
+      </div>
     </div>
   </form>
 </div>
@@ -657,6 +717,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupCounters();
   setupAffiliateLinks();
   updatePreview();
+  updateGooglePreview();
   loadDraft();
 });
 
@@ -711,37 +772,43 @@ async function generateAIContent() {
   showMessage('🤖 AI is generating your content... This may take 15-30 seconds.', 'info');
   
   try {
-    const prompt = `You are a professional interior design blogger.
+    const prompt = `You are a professional interior design blogger writing for Wow Glam Decor.
 
 Create a comprehensive blog post about: ${topic}
 
 Category: ${category || 'Home Decor'}
 Target: 1500-2000 words
-Tone: Professional yet friendly
+Tone: Professional yet friendly, conversational
 
 Requirements:
-- Use markdown (## for headings, ### for subheadings)
-- Include practical tips and advice
-- Write engagingly
-- Strong intro and conclusion
-- Mention stores naturally (Wayfair, IKEA, West Elm, Target, Amazon)
+- Use markdown format (## for main headings, ### for subheadings)
+- Include practical, actionable tips
+- Write in an engaging, personal tone
+- Strong introduction that hooks readers
+- Clear, organized sections with descriptive headings
+- Helpful conclusion with key takeaways
+- Naturally mention these stores where relevant: Wayfair, IKEA, West Elm, Target, Amazon
+- DO NOT include affiliate links - just mention store names naturally in the text
 
-Write ONLY the blog content in markdown. No preamble.`;
+Write ONLY the blog content in markdown format. No preamble or explanations.`;
     
     const content = await callGroqAPI(prompt);
     
     document.getElementById('content').value = content;
     document.getElementById('title').value = topic;
     
-    const excerpt = content.substring(0, 155).replace(/[#*\[\]]/g, '') + '...';
+    // Auto-generate SEO description
+    const firstParagraph = content.split('\n\n').find(p => !p.startsWith('#') && p.trim().length > 0) || '';
+    const excerpt = firstParagraph.substring(0, 155).replace(/[#*\[\]]/g, '').trim() + '...';
     document.getElementById('seoDescription').value = excerpt;
     
     updateWordCount();
     updateTitleCounter();
     updateSEODescCounter();
     updateQualityScore();
+    updateGooglePreview();
     
-    showMessage('✅ Content generated! Add affiliate links in the Affiliate tab.', 'success');
+    showMessage('✅ Content generated! Now go to the Affiliate tab to add affiliate links.', 'success');
   } catch (error) {
     showMessage(`❌ Error: ${error.message}`, 'error');
   } finally {
@@ -765,25 +832,26 @@ async function aiImprove() {
   showMessage('🤖 AI is improving your content...', 'info');
   
   try {
-    const prompt = `Improve this blog post content:
+    const prompt = `Improve this blog post content while maintaining the same structure:
 
 ${content}
 
-Improvements:
-- Better readability
-- More engaging language
-- Better transitions
-- Fix grammar
-- Keep markdown format
-- Preserve affiliate links [text](url)
+Improvements needed:
+- Better readability and flow
+- More engaging, conversational language
+- Better transitions between sections
+- Fix any grammar or style issues
+- Keep all markdown formatting (##, ###, etc.)
+- Preserve any existing affiliate links in [text](url) format
+- Make it sound more natural and less robotic
 
-Return ONLY improved content.`;
+Return ONLY the improved content in markdown format. No explanations.`;
     
     const improved = await callGroqAPI(prompt);
     document.getElementById('content').value = improved;
     updateWordCount();
     updateQualityScore();
-    showMessage('✅ Content improved!', 'success');
+    showMessage('✅ Content improved successfully!', 'success');
   } catch (error) {
     showMessage(`❌ Error: ${error.message}`, 'error');
   } finally {
@@ -801,37 +869,58 @@ async function aiSEO() {
     return;
   }
   
+  const btn = event.target;
+  const originalHTML = btn.innerHTML;
+  btn.innerHTML = '<span class="loading-spinner"></span> Generating SEO...';
+  btn.disabled = true;
+  
   showMessage('🤖 Generating SEO metadata...', 'info');
   
   try {
-    const prompt = `Create SEO metadata:
+    // Get first few paragraphs for context
+    const contentPreview = content.substring(0, 800);
+    
+    const prompt = `Create SEO metadata for this blog post:
 
 Title: ${title}
-Content: ${content.substring(0, 500)}...
+Content preview: ${contentPreview}
 
-Generate JSON:
+Generate:
+1. SEO Title (50-60 characters, keyword-rich, compelling)
+2. Meta Description (140-155 characters, include main benefit, compelling call to action)
+
+Format your response as JSON:
 {
-  "seoTitle": "50-60 chars, keyword-rich",
-  "metaDescription": "140-155 chars, compelling"
+  "seoTitle": "your seo title here",
+  "metaDescription": "your meta description here"
 }
 
-Return ONLY JSON.`;
+Return ONLY the JSON, nothing else.`;
     
     const response = await callGroqAPI(prompt);
-    const match = response.match(/\{[\s\S]*\}/);
     
-    if (match) {
-      const result = JSON.parse(match[0]);
+    // Extract JSON from response
+    const jsonMatch = response.match(/\{[\s\S]*\}/);
+    
+    if (jsonMatch) {
+      const result = JSON.parse(jsonMatch[0]);
       document.getElementById('seoTitle').value = result.seoTitle;
       document.getElementById('seoDescription').value = result.metaDescription;
       updateSEOTitleCounter();
       updateSEODescCounter();
-      showMessage('✅ SEO metadata generated!', 'success');
+      updateGooglePreview();
+      showMessage('✅ SEO metadata generated successfully!', 'success');
     } else {
-      autoGenerateSEO();
+      throw new Error('Could not parse AI response');
     }
   } catch (error) {
+    console.error('AI SEO Error:', error);
+    // Fallback to simple auto-generation
     autoGenerateSEO();
+    showMessage('✅ SEO auto-generated (fallback mode)', 'success');
+  } finally {
+    btn.innerHTML = originalHTML;
+    btn.disabled = false;
   }
 }
 
@@ -879,7 +968,7 @@ function insertAffiliateLinks() {
   }
   
   if (selectedAffiliateLinks.length === 0) {
-    showMessage('Please select affiliate links', 'error');
+    showMessage('Please select at least one affiliate link', 'error');
     return;
   }
   
@@ -888,34 +977,44 @@ function insertAffiliateLinks() {
   
   selectedAffiliateLinks.forEach(key => {
     const url = AFFILIATE_LINKS[key];
-    const regex = new RegExp(`\\b(${key})\\b(?!\\])`, 'gi');
+    // Case-insensitive regex to find store names not already in links
+    const regex = new RegExp(`\\b(${key})\\b(?!\\]|\\))`, 'gi');
     const matches = content.match(regex);
     
     if (matches) {
+      let count = 0;
       let replaced = false;
+      
       updated = updated.replace(regex, (match) => {
+        // Only link the first mention
         if (!replaced) {
           replaced = true;
-          insertedAffiliateLinks.push({key, count: matches.length});
+          count++;
           return `[${match}](${url})`;
         }
         return match;
       });
+      
+      if (count > 0) {
+        insertedAffiliateLinks.push({key, count: matches.length});
+      }
     }
   });
   
   document.getElementById('content').value = updated;
   updateAffiliateStats();
   updateQualityScore();
-  showMessage(`✅ Inserted ${insertedAffiliateLinks.length} links!`, 'success');
+  showMessage(`✅ Inserted ${insertedAffiliateLinks.length} affiliate link(s)!`, 'success');
 }
 
 function updateAffiliateStats() {
   const div = document.getElementById('affiliateStats');
   if (insertedAffiliateLinks.length === 0) {
-    div.innerHTML = '<p>No links inserted yet.</p>';
+    div.innerHTML = '<p>No affiliate links inserted yet.</p>';
     return;
   }
+  
+  const totalMentions = insertedAffiliateLinks.reduce((sum, link) => sum + link.count, 0);
   
   const html = `
     <div style="display: grid; gap: 12px;">
@@ -927,11 +1026,12 @@ function updateAffiliateStats() {
       `).join('')}
     </div>
     <div style="margin-top: 16px; padding: 12px; background: #D1FAE5; border-radius: 8px; text-align: center;">
-      <strong>Total: ${insertedAffiliateLinks.reduce((sum, link) => sum + link.count, 0)} links</strong>
+      <strong>Total: ${totalMentions} mention${totalMentions > 1 ? 's' : ''}</strong>
     </div>
   `;
   div.innerHTML = html;
   
+  // Update counts in affiliate grid
   insertedAffiliateLinks.forEach(link => {
     const i = Object.keys(AFFILIATE_LINKS).indexOf(link.key);
     const el = document.getElementById(`count_${i}`);
@@ -990,6 +1090,7 @@ function updateTitleCounter() {
   counter.textContent = `${len} / 60 characters`;
   counter.className = 'counter ' + (len > 60 ? 'bad' : len > 50 ? 'warning' : len > 40 ? 'good' : '');
   updateQualityScore();
+  updateGooglePreview();
 }
 
 function updateWordCount() {
@@ -1003,6 +1104,7 @@ function updateWordCount() {
   const counter = document.getElementById('wordCounter');
   counter.className = 'counter ' + (words >= 1000 ? 'good' : words >= 500 ? 'warning' : 'bad');
   updateQualityScore();
+  updatePreview();
 }
 
 function updateSEOTitleCounter() {
@@ -1021,28 +1123,45 @@ function updateSEODescCounter() {
   counter.className = 'counter ' + (len > 160 ? 'bad' : len > 150 ? 'warning' : len >= 120 ? 'good' : '');
 }
 
+function updateGooglePreview() {
+  const title = document.getElementById('title').value || 'Your title will appear here';
+  const seoTitle = document.getElementById('seoTitle').value || title;
+  const seoDesc = document.getElementById('seoDescription').value || 'Your meta description will appear here...';
+  const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'your-slug';
+  
+  document.getElementById('googleTitle').textContent = seoTitle;
+  document.getElementById('googleUrl').textContent = `wowglamdecor.com › posts › ${slug}`;
+  document.getElementById('googleDesc').textContent = seoDesc;
+}
+
 function updateQualityScore() {
   const title = document.getElementById('title').value;
   const content = document.getElementById('content').value;
-  const words = content.trim().split(/\s+/).length;
+  const words = content.trim().split(/\s+/).filter(w => w.length > 0).length;
   const headings = (content.match(/^##\s/gm) || []).length;
   const links = (content.match(/\[.*?\]\(http.*?\)/g) || []).length;
   
   let score = 0;
+  
+  // Title score (25 points)
   if (title.length >= 40 && title.length <= 60) score += 25;
   else if (title.length > 0) score += 10;
   
+  // Content length score (35 points)
   if (words >= 1500) score += 35;
   else if (words >= 1000) score += 25;
   else if (words >= 500) score += 15;
   
+  // Headings score (20 points)
   if (headings >= 5) score += 20;
   else if (headings >= 3) score += 12;
   else if (headings >= 1) score += 5;
   
+  // Tags score (10 points)
   if (tags.length >= 3) score += 10;
   else if (tags.length >= 1) score += 5;
   
+  // Affiliate links score (10 points)
   if (links >= 3) score += 10;
   else if (links >= 1) score += 5;
   
@@ -1063,18 +1182,22 @@ function autoGenerateSEO() {
   const title = document.getElementById('title').value;
   const content = document.getElementById('content').value;
   
-  const excerpt = content
-    .replace(/^#+\s/gm, '')
-    .split('\n\n')[0]
-    .substring(0, 155)
-    .replace(/[#*\[\]]/g, '') + '...';
+  if (!title) {
+    showMessage('Please add a title first', 'error');
+    return;
+  }
+  
+  // Extract first paragraph for description
+  const firstParagraph = content.split('\n\n').find(p => !p.startsWith('#') && p.trim().length > 0) || '';
+  const excerpt = firstParagraph.substring(0, 155).replace(/[#*\[\]]/g, '').trim() + '...';
   
   document.getElementById('seoTitle').value = title.substring(0, 50) + ' | Wow Glam Decor';
   document.getElementById('seoDescription').value = excerpt;
   
   updateSEOTitleCounter();
   updateSEODescCounter();
-  showMessage('✅ SEO auto-generated!', 'success');
+  updateGooglePreview();
+  showMessage('✅ SEO metadata auto-generated!', 'success');
 }
 
 function updatePreview() {
@@ -1082,19 +1205,25 @@ function updatePreview() {
   const preview = document.getElementById('previewContent');
   
   if (!content) {
-    preview.innerHTML = '<p>Your preview will appear here...</p>';
+    preview.innerHTML = '<p>Your blog post preview will appear here...</p>';
     return;
   }
   
+  // Convert markdown to HTML
   const html = content
     .replace(/^## (.*$)/gm, '<h2>$1</h2>')
     .replace(/^### (.*$)/gm, '<h3>$1</h3>')
-    .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" style="color: #667eea; text-decoration: underline;">$1</a>')
+    .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" style="color: #7B1FA2; text-decoration: underline;">$1</a>')
     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
     .replace(/\*(.*?)\*/g, '<em>$1</em>')
     .split('\n\n')
-    .map(p => p.trim() && !p.startsWith('<') ? `<p>${p}</p>` : p)
-    .join('');
+    .map(p => {
+      p = p.trim();
+      if (!p) return '';
+      if (p.startsWith('<h')) return p;
+      return `<p>${p}</p>`;
+    })
+    .join('\n');
   
   preview.innerHTML = html;
 }
@@ -1107,13 +1236,15 @@ function saveDraft() {
     content: document.getElementById('content').value,
     seoTitle: document.getElementById('seoTitle').value,
     seoDescription: document.getElementById('seoDescription').value,
+    authorName: document.getElementById('authorName').value,
+    authorBio: document.getElementById('authorBio').value,
     selectedAffiliateLinks,
     insertedAffiliateLinks,
     savedAt: new Date().toISOString()
   };
   
   localStorage.setItem('wgd_blog_draft', JSON.stringify(draft));
-  showMessage('💾 Draft saved!', 'success');
+  showMessage('💾 Draft saved successfully!', 'success');
 }
 
 function loadDraft() {
@@ -1127,6 +1258,8 @@ function loadDraft() {
     document.getElementById('content').value = data.content || '';
     document.getElementById('seoTitle').value = data.seoTitle || '';
     document.getElementById('seoDescription').value = data.seoDescription || '';
+    document.getElementById('authorName').value = data.authorName || 'Sarah Mitchell';
+    document.getElementById('authorBio').value = data.authorBio || 'Interior design enthusiast and home decor blogger with over 10 years of experience transforming spaces.';
     
     if (data.selectedAffiliateLinks) {
       selectedAffiliateLinks = data.selectedAffiliateLinks;
@@ -1143,42 +1276,749 @@ function loadDraft() {
     }
     
     setupCounters();
+    updateGooglePreview();
     showMessage('📥 Draft loaded from ' + new Date(data.savedAt).toLocaleString(), 'info');
   }
 }
 
 function exportMarkdown() {
   const content = document.getElementById('content').value;
-  const title = document.getElementById('title').value;
+  const title = document.getElementById('title').value || 'blog-post';
   const blob = new Blob([content], { type: 'text/markdown' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `${title.toLowerCase().replace(/\s+/g, '-')}.md`;
+  a.download = `${title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.md`;
   a.click();
-  showMessage('📥 Markdown downloaded!', 'success');
-}
-
-function copyMarkdown() {
-  const content = document.getElementById('content').value;
-  navigator.clipboard.writeText(content);
-  showMessage('📋 Markdown copied to clipboard!', 'success');
+  URL.revokeObjectURL(url);
+  showMessage('📥 Markdown file downloaded!', 'success');
 }
 
 function copyToClipboard() {
   const content = document.getElementById('content').value;
+  
+  // Convert markdown to HTML
   const html = content
     .replace(/^## (.*$)/gm, '<h2>$1</h2>')
     .replace(/^### (.*$)/gm, '<h3>$1</h3>')
-    .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2">$1</a>')
+    .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" rel="sponsored nofollow">$1</a>')
     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
     .replace(/\*(.*?)\*/g, '<em>$1</em>')
     .split('\n\n')
-    .map(p => p.trim() && !p.startsWith('<') ? `<p>${p}</p>` : p)
-    .join('\n');
+    .map(p => {
+      p = p.trim();
+      if (!p) return '';
+      if (p.startsWith('<h')) return p;
+      return `<p>${p}</p>`;
+    })
+    .join('\n\n');
   
   navigator.clipboard.writeText(html);
   showMessage('📋 HTML copied to clipboard!', 'success');
+}
+
+function exportFullHTML() {
+  const title = document.getElementById('title').value;
+  const category = document.getElementById('category').value;
+  const content = document.getElementById('content').value;
+  const seoTitle = document.getElementById('seoTitle').value || title;
+  const seoDesc = document.getElementById('seoDescription').value;
+  const authorName = document.getElementById('authorName').value || 'Sarah Mitchell';
+  const authorBio = document.getElementById('authorBio').value;
+  
+  if (!title || !content) {
+    showMessage('Please add at least a title and content', 'error');
+    return;
+  }
+  
+  // Convert markdown to HTML
+  const articleHTML = content
+    .replace(/^## (.*$)/gm, '<h2>$1</h2>')
+    .replace(/^### (.*$)/gm, '<h3>$1</h3>')
+    .replace(/^#### (.*$)/gm, '<h4>$1</h4>')
+    .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" rel="sponsored nofollow">$1</a>')
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .split('\n\n')
+    .map(p => {
+      p = p.trim();
+      if (!p) return '';
+      if (p.startsWith('<h')) return p;
+      if (p.startsWith('-') || p.startsWith('*')) {
+        const items = p.split('\n').map(item => {
+          const cleaned = item.replace(/^[-*]\s*/, '').trim();
+          return cleaned ? `  <li>${cleaned}</li>` : '';
+        }).filter(Boolean).join('\n');
+        return `<ul>\n${items}\n</ul>`;
+      }
+      return `<p>${p}</p>`;
+    })
+    .join('\n\n');
+  
+  // Generate slug
+  const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const categorySlug = category.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+  
+  // Generate tags HTML
+  const tagsHTML = tags.map(tag => {
+    const tagSlug = tag.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    return `<a href="/tag/${tagSlug}" class="tag">${tag}</a>`;
+  }).join('\n        ');
+  
+  // Current date
+  const now = new Date();
+  const publishDate = now.toISOString();
+  const publishDateFormatted = now.toLocaleDateString('en-US', { 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric' 
+  });
+  
+  // Calculate read time
+  const words = content.split(/\s+/).filter(w => w.length > 0).length;
+  const readTime = Math.ceil(words / 200);
+  
+  // Keywords from tags
+  const keywords = tags.join(', ');
+  
+  // Template
+  const template = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<!-- Primary SEO Meta Tags -->
+<title>${seoTitle}</title>
+<meta name="title" content="${seoTitle}" />
+<meta name="description" content="${seoDesc}" />
+<meta name="keywords" content="${keywords}" />
+<meta name="author" content="${authorName}" />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<link rel="canonical" content="https://wowglamdecor.com/posts/${slug}.html" />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://wowglamdecor.com/posts/${slug}.html" />
+<meta property="og:title" content="${seoTitle}" />
+<meta property="og:description" content="${seoDesc}" />
+<meta property="og:image" content="https://wowglamdecor.com/content/images/${slug}-hero.jpg" />
+<meta property="og:site_name" content="Wow Glam Decor" />
+<meta property="article:published_time" content="${publishDate}" />
+<meta property="article:author" content="${authorName}" />
+<meta property="article:section" content="${category}" />
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content="https://wowglamdecor.com/posts/${slug}.html" />
+<meta property="twitter:title" content="${seoTitle}" />
+<meta property="twitter:description" content="${seoDesc}" />
+<meta property="twitter:image" content="https://wowglamdecor.com/content/images/${slug}-hero.jpg" />
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+
+<!-- Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "${title}",
+  "description": "${seoDesc}",
+  "image": {
+    "@type": "ImageObject",
+    "url": "https://wowglamdecor.com/content/images/${slug}-hero.jpg",
+    "width": 1200,
+    "height": 630
+  },
+  "author": {
+    "@type": "Person",
+    "name": "${authorName}"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Wow Glam Decor",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://wowglamdecor.com/content/images/logo.jpg",
+      "width": 600,
+      "height": 60
+    }
+  },
+  "datePublished": "${publishDate}",
+  "dateModified": "${publishDate}",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://wowglamdecor.com/posts/${slug}.html"
+  },
+  "articleSection": "${category}",
+  "keywords": ["${keywords}"]
+}
+</script>
+
+<style>
+/* ====== CSS Variables ====== */
+:root {
+  --purple-primary: #7B1FA2;
+  --purple-dark: #4A0072;
+  --purple-light: #9C4DCC;
+  --white: #FFFFFF;
+  --off-white: #FAFAFA;
+  --gray-100: #F5F5F5;
+  --gray-200: #EEEEEE;
+  --gray-300: #E0E0E0;
+  --gray-600: #757575;
+  --gray-800: #424242;
+  --gray-900: #212121;
+  --accent-gold: #FFD700;
+  --accent-coral: #FF6B6B;
+  --shadow-sm: 0 2px 8px rgba(123, 31, 162, 0.08);
+  --shadow-md: 0 8px 24px rgba(123, 31, 162, 0.12);
+  --shadow-lg: 0 16px 48px rgba(123, 31, 162, 0.18);
+  --shadow-xl: 0 24px 64px rgba(123, 31, 162, 0.24);
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Nunito', system-ui, -apple-system, sans-serif;
+  background: var(--off-white);
+  color: var(--gray-900);
+  line-height: 1.8;
+}
+
+/* ====== Progress Bar ====== */
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--purple-primary), var(--purple-light));
+  width: 0%;
+  z-index: 1000;
+  transition: width 0.1s ease;
+  box-shadow: 0 2px 8px rgba(123, 31, 162, 0.3);
+}
+
+/* ====== Navigation ====== */
+.navbar {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  height: 48px;
+  width: auto;
+}
+
+.nav-back {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--gray-800);
+  font-weight: 600;
+  transition: var(--transition);
+  text-decoration: none;
+}
+
+.nav-back:hover {
+  color: var(--purple-primary);
+  gap: 12px;
+}
+
+/* ====== Breadcrumbs ====== */
+.breadcrumbs {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 16px 24px;
+  font-size: 14px;
+  color: var(--gray-600);
+}
+
+.breadcrumbs a {
+  color: var(--purple-primary);
+  transition: var(--transition);
+  text-decoration: none;
+}
+
+.breadcrumbs a:hover {
+  color: var(--purple-dark);
+}
+
+.breadcrumbs span {
+  margin: 0 8px;
+}
+
+/* ====== Hero Header ====== */
+.hero-header {
+  position: relative;
+  height: 60vh;
+  min-height: 500px;
+  max-height: 700px;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  background: var(--gray-900);
+}
+
+.hero-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.7;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.8) 100%);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 48px 24px;
+  color: var(--white);
+}
+
+.category-badge {
+  display: inline-block;
+  background: var(--purple-primary);
+  color: var(--white);
+  padding: 8px 18px;
+  border-radius: 24px;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-md);
+}
+
+.hero-title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 900;
+  line-height: 1.2;
+  margin-bottom: 20px;
+  text-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.hero-meta {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  font-size: 15px;
+  opacity: 0.95;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.author-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--white);
+}
+
+.meta-dot {
+  width: 4px;
+  height: 4px;
+  background: rgba(255,255,255,0.6);
+  border-radius: 50%;
+}
+
+/* ====== Article Container ====== */
+.article-container {
+  max-width: 1400px;
+  margin: -80px auto 0;
+  position: relative;
+  z-index: 10;
+  padding: 0 24px;
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 48px;
+  align-items: start;
+}
+
+.article-main {
+  background: var(--white);
+  border-radius: 24px 24px 0 0;
+  box-shadow: var(--shadow-lg);
+  padding: 64px 48px 48px;
+}
+
+/* ====== Affiliate Disclosure ====== */
+.affiliate-disclosure {
+  background: rgba(123, 31, 162, 0.05);
+  border-left: 4px solid var(--purple-primary);
+  padding: 16px 20px;
+  margin-bottom: 32px;
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--gray-800);
+  line-height: 1.6;
+}
+
+.affiliate-disclosure strong {
+  color: var(--purple-primary);
+  font-weight: 700;
+}
+
+.affiliate-disclosure a {
+  color: var(--purple-primary);
+  text-decoration: underline;
+}
+
+/* ====== Article Content ====== */
+.article-content {
+  font-size: 18px;
+  line-height: 1.8;
+  color: var(--gray-800);
+}
+
+.article-content h2 {
+  font-size: 2rem;
+  font-weight: 800;
+  margin: 48px 0 20px;
+  color: var(--gray-900);
+  line-height: 1.3;
+}
+
+.article-content h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 36px 0 16px;
+  color: var(--gray-900);
+}
+
+.article-content h4 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 28px 0 12px;
+  color: var(--purple-primary);
+}
+
+.article-content p {
+  margin-bottom: 24px;
+}
+
+.article-content ul,
+.article-content ol {
+  margin: 24px 0;
+  padding-left: 28px;
+}
+
+.article-content li {
+  margin-bottom: 12px;
+}
+
+.article-content li::marker {
+  color: var(--purple-primary);
+}
+
+.article-content a {
+  color: var(--purple-primary);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: rgba(123, 31, 162, 0.3);
+  text-underline-offset: 3px;
+  transition: var(--transition);
+}
+
+.article-content a:hover {
+  text-decoration-color: var(--purple-primary);
+}
+
+/* ====== Tags Section ====== */
+.article-tags {
+  margin: 48px 0;
+  padding: 32px 0;
+  border-top: 2px solid var(--gray-200);
+  border-bottom: 2px solid var(--gray-200);
+}
+
+.tags-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--gray-600);
+  margin-bottom: 12px;
+}
+
+.tags-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.tag {
+  padding: 8px 16px;
+  background: var(--gray-100);
+  color: var(--gray-800);
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: var(--transition);
+  text-decoration: none;
+}
+
+.tag:hover {
+  background: rgba(123, 31, 162, 0.1);
+  color: var(--purple-primary);
+  transform: translateY(-2px);
+}
+
+/* ====== Author Bio ====== */
+.author-bio {
+  margin: 48px 0;
+  padding: 32px;
+  background: var(--gray-100);
+  border-radius: 20px;
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.author-bio-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid var(--white);
+  box-shadow: var(--shadow-md);
+  flex-shrink: 0;
+}
+
+.author-bio-content h3 {
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+  color: var(--gray-900);
+}
+
+.author-bio-content p {
+  font-size: 15px;
+  color: var(--gray-600);
+  margin-bottom: 0;
+}
+
+/* ====== Scroll to Top Button ====== */
+.scroll-top {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--purple-primary);
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  visibility: hidden;
+  transition: var(--transition);
+  font-size: 24px;
+  z-index: 99;
+  border: none;
+}
+
+.scroll-top.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.scroll-top:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 24px 64px rgba(123, 31, 162, 0.24);
+}
+
+/* ====== Responsive ====== */
+@media (max-width: 1200px) {
+  .article-container {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-header {
+    height: 50vh;
+    min-height: 400px;
+  }
+  
+  .article-main {
+    padding: 32px 24px;
+  }
+  
+  .article-content {
+    font-size: 16px;
+  }
+  
+  .author-bio {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- PROGRESS BAR -->
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- NAVIGATION -->
+<nav class="navbar">
+  <div class="nav-container">
+    <a href="/" aria-label="Wow Glam Decor Homepage">
+      <img src="/content/images/logo.jpg" alt="Wow Glam Decor Logo" class="logo">
+    </a>
+    <a href="/blog.html" class="nav-back">← Back to Blog</a>
+  </div>
+</nav>
+
+<!-- BREADCRUMBS -->
+<nav class="breadcrumbs" aria-label="Breadcrumb navigation">
+  <a href="/">Home</a>
+  <span>›</span>
+  <a href="/blog.html">Blog</a>
+  <span>›</span>
+  <a href="/category/${categorySlug}">${category}</a>
+  <span>›</span>
+  <span>${title}</span>
+</nav>
+
+<!-- HERO HEADER -->
+<header class="hero-header">
+  <img src="/content/images/${slug}-hero.jpg" alt="${title}" class="hero-image" loading="eager">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <span class="category-badge">${category}</span>
+    <h1 class="hero-title">${title}</h1>
+    <div class="hero-meta">
+      <div class="meta-item">
+        <img src="/content/images/author-avatar.jpg" alt="${authorName}" class="author-avatar">
+        <span><strong>${authorName}</strong></span>
+      </div>
+      <span class="meta-dot"></span>
+      <time class="meta-item" datetime="${publishDate}">${publishDateFormatted}</time>
+      <span class="meta-dot"></span>
+      <span class="meta-item">${readTime} min read</span>
+    </div>
+  </div>
+</header>
+
+<!-- ARTICLE CONTAINER -->
+<div class="article-container">
+  
+  <!-- MAIN ARTICLE -->
+  <article class="article-main">
+    
+    <!-- AFFILIATE DISCLOSURE -->
+    <div class="affiliate-disclosure">
+      <strong>💡 Affiliate Disclosure:</strong> This post contains affiliate links. If you purchase through our links, we may earn a small commission at no extra cost to you. We only recommend products we genuinely use and love. <a href="/affiliate-disclosure" rel="nofollow">Read our full disclosure policy</a>.
+    </div>
+    
+    <div class="article-content">
+      ${articleHTML}
+    </div>
+    
+    <!-- TAGS -->
+    <div class="article-tags">
+      <div class="tags-title">Tagged in:</div>
+      <div class="tags-list">
+        ${tagsHTML}
+      </div>
+    </div>
+    
+    <!-- AUTHOR BIO -->
+    <div class="author-bio">
+      <img src="/content/images/author-avatar.jpg" alt="${authorName}" class="author-bio-avatar">
+      <div class="author-bio-content">
+        <h3>${authorName}</h3>
+        <p>${authorBio}</p>
+      </div>
+    </div>
+    
+  </article>
+  
+</div>
+
+<!-- SCROLL TO TOP -->
+<button class="scroll-top" id="scrollTop" aria-label="Scroll to top">↑</button>
+
+<script>
+// Progress Bar
+window.addEventListener('scroll', () => {
+  const windowHeight = window.innerHeight;
+  const documentHeight = document.documentElement.scrollHeight;
+  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  const progress = (scrollTop / (documentHeight - windowHeight)) * 100;
+  document.getElementById('progressBar').style.width = progress + '%';
+  
+  // Show/hide scroll to top button
+  const scrollTopBtn = document.getElementById('scrollTop');
+  if (scrollTop > 500) {
+    scrollTopBtn.classList.add('visible');
+  } else {
+    scrollTopBtn.classList.remove('visible');
+  }
+});
+
+// Scroll to top
+document.getElementById('scrollTop').addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+</script>
+
+</body>
+</html>`;
+
+  // Download the file
+  const blob = new Blob([template], { type: 'text/html' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `${slug}.html`;
+  a.click();
+  URL.revokeObjectURL(url);
+  
+  showMessage('🚀 Full HTML exported! Upload to your website.', 'success');
 }
 
 function showMessage(message, type = 'info') {
