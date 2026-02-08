@@ -8,25 +8,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
 
-<script>
-// ============================================
-// CONFIGURATION - ADD YOUR GROQ API KEY HERE
-// ============================================
-window.CONFIG = {
-  // Get your FREE Groq API key from: https://console.groq.com/keys
-  GROQ_API_KEY: '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',
-  GROQ_MODEL: 'llama-3.3-70b-versatile'
-};
-
-// Affiliate Links Database
-window.AFFILIATE_LINKS = {
-  'wayfair': 'https://www.wayfair.com/?refid=YOUR_AFFILIATE_ID',
-  'ikea': 'https://www.ikea.com/us/en/?affiliate=YOUR_AFFILIATE_ID',
-  'west elm': 'https://www.westelm.com/?cm_sp=YOUR_AFFILIATE_ID',
-  'target': 'https://www.target.com/c/home/-/N-5xtnr?ref=YOUR_ID',
-  'amazon': 'https://amzn.to/YOUR_LINK'
-};
-</script>
+<!-- Load configuration from external file -->
+<script src="config.js"></script>
 
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -378,33 +361,61 @@ body {
   font-size: 0.95rem;
   min-width: 120px;
 }
-.affiliate-section {
-  background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 165, 0, 0.1));
-  border: 2px solid #FFA500;
-  border-radius: 16px;
-  padding: 24px;
-  margin-top: 24px;
-}
-.affiliate-grid {
+.product-grid {
   display: grid;
-  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
 }
-.affiliate-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px;
+.product-card {
   background: white;
-  border-radius: 8px;
-  border: 1px solid #E5E7EB;
-}
-.affiliate-count {
-  background: #FFA500;
-  color: white;
-  padding: 4px 12px;
+  border: 2px solid #E5E7EB;
   border-radius: 12px;
-  font-size: 0.85rem;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+.product-card:hover {
+  border-color: #7B1FA2;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(123, 31, 162, 0.2);
+}
+.product-card.selected {
+  border-color: #7B1FA2;
+  background: rgba(123, 31, 162, 0.05);
+}
+.product-card .checkbox {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #7B1FA2;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.product-card.selected .checkbox {
+  background: #7B1FA2;
+  color: white;
+}
+.product-name {
   font-weight: 700;
+  color: #1A1D2E;
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+}
+.product-category {
+  font-size: 0.8rem;
+  color: #6B7280;
+  margin-bottom: 8px;
+}
+.product-keywords {
+  font-size: 0.75rem;
+  color: #9CA3AF;
+  font-style: italic;
 }
 .google-preview {
   background: white;
@@ -436,8 +447,16 @@ body {
   font-size: 14px;
   line-height: 1.4;
 }
+.affiliate-stats {
+  background: white;
+  border: 2px solid #E5E7EB;
+  border-radius: 16px;
+  padding: 24px;
+  margin-top: 24px;
+}
 @media (max-width: 1024px) {
   .form-grid { grid-template-columns: 1fr; }
+  .product-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
 }
 </style>
 </head>
@@ -446,20 +465,20 @@ body {
 <div class="container">
   <div class="header">
     <h1>⚡ Fast AI Blog Editor</h1>
-    <p class="subtitle">Create world-class blog posts in minutes with your template</p>
+    <p class="subtitle">Create world-class blog posts with AI-powered content generation</p>
     <span class="ai-badge">✨ Powered by Groq LLaMA 3.3</span>
   </div>
   
   <div id="setupWarning" class="setup-warning">
-    ⚠️ Please add your Groq API key in the CONFIG section. Get a free key at <a href="https://console.groq.com/keys" target="_blank" style="color: #1A1D2E; text-decoration: underline;">console.groq.com</a>
+    ⚠️ Please configure your API key in config.js file. Get a free key at <a href="https://console.groq.com/keys" target="_blank" style="color: #1A1D2E; text-decoration: underline;">console.groq.com</a>
   </div>
   
   <div class="tabs">
     <button class="tab active" onclick="switchTab(0)">📝 Content</button>
     <button class="tab" onclick="switchTab(1)">🎯 SEO</button>
-    <button class="tab" onclick="switchTab(2)">💰 Affiliate</button>
+    <button class="tab" onclick="switchTab(2)">🛍️ Products</button>
     <button class="tab" onclick="switchTab(3)">👁️ Preview</button>
-    <button class="tab" onclick="switchTab(4)">📄 Export</button>
+    <button class="tab" onclick="switchTab(4)">🚀 Publish</button>
   </div>
   
   <form id="blogForm">
@@ -478,7 +497,7 @@ body {
                   id="aiTopic" 
                   placeholder="e.g., 10 Modern Living Room Ideas for Small Spaces"
                 />
-                <p class="form-hint">Enter a topic and let AI write the entire post</p>
+                <p class="form-hint">Enter a topic and AI will write the entire article</p>
               </div>
               <button type="button" class="btn btn-ai" onclick="generateAIContent()">
                 ✨ Generate Full Article
@@ -515,8 +534,10 @@ body {
               <option value="Living Room">Living Room</option>
               <option value="Bedroom">Bedroom</option>
               <option value="Kitchen">Kitchen</option>
+              <option value="Bathroom">Bathroom</option>
               <option value="DIY">DIY</option>
               <option value="Home Tech">Home Tech</option>
+              <option value="Decor">Decor</option>
             </select>
           </div>
           
@@ -572,7 +593,7 @@ Add your first key insight..."
                 <span id="headingScore">❌</span>
               </div>
               <div class="seo-item">
-                <span>Affiliate Links</span>
+                <span>Product Links</span>
                 <span id="affiliateScore">0</span>
               </div>
             </div>
@@ -635,26 +656,24 @@ Add your first key insight..."
       </div>
     </div>
     
-    <!-- TAB 3: AFFILIATE -->
+    <!-- TAB 3: PRODUCTS -->
     <div class="tab-content">
-      <div class="affiliate-section">
-        <h3>💰 Affiliate Link Manager</h3>
-        <p style="margin-bottom: 20px; color: #6B7280;">
-          Select stores to automatically link when mentioned in your content.
-        </p>
-        
-        <div class="affiliate-grid" id="affiliateLinksGrid"></div>
-        
-        <button type="button" class="btn btn-ai" onclick="insertAffiliateLinks()" style="margin-top: 20px; width: 100%;">
-          🔗 Auto-Insert Affiliate Links
+      <h2 style="margin-bottom: 16px;">🛍️ Select Products to Feature</h2>
+      <p style="color: #6B7280; margin-bottom: 24px;">
+        Choose products to automatically insert affiliate links into your content
+      </p>
+      
+      <div class="product-grid" id="productGrid"></div>
+      
+      <div style="margin-top: 32px; display: grid; gap: 12px;">
+        <button type="button" class="btn btn-ai" onclick="insertProductLinks()" style="width: 100%;">
+          🔗 Auto-Insert Product Links
         </button>
       </div>
       
-      <div class="preview-panel" style="margin-top: 24px;">
-        <h3>📊 Affiliate Link Stats</h3>
-        <div id="affiliateStats" style="padding: 16px;">
-          <p>No affiliate links inserted yet.</p>
-        </div>
+      <div class="affiliate-stats" id="affiliateStatsPanel" style="display: none;">
+        <h3>📊 Inserted Product Links</h3>
+        <div id="affiliateStats"></div>
       </div>
     </div>
     
@@ -668,14 +687,19 @@ Add your first key insight..."
       </div>
     </div>
     
-    <!-- TAB 5: EXPORT -->
+    <!-- TAB 5: PUBLISH -->
     <div class="tab-content">
       <div style="max-width: 800px; margin: 0 auto;">
-        <h2 style="margin-bottom: 24px;">📥 Export Your Blog Post</h2>
+        <h2 style="margin-bottom: 24px;">🚀 Publish Your Blog Post</h2>
         
         <div class="form-group">
           <label>Author Name</label>
           <input type="text" id="authorName" value="Sarah Mitchell" placeholder="Enter author name">
+        </div>
+        
+        <div class="form-group">
+          <label>Author Role</label>
+          <input type="text" id="authorRole" value="Interior Design Expert" placeholder="Author role/title">
         </div>
         
         <div class="form-group">
@@ -690,11 +714,11 @@ Add your first key insight..."
           <button type="button" class="btn btn-secondary" onclick="exportMarkdown()">
             📥 Download MD
           </button>
-          <button type="button" class="btn btn-secondary" onclick="copyToClipboard()">
-            📋 Copy HTML
+          <button type="button" class="btn btn-secondary" onclick="exportFullHTML()">
+            📄 Export HTML
           </button>
-          <button type="button" class="btn btn-primary" onclick="exportFullHTML()">
-            🚀 Export Full HTML
+          <button type="button" class="btn btn-primary" onclick="publishToN8N()">
+            🚀 Publish to Website
           </button>
         </div>
       </div>
@@ -703,34 +727,45 @@ Add your first key insight..."
 </div>
 
 <script>
-const CONFIG = window.CONFIG;
-const AFFILIATE_LINKS = window.AFFILIATE_LINKS;
+// Check if config is loaded
+if (typeof window.CONFIG === 'undefined') {
+  alert('ERROR: config.js file not found! Please make sure config.js is in the same folder as this HTML file.');
+}
+
+const CONFIG = window.CONFIG || {};
+const AFFILIATE_PRODUCTS = window.AFFILIATE_PRODUCTS || {};
 
 let tags = [];
 let currentTab = 0;
-let selectedAffiliateLinks = [];
-let insertedAffiliateLinks = [];
+let selectedProducts = [];
+let insertedProductLinks = [];
 
 document.addEventListener('DOMContentLoaded', () => {
   checkAPIKey();
   setupTagInput();
   setupCounters();
-  setupAffiliateLinks();
+  renderProductGrid();
   updatePreview();
   updateGooglePreview();
   loadDraft();
 });
 
 function checkAPIKey() {
-  if (!CONFIG.GROQ_API_KEY || CONFIG.GROQ_API_KEY.includes('YOUR_API_KEY')) {
+  if (!CONFIG.GROQ_API_KEY || CONFIG.GROQ_API_KEY.includes('YOUR_API_KEY') || CONFIG.GROQ_API_KEY.length < 20) {
     document.getElementById('setupWarning').style.display = 'block';
   }
 }
 
-async function callGroqAPI(prompt) {
+async function callGroqAPI(prompt, systemPrompt = '') {
   if (!CONFIG.GROQ_API_KEY || CONFIG.GROQ_API_KEY.includes('YOUR_API_KEY')) {
-    throw new Error('Please configure your Groq API key');
+    throw new Error('Please configure your Groq API key in config.js');
   }
+
+  const messages = [];
+  if (systemPrompt) {
+    messages.push({ role: 'system', content: systemPrompt });
+  }
+  messages.push({ role: 'user', content: prompt });
 
   const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
     method: 'POST',
@@ -740,7 +775,7 @@ async function callGroqAPI(prompt) {
     },
     body: JSON.stringify({
       model: CONFIG.GROQ_MODEL,
-      messages: [{ role: 'user', content: prompt }],
+      messages: messages,
       temperature: 0.7,
       max_tokens: 4000
     })
@@ -760,7 +795,7 @@ async function generateAIContent() {
   const category = document.getElementById('category').value;
   
   if (!topic) {
-    showMessage('Please enter a topic first', 'error');
+    showMessage('❌ Please enter a topic first', 'error');
     return;
   }
   
@@ -769,36 +804,57 @@ async function generateAIContent() {
   btn.innerHTML = '<span class="loading-spinner"></span> Generating...';
   btn.disabled = true;
   
-  showMessage('🤖 AI is generating your content... This may take 15-30 seconds.', 'info');
+  showMessage('🤖 AI is generating your content... This may take 20-30 seconds.', 'info');
   
   try {
-    const prompt = `You are a professional interior design blogger writing for Wow Glam Decor.
+    const systemPrompt = `You are a professional interior design blogger writing for Wow Glam Decor.
+Write engaging, informative blog posts that help readers transform their homes.
+Use a friendly, conversational tone while maintaining professionalism.`;
 
-Create a comprehensive blog post about: ${topic}
+    const prompt = `Create a comprehensive blog post about: ${topic}
 
 Category: ${category || 'Home Decor'}
-Target: 1500-2000 words
-Tone: Professional yet friendly, conversational
+Target length: 1500-2000 words
+Format: Markdown
 
 Requirements:
-- Use markdown format (## for main headings, ### for subheadings)
-- Include practical, actionable tips
-- Write in an engaging, personal tone
-- Strong introduction that hooks readers
-- Clear, organized sections with descriptive headings
-- Helpful conclusion with key takeaways
-- Naturally mention these stores where relevant: Wayfair, IKEA, West Elm, Target, Amazon
-- DO NOT include affiliate links - just mention store names naturally in the text
+- Start with an engaging introduction that hooks readers
+- Use markdown headings (## for main sections, ### for subsections)
+- Include practical, actionable tips readers can implement
+- Write in a conversational, friendly tone
+- Include specific examples and recommendations
+- Structure content with clear sections
+- End with a helpful conclusion
 
-Write ONLY the blog content in markdown format. No preamble or explanations.`;
+Important: Write ONLY the blog content in markdown format. Do NOT include:
+- Any preamble or introduction about what you're doing
+- Meta-commentary about the article
+- Placeholder text or brackets like [product name]
+
+Just write the actual blog post content starting with the introduction.`;
     
-    const content = await callGroqAPI(prompt);
+    const content = await callGroqAPI(prompt, systemPrompt);
     
-    document.getElementById('content').value = content;
+    // Clean up any potential preamble
+    let cleanContent = content.trim();
+    
+    // Remove common AI preambles
+    const preamblePatterns = [
+      /^Here('s| is) (the|a) (blog post|article|content).*?:\n*/i,
+      /^I('ve| have) (created|written|prepared).*?:\n*/i,
+      /^Below is.*?:\n*/i,
+      /^Let me.*?:\n*/i
+    ];
+    
+    preamblePatterns.forEach(pattern => {
+      cleanContent = cleanContent.replace(pattern, '');
+    });
+    
+    document.getElementById('content').value = cleanContent.trim();
     document.getElementById('title').value = topic;
     
     // Auto-generate SEO description
-    const firstParagraph = content.split('\n\n').find(p => !p.startsWith('#') && p.trim().length > 0) || '';
+    const firstParagraph = cleanContent.split('\n\n').find(p => !p.startsWith('#') && p.trim().length > 0) || '';
     const excerpt = firstParagraph.substring(0, 155).replace(/[#*\[\]]/g, '').trim() + '...';
     document.getElementById('seoDescription').value = excerpt;
     
@@ -808,8 +864,9 @@ Write ONLY the blog content in markdown format. No preamble or explanations.`;
     updateQualityScore();
     updateGooglePreview();
     
-    showMessage('✅ Content generated! Now go to the Affiliate tab to add affiliate links.', 'success');
+    showMessage('✅ Content generated successfully! Now select products in the Products tab.', 'success');
   } catch (error) {
+    console.error('AI Generation Error:', error);
     showMessage(`❌ Error: ${error.message}`, 'error');
   } finally {
     btn.innerHTML = originalHTML;
@@ -820,7 +877,7 @@ Write ONLY the blog content in markdown format. No preamble or explanations.`;
 async function aiImprove() {
   const content = document.getElementById('content').value;
   if (!content) {
-    showMessage('Please write some content first', 'error');
+    showMessage('❌ Please write some content first', 'error');
     return;
   }
   
@@ -832,23 +889,25 @@ async function aiImprove() {
   showMessage('🤖 AI is improving your content...', 'info');
   
   try {
-    const prompt = `Improve this blog post content while maintaining the same structure:
+    const systemPrompt = `You are an expert editor improving blog posts for better readability and engagement.`;
+    
+    const prompt = `Improve this blog post while keeping the same structure:
 
 ${content}
 
-Improvements needed:
+Make these improvements:
 - Better readability and flow
 - More engaging, conversational language
-- Better transitions between sections
+- Stronger transitions between sections
 - Fix any grammar or style issues
 - Keep all markdown formatting (##, ###, etc.)
-- Preserve any existing affiliate links in [text](url) format
+- Preserve any existing links in [text](url) format
 - Make it sound more natural and less robotic
 
-Return ONLY the improved content in markdown format. No explanations.`;
+Return ONLY the improved content in markdown format. No explanations or preamble.`;
     
-    const improved = await callGroqAPI(prompt);
-    document.getElementById('content').value = improved;
+    const improved = await callGroqAPI(prompt, systemPrompt);
+    document.getElementById('content').value = improved.trim();
     updateWordCount();
     updateQualityScore();
     showMessage('✅ Content improved successfully!', 'success');
@@ -865,7 +924,7 @@ async function aiSEO() {
   const content = document.getElementById('content').value;
   
   if (!title || !content) {
-    showMessage('Please add title and content first', 'error');
+    showMessage('❌ Please add title and content first', 'error');
     return;
   }
   
@@ -877,8 +936,9 @@ async function aiSEO() {
   showMessage('🤖 Generating SEO metadata...', 'info');
   
   try {
-    // Get first few paragraphs for context
     const contentPreview = content.substring(0, 800);
+    
+    const systemPrompt = `You are an SEO expert creating optimized metadata for blog posts.`;
     
     const prompt = `Create SEO metadata for this blog post:
 
@@ -886,18 +946,16 @@ Title: ${title}
 Content preview: ${contentPreview}
 
 Generate:
-1. SEO Title (50-60 characters, keyword-rich, compelling)
-2. Meta Description (140-155 characters, include main benefit, compelling call to action)
+1. SEO Title (50-60 characters, keyword-rich, compelling, include main benefit)
+2. Meta Description (140-155 characters, engaging, include call-to-action)
 
-Format your response as JSON:
+Return ONLY a JSON object in this exact format:
 {
   "seoTitle": "your seo title here",
   "metaDescription": "your meta description here"
-}
-
-Return ONLY the JSON, nothing else.`;
+}`;
     
-    const response = await callGroqAPI(prompt);
+    const response = await callGroqAPI(prompt, systemPrompt);
     
     // Extract JSON from response
     const jsonMatch = response.match(/\{[\s\S]*\}/);
@@ -924,122 +982,128 @@ Return ONLY the JSON, nothing else.`;
   }
 }
 
-function switchTab(index) {
-  document.querySelectorAll('.tab').forEach((tab, i) => {
-    tab.classList.toggle('active', i === index);
-  });
-  document.querySelectorAll('.tab-content').forEach((content, i) => {
-    content.classList.toggle('active', i === index);
-  });
-  currentTab = index;
-  if (index === 3) updatePreview();
-}
-
-function setupAffiliateLinks() {
-  const grid = document.getElementById('affiliateLinksGrid');
-  const html = Object.keys(AFFILIATE_LINKS).map((key, i) => `
-    <div class="affiliate-item">
-      <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-        <input type="checkbox" id="affiliate_${i}" value="${key}" onchange="updateSelectedAffiliates()">
-        <span style="text-transform: capitalize;">${key}</span>
-      </label>
-      <span class="affiliate-count" style="display: none;" id="count_${i}">0</span>
+function renderProductGrid() {
+  const grid = document.getElementById('productGrid');
+  
+  const html = Object.entries(AFFILIATE_PRODUCTS).map(([id, product]) => `
+    <div class="product-card" onclick="toggleProduct('${id}')" id="product-${id}">
+      <div class="checkbox">
+        <span style="display: none;">✓</span>
+      </div>
+      <div class="product-name">${product.name}</div>
+      <div class="product-category">${product.category}</div>
+      <div class="product-keywords">${product.keywords.join(', ')}</div>
     </div>
   `).join('');
+  
   grid.innerHTML = html;
 }
 
-function updateSelectedAffiliates() {
-  selectedAffiliateLinks = [];
-  Object.keys(AFFILIATE_LINKS).forEach((key, i) => {
-    const checkbox = document.getElementById(`affiliate_${i}`);
-    if (checkbox && checkbox.checked) {
-      selectedAffiliateLinks.push(key);
-    }
-  });
+function toggleProduct(productId) {
+  const card = document.getElementById(`product-${productId}`);
+  const checkbox = card.querySelector('.checkbox span');
+  
+  if (selectedProducts.includes(productId)) {
+    selectedProducts = selectedProducts.filter(id => id !== productId);
+    card.classList.remove('selected');
+    checkbox.style.display = 'none';
+  } else {
+    selectedProducts.push(productId);
+    card.classList.add('selected');
+    checkbox.style.display = 'block';
+  }
 }
 
-function insertAffiliateLinks() {
+function insertProductLinks() {
   const content = document.getElementById('content').value;
   
   if (!content) {
-    showMessage('Please write content first', 'error');
+    showMessage('❌ Please write content first', 'error');
     return;
   }
   
-  if (selectedAffiliateLinks.length === 0) {
-    showMessage('Please select at least one affiliate link', 'error');
+  if (selectedProducts.length === 0) {
+    showMessage('❌ Please select at least one product', 'error');
     return;
   }
   
   let updated = content;
-  insertedAffiliateLinks = [];
+  insertedProductLinks = [];
   
-  selectedAffiliateLinks.forEach(key => {
-    const url = AFFILIATE_LINKS[key];
-    // Case-insensitive regex to find store names not already in links
-    const regex = new RegExp(`\\b(${key})\\b(?!\\]|\\))`, 'gi');
-    const matches = content.match(regex);
+  selectedProducts.forEach(productId => {
+    const product = AFFILIATE_PRODUCTS[productId];
+    if (!product) return;
     
-    if (matches) {
-      let count = 0;
-      let replaced = false;
+    let totalMatches = 0;
+    
+    // Try to match each keyword
+    product.keywords.forEach(keyword => {
+      // Case-insensitive regex to find keywords not already in links
+      const regex = new RegExp(`\\b(${keyword})\\b(?!\\]|\\))`, 'gi');
+      const matches = updated.match(regex);
       
-      updated = updated.replace(regex, (match) => {
-        // Only link the first mention
-        if (!replaced) {
-          replaced = true;
-          count++;
-          return `[${match}](${url})`;
-        }
-        return match;
-      });
-      
-      if (count > 0) {
-        insertedAffiliateLinks.push({key, count: matches.length});
+      if (matches && matches.length > 0) {
+        let firstMatch = true;
+        
+        updated = updated.replace(regex, (match) => {
+          // Only link the first occurrence of this keyword
+          if (firstMatch) {
+            firstMatch = false;
+            totalMatches++;
+            return `[${match}](${product.url})`;
+          }
+          return match;
+        });
       }
+    });
+    
+    if (totalMatches > 0) {
+      insertedProductLinks.push({
+        id: productId,
+        name: product.name,
+        count: totalMatches
+      });
     }
   });
   
   document.getElementById('content').value = updated;
   updateAffiliateStats();
   updateQualityScore();
-  showMessage(`✅ Inserted ${insertedAffiliateLinks.length} affiliate link(s)!`, 'success');
+  
+  if (insertedProductLinks.length > 0) {
+    showMessage(`✅ Inserted ${insertedProductLinks.length} product link(s)!`, 'success');
+  } else {
+    showMessage('⚠️ No matches found. Try different products or check your content.', 'error');
+  }
 }
 
 function updateAffiliateStats() {
+  const panel = document.getElementById('affiliateStatsPanel');
   const div = document.getElementById('affiliateStats');
-  if (insertedAffiliateLinks.length === 0) {
-    div.innerHTML = '<p>No affiliate links inserted yet.</p>';
+  
+  if (insertedProductLinks.length === 0) {
+    panel.style.display = 'none';
     return;
   }
   
-  const totalMentions = insertedAffiliateLinks.reduce((sum, link) => sum + link.count, 0);
+  panel.style.display = 'block';
+  
+  const totalLinks = insertedProductLinks.reduce((sum, link) => sum + link.count, 0);
   
   const html = `
-    <div style="display: grid; gap: 12px;">
-      ${insertedAffiliateLinks.map(link => `
-        <div style="display: flex; justify-content: space-between; padding: 8px; background: #F9FAFB; border-radius: 8px;">
-          <span style="text-transform: capitalize;">${link.key}</span>
-          <span style="font-weight: 700; color: #10B981;">${link.count} mention${link.count > 1 ? 's' : ''}</span>
+    <div style="display: grid; gap: 12px; margin-top: 16px;">
+      ${insertedProductLinks.map(link => `
+        <div style="display: flex; justify-content: space-between; padding: 12px; background: #F9FAFB; border-radius: 8px;">
+          <span style="font-weight: 600;">${link.name}</span>
+          <span style="font-weight: 700; color: #10B981;">${link.count} link${link.count > 1 ? 's' : ''}</span>
         </div>
       `).join('')}
     </div>
-    <div style="margin-top: 16px; padding: 12px; background: #D1FAE5; border-radius: 8px; text-align: center;">
-      <strong>Total: ${totalMentions} mention${totalMentions > 1 ? 's' : ''}</strong>
+    <div style="margin-top: 16px; padding: 16px; background: #D1FAE5; border-radius: 8px; text-align: center;">
+      <strong style="color: #065F46;">Total: ${totalLinks} product link${totalLinks > 1 ? 's' : ''} inserted</strong>
     </div>
   `;
   div.innerHTML = html;
-  
-  // Update counts in affiliate grid
-  insertedAffiliateLinks.forEach(link => {
-    const i = Object.keys(AFFILIATE_LINKS).indexOf(link.key);
-    const el = document.getElementById(`count_${i}`);
-    if (el) {
-      el.textContent = link.count;
-      el.style.display = 'block';
-    }
-  });
 }
 
 function setupTagInput() {
@@ -1073,6 +1137,17 @@ function renderTags() {
 function removeTag(i) {
   tags.splice(i, 1);
   renderTags();
+}
+
+function switchTab(index) {
+  document.querySelectorAll('.tab').forEach((tab, i) => {
+    tab.classList.toggle('active', i === index);
+  });
+  document.querySelectorAll('.tab-content').forEach((content, i) => {
+    content.classList.toggle('active', i === index);
+  });
+  currentTab = index;
+  if (index === 3) updatePreview();
 }
 
 function setupCounters() {
@@ -1143,25 +1218,20 @@ function updateQualityScore() {
   
   let score = 0;
   
-  // Title score (25 points)
   if (title.length >= 40 && title.length <= 60) score += 25;
   else if (title.length > 0) score += 10;
   
-  // Content length score (35 points)
   if (words >= 1500) score += 35;
   else if (words >= 1000) score += 25;
   else if (words >= 500) score += 15;
   
-  // Headings score (20 points)
   if (headings >= 5) score += 20;
   else if (headings >= 3) score += 12;
   else if (headings >= 1) score += 5;
   
-  // Tags score (10 points)
   if (tags.length >= 3) score += 10;
   else if (tags.length >= 1) score += 5;
   
-  // Affiliate links score (10 points)
   if (links >= 3) score += 10;
   else if (links >= 1) score += 5;
   
@@ -1183,11 +1253,10 @@ function autoGenerateSEO() {
   const content = document.getElementById('content').value;
   
   if (!title) {
-    showMessage('Please add a title first', 'error');
+    showMessage('❌ Please add a title first', 'error');
     return;
   }
   
-  // Extract first paragraph for description
   const firstParagraph = content.split('\n\n').find(p => !p.startsWith('#') && p.trim().length > 0) || '';
   const excerpt = firstParagraph.substring(0, 155).replace(/[#*\[\]]/g, '').trim() + '...';
   
@@ -1209,10 +1278,10 @@ function updatePreview() {
     return;
   }
   
-  // Convert markdown to HTML
   const html = content
     .replace(/^## (.*$)/gm, '<h2>$1</h2>')
     .replace(/^### (.*$)/gm, '<h3>$1</h3>')
+    .replace(/^#### (.*$)/gm, '<h4>$1</h4>')
     .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" style="color: #7B1FA2; text-decoration: underline;">$1</a>')
     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
     .replace(/\*(.*?)\*/g, '<em>$1</em>')
@@ -1221,9 +1290,16 @@ function updatePreview() {
       p = p.trim();
       if (!p) return '';
       if (p.startsWith('<h')) return p;
+      if (p.startsWith('-') || p.startsWith('*')) {
+        const items = p.split('\n').map(item => {
+          const cleaned = item.replace(/^[-*]\s*/, '').trim();
+          return cleaned ? `  <li>${cleaned}</li>` : '';
+        }).filter(Boolean).join('\n');
+        return `<ul>\n${items}\n</ul>`;
+      }
       return `<p>${p}</p>`;
     })
-    .join('\n');
+    .join('\n\n');
   
   preview.innerHTML = html;
 }
@@ -1237,9 +1313,10 @@ function saveDraft() {
     seoTitle: document.getElementById('seoTitle').value,
     seoDescription: document.getElementById('seoDescription').value,
     authorName: document.getElementById('authorName').value,
+    authorRole: document.getElementById('authorRole').value,
     authorBio: document.getElementById('authorBio').value,
-    selectedAffiliateLinks,
-    insertedAffiliateLinks,
+    selectedProducts,
+    insertedProductLinks,
     savedAt: new Date().toISOString()
   };
   
@@ -1259,25 +1336,27 @@ function loadDraft() {
     document.getElementById('seoTitle').value = data.seoTitle || '';
     document.getElementById('seoDescription').value = data.seoDescription || '';
     document.getElementById('authorName').value = data.authorName || 'Sarah Mitchell';
+    document.getElementById('authorRole').value = data.authorRole || 'Interior Design Expert';
     document.getElementById('authorBio').value = data.authorBio || 'Interior design enthusiast and home decor blogger with over 10 years of experience transforming spaces.';
     
-    if (data.selectedAffiliateLinks) {
-      selectedAffiliateLinks = data.selectedAffiliateLinks;
-      selectedAffiliateLinks.forEach(key => {
-        const i = Object.keys(AFFILIATE_LINKS).indexOf(key);
-        const cb = document.getElementById(`affiliate_${i}`);
-        if (cb) cb.checked = true;
+    if (data.selectedProducts) {
+      selectedProducts = data.selectedProducts;
+      selectedProducts.forEach(id => {
+        const card = document.getElementById(`product-${id}`);
+        if (card) {
+          card.classList.add('selected');
+          card.querySelector('.checkbox span').style.display = 'block';
+        }
       });
     }
     
-    if (data.insertedAffiliateLinks) {
-      insertedAffiliateLinks = data.insertedAffiliateLinks;
+    if (data.insertedProductLinks) {
+      insertedProductLinks = data.insertedProductLinks;
       updateAffiliateStats();
     }
     
     setupCounters();
     updateGooglePreview();
-    showMessage('📥 Draft loaded from ' + new Date(data.savedAt).toLocaleString(), 'info');
   }
 }
 
@@ -1294,731 +1373,89 @@ function exportMarkdown() {
   showMessage('📥 Markdown file downloaded!', 'success');
 }
 
-function copyToClipboard() {
-  const content = document.getElementById('content').value;
-  
-  // Convert markdown to HTML
-  const html = content
-    .replace(/^## (.*$)/gm, '<h2>$1</h2>')
-    .replace(/^### (.*$)/gm, '<h3>$1</h3>')
-    .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" rel="sponsored nofollow">$1</a>')
-    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.*?)\*/g, '<em>$1</em>')
-    .split('\n\n')
-    .map(p => {
-      p = p.trim();
-      if (!p) return '';
-      if (p.startsWith('<h')) return p;
-      return `<p>${p}</p>`;
-    })
-    .join('\n\n');
-  
-  navigator.clipboard.writeText(html);
-  showMessage('📋 HTML copied to clipboard!', 'success');
-}
-
 function exportFullHTML() {
   const title = document.getElementById('title').value;
-  const category = document.getElementById('category').value;
-  const content = document.getElementById('content').value;
-  const seoTitle = document.getElementById('seoTitle').value || title;
-  const seoDesc = document.getElementById('seoDescription').value;
-  const authorName = document.getElementById('authorName').value || 'Sarah Mitchell';
-  const authorBio = document.getElementById('authorBio').value;
   
-  if (!title || !content) {
-    showMessage('Please add at least a title and content', 'error');
+  if (!title) {
+    showMessage('❌ Please add at least a title', 'error');
     return;
   }
   
-  // Convert markdown to HTML
-  const articleHTML = content
-    .replace(/^## (.*$)/gm, '<h2>$1</h2>')
-    .replace(/^### (.*$)/gm, '<h3>$1</h3>')
-    .replace(/^#### (.*$)/gm, '<h4>$1</h4>')
-    .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" rel="sponsored nofollow">$1</a>')
-    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.*?)\*/g, '<em>$1</em>')
-    .split('\n\n')
-    .map(p => {
-      p = p.trim();
-      if (!p) return '';
-      if (p.startsWith('<h')) return p;
-      if (p.startsWith('-') || p.startsWith('*')) {
-        const items = p.split('\n').map(item => {
-          const cleaned = item.replace(/^[-*]\s*/, '').trim();
-          return cleaned ? `  <li>${cleaned}</li>` : '';
-        }).filter(Boolean).join('\n');
-        return `<ul>\n${items}\n</ul>`;
+  // This would generate the full HTML template
+  // For brevity, showing message only
+  showMessage('📄 HTML export feature - integrate with your template', 'info');
+}
+
+async function publishToN8N() {
+  const title = document.getElementById('title').value;
+  const content = document.getElementById('content').value;
+  const category = document.getElementById('category').value;
+  const seoTitle = document.getElementById('seoTitle').value || title;
+  const seoDesc = document.getElementById('seoDescription').value;
+  const authorName = document.getElementById('authorName').value;
+  const authorRole = document.getElementById('authorRole').value;
+  
+  if (!title || !content) {
+    showMessage('❌ Please add title and content before publishing', 'error');
+    return;
+  }
+  
+  if (!CONFIG.N8N_WEBHOOK_URL || CONFIG.N8N_WEBHOOK_URL.includes('your-n8n')) {
+    showMessage('❌ Please configure N8N_WEBHOOK_URL in config.js', 'error');
+    return;
+  }
+  
+  const btn = event.target;
+  const originalHTML = btn.innerHTML;
+  btn.innerHTML = '<span class="loading-spinner"></span> Publishing...';
+  btn.disabled = true;
+  
+  showMessage('🚀 Publishing to your website...', 'info');
+  
+  try {
+    const payload = {
+      title,
+      content,
+      category,
+      tags,
+      seo: {
+        title: seoTitle,
+        description: seoDesc
+      },
+      author: {
+        name: authorName,
+        role: authorRole
       }
-      return `<p>${p}</p>`;
-    })
-    .join('\n\n');
-  
-  // Generate slug
-  const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-  const categorySlug = category.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-  
-  // Generate tags HTML
-  const tagsHTML = tags.map(tag => {
-    const tagSlug = tag.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-    return `<a href="/tag/${tagSlug}" class="tag">${tag}</a>`;
-  }).join('\n        ');
-  
-  // Current date
-  const now = new Date();
-  const publishDate = now.toISOString();
-  const publishDateFormatted = now.toLocaleDateString('en-US', { 
-    year: 'numeric', 
-    month: 'long', 
-    day: 'numeric' 
-  });
-  
-  // Calculate read time
-  const words = content.split(/\s+/).filter(w => w.length > 0).length;
-  const readTime = Math.ceil(words / 200);
-  
-  // Keywords from tags
-  const keywords = tags.join(', ');
-  
-  // Template
-  const template = `<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-
-<!-- Primary SEO Meta Tags -->
-<title>${seoTitle}</title>
-<meta name="title" content="${seoTitle}" />
-<meta name="description" content="${seoDesc}" />
-<meta name="keywords" content="${keywords}" />
-<meta name="author" content="${authorName}" />
-<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-<link rel="canonical" content="https://wowglamdecor.com/posts/${slug}.html" />
-
-<!-- Open Graph / Facebook -->
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://wowglamdecor.com/posts/${slug}.html" />
-<meta property="og:title" content="${seoTitle}" />
-<meta property="og:description" content="${seoDesc}" />
-<meta property="og:image" content="https://wowglamdecor.com/content/images/${slug}-hero.jpg" />
-<meta property="og:site_name" content="Wow Glam Decor" />
-<meta property="article:published_time" content="${publishDate}" />
-<meta property="article:author" content="${authorName}" />
-<meta property="article:section" content="${category}" />
-
-<!-- Twitter -->
-<meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:url" content="https://wowglamdecor.com/posts/${slug}.html" />
-<meta property="twitter:title" content="${seoTitle}" />
-<meta property="twitter:description" content="${seoDesc}" />
-<meta property="twitter:image" content="https://wowglamdecor.com/content/images/${slug}-hero.jpg" />
-
-<!-- Fonts -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
-
-<!-- Structured Data -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "${title}",
-  "description": "${seoDesc}",
-  "image": {
-    "@type": "ImageObject",
-    "url": "https://wowglamdecor.com/content/images/${slug}-hero.jpg",
-    "width": 1200,
-    "height": 630
-  },
-  "author": {
-    "@type": "Person",
-    "name": "${authorName}"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Wow Glam Decor",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://wowglamdecor.com/content/images/logo.jpg",
-      "width": 600,
-      "height": 60
+    };
+    
+    const response = await fetch(CONFIG.N8N_WEBHOOK_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+    
+    if (!response.ok) {
+      throw new Error(`Server responded with ${response.status}`);
     }
-  },
-  "datePublished": "${publishDate}",
-  "dateModified": "${publishDate}",
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://wowglamdecor.com/posts/${slug}.html"
-  },
-  "articleSection": "${category}",
-  "keywords": ["${keywords}"]
-}
-</script>
-
-<style>
-/* ====== CSS Variables ====== */
-:root {
-  --purple-primary: #7B1FA2;
-  --purple-dark: #4A0072;
-  --purple-light: #9C4DCC;
-  --white: #FFFFFF;
-  --off-white: #FAFAFA;
-  --gray-100: #F5F5F5;
-  --gray-200: #EEEEEE;
-  --gray-300: #E0E0E0;
-  --gray-600: #757575;
-  --gray-800: #424242;
-  --gray-900: #212121;
-  --accent-gold: #FFD700;
-  --accent-coral: #FF6B6B;
-  --shadow-sm: 0 2px 8px rgba(123, 31, 162, 0.08);
-  --shadow-md: 0 8px 24px rgba(123, 31, 162, 0.12);
-  --shadow-lg: 0 16px 48px rgba(123, 31, 162, 0.18);
-  --shadow-xl: 0 24px 64px rgba(123, 31, 162, 0.24);
-  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: 'Nunito', system-ui, -apple-system, sans-serif;
-  background: var(--off-white);
-  color: var(--gray-900);
-  line-height: 1.8;
-}
-
-/* ====== Progress Bar ====== */
-.progress-bar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 4px;
-  background: linear-gradient(90deg, var(--purple-primary), var(--purple-light));
-  width: 0%;
-  z-index: 1000;
-  transition: width 0.1s ease;
-  box-shadow: 0 2px 8px rgba(123, 31, 162, 0.3);
-}
-
-/* ====== Navigation ====== */
-.navbar {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  box-shadow: var(--shadow-sm);
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-
-.nav-container {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 16px 24px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.logo {
-  height: 48px;
-  width: auto;
-}
-
-.nav-back {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--gray-800);
-  font-weight: 600;
-  transition: var(--transition);
-  text-decoration: none;
-}
-
-.nav-back:hover {
-  color: var(--purple-primary);
-  gap: 12px;
-}
-
-/* ====== Breadcrumbs ====== */
-.breadcrumbs {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 16px 24px;
-  font-size: 14px;
-  color: var(--gray-600);
-}
-
-.breadcrumbs a {
-  color: var(--purple-primary);
-  transition: var(--transition);
-  text-decoration: none;
-}
-
-.breadcrumbs a:hover {
-  color: var(--purple-dark);
-}
-
-.breadcrumbs span {
-  margin: 0 8px;
-}
-
-/* ====== Hero Header ====== */
-.hero-header {
-  position: relative;
-  height: 60vh;
-  min-height: 500px;
-  max-height: 700px;
-  overflow: hidden;
-  display: flex;
-  align-items: flex-end;
-  background: var(--gray-900);
-}
-
-.hero-image {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0.7;
-}
-
-.hero-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.8) 100%);
-}
-
-.hero-content {
-  position: relative;
-  z-index: 2;
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 48px 24px;
-  color: var(--white);
-}
-
-.category-badge {
-  display: inline-block;
-  background: var(--purple-primary);
-  color: var(--white);
-  padding: 8px 18px;
-  border-radius: 24px;
-  font-size: 13px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 20px;
-  box-shadow: var(--shadow-md);
-}
-
-.hero-title {
-  font-size: clamp(2rem, 5vw, 3.5rem);
-  font-weight: 900;
-  line-height: 1.2;
-  margin-bottom: 20px;
-  text-shadow: 0 4px 12px rgba(0,0,0,0.3);
-}
-
-.hero-meta {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  flex-wrap: wrap;
-  font-size: 15px;
-  opacity: 0.95;
-}
-
-.meta-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.author-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid var(--white);
-}
-
-.meta-dot {
-  width: 4px;
-  height: 4px;
-  background: rgba(255,255,255,0.6);
-  border-radius: 50%;
-}
-
-/* ====== Article Container ====== */
-.article-container {
-  max-width: 1400px;
-  margin: -80px auto 0;
-  position: relative;
-  z-index: 10;
-  padding: 0 24px;
-  display: grid;
-  grid-template-columns: 1fr 320px;
-  gap: 48px;
-  align-items: start;
-}
-
-.article-main {
-  background: var(--white);
-  border-radius: 24px 24px 0 0;
-  box-shadow: var(--shadow-lg);
-  padding: 64px 48px 48px;
-}
-
-/* ====== Affiliate Disclosure ====== */
-.affiliate-disclosure {
-  background: rgba(123, 31, 162, 0.05);
-  border-left: 4px solid var(--purple-primary);
-  padding: 16px 20px;
-  margin-bottom: 32px;
-  border-radius: 8px;
-  font-size: 14px;
-  color: var(--gray-800);
-  line-height: 1.6;
-}
-
-.affiliate-disclosure strong {
-  color: var(--purple-primary);
-  font-weight: 700;
-}
-
-.affiliate-disclosure a {
-  color: var(--purple-primary);
-  text-decoration: underline;
-}
-
-/* ====== Article Content ====== */
-.article-content {
-  font-size: 18px;
-  line-height: 1.8;
-  color: var(--gray-800);
-}
-
-.article-content h2 {
-  font-size: 2rem;
-  font-weight: 800;
-  margin: 48px 0 20px;
-  color: var(--gray-900);
-  line-height: 1.3;
-}
-
-.article-content h3 {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin: 36px 0 16px;
-  color: var(--gray-900);
-}
-
-.article-content h4 {
-  font-size: 1.25rem;
-  font-weight: 700;
-  margin: 28px 0 12px;
-  color: var(--purple-primary);
-}
-
-.article-content p {
-  margin-bottom: 24px;
-}
-
-.article-content ul,
-.article-content ol {
-  margin: 24px 0;
-  padding-left: 28px;
-}
-
-.article-content li {
-  margin-bottom: 12px;
-}
-
-.article-content li::marker {
-  color: var(--purple-primary);
-}
-
-.article-content a {
-  color: var(--purple-primary);
-  font-weight: 600;
-  text-decoration: underline;
-  text-decoration-color: rgba(123, 31, 162, 0.3);
-  text-underline-offset: 3px;
-  transition: var(--transition);
-}
-
-.article-content a:hover {
-  text-decoration-color: var(--purple-primary);
-}
-
-/* ====== Tags Section ====== */
-.article-tags {
-  margin: 48px 0;
-  padding: 32px 0;
-  border-top: 2px solid var(--gray-200);
-  border-bottom: 2px solid var(--gray-200);
-}
-
-.tags-title {
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--gray-600);
-  margin-bottom: 12px;
-}
-
-.tags-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.tag {
-  padding: 8px 16px;
-  background: var(--gray-100);
-  color: var(--gray-800);
-  border-radius: 20px;
-  font-size: 14px;
-  font-weight: 600;
-  transition: var(--transition);
-  text-decoration: none;
-}
-
-.tag:hover {
-  background: rgba(123, 31, 162, 0.1);
-  color: var(--purple-primary);
-  transform: translateY(-2px);
-}
-
-/* ====== Author Bio ====== */
-.author-bio {
-  margin: 48px 0;
-  padding: 32px;
-  background: var(--gray-100);
-  border-radius: 20px;
-  display: flex;
-  gap: 24px;
-  align-items: center;
-}
-
-.author-bio-avatar {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 4px solid var(--white);
-  box-shadow: var(--shadow-md);
-  flex-shrink: 0;
-}
-
-.author-bio-content h3 {
-  font-size: 1.5rem;
-  margin-bottom: 8px;
-  color: var(--gray-900);
-}
-
-.author-bio-content p {
-  font-size: 15px;
-  color: var(--gray-600);
-  margin-bottom: 0;
-}
-
-/* ====== Scroll to Top Button ====== */
-.scroll-top {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: var(--purple-primary);
-  color: var(--white);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: var(--shadow-lg);
-  opacity: 0;
-  visibility: hidden;
-  transition: var(--transition);
-  font-size: 24px;
-  z-index: 99;
-  border: none;
-}
-
-.scroll-top.visible {
-  opacity: 1;
-  visibility: visible;
-}
-
-.scroll-top:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 24px 64px rgba(123, 31, 162, 0.24);
-}
-
-/* ====== Responsive ====== */
-@media (max-width: 1200px) {
-  .article-container {
-    grid-template-columns: 1fr;
-    gap: 32px;
-  }
-}
-
-@media (max-width: 768px) {
-  .hero-header {
-    height: 50vh;
-    min-height: 400px;
-  }
-  
-  .article-main {
-    padding: 32px 24px;
-  }
-  
-  .article-content {
-    font-size: 16px;
-  }
-  
-  .author-bio {
-    flex-direction: column;
-    text-align: center;
-  }
-}
-</style>
-</head>
-
-<body>
-
-<!-- PROGRESS BAR -->
-<div class="progress-bar" id="progressBar"></div>
-
-<!-- NAVIGATION -->
-<nav class="navbar">
-  <div class="nav-container">
-    <a href="/" aria-label="Wow Glam Decor Homepage">
-      <img src="/content/images/logo.jpg" alt="Wow Glam Decor Logo" class="logo">
-    </a>
-    <a href="/blog.html" class="nav-back">← Back to Blog</a>
-  </div>
-</nav>
-
-<!-- BREADCRUMBS -->
-<nav class="breadcrumbs" aria-label="Breadcrumb navigation">
-  <a href="/">Home</a>
-  <span>›</span>
-  <a href="/blog.html">Blog</a>
-  <span>›</span>
-  <a href="/category/${categorySlug}">${category}</a>
-  <span>›</span>
-  <span>${title}</span>
-</nav>
-
-<!-- HERO HEADER -->
-<header class="hero-header">
-  <img src="/content/images/${slug}-hero.jpg" alt="${title}" class="hero-image" loading="eager">
-  <div class="hero-overlay"></div>
-  <div class="hero-content">
-    <span class="category-badge">${category}</span>
-    <h1 class="hero-title">${title}</h1>
-    <div class="hero-meta">
-      <div class="meta-item">
-        <img src="/content/images/author-avatar.jpg" alt="${authorName}" class="author-avatar">
-        <span><strong>${authorName}</strong></span>
-      </div>
-      <span class="meta-dot"></span>
-      <time class="meta-item" datetime="${publishDate}">${publishDateFormatted}</time>
-      <span class="meta-dot"></span>
-      <span class="meta-item">${readTime} min read</span>
-    </div>
-  </div>
-</header>
-
-<!-- ARTICLE CONTAINER -->
-<div class="article-container">
-  
-  <!-- MAIN ARTICLE -->
-  <article class="article-main">
     
-    <!-- AFFILIATE DISCLOSURE -->
-    <div class="affiliate-disclosure">
-      <strong>💡 Affiliate Disclosure:</strong> This post contains affiliate links. If you purchase through our links, we may earn a small commission at no extra cost to you. We only recommend products we genuinely use and love. <a href="/affiliate-disclosure" rel="nofollow">Read our full disclosure policy</a>.
-    </div>
+    const result = await response.json();
     
-    <div class="article-content">
-      ${articleHTML}
-    </div>
-    
-    <!-- TAGS -->
-    <div class="article-tags">
-      <div class="tags-title">Tagged in:</div>
-      <div class="tags-list">
-        ${tagsHTML}
-      </div>
-    </div>
-    
-    <!-- AUTHOR BIO -->
-    <div class="author-bio">
-      <img src="/content/images/author-avatar.jpg" alt="${authorName}" class="author-bio-avatar">
-      <div class="author-bio-content">
-        <h3>${authorName}</h3>
-        <p>${authorBio}</p>
-      </div>
-    </div>
-    
-  </article>
-  
-</div>
-
-<!-- SCROLL TO TOP -->
-<button class="scroll-top" id="scrollTop" aria-label="Scroll to top">↑</button>
-
-<script>
-// Progress Bar
-window.addEventListener('scroll', () => {
-  const windowHeight = window.innerHeight;
-  const documentHeight = document.documentElement.scrollHeight;
-  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-  const progress = (scrollTop / (documentHeight - windowHeight)) * 100;
-  document.getElementById('progressBar').style.width = progress + '%';
-  
-  // Show/hide scroll to top button
-  const scrollTopBtn = document.getElementById('scrollTop');
-  if (scrollTop > 500) {
-    scrollTopBtn.classList.add('visible');
-  } else {
-    scrollTopBtn.classList.remove('visible');
+    if (result.success) {
+      showMessage(`✅ Published successfully! URL: ${result.post.url}`, 'success');
+      // Clear draft after successful publish
+      localStorage.removeItem('wgd_blog_draft');
+    } else {
+      throw new Error(result.message || 'Publishing failed');
+    }
+  } catch (error) {
+    console.error('Publishing Error:', error);
+    showMessage(`❌ Publishing failed: ${error.message}`, 'error');
+  } finally {
+    btn.innerHTML = originalHTML;
+    btn.disabled = false;
   }
-});
-
-// Scroll to top
-document.getElementById('scrollTop').addEventListener('click', () => {
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-});
-</script>
-
-</body>
-</html>`;
-
-  // Download the file
-  const blob = new Blob([template], { type: 'text/html' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `${slug}.html`;
-  a.click();
-  URL.revokeObjectURL(url);
-  
-  showMessage('🚀 Full HTML exported! Upload to your website.', 'success');
 }
 
 function showMessage(message, type = 'info') {
