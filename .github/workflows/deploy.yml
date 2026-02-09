@@ -1,0 +1,41 @@
+name: Deploy Blog Editor
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      
+      - name: Install dependencies
+        run: npm install
+      
+      - name: Create .env file from secrets
+        run: |
+          echo "GROQ_API_KEY=${{ secrets.GROQ_API_KEY }}" >> .env
+          echo "N8N_WEBHOOK_URL=${{ secrets.N8N_WEBHOOK_URL }}" >> .env
+          echo "GROQ_MODEL=llama-3.3-70b-versatile" >> .env
+          echo "PORT=3000" >> .env
+      
+      - name: Build application
+        run: npm run build
+      
+      - name: Deploy to server
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          N8N_WEBHOOK_URL: ${{ secrets.N8N_WEBHOOK_URL }}
+        run: |
+          # Your deployment commands here
+          # Example: rsync, scp, or cloud deployment
+          echo "Deploying with environment variables set..."
