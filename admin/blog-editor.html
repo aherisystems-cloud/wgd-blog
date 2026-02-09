@@ -584,6 +584,77 @@ body {
   .product-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
   .filter-section { justify-content: center; }
 }
+<!-- ADD THESE STYLES TO YOUR <style> SECTION -->
+<style>
+/* Keyword chips */
+.keyword-chip {
+  display: inline-block;
+  padding: 6px 12px;
+  margin: 4px;
+  border-radius: 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.keyword-chip.primary {
+  background: rgba(123, 31, 162, 0.1);
+  border: 2px solid #7B1FA2;
+  color: #7B1FA2;
+}
+
+.keyword-chip.secondary {
+  background: rgba(59, 130, 246, 0.1);
+  border: 2px solid #3B82F6;
+  color: #3B82F6;
+}
+
+.keyword-chip.longtail {
+  background: rgba(16, 185, 129, 0.1);
+  border: 2px solid #10B981;
+  color: #10B981;
+}
+
+.keyword-chip:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.usage-badge {
+  background: white;
+  padding: 2px 6px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  margin-left: 6px;
+}
+
+/* Link suggestions */
+.link-suggestion {
+  background: white;
+  border: 2px solid #E5E7EB;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+  transition: all 0.2s;
+}
+
+.link-suggestion:hover {
+  border-color: #7B1FA2;
+  box-shadow: 0 4px 12px rgba(123, 31, 162, 0.1);
+}
+
+.link-suggestion strong {
+  color: #1A1D2E;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.link-suggestion small {
+  color: #6B7280;
+  display: block;
+  margin-bottom: 12px;
+}
 </style>
 </head>
 <body>
@@ -602,7 +673,9 @@ body {
   <div class="tabs">
     <button class="tab active" onclick="switchTab(0)">📝 Content</button>
     <button class="tab" onclick="switchTab(1)">🎯 SEO</button>
-    <button class="tab" onclick="switchTab(2)">🛍️ Products</button>
+    <button class="tab" onclick="switchTab(2)">🔑 Keywords</button>
+    <button class="tab" onclick="switchTab(3)">🔗 Links</button>
+    <button class="tab" onclick="switchTab(4)">🛍️ Products</button>
     <button class="tab" onclick="switchTab(3)">👁️ Preview</button>
     <button class="tab" onclick="switchTab(4)">🚀 Publish</button>
   </div>
@@ -657,14 +730,9 @@ body {
             <label>Category</label>
             <select id="category">
               <option value="">Select a category...</option>
-              <option value="Living Room">Living Room</option>
-              <option value="Bedroom">Bedroom</option>
-              <option value="Dining Room">Dining Room</option>
-              <option value="Home Office">Home Office</option>
-              <option value="Kitchen">Kitchen</option>
-              <option value="Bathroom">Bathroom</option>
-              <option value="DIY">DIY</option>
-              <option value="Decor">Decor</option>
+              <option value="">Select a category...</option>
+
+ 
             </select>
           </div>
           
@@ -783,6 +851,124 @@ Add your first key insight..."
       </div>
     </div>
     
+<!-- TAB: KEYWORDS (NEW) -->
+<div class="tab-content">
+  <h2 style="margin-bottom: 24px;">🔑 AI Keyword Optimization</h2>
+  
+  <div class="form-grid">
+    <div>
+      <button type="button" class="btn btn-ai" onclick="generateKeywords()">
+        🔍 Generate SEO Keywords with AI
+      </button>
+      
+      <div id="keywordsPanel" style="margin-top: 24px; padding: 24px; background: #F9FAFB; border-radius: 16px; min-height: 300px;">
+        <div style="text-align: center; padding: 40px; color: #6B7280;">
+          <div style="font-size: 3rem; margin-bottom: 16px;">🔍</div>
+          <h3>No keywords generated yet</h3>
+          <p>Click the button above to generate optimized keywords</p>
+        </div>
+      </div>
+      
+      <button type="button" class="btn btn-ai" onclick="optimizeWithKeywords()" style="margin-top: 16px; width: 100%;">
+        ✨ Auto-Optimize Content with Keywords
+      </button>
+    </div>
+    
+    <div>
+      <div class="seo-score">
+        <h3>📊 Keyword Score</h3>
+        <div class="score-circle grade-d">
+          <span id="keywordScore">0</span>
+        </div>
+        <div id="keywordFeedback" style="font-size: 0.9rem; color: #6B7280;">
+          Generate keywords to see feedback
+        </div>
+      </div>
+      
+      <div style="background: rgba(123, 31, 162, 0.05); border: 2px solid #7B1FA2; border-radius: 16px; padding: 20px; margin-top: 20px;">
+        <h4>💡 Quick Tips</h4>
+        <ul style="font-size: 0.9rem; line-height: 1.8;">
+          <li>Use primary keywords 8-12 times</li>
+          <li>Add keywords to title and H2 headings</li>
+          <li>Use long-tail keywords as questions</li>
+          <li>Keep it natural - avoid keyword stuffing</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB: INTERNAL LINKS (NEW) -->
+<div class="tab-content">
+  <h2 style="margin-bottom: 24px;">🔗 Internal Linking</h2>
+  
+  <div class="form-grid">
+    <div>
+      <button type="button" class="btn btn-ai" onclick="suggestInternalLinks()">
+        🤖 Find Link Opportunities
+      </button>
+      
+      <div id="linksPanel" style="margin-top: 24px; padding: 24px; background: #F9FAFB; border-radius: 16px; min-height: 300px;">
+        <div style="text-align: center; padding: 40px; color: #6B7280;">
+          <div style="font-size: 3rem; margin-bottom: 16px;">🔗</div>
+          <h3>No suggestions yet</h3>
+          <p>AI will analyze your content and suggest relevant internal links</p>
+        </div>
+      </div>
+      
+      <div style="background: white; border: 2px solid #E5E7EB; border-radius: 16px; padding: 20px; margin-top: 20px;">
+        <h4>📊 Link Stats</h4>
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-top: 16px; text-align: center;">
+          <div style="padding: 12px; background: #F9FAFB; border-radius: 8px;">
+            <div style="font-size: 0.75rem; color: #6B7280; margin-bottom: 4px;">CURRENT</div>
+            <div style="font-size: 1.5rem; font-weight: 900;" id="currentLinks">0</div>
+          </div>
+          <div style="padding: 12px; background: #F9FAFB; border-radius: 8px;">
+            <div style="font-size: 0.75rem; color: #6B7280; margin-bottom: 4px;">RECOMMENDED</div>
+            <div style="font-size: 1.5rem; font-weight: 900;">3-5</div>
+          </div>
+          <div style="padding: 12px; background: #F9FAFB; border-radius: 8px;">
+            <div style="font-size: 0.75rem; color: #6B7280; margin-bottom: 4px;">STATUS</div>
+            <div style="font-size: 1.5rem; font-weight: 900;" id="linkStatus">❌</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div>
+      <div style="background: rgba(123, 31, 162, 0.05); border: 2px solid #7B1FA2; border-radius: 16px; padding: 20px;">
+        <h4>🎯 Why Link Internally?</h4>
+        <div style="display: grid; gap: 12px; margin-top: 12px;">
+          <div style="background: white; padding: 12px; border-radius: 8px;">
+            <div style="font-size: 1.5rem;">📈</div>
+            <strong>SEO Boost</strong>
+            <p style="font-size: 0.85rem; color: #6B7280; margin-top: 4px;">Distribute page authority</p>
+          </div>
+          <div style="background: white; padding: 12px; border-radius: 8px;">
+            <div style="font-size: 1.5rem;">👤</div>
+            <strong>User Experience</strong>
+            <p style="font-size: 0.85rem; color: #6B7280; margin-top: 4px;">Guide visitors to related content</p>
+          </div>
+          <div style="background: white; padding: 12px; border-radius: 8px;">
+            <div style="font-size: 1.5rem;">⏱️</div>
+            <strong>Time on Site</strong>
+            <p style="font-size: 0.85rem; color: #6B7280; margin-top: 4px;">Increase engagement</p>
+          </div>
+        </div>
+      </div>
+      
+      <div style="background: white; border: 2px solid #E5E7EB; border-radius: 16px; padding: 20px; margin-top: 20px;">
+        <h4>📋 Best Practices</h4>
+        <ul style="font-size: 0.9rem; line-height: 1.8;">
+          <li>3-5 internal links per post</li>
+          <li>Use descriptive anchor text</li>
+          <li>Link to related topics only</li>
+          <li>Place links naturally in content</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
     <!-- TAB 3: PRODUCTS -->
     <div class="tab-content">
       <h2 style="margin-bottom: 24px;">🛍️ Select Products to Feature (150+ Products)</h2>
