@@ -1,20 +1,21 @@
 // ============================================
 // CONFIGURATION FILE - Modern Furniture & Home Decor
 // ============================================
-// Keep this file secure and add to .gitignore
-// Update affiliate IDs with your actual codes
+// SECURITY NOTE: This file is safe to commit to GitHub
+// API keys are loaded from GitHub Secrets or environment variables
 
 window.CONFIG = {
   // ============================================
   // API CONFIGURATION
   // ============================================
   
-  // Get your FREE Groq API key from: https://console.groq.com/keys
-  GROQ_API_KEY: 'API KEY',
+  // API keys will be injected during deployment via GitHub Actions
+  // DO NOT hardcode API keys here - use GitHub Secrets instead
+  GROQ_API_KEY: window.ENV_GROQ_API_KEY || '',  // Injected from GitHub Secrets
   GROQ_MODEL: 'llama-3.3-70b-versatile',
   
-  // N8N Webhook URL for auto-publishing
-  N8N_WEBHOOK_URL: 'https://your-n8n-instance.com/webhook/publish-blog',
+  // N8N Webhook URL - injected from GitHub Secrets
+  N8N_WEBHOOK_URL: window.ENV_N8N_WEBHOOK_URL || '',  // Injected from GitHub Secrets
   
   // Blog configuration
   BLOG_CONFIG: {
@@ -28,6 +29,18 @@ window.CONFIG = {
     }
   }
 };
+
+// ============================================
+// SECURITY VALIDATION
+// ============================================
+// Check if API keys are loaded (helps with debugging)
+if (!window.CONFIG.GROQ_API_KEY) {
+  console.warn('⚠️ GROQ API Key not loaded. Please check GitHub Secrets configuration.');
+}
+
+if (!window.CONFIG.N8N_WEBHOOK_URL) {
+  console.warn('⚠️ N8N Webhook URL not loaded. Please check GitHub Secrets configuration.');
+}
 
 // ============================================
 // AFFILIATE PRODUCTS DATABASE - 150+ PRODUCTS
