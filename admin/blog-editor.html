@@ -8,9 +8,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
 
-<!-- SECURITY: Load environment variables first (injected during deployment) -->
-<script src="env.js"></script>
-
 <!-- Load configuration from external file -->
 <script src="config-complete.js"></script>
 
@@ -55,6 +52,16 @@ body {
   font-weight: 700;
   margin-top: 12px;
   text-transform: uppercase;
+}
+.setup-warning {
+  background: #FEF3C7;
+  border: 2px solid #F59E0B;
+  color: #92400E;
+  padding: 16px 24px;
+  margin: 20px 48px;
+  border-radius: 12px;
+  font-weight: 600;
+  display: none;
 }
 .tabs {
   display: flex;
@@ -657,6 +664,10 @@ body {
     <h1>⚡ Fast AI Blog Editor</h1>
     <p class="subtitle">150+ Products • AI-Powered Content • Auto-Publishing</p>
     <span class="ai-badge">✨ Powered by Groq LLaMA 3.3</span>
+  </div>
+  
+  <div id="setupWarning" class="setup-warning">
+    ⚠️ Please configure your API key in config-complete.js file
   </div>
   
   <div class="tabs">
