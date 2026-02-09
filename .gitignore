@@ -1,5 +1,6 @@
 # API Keys and Sensitive Configuration
-admin/config.js
+.env
+config-complete.js
 # Node modules
 node_modules/
 .npm/
