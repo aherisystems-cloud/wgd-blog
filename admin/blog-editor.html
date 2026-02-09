@@ -8,10 +8,15 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
 
-<!-- SECURITY: Load environment variables first (injected during deployment) -->
-<script src="env.js"></script>
+<!-- CRITICAL: Load scripts in correct order -->
+<!-- 1. Environment variables (injected during deployment) -->
+<script>
+// Placeholder - will be replaced by GitHub Actions
+window.ENV_GROQ_API_KEY = window.ENV_GROQ_API_KEY || '';
+window.ENV_N8N_WEBHOOK_URL = window.ENV_N8N_WEBHOOK_URL || '';
+</script>
 
-<!-- Load configuration from external file -->
+<!-- 2. Configuration -->
 <script src="config-complete.js"></script>
 
 <style>
@@ -355,7 +360,7 @@ body {
   min-width: 120px;
 }
 
-/* ====== PRODUCT SEARCH & SELECTION ====== */
+/* Product search & selection */
 .product-search-section {
   background: white;
   border: 2px solid #E5E7EB;
@@ -570,76 +575,6 @@ body {
   margin-top: 24px;
 }
 
-/* Keyword chips */
-.keyword-chip {
-  display: inline-block;
-  padding: 6px 12px;
-  margin: 4px;
-  border-radius: 16px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.keyword-chip.primary {
-  background: rgba(123, 31, 162, 0.1);
-  border: 2px solid #7B1FA2;
-  color: #7B1FA2;
-}
-
-.keyword-chip.secondary {
-  background: rgba(59, 130, 246, 0.1);
-  border: 2px solid #3B82F6;
-  color: #3B82F6;
-}
-
-.keyword-chip.longtail {
-  background: rgba(16, 185, 129, 0.1);
-  border: 2px solid #10B981;
-  color: #10B981;
-}
-
-.keyword-chip:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-.usage-badge {
-  background: white;
-  padding: 2px 6px;
-  border-radius: 8px;
-  font-size: 0.75rem;
-  margin-left: 6px;
-}
-
-/* Link suggestions */
-.link-suggestion {
-  background: white;
-  border: 2px solid #E5E7EB;
-  border-radius: 12px;
-  padding: 16px;
-  margin-bottom: 12px;
-  transition: all 0.2s;
-}
-
-.link-suggestion:hover {
-  border-color: #7B1FA2;
-  box-shadow: 0 4px 12px rgba(123, 31, 162, 0.1);
-}
-
-.link-suggestion strong {
-  color: #1A1D2E;
-  display: block;
-  margin-bottom: 6px;
-}
-
-.link-suggestion small {
-  color: #6B7280;
-  display: block;
-  margin-bottom: 12px;
-}
-
 @media (max-width: 1024px) {
   .form-grid { grid-template-columns: 1fr; }
   .product-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
@@ -659,19 +594,19 @@ body {
     <span class="ai-badge">✨ Powered by Groq LLaMA 3.3</span>
   </div>
   
-  <div class="tabs">
-    <button class="tab active" onclick="switchTab(0)">📝 Content</button>
-    <button class="tab" onclick="switchTab(1)">🎯 SEO</button>
-    <button class="tab" onclick="switchTab(2)">🔑 Keywords</button>
-    <button class="tab" onclick="switchTab(3)">🔗 Links</button>
-    <button class="tab" onclick="switchTab(4)">🛍️ Products</button>
-    <button class="tab" onclick="switchTab(5)">👁️ Preview</button>
-    <button class="tab" onclick="switchTab(6)">🚀 Publish</button>
+  <div class="tabs" id="tabButtons">
+    <button class="tab active" data-tab="0">📝 Content</button>
+    <button class="tab" data-tab="1">🎯 SEO</button>
+    <button class="tab" data-tab="2">🔑 Keywords</button>
+    <button class="tab" data-tab="3">🔗 Links</button>
+    <button class="tab" data-tab="4">🛍️ Products</button>
+    <button class="tab" data-tab="5">👁️ Preview</button>
+    <button class="tab" data-tab="6">🚀 Publish</button>
   </div>
   
   <form id="blogForm">
     <!-- TAB 0: CONTENT -->
-    <div class="tab-content active">
+    <div class="tab-content active" data-content="0">
       <div id="statusMessage" class="status-message"></div>
       
       <div class="form-grid">
@@ -687,14 +622,14 @@ body {
                 />
                 <p class="form-hint">Enter a topic and AI will write the entire article</p>
               </div>
-              <button type="button" class="btn btn-ai" onclick="generateAIContent()">
+              <button type="button" class="btn btn-ai" id="generateAIBtn">
                 ✨ Generate Full Article
               </button>
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                <button type="button" class="btn btn-secondary" onclick="aiImprove()">
+                <button type="button" class="btn btn-secondary" id="improveBtn">
                   💡 Improve Content
                 </button>
-                <button type="button" class="btn btn-secondary" onclick="aiSEO()">
+                <button type="button" class="btn btn-secondary" id="seoBtn">
                   🎯 Optimize SEO
                 </button>
               </div>
@@ -708,7 +643,6 @@ body {
               id="title" 
               placeholder="e.g., 10 Modern Minimalist Living Room Ideas"
               required
-              oninput="updateTitleCounter()"
             />
             <p class="form-hint">
               <span id="titleCounter" class="counter">0 / 60 characters</span>
@@ -719,86 +653,12 @@ body {
             <label>Category</label>
             <select id="category">
               <option value="">Select a category...</option>
-
-              <!-- Core Rooms -->
               <option value="Living Room">Living Room</option>
               <option value="Bedroom">Bedroom</option>
               <option value="Dining Room">Dining Room</option>
               <option value="Home Office">Home Office</option>
               <option value="Kitchen">Kitchen</option>
               <option value="Bathroom">Bathroom</option>
-              <option value="Entryway & Hallway">Entryway & Hallway</option>
-              <option value="Laundry Room">Laundry Room</option>
-              <option value="Kids Room & Nursery">Kids Room & Nursery</option>
-              <option value="Outdoor & Patio">Outdoor & Patio</option>
-              <option value="Balcony & Small Spaces">Balcony & Small Spaces</option>
-
-              <!-- Furniture Types -->
-              <option value="Sofas & Seating">Sofas & Seating</option>
-              <option value="Beds & Bed Frames">Beds & Bed Frames</option>
-              <option value="Mattresses">Mattresses</option>
-              <option value="Tables & Desks">Tables & Desks</option>
-              <option value="Chairs & Stools">Chairs & Stools</option>
-              <option value="Wardrobes & Closets">Wardrobes & Closets</option>
-              <option value="TV Stands & Media Units">TV Stands & Media Units</option>
-              <option value="Shelving & Bookcases">Shelving & Bookcases</option>
-              <option value="Storage Furniture">Storage Furniture</option>
-
-              <!-- Decor Categories -->
-              <option value="Wall Decor">Wall Decor</option>
-              <option value="Lighting & Lamps">Lighting & Lamps</option>
-              <option value="Rugs & Carpets">Rugs & Carpets</option>
-              <option value="Curtains & Window Treatments">Curtains & Window Treatments</option>
-              <option value="Mirrors">Mirrors</option>
-              <option value="Cushions & Throws">Cushions & Throws</option>
-              <option value="Vases & Decorative Accents">Vases & Decorative Accents</option>
-              <option value="Clocks">Clocks</option>
-              <option value="Plants & Planters">Plants & Planters</option>
-
-              <!-- Storage & Organization (HIGH affiliate value) -->
-              <option value="Storage & Organization">Storage & Organization</option>
-              <option value="Closet Organization">Closet Organization</option>
-              <option value="Shoe Storage">Shoe Storage</option>
-              <option value="Kitchen Storage Solutions">Kitchen Storage Solutions</option>
-              <option value="Bathroom Storage Solutions">Bathroom Storage Solutions</option>
-              <option value="Small Space Storage">Small Space Storage</option>
-
-              <!-- Style-Based Categories -->
-              <option value="Modern Style">Modern Style</option>
-              <option value="Minimalist Style">Minimalist Style</option>
-              <option value="Scandinavian Style">Scandinavian Style</option>
-              <option value="Luxury & Glam Decor">Luxury & Glam Decor</option>
-              <option value="Boho & Rustic Decor">Boho & Rustic Decor</option>
-              <option value="Traditional & Classic">Traditional & Classic</option>
-              <option value="Industrial Style">Industrial Style</option>
-
-              <!-- Functional / Buying Intent -->
-              <option value="Budget Furniture">Budget Furniture</option>
-              <option value="Luxury Furniture">Luxury Furniture</option>
-              <option value="Space-Saving Furniture">Space-Saving Furniture</option>
-              <option value="Multifunctional Furniture">Multifunctional Furniture</option>
-              <option value="Furniture Buying Guides">Furniture Buying Guides</option>
-              <option value="Best Of Lists">Best Of Lists</option>
-              <option value="Product Reviews">Product Reviews</option>
-              <option value="Comparisons">Comparisons</option>
-
-              <!-- DIY & Care -->
-              <option value="DIY & Home Improvement">DIY & Home Improvement</option>
-              <option value="Furniture Care & Maintenance">Furniture Care & Maintenance</option>
-              <option value="Cleaning & Care Tips">Cleaning & Care Tips</option>
-              <option value="Furniture Assembly Tips">Furniture Assembly Tips</option>
-
-              <!-- Seasonal / Lifestyle -->
-              <option value="Seasonal Decor">Seasonal Decor</option>
-              <option value="Holiday Decor">Holiday Decor</option>
-              <option value="Home Makeovers">Home Makeovers</option>
-              <option value="Rental-Friendly Decor">Rental-Friendly Decor</option>
-
-              <!-- Gifts (affiliate GOLD) -->
-              <option value="Home Gift Ideas">Home Gift Ideas</option>
-              <option value="Housewarming Gifts">Housewarming Gifts</option>
-              <option value="Luxury Home Gifts">Luxury Home Gifts</option>
-              <option value="Budget Gift Ideas">Budget Gift Ideas</option>
             </select>
           </div>
           
@@ -825,7 +685,6 @@ Write your engaging introduction here...
 ### Main Point 1
 
 Add your first key insight..."
-              oninput="updateWordCount()"
             ></textarea>
             <p class="form-hint">
               <span id="wordCounter" class="counter">0 words</span> | 
@@ -864,7 +723,7 @@ Add your first key insight..."
     </div>
     
     <!-- TAB 1: SEO -->
-    <div class="tab-content">
+    <div class="tab-content" data-content="1">
       <div class="form-grid">
         <div>
           <div class="form-group">
@@ -873,7 +732,6 @@ Add your first key insight..."
               type="text" 
               id="seoTitle" 
               placeholder="Auto-generated from post title"
-              oninput="updateSEOTitleCounter(); updateGooglePreview();"
             />
             <p class="form-hint">
               <span id="seoTitleCounter" class="counter">0 / 60 characters</span>
@@ -886,16 +744,11 @@ Add your first key insight..."
               id="seoDescription" 
               placeholder="A compelling 150-160 character description..."
               rows="4"
-              oninput="updateSEODescCounter(); updateGooglePreview();"
             ></textarea>
             <p class="form-hint">
               <span id="seoDescCounter" class="counter">0 / 160 characters</span>
             </p>
           </div>
-          
-          <button type="button" class="btn btn-ai" onclick="aiSEO()">
-            ✨ Generate SEO with AI
-          </button>
         </div>
         
         <div>
@@ -917,127 +770,14 @@ Add your first key insight..."
       </div>
     </div>
     
-    <!-- TAB 2: KEYWORDS -->
-    <div class="tab-content">
-      <h2 style="margin-bottom: 24px;">🔑 AI Keyword Optimization</h2>
-      
-      <div class="form-grid">
-        <div>
-          <button type="button" class="btn btn-ai" onclick="generateKeywords()">
-            🔍 Generate SEO Keywords with AI
-          </button>
-          
-          <div id="keywordsPanel" style="margin-top: 24px; padding: 24px; background: #F9FAFB; border-radius: 16px; min-height: 300px;">
-            <div style="text-align: center; padding: 40px; color: #6B7280;">
-              <div style="font-size: 3rem; margin-bottom: 16px;">🔍</div>
-              <h3>No keywords generated yet</h3>
-              <p>Click the button above to generate optimized keywords</p>
-            </div>
-          </div>
-          
-          <button type="button" class="btn btn-ai" onclick="optimizeWithKeywords()" style="margin-top: 16px; width: 100%;">
-            ✨ Auto-Optimize Content with Keywords
-          </button>
-        </div>
-        
-        <div>
-          <div class="seo-score">
-            <h3>📊 Keyword Score</h3>
-            <div class="score-circle grade-d">
-              <span id="keywordScore">0</span>
-            </div>
-            <div id="keywordFeedback" style="font-size: 0.9rem; color: #6B7280;">
-              Generate keywords to see feedback
-            </div>
-          </div>
-          
-          <div style="background: rgba(123, 31, 162, 0.05); border: 2px solid #7B1FA2; border-radius: 16px; padding: 20px; margin-top: 20px;">
-            <h4>💡 Quick Tips</h4>
-            <ul style="font-size: 0.9rem; line-height: 1.8;">
-              <li>Use primary keywords 8-12 times</li>
-              <li>Add keywords to title and H2 headings</li>
-              <li>Use long-tail keywords as questions</li>
-              <li>Keep it natural - avoid keyword stuffing</li>
-            </ul>
-          </div>
-        </div>
-      </div>
+    <!-- TAB 2-6: Simplified for now -->
+    <div class="tab-content" data-content="2">
+      <h2>🔑 Keywords (Coming Soon)</h2>
     </div>
-    
-    <!-- TAB 3: INTERNAL LINKS -->
-    <div class="tab-content">
-      <h2 style="margin-bottom: 24px;">🔗 Internal Linking</h2>
-      
-      <div class="form-grid">
-        <div>
-          <button type="button" class="btn btn-ai" onclick="suggestInternalLinks()">
-            🤖 Find Link Opportunities
-          </button>
-          
-          <div id="linksPanel" style="margin-top: 24px; padding: 24px; background: #F9FAFB; border-radius: 16px; min-height: 300px;">
-            <div style="text-align: center; padding: 40px; color: #6B7280;">
-              <div style="font-size: 3rem; margin-bottom: 16px;">🔗</div>
-              <h3>No suggestions yet</h3>
-              <p>AI will analyze your content and suggest relevant internal links</p>
-            </div>
-          </div>
-          
-          <div style="background: white; border: 2px solid #E5E7EB; border-radius: 16px; padding: 20px; margin-top: 20px;">
-            <h4>📊 Link Stats</h4>
-            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-top: 16px; text-align: center;">
-              <div style="padding: 12px; background: #F9FAFB; border-radius: 8px;">
-                <div style="font-size: 0.75rem; color: #6B7280; margin-bottom: 4px;">CURRENT</div>
-                <div style="font-size: 1.5rem; font-weight: 900;" id="currentLinks">0</div>
-              </div>
-              <div style="padding: 12px; background: #F9FAFB; border-radius: 8px;">
-                <div style="font-size: 0.75rem; color: #6B7280; margin-bottom: 4px;">RECOMMENDED</div>
-                <div style="font-size: 1.5rem; font-weight: 900;">3-5</div>
-              </div>
-              <div style="padding: 12px; background: #F9FAFB; border-radius: 8px;">
-                <div style="font-size: 0.75rem; color: #6B7280; margin-bottom: 4px;">STATUS</div>
-                <div style="font-size: 1.5rem; font-weight: 900;" id="linkStatus">❌</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div>
-          <div style="background: rgba(123, 31, 162, 0.05); border: 2px solid #7B1FA2; border-radius: 16px; padding: 20px;">
-            <h4>🎯 Why Link Internally?</h4>
-            <div style="display: grid; gap: 12px; margin-top: 12px;">
-              <div style="background: white; padding: 12px; border-radius: 8px;">
-                <div style="font-size: 1.5rem;">📈</div>
-                <strong>SEO Boost</strong>
-                <p style="font-size: 0.85rem; color: #6B7280; margin-top: 4px;">Distribute page authority</p>
-              </div>
-              <div style="background: white; padding: 12px; border-radius: 8px;">
-                <div style="font-size: 1.5rem;">👤</div>
-                <strong>User Experience</strong>
-                <p style="font-size: 0.85rem; color: #6B7280; margin-top: 4px;">Guide visitors to related content</p>
-              </div>
-              <div style="background: white; padding: 12px; border-radius: 8px;">
-                <div style="font-size: 1.5rem;">⏱️</div>
-                <strong>Time on Site</strong>
-                <p style="font-size: 0.85rem; color: #6B7280; margin-top: 4px;">Increase engagement</p>
-              </div>
-            </div>
-          </div>
-          
-          <div style="background: white; border: 2px solid #E5E7EB; border-radius: 16px; padding: 20px; margin-top: 20px;">
-            <h4>📋 Best Practices</h4>
-            <ul style="font-size: 0.9rem; line-height: 1.8;">
-              <li>3-5 internal links per post</li>
-              <li>Use descriptive anchor text</li>
-              <li>Link to related topics only</li>
-              <li>Place links naturally in content</li>
-            </ul>
-          </div>
-        </div>
-      </div>
+    <div class="tab-content" data-content="3">
+      <h2>🔗 Internal Links (Coming Soon)</h2>
     </div>
-    
-    <!-- TAB 4: PRODUCTS -->
-    <div class="tab-content">
+    <div class="tab-content" data-content="4">
       <h2 style="margin-bottom: 24px;">🛍️ Select Products to Feature (150+ Products)</h2>
       
       <div class="product-search-section">
@@ -1048,9 +788,8 @@ Add your first key insight..."
             class="search-input" 
             id="productSearch"
             placeholder="Search products by name, keyword, or category..."
-            oninput="searchProducts()"
           />
-          <button type="button" class="clear-search" id="clearSearch" onclick="clearProductSearch()">✕</button>
+          <button type="button" class="clear-search" id="clearSearch">✕</button>
         </div>
         
         <div class="filter-section" id="categoryFilters"></div>
@@ -1064,10 +803,10 @@ Add your first key insight..."
       <div class="product-grid" id="productGrid"></div>
       
       <div style="margin-top: 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-        <button type="button" class="btn btn-secondary" onclick="clearAllSelections()">
+        <button type="button" class="btn btn-secondary" id="clearSelectionsBtn">
           ❌ Clear All
         </button>
-        <button type="button" class="btn btn-ai" onclick="insertProductLinks()">
+        <button type="button" class="btn btn-ai" id="insertLinksBtn">
           🔗 Auto-Insert Product Links
         </button>
       </div>
@@ -1077,9 +816,7 @@ Add your first key insight..."
         <div id="affiliateStats"></div>
       </div>
     </div>
-    
-    <!-- TAB 5: PREVIEW -->
-    <div class="tab-content">
+    <div class="tab-content" data-content="5">
       <div class="preview-panel" style="max-height: none;">
         <h3>📄 Live Preview</h3>
         <div class="preview-content" id="previewContent">
@@ -1087,9 +824,7 @@ Add your first key insight..."
         </div>
       </div>
     </div>
-    
-    <!-- TAB 6: PUBLISH -->
-    <div class="tab-content">
+    <div class="tab-content" data-content="6">
       <div style="max-width: 800px; margin: 0 auto;">
         <h2 style="margin-bottom: 24px;">🚀 Publish Your Blog Post</h2>
         
@@ -1109,16 +844,16 @@ Add your first key insight..."
         </div>
         
         <div class="submit-section">
-          <button type="button" class="btn btn-secondary" onclick="saveDraft()">
+          <button type="button" class="btn btn-secondary" id="saveDraftBtn">
             💾 Save Draft
           </button>
-          <button type="button" class="btn btn-secondary" onclick="exportMarkdown()">
+          <button type="button" class="btn btn-secondary" id="exportMDBtn">
             📥 Download MD
           </button>
-          <button type="button" class="btn btn-secondary" onclick="exportFullHTML()">
+          <button type="button" class="btn btn-secondary" id="exportHTMLBtn">
             📄 Export HTML
           </button>
-          <button type="button" class="btn btn-primary" onclick="publishToN8N()">
+          <button type="button" class="btn btn-primary" id="publishBtn">
             🚀 Publish to Website
           </button>
         </div>
@@ -1127,7 +862,49 @@ Add your first key insight..."
   </form>
 </div>
 
+<!-- 3. Application Logic (LAST) -->
 <script src="blog-editor-logic.js"></script>
+
+<script>
+// Setup event listeners after DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+  // Tab switching
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', function() {
+      switchTab(parseInt(this.dataset.tab));
+    });
+  });
+  
+  // AI buttons
+  document.getElementById('generateAIBtn')?.addEventListener('click', generateAIContent);
+  document.getElementById('improveBtn')?.addEventListener('click', aiImprove);
+  document.getElementById('seoBtn')?.addEventListener('click', aiSEO);
+  
+  // Input listeners
+  document.getElementById('title')?.addEventListener('input', updateTitleCounter);
+  document.getElementById('content')?.addEventListener('input', updateWordCount);
+  document.getElementById('seoTitle')?.addEventListener('input', function() {
+    updateSEOTitleCounter();
+    updateGooglePreview();
+  });
+  document.getElementById('seoDescription')?.addEventListener('input', function() {
+    updateSEODescCounter();
+    updateGooglePreview();
+  });
+  
+  // Product buttons
+  document.getElementById('productSearch')?.addEventListener('input', searchProducts);
+  document.getElementById('clearSearch')?.addEventListener('click', clearProductSearch);
+  document.getElementById('clearSelectionsBtn')?.addEventListener('click', clearAllSelections);
+  document.getElementById('insertLinksBtn')?.addEventListener('click', insertProductLinks);
+  
+  // Publish buttons
+  document.getElementById('saveDraftBtn')?.addEventListener('click', saveDraft);
+  document.getElementById('exportMDBtn')?.addEventListener('click', exportMarkdown);
+  document.getElementById('exportHTMLBtn')?.addEventListener('click', exportFullHTML);
+  document.getElementById('publishBtn')?.addEventListener('click', publishToN8N);
+});
+</script>
 
 </body>
 </html>
