@@ -880,3 +880,405 @@ function showMessage(message, type = 'info') {
     }, 5000);
   }
 }
+// ============================================
+// SIMPLIFIED SEO FEATURES FOR BLOG EDITOR
+// Add to your existing blog-editor-logic.js
+// ============================================
+
+// Global keyword data
+let keywordData = {
+  primary: [],
+  secondary: [],
+  longTail: [],
+  usage: {}
+};
+
+// Storage for published posts (for internal linking)
+let publishedPosts = JSON.parse(localStorage.getItem('wgd_published_posts') || '[]');
+
+// ============================================
+// KEYWORD GENERATION
+// ============================================
+
+async function generateKeywords() {
+  const title = document.getElementById('title').value;
+  const content = document.getElementById('content').value;
+  const category = document.getElementById('category').value;
+  
+  if (!title || !content) {
+    showMessage('❌ Please add title and content first', 'error');
+    return;
+  }
+  
+  const btn = event.target;
+  const originalHTML = btn.innerHTML;
+  btn.innerHTML = '<span class="loading-spinner"></span> Generating...';
+  btn.disabled = true;
+  
+  showMessage('🔍 AI is generating keywords...', 'info');
+  
+  try {
+    const systemPrompt = `You are an SEO expert. Generate keywords for blog posts in the home decor niche.`;
+    
+    const prompt = `Generate SEO keywords for this blog post:
+
+Title: ${title}
+Category: ${category}
+Content: ${content.substring(0, 1000)}
+
+Return ONLY JSON in this format:
+{
+  "primary_keywords": ["keyword1", "keyword2"],
+  "secondary_keywords": ["keyword3", "keyword4", "keyword5", "keyword6"],
+  "long_tail_keywords": ["long phrase 1", "long phrase 2", "long phrase 3", "long phrase 4"]
+}`;
+    
+    const response = await callGroqAPI(prompt, systemPrompt);
+    const jsonMatch = response.match(/\{[\s\S]*\}/);
+    
+    if (jsonMatch) {
+      const keywords = JSON.parse(jsonMatch[0]);
+      
+      keywordData = {
+        primary: keywords.primary_keywords || [],
+        secondary: keywords.secondary_keywords || [],
+        longTail: keywords.long_tail_keywords || [],
+        usage: {}
+      };
+      
+      displayKeywords();
+      updateKeywordTracking();
+      
+      showMessage('✅ Keywords generated! Click chips to insert them.', 'success');
+    } else {
+      throw new Error('Could not parse AI response');
+    }
+  } catch (error) {
+    showMessage(`❌ Error: ${error.message}`, 'error');
+  } finally {
+    btn.innerHTML = originalHTML;
+    btn.disabled = false;
+  }
+}
+
+function displayKeywords() {
+  const panel = document.getElementById('keywordsPanel');
+  
+  const html = `
+    <div style="margin-bottom: 24px;">
+      <h4 style="margin-bottom: 12px;">🎯 Primary Keywords</h4>
+      <div>
+        ${keywordData.primary.map(kw => `
+          <span class="keyword-chip primary" onclick="insertText('${kw}')">
+            ${kw}
+            <span class="usage-badge">${keywordData.usage[kw] || 0}×</span>
+          </span>
+        `).join('')}
+      </div>
+      <p style="font-size: 0.8rem; color: #6B7280; margin-top: 8px;">Use 8-12 times</p>
+    </div>
+    
+    <div style="margin-bottom: 24px;">
+      <h4 style="margin-bottom: 12px;">📊 Secondary Keywords</h4>
+      <div>
+        ${keywordData.secondary.map(kw => `
+          <span class="keyword-chip secondary" onclick="insertText('${kw}')">
+            ${kw}
+            <span class="usage-badge">${keywordData.usage[kw] || 0}×</span>
+          </span>
+        `).join('')}
+      </div>
+      <p style="font-size: 0.8rem; color: #6B7280; margin-top: 8px;">Use 3-5 times each</p>
+    </div>
+    
+    <div>
+      <h4 style="margin-bottom: 12px;">🔍 Long-Tail Keywords</h4>
+      <div>
+        ${keywordData.longTail.map(kw => `
+          <span class="keyword-chip longtail" onclick="insertText('${kw}')">
+            ${kw}
+            <span class="usage-badge">${keywordData.usage[kw] || 0}×</span>
+          </span>
+        `).join('')}
+      </div>
+      <p style="font-size: 0.8rem; color: #6B7280; margin-top: 8px;">Use in headings</p>
+    </div>
+  `;
+  
+  panel.innerHTML = html;
+}
+
+function insertText(text) {
+  const content = document.getElementById('content');
+  const cursorPos = content.selectionStart;
+  const before = content.value.substring(0, cursorPos);
+  const after = content.value.substring(cursorPos);
+  
+  content.value = before + text + after;
+  content.focus();
+  content.selectionStart = content.selectionEnd = cursorPos + text.length;
+  
+  updateKeywordTracking();
+}
+
+function updateKeywordTracking() {
+  const content = document.getElementById('content').value.toLowerCase();
+  const title = document.getElementById('title').value.toLowerCase();
+  const fullText = title + ' ' + content;
+  
+  // Count keyword usage
+  const allKeywords = [...keywordData.primary, ...keywordData.secondary, ...keywordData.longTail];
+  
+  allKeywords.forEach(keyword => {
+    const regex = new RegExp(keyword.toLowerCase(), 'gi');
+    const matches = fullText.match(regex);
+    keywordData.usage[keyword] = matches ? matches.length : 0;
+  });
+  
+  // Update score
+  let score = 0;
+  let feedback = [];
+  
+  keywordData.primary.forEach(kw => {
+    const usage = keywordData.usage[kw] || 0;
+    if (usage >= 8 && usage <= 15) {
+      score += 30;
+      feedback.push(`✅ "${kw}" used optimally (${usage}×)`);
+    } else if (usage > 0) {
+      score += 15;
+      feedback.push(`⚠️ "${kw}" needs more (${usage}×)`);
+    } else {
+      feedback.push(`❌ "${kw}" not found`);
+    }
+  });
+  
+  // Check title
+  if (keywordData.primary.some(kw => title.includes(kw.toLowerCase()))) {
+    score += 20;
+    feedback.push('✅ Keyword in title');
+  }
+  
+  document.getElementById('keywordScore').textContent = Math.min(score, 100);
+  document.getElementById('keywordFeedback').innerHTML = feedback.join('<br>');
+  
+  // Update display if panel exists
+  if (document.getElementById('keywordsPanel')) {
+    displayKeywords();
+  }
+}
+
+async function optimizeWithKeywords() {
+  const content = document.getElementById('content').value;
+  
+  if (!content || keywordData.primary.length === 0) {
+    showMessage('❌ Please generate keywords first', 'error');
+    return;
+  }
+  
+  const btn = event.target;
+  const originalHTML = btn.innerHTML;
+  btn.innerHTML = '<span class="loading-spinner"></span> Optimizing...';
+  btn.disabled = true;
+  
+  showMessage('✨ AI is optimizing your content...', 'info');
+  
+  try {
+    const prompt = `Optimize this content with these keywords naturally:
+
+PRIMARY (use 8-12 times): ${keywordData.primary.join(', ')}
+SECONDARY (use 3-5 times): ${keywordData.secondary.join(', ')}
+LONG-TAIL (use in headings): ${keywordData.longTail.join(', ')}
+
+Content:
+${content}
+
+Rules:
+- Keep same structure
+- Add keywords naturally
+- Don't keyword stuff
+- Maintain quality
+- Keep all markdown links
+
+Return ONLY the optimized content, no explanation.`;
+    
+    const optimized = await callGroqAPI(prompt, 'You are an SEO content optimizer.');
+    document.getElementById('content').value = optimized.trim();
+    
+    updateKeywordTracking();
+    updateWordCount();
+    
+    showMessage('✅ Content optimized with keywords!', 'success');
+  } catch (error) {
+    showMessage(`❌ Error: ${error.message}`, 'error');
+  } finally {
+    btn.innerHTML = originalHTML;
+    btn.disabled = false;
+  }
+}
+
+// ============================================
+// INTERNAL LINKING
+// ============================================
+
+async function suggestInternalLinks() {
+  const content = document.getElementById('content').value;
+  const title = document.getElementById('title').value;
+  
+  if (!content) {
+    showMessage('❌ Please add content first', 'error');
+    return;
+  }
+  
+  const btn = event.target;
+  const originalHTML = btn.innerHTML;
+  btn.innerHTML = '<span class="loading-spinner"></span> Finding...';
+  btn.disabled = true;
+  
+  showMessage('🔗 AI is finding link opportunities...', 'info');
+  
+  try {
+    // Create example posts context
+    const postsContext = publishedPosts.length > 0
+      ? publishedPosts.map(p => `- ${p.title} (slug: ${p.slug})`).join('\n')
+      : `- Modern Living Room Ideas (slug: modern-living-room-ideas)
+- Bedroom Design Tips (slug: bedroom-design-tips)
+- Kitchen Decor Trends (slug: kitchen-decor-trends)`;
+    
+    const prompt = `Find 3-5 internal linking opportunities in this content:
+
+Title: ${title}
+Content: ${content.substring(0, 1500)}
+
+Available posts:
+${postsContext}
+
+Return JSON:
+{
+  "suggestions": [
+    {
+      "anchor_text": "exact phrase from content",
+      "target_slug": "slug-to-link-to",
+      "target_title": "Post Title",
+      "reason": "why relevant"
+    }
+  ]
+}`;
+    
+    const response = await callGroqAPI(prompt, 'You are an internal linking expert.');
+    const jsonMatch = response.match(/\{[\s\S]*\}/);
+    
+    if (jsonMatch) {
+      const data = JSON.parse(jsonMatch[0]);
+      displayLinkSuggestions(data.suggestions || []);
+      showMessage('✅ Link suggestions ready!', 'success');
+    } else {
+      throw new Error('Could not parse AI response');
+    }
+  } catch (error) {
+    showMessage(`❌ Error: ${error.message}`, 'error');
+  } finally {
+    btn.innerHTML = originalHTML;
+    btn.disabled = false;
+  }
+}
+
+function displayLinkSuggestions(suggestions) {
+  const panel = document.getElementById('linksPanel');
+  
+  if (suggestions.length === 0) {
+    panel.innerHTML = `
+      <div style="text-align: center; padding: 40px; color: #6B7280;">
+        <div style="font-size: 3rem; margin-bottom: 16px;">🔍</div>
+        <h3>No opportunities found</h3>
+        <p>Try different content or add more published posts</p>
+      </div>
+    `;
+    return;
+  }
+  
+  const html = suggestions.map((link, i) => `
+    <div class="link-suggestion">
+      <strong>${i + 1}. "${link.anchor_text}"</strong>
+      <small>→ ${link.target_title}</small>
+      <p style="font-size: 0.85rem; color: #6B7280; margin-bottom: 12px;">${link.reason}</p>
+      <button class="btn btn-sm btn-primary" onclick='addInternalLink(${JSON.stringify(link)})'>
+        ✅ Insert Link
+      </button>
+    </div>
+  `).join('');
+  
+  panel.innerHTML = html;
+  updateLinkStats();
+}
+
+function addInternalLink(link) {
+  const content = document.getElementById('content');
+  const regex = new RegExp(`\\b${link.anchor_text}\\b(?!\\])`, 'i');
+  
+  if (regex.test(content.value)) {
+    content.value = content.value.replace(regex, `[${link.anchor_text}](/posts/${link.target_slug}.html)`);
+    showMessage(`✅ Added link to "${link.target_title}"`, 'success');
+    updateLinkStats();
+  } else {
+    showMessage(`⚠️ Could not find "${link.anchor_text}" in content`, 'error');
+  }
+}
+
+function updateLinkStats() {
+  const content = document.getElementById('content').value;
+  const links = (content.match(/\[.*?\]\(\/posts\/.*?\.html\)/g) || []).length;
+  
+  document.getElementById('currentLinks').textContent = links;
+  
+  const statusEl = document.getElementById('linkStatus');
+  if (links >= 3 && links <= 7) {
+    statusEl.textContent = '✅';
+    statusEl.style.color = '#10B981';
+  } else if (links > 7) {
+    statusEl.textContent = '⚠️';
+    statusEl.style.color = '#F59E0B';
+  } else {
+    statusEl.textContent = '❌';
+    statusEl.style.color = '#DC2626';
+  }
+}
+
+// ============================================
+// SAVE POST TO DATABASE
+// ============================================
+
+// Update your existing publishToN8N function to save post data
+const originalPublishToN8N = publishToN8N;
+
+async function publishToN8N() {
+  // Call original publish function
+  await originalPublishToN8N();
+  
+  // After successful publish, save to database
+  const title = document.getElementById('title').value;
+  const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const category = document.getElementById('category').value;
+  
+  publishedPosts.push({
+    title: title,
+    slug: slug,
+    category: category,
+    tags: tags,
+    publishDate: new Date().toISOString()
+  });
+  
+  localStorage.setItem('wgd_published_posts', JSON.stringify(publishedPosts));
+}
+
+// Listen for content changes
+document.addEventListener('DOMContentLoaded', () => {
+  const contentEl = document.getElementById('content');
+  if (contentEl) {
+    contentEl.addEventListener('input', () => {
+      if (keywordData.primary.length > 0) {
+        setTimeout(updateKeywordTracking, 500);
+      }
+      updateLinkStats();
+    });
+  }
+});
