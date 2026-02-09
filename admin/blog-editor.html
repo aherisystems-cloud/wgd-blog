@@ -576,16 +576,7 @@ body {
   padding: 24px;
   margin-top: 24px;
 }
-@media (max-width: 1024px) {
-  .form-grid { grid-template-columns: 1fr; }
-  .product-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
-}
-@media (max-width: 768px) {
-  .product-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
-  .filter-section { justify-content: center; }
-}
-<!-- ADD THESE STYLES TO YOUR <style> SECTION -->
-<style>
+
 /* Keyword chips */
 .keyword-chip {
   display: inline-block;
@@ -655,6 +646,15 @@ body {
   display: block;
   margin-bottom: 12px;
 }
+
+@media (max-width: 1024px) {
+  .form-grid { grid-template-columns: 1fr; }
+  .product-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
+}
+@media (max-width: 768px) {
+  .product-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+  .filter-section { justify-content: center; }
+}
 </style>
 </head>
 <body>
@@ -676,12 +676,12 @@ body {
     <button class="tab" onclick="switchTab(2)">🔑 Keywords</button>
     <button class="tab" onclick="switchTab(3)">🔗 Links</button>
     <button class="tab" onclick="switchTab(4)">🛍️ Products</button>
-    <button class="tab" onclick="switchTab(3)">👁️ Preview</button>
-    <button class="tab" onclick="switchTab(4)">🚀 Publish</button>
+    <button class="tab" onclick="switchTab(5)">👁️ Preview</button>
+    <button class="tab" onclick="switchTab(6)">🚀 Publish</button>
   </div>
   
   <form id="blogForm">
-    <!-- TAB 1: CONTENT -->
+    <!-- TAB 0: CONTENT -->
     <div class="tab-content active">
       <div id="statusMessage" class="status-message"></div>
       
@@ -730,9 +730,86 @@ body {
             <label>Category</label>
             <select id="category">
               <option value="">Select a category...</option>
-              <option value="">Select a category...</option>
 
- 
+              <!-- Core Rooms -->
+              <option value="Living Room">Living Room</option>
+              <option value="Bedroom">Bedroom</option>
+              <option value="Dining Room">Dining Room</option>
+              <option value="Home Office">Home Office</option>
+              <option value="Kitchen">Kitchen</option>
+              <option value="Bathroom">Bathroom</option>
+              <option value="Entryway & Hallway">Entryway & Hallway</option>
+              <option value="Laundry Room">Laundry Room</option>
+              <option value="Kids Room & Nursery">Kids Room & Nursery</option>
+              <option value="Outdoor & Patio">Outdoor & Patio</option>
+              <option value="Balcony & Small Spaces">Balcony & Small Spaces</option>
+
+              <!-- Furniture Types -->
+              <option value="Sofas & Seating">Sofas & Seating</option>
+              <option value="Beds & Bed Frames">Beds & Bed Frames</option>
+              <option value="Mattresses">Mattresses</option>
+              <option value="Tables & Desks">Tables & Desks</option>
+              <option value="Chairs & Stools">Chairs & Stools</option>
+              <option value="Wardrobes & Closets">Wardrobes & Closets</option>
+              <option value="TV Stands & Media Units">TV Stands & Media Units</option>
+              <option value="Shelving & Bookcases">Shelving & Bookcases</option>
+              <option value="Storage Furniture">Storage Furniture</option>
+
+              <!-- Decor Categories -->
+              <option value="Wall Decor">Wall Decor</option>
+              <option value="Lighting & Lamps">Lighting & Lamps</option>
+              <option value="Rugs & Carpets">Rugs & Carpets</option>
+              <option value="Curtains & Window Treatments">Curtains & Window Treatments</option>
+              <option value="Mirrors">Mirrors</option>
+              <option value="Cushions & Throws">Cushions & Throws</option>
+              <option value="Vases & Decorative Accents">Vases & Decorative Accents</option>
+              <option value="Clocks">Clocks</option>
+              <option value="Plants & Planters">Plants & Planters</option>
+
+              <!-- Storage & Organization (HIGH affiliate value) -->
+              <option value="Storage & Organization">Storage & Organization</option>
+              <option value="Closet Organization">Closet Organization</option>
+              <option value="Shoe Storage">Shoe Storage</option>
+              <option value="Kitchen Storage Solutions">Kitchen Storage Solutions</option>
+              <option value="Bathroom Storage Solutions">Bathroom Storage Solutions</option>
+              <option value="Small Space Storage">Small Space Storage</option>
+
+              <!-- Style-Based Categories -->
+              <option value="Modern Style">Modern Style</option>
+              <option value="Minimalist Style">Minimalist Style</option>
+              <option value="Scandinavian Style">Scandinavian Style</option>
+              <option value="Luxury & Glam Decor">Luxury & Glam Decor</option>
+              <option value="Boho & Rustic Decor">Boho & Rustic Decor</option>
+              <option value="Traditional & Classic">Traditional & Classic</option>
+              <option value="Industrial Style">Industrial Style</option>
+
+              <!-- Functional / Buying Intent -->
+              <option value="Budget Furniture">Budget Furniture</option>
+              <option value="Luxury Furniture">Luxury Furniture</option>
+              <option value="Space-Saving Furniture">Space-Saving Furniture</option>
+              <option value="Multifunctional Furniture">Multifunctional Furniture</option>
+              <option value="Furniture Buying Guides">Furniture Buying Guides</option>
+              <option value="Best Of Lists">Best Of Lists</option>
+              <option value="Product Reviews">Product Reviews</option>
+              <option value="Comparisons">Comparisons</option>
+
+              <!-- DIY & Care -->
+              <option value="DIY & Home Improvement">DIY & Home Improvement</option>
+              <option value="Furniture Care & Maintenance">Furniture Care & Maintenance</option>
+              <option value="Cleaning & Care Tips">Cleaning & Care Tips</option>
+              <option value="Furniture Assembly Tips">Furniture Assembly Tips</option>
+
+              <!-- Seasonal / Lifestyle -->
+              <option value="Seasonal Decor">Seasonal Decor</option>
+              <option value="Holiday Decor">Holiday Decor</option>
+              <option value="Home Makeovers">Home Makeovers</option>
+              <option value="Rental-Friendly Decor">Rental-Friendly Decor</option>
+
+              <!-- Gifts (affiliate GOLD) -->
+              <option value="Home Gift Ideas">Home Gift Ideas</option>
+              <option value="Housewarming Gifts">Housewarming Gifts</option>
+              <option value="Luxury Home Gifts">Luxury Home Gifts</option>
+              <option value="Budget Gift Ideas">Budget Gift Ideas</option>
             </select>
           </div>
           
@@ -797,7 +874,7 @@ Add your first key insight..."
       </div>
     </div>
     
-    <!-- TAB 2: SEO -->
+    <!-- TAB 1: SEO -->
     <div class="tab-content">
       <div class="form-grid">
         <div>
@@ -851,125 +928,126 @@ Add your first key insight..."
       </div>
     </div>
     
-<!-- TAB: KEYWORDS (NEW) -->
-<div class="tab-content">
-  <h2 style="margin-bottom: 24px;">🔑 AI Keyword Optimization</h2>
-  
-  <div class="form-grid">
-    <div>
-      <button type="button" class="btn btn-ai" onclick="generateKeywords()">
-        🔍 Generate SEO Keywords with AI
-      </button>
+    <!-- TAB 2: KEYWORDS -->
+    <div class="tab-content">
+      <h2 style="margin-bottom: 24px;">🔑 AI Keyword Optimization</h2>
       
-      <div id="keywordsPanel" style="margin-top: 24px; padding: 24px; background: #F9FAFB; border-radius: 16px; min-height: 300px;">
-        <div style="text-align: center; padding: 40px; color: #6B7280;">
-          <div style="font-size: 3rem; margin-bottom: 16px;">🔍</div>
-          <h3>No keywords generated yet</h3>
-          <p>Click the button above to generate optimized keywords</p>
-        </div>
-      </div>
-      
-      <button type="button" class="btn btn-ai" onclick="optimizeWithKeywords()" style="margin-top: 16px; width: 100%;">
-        ✨ Auto-Optimize Content with Keywords
-      </button>
-    </div>
-    
-    <div>
-      <div class="seo-score">
-        <h3>📊 Keyword Score</h3>
-        <div class="score-circle grade-d">
-          <span id="keywordScore">0</span>
-        </div>
-        <div id="keywordFeedback" style="font-size: 0.9rem; color: #6B7280;">
-          Generate keywords to see feedback
-        </div>
-      </div>
-      
-      <div style="background: rgba(123, 31, 162, 0.05); border: 2px solid #7B1FA2; border-radius: 16px; padding: 20px; margin-top: 20px;">
-        <h4>💡 Quick Tips</h4>
-        <ul style="font-size: 0.9rem; line-height: 1.8;">
-          <li>Use primary keywords 8-12 times</li>
-          <li>Add keywords to title and H2 headings</li>
-          <li>Use long-tail keywords as questions</li>
-          <li>Keep it natural - avoid keyword stuffing</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- TAB: INTERNAL LINKS (NEW) -->
-<div class="tab-content">
-  <h2 style="margin-bottom: 24px;">🔗 Internal Linking</h2>
-  
-  <div class="form-grid">
-    <div>
-      <button type="button" class="btn btn-ai" onclick="suggestInternalLinks()">
-        🤖 Find Link Opportunities
-      </button>
-      
-      <div id="linksPanel" style="margin-top: 24px; padding: 24px; background: #F9FAFB; border-radius: 16px; min-height: 300px;">
-        <div style="text-align: center; padding: 40px; color: #6B7280;">
-          <div style="font-size: 3rem; margin-bottom: 16px;">🔗</div>
-          <h3>No suggestions yet</h3>
-          <p>AI will analyze your content and suggest relevant internal links</p>
-        </div>
-      </div>
-      
-      <div style="background: white; border: 2px solid #E5E7EB; border-radius: 16px; padding: 20px; margin-top: 20px;">
-        <h4>📊 Link Stats</h4>
-        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-top: 16px; text-align: center;">
-          <div style="padding: 12px; background: #F9FAFB; border-radius: 8px;">
-            <div style="font-size: 0.75rem; color: #6B7280; margin-bottom: 4px;">CURRENT</div>
-            <div style="font-size: 1.5rem; font-weight: 900;" id="currentLinks">0</div>
+      <div class="form-grid">
+        <div>
+          <button type="button" class="btn btn-ai" onclick="generateKeywords()">
+            🔍 Generate SEO Keywords with AI
+          </button>
+          
+          <div id="keywordsPanel" style="margin-top: 24px; padding: 24px; background: #F9FAFB; border-radius: 16px; min-height: 300px;">
+            <div style="text-align: center; padding: 40px; color: #6B7280;">
+              <div style="font-size: 3rem; margin-bottom: 16px;">🔍</div>
+              <h3>No keywords generated yet</h3>
+              <p>Click the button above to generate optimized keywords</p>
+            </div>
           </div>
-          <div style="padding: 12px; background: #F9FAFB; border-radius: 8px;">
-            <div style="font-size: 0.75rem; color: #6B7280; margin-bottom: 4px;">RECOMMENDED</div>
-            <div style="font-size: 1.5rem; font-weight: 900;">3-5</div>
+          
+          <button type="button" class="btn btn-ai" onclick="optimizeWithKeywords()" style="margin-top: 16px; width: 100%;">
+            ✨ Auto-Optimize Content with Keywords
+          </button>
+        </div>
+        
+        <div>
+          <div class="seo-score">
+            <h3>📊 Keyword Score</h3>
+            <div class="score-circle grade-d">
+              <span id="keywordScore">0</span>
+            </div>
+            <div id="keywordFeedback" style="font-size: 0.9rem; color: #6B7280;">
+              Generate keywords to see feedback
+            </div>
           </div>
-          <div style="padding: 12px; background: #F9FAFB; border-radius: 8px;">
-            <div style="font-size: 0.75rem; color: #6B7280; margin-bottom: 4px;">STATUS</div>
-            <div style="font-size: 1.5rem; font-weight: 900;" id="linkStatus">❌</div>
+          
+          <div style="background: rgba(123, 31, 162, 0.05); border: 2px solid #7B1FA2; border-radius: 16px; padding: 20px; margin-top: 20px;">
+            <h4>💡 Quick Tips</h4>
+            <ul style="font-size: 0.9rem; line-height: 1.8;">
+              <li>Use primary keywords 8-12 times</li>
+              <li>Add keywords to title and H2 headings</li>
+              <li>Use long-tail keywords as questions</li>
+              <li>Keep it natural - avoid keyword stuffing</li>
+            </ul>
           </div>
         </div>
       </div>
     </div>
     
-    <div>
-      <div style="background: rgba(123, 31, 162, 0.05); border: 2px solid #7B1FA2; border-radius: 16px; padding: 20px;">
-        <h4>🎯 Why Link Internally?</h4>
-        <div style="display: grid; gap: 12px; margin-top: 12px;">
-          <div style="background: white; padding: 12px; border-radius: 8px;">
-            <div style="font-size: 1.5rem;">📈</div>
-            <strong>SEO Boost</strong>
-            <p style="font-size: 0.85rem; color: #6B7280; margin-top: 4px;">Distribute page authority</p>
+    <!-- TAB 3: INTERNAL LINKS -->
+    <div class="tab-content">
+      <h2 style="margin-bottom: 24px;">🔗 Internal Linking</h2>
+      
+      <div class="form-grid">
+        <div>
+          <button type="button" class="btn btn-ai" onclick="suggestInternalLinks()">
+            🤖 Find Link Opportunities
+          </button>
+          
+          <div id="linksPanel" style="margin-top: 24px; padding: 24px; background: #F9FAFB; border-radius: 16px; min-height: 300px;">
+            <div style="text-align: center; padding: 40px; color: #6B7280;">
+              <div style="font-size: 3rem; margin-bottom: 16px;">🔗</div>
+              <h3>No suggestions yet</h3>
+              <p>AI will analyze your content and suggest relevant internal links</p>
+            </div>
           </div>
-          <div style="background: white; padding: 12px; border-radius: 8px;">
-            <div style="font-size: 1.5rem;">👤</div>
-            <strong>User Experience</strong>
-            <p style="font-size: 0.85rem; color: #6B7280; margin-top: 4px;">Guide visitors to related content</p>
+          
+          <div style="background: white; border: 2px solid #E5E7EB; border-radius: 16px; padding: 20px; margin-top: 20px;">
+            <h4>📊 Link Stats</h4>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-top: 16px; text-align: center;">
+              <div style="padding: 12px; background: #F9FAFB; border-radius: 8px;">
+                <div style="font-size: 0.75rem; color: #6B7280; margin-bottom: 4px;">CURRENT</div>
+                <div style="font-size: 1.5rem; font-weight: 900;" id="currentLinks">0</div>
+              </div>
+              <div style="padding: 12px; background: #F9FAFB; border-radius: 8px;">
+                <div style="font-size: 0.75rem; color: #6B7280; margin-bottom: 4px;">RECOMMENDED</div>
+                <div style="font-size: 1.5rem; font-weight: 900;">3-5</div>
+              </div>
+              <div style="padding: 12px; background: #F9FAFB; border-radius: 8px;">
+                <div style="font-size: 0.75rem; color: #6B7280; margin-bottom: 4px;">STATUS</div>
+                <div style="font-size: 1.5rem; font-weight: 900;" id="linkStatus">❌</div>
+              </div>
+            </div>
           </div>
-          <div style="background: white; padding: 12px; border-radius: 8px;">
-            <div style="font-size: 1.5rem;">⏱️</div>
-            <strong>Time on Site</strong>
-            <p style="font-size: 0.85rem; color: #6B7280; margin-top: 4px;">Increase engagement</p>
+        </div>
+        
+        <div>
+          <div style="background: rgba(123, 31, 162, 0.05); border: 2px solid #7B1FA2; border-radius: 16px; padding: 20px;">
+            <h4>🎯 Why Link Internally?</h4>
+            <div style="display: grid; gap: 12px; margin-top: 12px;">
+              <div style="background: white; padding: 12px; border-radius: 8px;">
+                <div style="font-size: 1.5rem;">📈</div>
+                <strong>SEO Boost</strong>
+                <p style="font-size: 0.85rem; color: #6B7280; margin-top: 4px;">Distribute page authority</p>
+              </div>
+              <div style="background: white; padding: 12px; border-radius: 8px;">
+                <div style="font-size: 1.5rem;">👤</div>
+                <strong>User Experience</strong>
+                <p style="font-size: 0.85rem; color: #6B7280; margin-top: 4px;">Guide visitors to related content</p>
+              </div>
+              <div style="background: white; padding: 12px; border-radius: 8px;">
+                <div style="font-size: 1.5rem;">⏱️</div>
+                <strong>Time on Site</strong>
+                <p style="font-size: 0.85rem; color: #6B7280; margin-top: 4px;">Increase engagement</p>
+              </div>
+            </div>
+          </div>
+          
+          <div style="background: white; border: 2px solid #E5E7EB; border-radius: 16px; padding: 20px; margin-top: 20px;">
+            <h4>📋 Best Practices</h4>
+            <ul style="font-size: 0.9rem; line-height: 1.8;">
+              <li>3-5 internal links per post</li>
+              <li>Use descriptive anchor text</li>
+              <li>Link to related topics only</li>
+              <li>Place links naturally in content</li>
+            </ul>
           </div>
         </div>
       </div>
-      
-      <div style="background: white; border: 2px solid #E5E7EB; border-radius: 16px; padding: 20px; margin-top: 20px;">
-        <h4>📋 Best Practices</h4>
-        <ul style="font-size: 0.9rem; line-height: 1.8;">
-          <li>3-5 internal links per post</li>
-          <li>Use descriptive anchor text</li>
-          <li>Link to related topics only</li>
-          <li>Place links naturally in content</li>
-        </ul>
-      </div>
     </div>
-  </div>
-</div>
-    <!-- TAB 3: PRODUCTS -->
+    
+    <!-- TAB 4: PRODUCTS -->
     <div class="tab-content">
       <h2 style="margin-bottom: 24px;">🛍️ Select Products to Feature (150+ Products)</h2>
       
@@ -1011,7 +1089,7 @@ Add your first key insight..."
       </div>
     </div>
     
-    <!-- TAB 4: PREVIEW -->
+    <!-- TAB 5: PREVIEW -->
     <div class="tab-content">
       <div class="preview-panel" style="max-height: none;">
         <h3>📄 Live Preview</h3>
@@ -1021,7 +1099,7 @@ Add your first key insight..."
       </div>
     </div>
     
-    <!-- TAB 5: PUBLISH -->
+    <!-- TAB 6: PUBLISH -->
     <div class="tab-content">
       <div style="max-width: 800px; margin: 0 auto;">
         <h2 style="margin-bottom: 24px;">🚀 Publish Your Blog Post</h2>
