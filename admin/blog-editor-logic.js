@@ -51,7 +51,7 @@ async function callN8NProxy(action, payload = {}) {
     
     // Read response as text first for debugging
     const responseText = await response.text();
-    console.log(`📥 N8N Response (${response.status}):`, responseText);
+    console.log(`📥 N8N Response (${response.status}):`, responseText.substring(0, 200) + '...');
     
     // Check for HTTP errors
     if (!response.ok) {
@@ -64,14 +64,25 @@ async function callN8NProxy(action, payload = {}) {
       throw new Error("Empty response from N8N webhook");
     }
     
-    // Try parsing JSON
+    // Try parsing as JSON first
     let data;
     try {
       data = JSON.parse(responseText);
+      console.log('✅ Valid JSON response received');
     } catch (jsonError) {
-      console.error("❌ JSON Parse Error:", jsonError);
-      console.error("Raw response:", responseText);
-      throw new Error(`Invalid JSON from N8N: ${jsonError.message}`);
+      // If JSON parsing fails, treat it as raw markdown content
+      console.log('ℹ️ Response is raw text, wrapping in JSON structure');
+      
+      // Wrap the raw markdown in the expected structure
+      data = {
+        choices: [
+          {
+            message: {
+              content: responseText
+            }
+          }
+        ]
+      };
     }
     
     // Validate response structure
