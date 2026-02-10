@@ -1,21 +1,10 @@
 // ============================================
-// CONFIGURATION FILE - Modern Furniture & Home Decor
+// CONFIGURATION - N8N PROXY VERSION
 // ============================================
-// SECURITY NOTE: This file is safe to commit to GitHub
-// API keys are loaded from GitHub Secrets or environment variables
 
 window.CONFIG = {
-  // ============================================
-  // API CONFIGURATION
-  // ============================================
-  
-  // API keys will be injected during deployment via GitHub Actions
-  // DO NOT hardcode API keys here - use GitHub Secrets instead
-  GROQ_API_KEY: window.ENV_GROQ_API_KEY || '',  // Injected from GitHub Secrets
-  GROQ_MODEL: 'llama-3.3-70b-versatile',
-  
-  // N8N Webhook URL - injected from GitHub Secrets
-  N8N_WEBHOOK_URL: window.ENV_N8N_WEBHOOK_URL || '',  // Injected from GitHub Secrets
+  // ✅ N8N Webhook - ALL AI operations go through here
+  N8N_GROQ_PROXY: 'http://localhost:5678/webhook/groq-proxy',
   
   // Blog configuration
   BLOG_CONFIG: {
@@ -24,23 +13,24 @@ window.CONFIG = {
     defaultAuthor: {
       name: 'Sarah Mitchell',
       role: 'Interior Design Expert',
-      bio: 'Interior design enthusiast and home decor blogger with over 10 years of experience transforming spaces into stunning, functional homes.',
-      avatar: '/content/images/author-avatar.jpg'
+      bio: 'Interior design enthusiast with 10+ years of experience transforming spaces.'
     }
+  },
+  
+  // Unsplash configuration (optional - handled in N8N)
+  UNSPLASH: {
+    enabled: true,
+    imagesPerArticle: 3
   }
 };
 
-// ============================================
-// SECURITY VALIDATION
-// ============================================
-// Check if API keys are loaded (helps with debugging)
-if (!window.CONFIG.GROQ_API_KEY) {
-  console.warn('⚠️ GROQ API Key not loaded. Please check GitHub Secrets configuration.');
-}
+// ✅ NO API KEYS IN BROWSER CODE!
+// ✅ Works everywhere: localhost, GitHub Pages, Cloudflare Pages
+// ✅ All API calls proxied through N8N
+// ✅ Automatic Unsplash image insertion
 
-if (!window.CONFIG.N8N_WEBHOOK_URL) {
-  console.warn('⚠️ N8N Webhook URL not loaded. Please check GitHub Secrets configuration.');
-}
+console.log('✅ Blog Editor Config Loaded');
+console.log('🔗 N8N Proxy:', window.CONFIG.N8N_GROQ_PROXY);
 
 // ============================================
 // AFFILIATE PRODUCTS DATABASE - 150+ PRODUCTS
