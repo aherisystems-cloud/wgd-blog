@@ -161,46 +161,27 @@ function restoreFormData(data) {
 
 // blog-editor-logic.js
 
-async function callN8NProxy(action, data) {
+const N8N_WEBHOOK_URL = "http://localhost:5678/webhook/groq-proxy";
+async function callN8NProxy(data) {
   try {
-    console.log(`🚀 Calling N8N: ${action}`, data);
-    
-    const response = await fetch(CONFIG.N8N_WEBHOOK_URL, {
-      method: 'POST',
+    const response = await fetch(N8N_WEBHOOK_URL, {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json"
       },
-      body: JSON.stringify({
-        action: action,
-        ...data
-      })
+      body: JSON.stringify(data)
     });
 
-    // Check if response is OK
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    // Get the raw text first
-    const text = await response.text();
-    console.log('📥 Raw response:', text);
-
-    // Try to parse JSON
-    if (!text || text.trim() === '') {
-      throw new Error('Empty response from server');
-    }
-
-    const result = JSON.parse(text);
-    console.log('✅ Parsed result:', result);
-    
-    return result;
-
+    return await response.json();
   } catch (error) {
-    console.error('N8N Proxy Error:', error);
+    console.error("N8N Proxy Error:", error);
     throw error;
   }
 }
-
 async function generateAIContent() {
   const topic = document.getElementById('aiTopic').value.trim();
   
