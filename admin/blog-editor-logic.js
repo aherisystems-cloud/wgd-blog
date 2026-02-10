@@ -111,7 +111,6 @@ async function callN8NProxy(action, payload = {}) {
     throw error;
   }
 }
-
 // ============================================
 // INITIALIZATION
 // ============================================
