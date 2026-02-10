@@ -1,233 +1,195 @@
 // ============================================
-// BLOG EDITOR - COMPLETE JAVASCRIPT LOGIC
+// WORLD-CLASS BLOG EDITOR LOGIC - N8N PROXY VERSION
+// Enhanced for Furniture & Home Decor Excellence
+// Inspired by: Tom's Guide, Good Housekeeping, Veranda
 // ============================================
 
 // Global state
-let selectedProducts = new Set();
-let currentTags = [];
-let generatedKeywords = null;
+let selectedProducts = [];
+let currentKeywords = null;
+let allProducts = [];
+let tags = [];
+let autosaveInterval = null;
 
 // ============================================
 // INITIALIZATION
 // ============================================
 
 document.addEventListener('DOMContentLoaded', function() {
-  console.log('✅ Blog Editor initialized');
+  console.log('🚀 World-Class Blog Editor Initializing...');
+  initializeEditor();
+  loadProducts();
+  setupEventListeners();
+  setupAutosave();
+  loadDraftIfExists();
   
-  // Initialize product grid
-  renderProductGrid();
-  renderCategoryFilters();
-  
-  // Setup tag input
-  setupTagInput();
-  
-  // Initial counters
-  updateTitleCounter();
-  updateWordCount();
-  updateSEOTitleCounter();
-  updateSEODescCounter();
-  updateGooglePreview();
-  
-  // Check API configuration
-  if (!window.CONFIG || !window.CONFIG.GROQ_API_KEY) {
-    console.warn('⚠️ Warning: Groq API key not configured. AI features will not work.');
+  // Check if N8N webhook is configured
+  if (!window.CONFIG || !window.CONFIG.N8N_GROQ_PROXY || window.CONFIG.N8N_GROQ_PROXY.includes('localhost')) {
+    document.getElementById('setupWarning').style.display = 'block';
+    console.warn('⚠️ N8N webhook not configured or using localhost');
   }
+  
+  console.log('✅ Editor initialized successfully');
 });
 
-// ============================================
-// TAB SWITCHING
-// ============================================
+function initializeEditor() {
+  // Initialize tag input
+  const tagInput = document.getElementById('tagInput');
+  if (tagInput) {
+    tagInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        addTag(this.value);
+        this.value = '';
+      }
+    });
+  }
+  
+  // Initialize preview update
+  const contentField = document.getElementById('content');
+  if (contentField) {
+    contentField.addEventListener('input', debounce(updatePreview, 300));
+  }
+  
+  // Initial preview
+  updatePreview();
+  
+  // Initial metrics
+  updateAllMetrics();
+}
 
-function switchTab(index) {
-  const tabs = document.querySelectorAll('.tab');
-  const contents = document.querySelectorAll('.tab-content');
+function setupEventListeners() {
+  // Auto-update counters with debouncing for performance
+  const titleInput = document.getElementById('title');
+  const contentInput = document.getElementById('content');
+  const seoTitleInput = document.getElementById('seoTitle');
+  const seoDescInput = document.getElementById('seoDescription');
   
-  tabs.forEach((tab, i) => {
-    tab.classList.toggle('active', i === index);
-  });
+  if (titleInput) {
+    titleInput.addEventListener('input', debounce(() => {
+      updateTitleCounter();
+      updateGooglePreview();
+    }, 300));
+  }
   
-  contents.forEach((content, i) => {
-    content.classList.toggle('active', i === index);
-  });
+  if (contentInput) {
+    contentInput.addEventListener('input', debounce(() => {
+      updateWordCount();
+      calculateSEOScore();
+      if (currentKeywords) {
+        analyzeKeywordUsage();
+      }
+    }, 500));
+  }
   
-  // Update preview when switching to preview tab
-  if (index === 5) {
-    updatePreview();
+  if (seoTitleInput) {
+    seoTitleInput.addEventListener('input', debounce(() => {
+      updateSEOTitleCounter();
+      updateGooglePreview();
+    }, 300));
+  }
+  
+  if (seoDescInput) {
+    seoDescInput.addEventListener('input', debounce(() => {
+      updateSEODescCounter();
+      updateGooglePreview();
+    }, 300));
   }
 }
 
-// ============================================
-// COUNTERS & UPDATES
-// ============================================
-
-function updateTitleCounter() {
-  const title = document.getElementById('title').value;
-  const counter = document.getElementById('titleCounter');
-  const length = title.length;
-  
-  counter.textContent = `${length} / 60 characters`;
-  
-  if (length === 0) {
-    counter.className = 'counter bad';
-  } else if (length < 40) {
-    counter.className = 'counter warning';
-  } else if (length <= 60) {
-    counter.className = 'counter good';
-  } else {
-    counter.className = 'counter bad';
-  }
-  
-  updateSEOScore();
-  updateGooglePreview();
+function setupAutosave() {
+  // Auto-save draft every 30 seconds
+  autosaveInterval = setInterval(() => {
+    const data = collectFormData();
+    if (data.title || data.content) {
+      localStorage.setItem('blogDraft', JSON.stringify(data));
+      localStorage.setItem('blogDraftTimestamp', new Date().toISOString());
+      console.log('💾 Draft auto-saved');
+    }
+  }, 30000);
 }
 
-function updateWordCount() {
-  const content = document.getElementById('content').value;
-  const words = content.trim().split(/\s+/).filter(w => w.length > 0).length;
-  const readingTime = Math.ceil(words / 200);
+function loadDraftIfExists() {
+  const draft = localStorage.getItem('blogDraft');
+  const timestamp = localStorage.getItem('blogDraftTimestamp');
   
-  document.getElementById('wordCounter').textContent = `${words} words`;
-  document.getElementById('readingTime').textContent = `${readingTime} min read`;
-  
-  const counter = document.getElementById('wordCounter');
-  if (words < 300) {
-    counter.className = 'counter bad';
-  } else if (words < 800) {
-    counter.className = 'counter warning';
-  } else {
-    counter.className = 'counter good';
-  }
-  
-  updateSEOScore();
-}
-
-function updateSEOTitleCounter() {
-  const seoTitle = document.getElementById('seoTitle').value;
-  const counter = document.getElementById('seoTitleCounter');
-  const length = seoTitle.length;
-  
-  counter.textContent = `${length} / 60 characters`;
-  
-  if (length === 0) {
-    counter.className = 'counter';
-  } else if (length <= 60) {
-    counter.className = 'counter good';
-  } else {
-    counter.className = 'counter bad';
+  if (draft && timestamp) {
+    const draftAge = (Date.now() - new Date(timestamp)) / 1000 / 60; // minutes
+    
+    if (draftAge < 1440) { // Less than 24 hours old
+      if (confirm(`Found a draft from ${Math.round(draftAge)} minutes ago. Load it?`)) {
+        try {
+          const data = JSON.parse(draft);
+          restoreFormData(data);
+          showStatus('✅ Draft restored successfully!', 'success');
+        } catch (e) {
+          console.error('Error loading draft:', e);
+        }
+      }
+    }
   }
 }
 
-function updateSEODescCounter() {
-  const seoDesc = document.getElementById('seoDescription').value;
-  const counter = document.getElementById('seoDescCounter');
-  const length = seoDesc.length;
-  
-  counter.textContent = `${length} / 160 characters`;
-  
-  if (length === 0) {
-    counter.className = 'counter';
-  } else if (length >= 150 && length <= 160) {
-    counter.className = 'counter good';
-  } else if (length >= 120 && length < 150) {
-    counter.className = 'counter warning';
-  } else {
-    counter.className = 'counter bad';
+function restoreFormData(data) {
+  if (data.title) document.getElementById('title').value = data.title;
+  if (data.content) document.getElementById('content').value = data.content;
+  if (data.category) document.getElementById('category').value = data.category;
+  if (data.seoTitle) document.getElementById('seoTitle').value = data.seoTitle;
+  if (data.seoDescription) document.getElementById('seoDescription').value = data.seoDescription;
+  if (data.author) {
+    if (data.author.name) document.getElementById('authorName').value = data.author.name;
+    if (data.author.role) document.getElementById('authorRole').value = data.author.role;
+    if (data.author.bio) document.getElementById('authorBio').value = data.author.bio;
   }
-}
-
-function updateGooglePreview() {
-  const title = document.getElementById('seoTitle').value || document.getElementById('title').value;
-  const description = document.getElementById('seoDescription').value;
-  const titleSlug = document.getElementById('title').value
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '');
-  
-  document.getElementById('googleTitle').textContent = title || 'Your title will appear here';
-  document.getElementById('googleUrl').textContent = `wowglamdecor.com › ${titleSlug || 'your-slug'}`;
-  document.getElementById('googleDesc').textContent = description || 'Your meta description will appear here...';
-}
-
-function updateSEOScore() {
-  const title = document.getElementById('title').value;
-  const content = document.getElementById('content').value;
-  const words = content.trim().split(/\s+/).filter(w => w.length > 0).length;
-  const headings = (content.match(/^#{2,3}\s/gm) || []).length;
-  
-  let score = 0;
-  
-  // Title check
-  if (title.length >= 40 && title.length <= 60) {
-    score += 25;
-    document.getElementById('titleScore').textContent = '✅';
-  } else {
-    document.getElementById('titleScore').textContent = '❌';
+  if (data.tags) {
+    tags = data.tags;
+    renderAllTags();
+  }
+  if (data.selectedProducts) {
+    selectedProducts = data.selectedProducts;
+  }
+  if (data.keywords) {
+    currentKeywords = data.keywords;
   }
   
-  // Content length
-  if (words >= 800) {
-    score += 35;
-    document.getElementById('contentScore').textContent = '✅ ' + words + ' words';
-  } else if (words >= 300) {
-    score += 20;
-    document.getElementById('contentScore').textContent = '⚠️ ' + words + ' words';
-  } else {
-    document.getElementById('contentScore').textContent = '❌ ' + words + ' words';
-  }
-  
-  // Headings
-  if (headings >= 3) {
-    score += 20;
-    document.getElementById('headingScore').textContent = '✅ ' + headings + ' headings';
-  } else {
-    document.getElementById('headingScore').textContent = '❌ ' + headings + ' headings';
-  }
-  
-  // Product links
-  const productLinks = (content.match(/\[([^\]]+)\]\(https?:\/\/[^\)]+\)/g) || []).length;
-  document.getElementById('affiliateScore').textContent = productLinks;
-  if (productLinks >= 3) {
-    score += 20;
-  }
-  
-  // Update score display
-  document.getElementById('seoScore').textContent = score;
-  const scoreCircle = document.getElementById('scoreCircle');
-  scoreCircle.className = 'score-circle';
-  
-  if (score >= 80) {
-    scoreCircle.classList.add('grade-a');
-  } else if (score >= 60) {
-    scoreCircle.classList.add('grade-b');
-  } else if (score >= 40) {
-    scoreCircle.classList.add('grade-c');
-  } else {
-    scoreCircle.classList.add('grade-d');
-  }
+  updateAllMetrics();
 }
 
 // ============================================
-// STATUS MESSAGES
+// ENHANCED AI FUNCTIONS - N8N PROXY WITH EEAT
 // ============================================
 
-function showStatus(message, type = 'info') {
-  const statusEl = document.getElementById('statusMessage');
-  if (!statusEl) return;
+async function callN8NProxy(action, data) {
+  if (!window.CONFIG || !window.CONFIG.N8N_GROQ_PROXY) {
+    throw new Error('N8N webhook not configured. Please check your config file.');
+  }
   
-  statusEl.textContent = message;
-  statusEl.className = `status-message ${type}`;
-  statusEl.style.display = 'block';
-  
-  if (type === 'success' || type === 'info') {
-    setTimeout(() => {
-      statusEl.style.display = 'none';
-    }, 5000);
+  try {
+    const response = await fetch(window.CONFIG.N8N_GROQ_PROXY, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        action: action,
+        timestamp: new Date().toISOString(),
+        ...data
+      })
+    });
+    
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`N8N API error (${response.status}): ${errorText}`);
+    }
+    
+    return await response.json();
+    
+  } catch (error) {
+    console.error('N8N Proxy Error:', error);
+    throw error;
   }
 }
-
-// ============================================
-// AI CONTENT GENERATION
-// ============================================
 
 async function generateAIContent() {
   const topic = document.getElementById('aiTopic').value.trim();
@@ -237,135 +199,380 @@ async function generateAIContent() {
     return;
   }
   
-  if (!window.CONFIG || !window.CONFIG.GROQ_API_KEY) {
-    showStatus('❌ Error: Groq API key not configured. Check SETUP.md for instructions.', 'error');
-    return;
-  }
-  
   const btn = event.target;
   btn.disabled = true;
-  btn.innerHTML = '<span class="loading-spinner"></span> Generating...';
+  btn.innerHTML = '<span class="loading-spinner"></span> AI Writing Article...';
   
-  showStatus('🤖 AI is writing your article...', 'info');
+  showStatus('🤖 AI is writing your world-class article with images...', 'info');
   
   try {
-    const prompt = `Write a comprehensive, SEO-optimized blog post about: "${topic}"
-
-Requirements:
-- Write 1000-1500 words
-- Use markdown formatting with ## and ### headings
-- Include an engaging introduction
-- Add 4-6 main sections with subheadings
-- Write in a friendly, conversational tone
-- Include practical tips and actionable advice
-- End with a strong conclusion
-- Optimize for home decor and furniture keywords
-- Make it scannable with bullet points where appropriate
-
-Format: Use proper markdown. Start with ## Introduction, use ### for subsections.`;
-
-    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${window.CONFIG.GROQ_API_KEY}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: window.CONFIG.GROQ_MODEL,
-        messages: [{
-          role: 'user',
-          content: prompt
-        }],
-        temperature: 0.7,
-        max_tokens: 3000
-      })
+    // ENHANCED PROMPT - EEAT OPTIMIZED FOR FURNITURE/DECOR
+    const enhancedPrompt = buildEEATPrompt(topic);
+    
+    const data = await callN8NProxy('generate', {
+      prompt: enhancedPrompt,
+      topic: topic,
+      title: topic,
+      max_tokens: 4000,
+      temperature: 0.7
     });
     
-    if (!response.ok) {
-      throw new Error(`API error: ${response.status}`);
-    }
-    
-    const data = await response.json();
     const generatedContent = data.choices[0].message.content;
     
-    // Set content
-    document.getElementById('content').value = generatedContent;
+    // Parse and set content
+    const parsedContent = parseAIContent(generatedContent, topic);
     
-    // Generate title from topic
-    const titleMatch = topic.match(/^(\d+\s+)?(.+)$/);
-    const cleanTitle = titleMatch ? titleMatch[0] : topic;
-    document.getElementById('title').value = cleanTitle;
+    document.getElementById('content').value = parsedContent.content;
+    document.getElementById('title').value = parsedContent.title;
     
-    // Auto-generate SEO meta
-    await aiSEO();
+    // Auto-detect category
+    autoDetectCategory(parsedContent.content, parsedContent.title);
     
-    // Update all counters
-    updateTitleCounter();
-    updateWordCount();
+    // Auto-generate tags
+    autoGenerateTags(parsedContent.content, parsedContent.title);
     
-    showStatus('✅ Article generated successfully!', 'success');
+    showStatus(`✅ World-class article generated! ${data.imageCount || 0} images included`, 'success');
+    
+    // Auto-generate SEO metadata
+    setTimeout(() => aiSEO(), 1500);
+    
+    // Update all metrics
+    updateAllMetrics();
+    
+    // Switch to content tab to show results
+    switchTab(0);
     
   } catch (error) {
     console.error('AI Generation Error:', error);
-    showStatus(`❌ Error: ${error.message}`, 'error');
+    showStatus(`❌ Generation failed: ${error.message}`, 'error');
   } finally {
     btn.disabled = false;
     btn.innerHTML = '✨ Generate Full Article';
   }
 }
 
+function buildEEATPrompt(topic) {
+  return `You are a professional furniture and home decor writer for a premium lifestyle publication (like Tom's Guide, Good Housekeeping, or Veranda).
+
+Write a comprehensive, SEO-optimized blog post about: "${topic}"
+
+CRITICAL REQUIREMENTS FOR EXCELLENCE:
+
+1. **EEAT OPTIMIZATION** (Google's Quality Guidelines):
+   
+   **EXPERIENCE:**
+   - Include specific product testing insights (e.g., "After using this sofa for 6 months...")
+   - Provide exact measurements (e.g., "ideal for rooms 12x15 feet or larger")
+   - Share practical installation/assembly tips
+   - Mention real-world scenarios (e.g., "perfect for families with pets because...")
+   
+   **EXPERTISE:**
+   - Reference design principles (e.g., "Following the rule of thirds...")
+   - Explain color theory when relevant
+   - Discuss material properties (e.g., "Top-grain leather vs bonded leather...")
+   - Use professional terminology with explanations
+   
+   **AUTHORITATIVENESS:**
+   - Cite design trends (e.g., "According to 2025 design forecasts...")
+   - Reference industry standards
+   - Include professional recommendations
+   - Mention what "interior designers recommend"
+   
+   **TRUSTWORTHINESS:**
+   - Be honest about pros AND cons for each recommendation
+   - Provide realistic price ranges (budget: $X-Y, mid-range: $Y-Z, premium: $Z+)
+   - Disclose maintenance requirements
+   - Warn about common mistakes to avoid
+
+2. **CONTENT STRUCTURE** (1,500-2,000 words):
+   
+   ## Introduction (150-200 words)
+   - Start with a relatable problem or desire
+   - Preview the value readers will gain
+   - Establish credibility early
+   - Set clear expectations
+   
+   ## Main Content (7-10 sections with H2 headings):
+   
+   ### What to Consider Before Buying
+   - Key decision factors
+   - Room measurements guide
+   - Budget planning tips
+   
+   ### [Main Recommendation/Idea #1]
+   - 150-250 words each
+   - Include [PRODUCT ZONE: relevant product keyword]
+   - Specific details and examples
+   
+   ### [Continue with 5-8 more main sections]
+   
+   ### Budget Breakdown
+   - Entry-level options: $X-$Y (what to expect)
+   - Mid-range picks: $Y-$Z (best value)
+   - Premium choices: $Z+ (investment pieces)
+   
+   ### Maintenance & Care Tips
+   - Daily care requirements
+   - Cleaning recommendations
+   - Longevity factors
+   
+   ### Common Mistakes to Avoid
+   - Pitfall #1 and how to avoid it
+   - Pitfall #2 and solution
+   - Pitfall #3 and alternative approach
+   
+   ## Conclusion (100-150 words)
+   - Summarize 3-4 key takeaways
+   - Provide actionable next steps
+   - End with encouraging final thought
+
+3. **WRITING STYLE** (Tom's Guide / Good Housekeeping Standard):
+   - Conversational yet authoritative tone
+   - Use "you" to address readers directly
+   - Short paragraphs (2-4 sentences maximum)
+   - Varied sentence length for readability rhythm
+   - Active voice preferred (90%+ of sentences)
+   - No jargon without immediate explanation
+   - Use sensory details (textures, colors, feelings)
+   - Include specific examples and scenarios
+
+4. **SEO INTEGRATION**:
+   - Use the main keyword naturally 8-12 times throughout
+   - Include semantic variations (e.g., "modern sofa" → "contemporary couch")
+   - Add 3-4 question-based H2 headings (e.g., "What Makes a Good...?")
+   - Use long-tail keywords in H3 subheadings
+   - Naturally incorporate related terms
+
+5. **PRODUCT MENTION ZONES** (Mark clearly for affiliate links):
+   - After each main recommendation, add: [PRODUCT ZONE: product type/keyword]
+   - Include 8-12 zones throughout the article
+   - Example: [PRODUCT ZONE: modern sectional sofa]
+
+6. **PRACTICAL ELEMENTS TO INCLUDE**:
+   - Specific dimensions when relevant (e.g., "seats 4-5 people comfortably")
+   - Price ranges for each recommendation
+   - Material specifications (e.g., "solid oak frame", "memory foam cushions")
+   - Complementary items to consider
+   - Room size requirements
+   - Assembly difficulty ratings
+
+7. **CREDIBILITY BOOSTERS**:
+   - "Interior designers recommend..."
+   - "According to recent trends..."
+   - "Our testing revealed..."
+   - "Homeowners report that..."
+   - "Industry experts suggest..."
+
+8. **AVOID**:
+   - Generic filler content
+   - Obvious product placement language
+   - Repetitive phrasing
+   - Overly salesy tone
+   - Unsubstantiated claims
+   - Passive voice overuse
+
+Format in clean Markdown with proper heading hierarchy (## for main sections, ### for subsections).
+Make it engaging, trustworthy, genuinely helpful, and ready to publish.
+
+Write the complete article now:`;
+}
+
+function parseAIContent(content, originalTopic) {
+  // Extract title if present in content
+  const titleMatch = content.match(/^#\s+(.+)$/m);
+  let title = titleMatch ? titleMatch[1].trim() : generateSmartTitle(originalTopic);
+  
+  // Remove title from content if it was extracted
+  let cleanContent = titleMatch ? content.replace(/^#\s+.+$/m, '').trim() : content;
+  
+  // Ensure content starts properly
+  if (!cleanContent.startsWith('##')) {
+    cleanContent = cleanContent.replace(/^[^\n]*\n/, ''); // Remove any preamble
+  }
+  
+  return {
+    title: title,
+    content: cleanContent
+  };
+}
+
+function generateSmartTitle(topic) {
+  // Clean up the topic and make it title-worthy
+  const cleaned = topic.trim();
+  
+  // If it's already a good title (has multiple words), use it
+  if (cleaned.split(' ').length >= 4) {
+    return cleaned;
+  }
+  
+  // Otherwise enhance it based on common patterns
+  const words = cleaned.toLowerCase();
+  
+  if (words.includes('how to')) {
+    return cleaned;
+  } else if (words.includes('best')) {
+    return `${cleaned} for 2025`;
+  } else if (words.includes('ideas') || words.includes('tips')) {
+    return cleaned;
+  } else {
+    // Create a compelling title
+    return `${cleaned}: Complete Guide & Expert Tips`;
+  }
+}
+
+function autoDetectCategory(content, title) {
+  const combinedText = (title + ' ' + content).toLowerCase();
+  
+  const categoryKeywords = {
+    'Living Room': ['living room', 'sofa', 'sectional', 'coffee table', 'tv stand', 'entertainment center'],
+    'Bedroom': ['bedroom', 'bed', 'mattress', 'nightstand', 'dresser', 'bedding', 'headboard'],
+    'Dining Room': ['dining', 'dining table', 'dining chair', 'buffet', 'sideboard', 'china cabinet'],
+    'Home Office': ['office', 'desk', 'office chair', 'workspace', 'ergonomic', 'work from home'],
+    'Kitchen': ['kitchen', 'kitchen storage', 'kitchen island', 'pantry', 'kitchen table'],
+    'Bathroom': ['bathroom', 'vanity', 'shower', 'bathtub', 'bathroom storage'],
+    'Storage & Organization': ['storage', 'organization', 'organizing', 'declutter', 'closet', 'shelving'],
+    'Modern Style': ['modern', 'contemporary', 'minimalist', 'clean lines', 'sleek'],
+    'Scandinavian Style': ['scandinavian', 'nordic', 'hygge', 'scandi'],
+    'Luxury & Glam Decor': ['luxury', 'elegant', 'glamorous', 'upscale', 'premium', 'high-end'],
+    'Boho & Rustic Decor': ['boho', 'bohemian', 'rustic', 'farmhouse', 'cottage'],
+    'Budget Furniture': ['budget', 'affordable', 'cheap', 'inexpensive', 'under $', 'save money'],
+    'Luxury Furniture': ['luxury', 'premium', 'high-end', 'designer', 'expensive'],
+    'Small Space Storage': ['small space', 'apartment', 'tiny', 'compact', 'space-saving'],
+    'Best Of Lists': ['best', 'top 10', 'top 5', 'ultimate guide', 'complete guide', 'roundup']
+  };
+  
+  let bestMatch = '';
+  let bestScore = 0;
+  
+  for (const [category, keywords] of Object.entries(categoryKeywords)) {
+    let score = 0;
+    keywords.forEach(keyword => {
+      const regex = new RegExp(keyword, 'gi');
+      const matches = combinedText.match(regex);
+      if (matches) score += matches.length;
+    });
+    
+    if (score > bestScore) {
+      bestScore = score;
+      bestMatch = category;
+    }
+  }
+  
+  if (bestMatch) {
+    const categorySelect = document.getElementById('category');
+    if (categorySelect) {
+      categorySelect.value = bestMatch;
+    }
+  }
+}
+
+function autoGenerateTags(content, title) {
+  const text = (title + ' ' + content).toLowerCase();
+  
+  const commonTags = [
+    'home decor', 'interior design', 'furniture', 'home improvement',
+    'room makeover', 'decorating tips', 'design ideas', 'home styling',
+    'modern furniture', 'budget decorating', 'luxury decor', 'small space',
+    'DIY home', 'home organization', 'furniture guide', 'decor trends',
+    'living room ideas', 'bedroom decor', 'furniture shopping', 'home design'
+  ];
+  
+  const suggestedTags = commonTags.filter(tag => {
+    const tagWords = tag.split(' ');
+    return tagWords.every(word => text.includes(word));
+  }).slice(0, 6);
+  
+  tags = suggestedTags;
+  renderAllTags();
+}
+
 async function aiImprove() {
   const content = document.getElementById('content').value;
   
-  if (!content) {
+  if (!content || content.length < 100) {
     showStatus('❌ Please add some content first', 'error');
-    return;
-  }
-  
-  if (!window.CONFIG || !window.CONFIG.GROQ_API_KEY) {
-    showStatus('❌ Error: Groq API key not configured', 'error');
     return;
   }
   
   const btn = event.target;
   btn.disabled = true;
-  btn.innerHTML = '<span class="loading-spinner"></span> Improving...';
+  btn.innerHTML = '<span class="loading-spinner"></span> Enhancing...';
   
-  showStatus('🤖 AI is improving your content...', 'info');
+  showStatus('🤖 AI is elevating your content to magazine quality...', 'info');
   
   try {
-    const prompt = `Improve this blog post content. Make it more engaging, add practical tips, improve readability, and ensure it's SEO-friendly. Keep the same structure but enhance the writing:
+    const enhancedPrompt = `You are an expert editor for premium home decor publications like Veranda and Good Housekeeping.
+
+Improve this furniture/decor blog content to MAGAZINE QUALITY:
 
 ${content}
 
-Return the improved version in markdown format.`;
+IMPROVEMENTS TO MAKE:
 
-    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${window.CONFIG.GROQ_API_KEY}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: window.CONFIG.GROQ_MODEL,
-        messages: [{
-          role: 'user',
-          content: prompt
-        }],
-        temperature: 0.7,
-        max_tokens: 3000
-      })
+1. **EEAT Enhancement**:
+   - Add specific measurements, dimensions, or room sizes where missing
+   - Include material specifications (e.g., "solid oak", "tempered glass", "100% cotton")
+   - Add expert insights (e.g., "Interior designers recommend...")
+   - Include practical testing observations or real-world usage notes
+
+2. **Readability**:
+   - Break any long paragraphs into 2-4 sentences
+   - Vary sentence structure (mix short punchy sentences with longer flowing ones)
+   - Make sentences flow naturally with better transitions
+   - Remove redundancy and repetitive phrasing
+
+3. **Engagement**:
+   - Add more sensory details (textures: "plush velvet", "smooth leather"; colors: "warm terracotta", "cool sage green")
+   - Use stronger, more specific verbs (replace "nice" with "elegant", "good" with "exceptional")
+   - Include relatable scenarios (e.g., "perfect for Sunday morning coffee reading")
+   - Add helpful pro tips in natural spots
+
+4. **SEO Enhancement**:
+   - Add semantic keyword variations naturally (don't stuff)
+   - Include more question-based subheadings where appropriate
+   - Add relevant long-tail phrases organically
+   - Improve heading hierarchy if needed
+
+5. **Trustworthiness**:
+   - Add pros AND cons where relevant
+   - Include realistic price expectations or ranges
+   - Mention maintenance requirements where important
+   - Note common pitfalls to avoid
+
+6. **Product Integration**:
+   - Keep all [PRODUCT ZONE: ...] markers intact
+   - Make product mentions feel more natural and helpful
+   - Add context around why specific products are recommended
+
+KEEP:
+- Same overall structure and main points
+- All existing headings (but you can improve wording)
+- All [PRODUCT ZONE] markers
+- All existing image links (![...](https://...))
+- Same markdown formatting
+
+Return ONLY the improved markdown content, with no preamble or explanation.`;
+
+    const data = await callN8NProxy('improve', {
+      prompt: enhancedPrompt,
+      content: content,
+      max_tokens: 4000,
+      temperature: 0.6
     });
     
-    const data = await response.json();
-    document.getElementById('content').value = data.choices[0].message.content;
-    updateWordCount();
+    const improved = data.choices[0].message.content;
     
-    showStatus('✅ Content improved!', 'success');
+    if (improved.length > 100) {
+      document.getElementById('content').value = improved;
+      updateAllMetrics();
+      showStatus('✅ Content elevated to magazine quality!', 'success');
+    } else {
+      throw new Error('Improved content too short');
+    }
     
   } catch (error) {
-    console.error('AI Improve Error:', error);
-    showStatus(`❌ Error: ${error.message}`, 'error');
+    console.error('AI Improvement Error:', error);
+    showStatus(`❌ Improvement failed: ${error.message}`, 'error');
   } finally {
     btn.disabled = false;
     btn.innerHTML = '💡 Improve Content';
@@ -376,406 +583,1427 @@ async function aiSEO() {
   const title = document.getElementById('title').value;
   const content = document.getElementById('content').value;
   
-  if (!title && !content) {
-    showStatus('❌ Please add a title or content first', 'error');
-    return;
-  }
-  
-  if (!window.CONFIG || !window.CONFIG.GROQ_API_KEY) {
-    showStatus('❌ Error: Groq API key not configured', 'error');
+  if (!title) {
+    showStatus('❌ Please add a title first', 'error');
     return;
   }
   
   const btn = event.target;
-  const originalText = btn.innerHTML;
-  btn.disabled = true;
-  btn.innerHTML = '<span class="loading-spinner"></span> Optimizing...';
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = '<span class="loading-spinner"></span> Optimizing SEO...';
+  }
   
-  showStatus('🤖 AI is generating SEO metadata...', 'info');
+  showStatus('🤖 AI is crafting click-worthy SEO metadata...', 'info');
   
   try {
-    const prompt = `Create SEO metadata for this blog post:
+    const seoPrompt = `You are an SEO expert specializing in furniture and home decor content.
 
-Title: ${title}
-Content preview: ${content.substring(0, 500)}...
+Generate highly optimized SEO metadata for this blog post:
+
+Article Title: ${title}
+
+Content Preview:
+${content.substring(0, 600)}
 
 Generate:
-1. SEO Meta Title (50-60 characters, compelling, includes main keyword)
-2. SEO Meta Description (150-160 characters, compelling, includes CTA)
 
-Format your response as:
-TITLE: [your title here]
-DESCRIPTION: [your description here]`;
+1. **SEO Title** (50-60 characters - STRICT LIMIT):
+   - Include primary keyword naturally
+   - Add year (2025) if it fits and makes sense
+   - Make it compelling and click-worthy
+   - Front-load the most important keyword
+   - Examples: "10 Best Modern Sofas for Small Spaces (2025 Guide)"
+   
+2. **Meta Description** (150-160 characters - STRICT LIMIT):
+   - Start with benefit or hook
+   - Include primary keyword naturally
+   - Add clear call-to-action
+   - Make it engaging and specific
+   - Examples: "Discover the best modern sofas for compact living rooms. Expert-tested picks, buying tips & budget options. Transform your space today!"
 
-    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${window.CONFIG.GROQ_API_KEY}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: window.CONFIG.GROQ_MODEL,
-        messages: [{
-          role: 'user',
-          content: prompt
-        }],
-        temperature: 0.7,
-        max_tokens: 500
-      })
+Return ONLY a JSON object with this EXACT format (no markdown, no code blocks):
+{
+  "metaTitle": "your optimized title here",
+  "metaDescription": "your optimized description here"
+}`;
+
+    const data = await callN8NProxy('seo', {
+      prompt: seoPrompt,
+      title: title,
+      content: content,
+      max_tokens: 300,
+      temperature: 0.7
     });
     
-    const data = await response.json();
-    const result = data.choices[0].message.content;
+    // Parse the response
+    const aiResponse = data.choices[0].message.content;
+    let seoData;
     
-    // Parse response
-    const titleMatch = result.match(/TITLE:\s*(.+)/i);
-    const descMatch = result.match(/DESCRIPTION:\s*(.+)/i);
-    
-    if (titleMatch) {
-      document.getElementById('seoTitle').value = titleMatch[1].trim();
-      updateSEOTitleCounter();
+    try {
+      // Try to extract JSON from response
+      const jsonMatch = aiResponse.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        seoData = JSON.parse(jsonMatch[0]);
+      } else {
+        throw new Error('No JSON found in response');
+      }
+    } catch (parseError) {
+      console.warn('JSON parsing failed, using fallback');
+      // Fallback: generate from title
+      seoData = {
+        metaTitle: title.substring(0, 60),
+        metaDescription: generateMetaFromContent(content)
+      };
     }
     
-    if (descMatch) {
-      document.getElementById('seoDescription').value = descMatch[1].trim();
-      updateSEODescCounter();
-    }
+    // Set values
+    document.getElementById('seoTitle').value = seoData.metaTitle;
+    document.getElementById('seoDescription').value = seoData.metaDescription;
     
+    // Update counters
+    updateSEOTitleCounter();
+    updateSEODescCounter();
     updateGooglePreview();
-    showStatus('✅ SEO metadata generated!', 'success');
+    
+    showStatus('✅ SEO metadata crafted perfectly!', 'success');
     
   } catch (error) {
     console.error('AI SEO Error:', error);
-    showStatus(`❌ Error: ${error.message}`, 'error');
+    showStatus(`❌ SEO generation failed: ${error.message}`, 'error');
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = '🎯 Optimize SEO';
+    }
+  }
+}
+
+function generateMetaFromContent(content) {
+  // Extract first meaningful paragraph
+  const paragraphs = content.split('\n\n').filter(p => 
+    p.length > 50 && !p.startsWith('#') && !p.startsWith('[') && !p.startsWith('!')
+  );
+  
+  if (paragraphs.length > 0) {
+    let desc = paragraphs[0].replace(/[#*_`\[\]]/g, '').trim();
+    // Truncate to 157 characters to leave room for "..."
+    if (desc.length > 157) {
+      desc = desc.substring(0, 157) + '...';
+    }
+    return desc;
+  }
+  
+  return 'Discover expert tips and recommendations for your home.';
+}
+
+// ============================================
+// ADVANCED KEYWORD RESEARCH & OPTIMIZATION
+// ============================================
+
+async function generateKeywords() {
+  const title = document.getElementById('title').value;
+  const content = document.getElementById('content').value;
+  const category = document.getElementById('category').value;
+  
+  if (!title) {
+    showStatus('❌ Please add a title first', 'error');
+    return;
+  }
+  
+  const btn = event.target;
+  btn.disabled = true;
+  btn.innerHTML = '<span class="loading-spinner"></span> Researching Keywords...';
+  
+  showStatus('🤖 AI is researching optimal SEO keywords...', 'info');
+  
+  try {
+    const keywordPrompt = `You are an SEO keyword researcher specializing in furniture and home decor content.
+
+Analyze this article and generate a comprehensive keyword strategy:
+
+Article Title: "${title}"
+Category: ${category || 'General Home Decor'}
+Content Preview: ${content.substring(0, 500)}
+
+Generate a multi-tier SEO keyword strategy:
+
+1. **Primary Keywords** (1-2 keywords, high search volume):
+   - Main topic keywords users actually search for
+   - Example: "modern sectional sofa", "small living room ideas"
+
+2. **Secondary Keywords** (3-5 keywords, moderate volume):
+   - Related topics and natural variations
+   - Example: "contemporary couch", "L-shaped sofa", "modular seating"
+
+3. **Long-Tail Keywords** (5-8 phrases, specific user intent):
+   - Question-based or very specific queries
+   - Example: "best sectional sofa for small apartment", "how to choose modern sectional", "affordable contemporary couches under $1000"
+
+4. **LSI Keywords** (5-7 terms, semantic relevance):
+   - Related concepts Google associates with the topic
+   - Example: "living room furniture", "seating arrangement", "upholstery fabric"
+
+5. **Buying-Intent Phrases** (3-5 commercial phrases):
+   - Keywords indicating purchase readiness
+   - Example: "best [product] for [use]", "[product] reviews 2025", "where to buy [product]"
+
+Return ONLY a JSON object with this EXACT format:
+{
+  "primary": ["keyword1", "keyword2"],
+  "secondary": ["keyword1", "keyword2", "keyword3"],
+  "longTail": ["long phrase 1", "long phrase 2", "long phrase 3"],
+  "lsi": ["related term 1", "related term 2", "related term 3"],
+  "buyingIntent": ["buying phrase 1", "buying phrase 2"]
+}`;
+
+    const data = await callN8NProxy('keywords', {
+      prompt: keywordPrompt,
+      title: title,
+      content: content,
+      category: category,
+      max_tokens: 1000,
+      temperature: 0.6
+    });
+    
+    // Parse keywords
+    const aiResponse = data.choices[0].message.content;
+    let keywords;
+    
+    try {
+      // Extract JSON
+      const jsonMatch = aiResponse.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        keywords = JSON.parse(jsonMatch[0]);
+      } else {
+        throw new Error('No JSON found');
+      }
+      
+      // Validate structure
+      if (!keywords.primary || !keywords.secondary) {
+        throw new Error('Invalid keyword structure');
+      }
+      
+    } catch (parseError) {
+      console.warn('Keyword parsing failed, using fallback');
+      keywords = createFallbackKeywords(title);
+    }
+    
+    currentKeywords = keywords;
+    displayKeywords(keywords);
+    analyzeKeywordUsage();
+    
+    showStatus('✅ Keyword strategy generated successfully!', 'success');
+    
+  } catch (error) {
+    console.error('Keyword Generation Error:', error);
+    showStatus(`❌ Keyword generation failed: ${error.message}`, 'error');
   } finally {
     btn.disabled = false;
-    btn.innerHTML = originalText;
+    btn.innerHTML = '🔍 Generate SEO Keywords with AI';
   }
 }
 
-// ============================================
-// TAGS
-// ============================================
-
-function setupTagInput() {
-  const tagInput = document.getElementById('tagInput');
-  if (!tagInput) return;
+function createFallbackKeywords(title) {
+  const words = title.toLowerCase().split(' ').filter(w => w.length > 3);
   
-  tagInput.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      const tag = this.value.trim();
-      if (tag && !currentTags.includes(tag)) {
-        currentTags.push(tag);
-        renderTags();
-        this.value = '';
-      }
-    }
-  });
+  return {
+    primary: [words.slice(0, 3).join(' ')],
+    secondary: [
+      words.slice(1, 4).join(' '),
+      words.slice(0, 2).join(' '),
+      'home decor'
+    ],
+    longTail: [
+      `best ${words.slice(0, 2).join(' ')}`,
+      `how to choose ${words[0]} ${words[1]}`,
+      `${words[0]} ${words[1]} guide 2025`
+    ],
+    lsi: ['home decor', 'interior design', 'furniture', 'home improvement', 'room styling'],
+    buyingIntent: [
+      `buy ${words[0]} ${words[1]}`,
+      `${words[0]} ${words[1]} reviews`,
+      `best ${words[0]} ${words[1]} 2025`
+    ]
+  };
 }
 
-function renderTags() {
-  const container = document.getElementById('tagsContainer');
-  const tagInput = document.getElementById('tagInput');
+function displayKeywords(keywords) {
+  const panel = document.getElementById('keywordsPanel');
   
-  container.innerHTML = '';
+  if (!panel) return;
   
-  currentTags.forEach((tag, index) => {
-    const tagEl = document.createElement('div');
-    tagEl.className = 'tag';
-    tagEl.innerHTML = `
-      ${tag}
-      <button type="button" onclick="removeTag(${index})">×</button>
-    `;
-    container.appendChild(tagEl);
-  });
+  let html = '<div style="display: grid; gap: 20px;">';
   
-  container.appendChild(tagInput);
-}
-
-function removeTag(index) {
-  currentTags.splice(index, 1);
-  renderTags();
-}
-
-// ============================================
-// PRODUCTS
-// ============================================
-
-function renderCategoryFilters() {
-  const container = document.getElementById('categoryFilters');
-  if (!container || !window.getAllCategories) return;
-  
-  const categories = window.getAllCategories();
-  
-  let html = '<button class="category-filter active" onclick="filterByCategory(\'\')">All</button>';
-  categories.forEach(cat => {
-    html += `<button class="category-filter" onclick="filterByCategory('${cat}')">${cat}</button>`;
-  });
-  
-  container.innerHTML = html;
-}
-
-function filterByCategory(category) {
-  const filters = document.querySelectorAll('.category-filter');
-  filters.forEach(f => {
-    if (category === '' && f.textContent === 'All') {
-      f.classList.add('active');
-    } else if (f.textContent === category) {
-      f.classList.add('active');
-    } else {
-      f.classList.remove('active');
-    }
-  });
-  
-  renderProductGrid(category);
-}
-
-function renderProductGrid(categoryFilter = '') {
-  const grid = document.getElementById('productGrid');
-  if (!grid || !window.AFFILIATE_PRODUCTS) return;
-  
-  const products = categoryFilter 
-    ? window.getProductsByCategory(categoryFilter)
-    : window.AFFILIATE_PRODUCTS;
-  
-  let html = '';
-  let count = 0;
-  
-  for (const [id, product] of Object.entries(products)) {
-    const isSelected = selectedProducts.has(id);
-    html += `
-      <div class="product-card ${isSelected ? 'selected' : ''}" onclick="toggleProduct('${id}')">
-        <div class="checkbox">${isSelected ? '✓' : ''}</div>
-        <div class="product-category">${product.category}</div>
-        <div class="product-name">${product.name}</div>
-        ${product.price ? `<div class="product-price">${product.price}</div>` : ''}
-        <div class="product-keywords">${product.keywords.slice(0, 3).join(', ')}</div>
+  // Primary Keywords
+  html += `
+    <div style="background: linear-gradient(135deg, rgba(123, 31, 162, 0.1), rgba(156, 77, 204, 0.1)); border: 2px solid #7B1FA2; border-radius: 12px; padding: 20px;">
+      <h4 style="margin-bottom: 12px; color: #7B1FA2;">🎯 Primary Keywords <span style="font-size: 0.85rem; font-weight: normal;">(Use 8-12x throughout)</span></h4>
+      <div>
+        ${keywords.primary.map(kw => `
+          <span class="keyword-chip primary" onclick="copyKeyword('${escapeQuotes(kw)}')">
+            ${kw}
+            <span class="usage-badge" id="usage-primary-${slugify(kw)}">${countKeywordUsage(kw)}x</span>
+          </span>
+        `).join('')}
       </div>
-    `;
-    count++;
-  }
+    </div>
+  `;
   
-  if (count === 0) {
-    html = `
-      <div class="no-results">
-        <div class="no-results-icon">🔍</div>
-        <h3>No products found</h3>
-        <p>Try adjusting your search or filter</p>
+  // Secondary Keywords
+  html += `
+    <div style="background: rgba(59, 130, 246, 0.05); border: 2px solid #3B82F6; border-radius: 12px; padding: 20px;">
+      <h4 style="margin-bottom: 12px; color: #3B82F6;">📊 Secondary Keywords <span style="font-size: 0.85rem; font-weight: normal;">(Use 3-5x each)</span></h4>
+      <div>
+        ${keywords.secondary.map(kw => `
+          <span class="keyword-chip secondary" onclick="copyKeyword('${escapeQuotes(kw)}')">
+            ${kw}
+            <span class="usage-badge" id="usage-secondary-${slugify(kw)}">${countKeywordUsage(kw)}x</span>
+          </span>
+        `).join('')}
       </div>
-    `;
-  }
+    </div>
+  `;
   
-  grid.innerHTML = html;
-  updateProductCount(count);
+  // Long-Tail Keywords
+  html += `
+    <div style="background: rgba(16, 185, 129, 0.05); border: 2px solid #10B981; border-radius: 12px; padding: 20px;">
+      <h4 style="margin-bottom: 12px; color: #10B981;">🔍 Long-Tail Keywords <span style="font-size: 0.85rem; font-weight: normal;">(Use in H2/H3 headings)</span></h4>
+      <div>
+        ${keywords.longTail.map(kw => `
+          <span class="keyword-chip longtail" onclick="copyKeyword('${escapeQuotes(kw)}')">
+            ${kw}
+            <span class="usage-badge" id="usage-longtail-${slugify(kw)}">${countKeywordUsage(kw)}x</span>
+          </span>
+        `).join('')}
+      </div>
+    </div>
+  `;
+  
+  // LSI and Buying Intent in grid
+  html += `
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+      <div style="background: white; border: 2px solid #E5E7EB; border-radius: 12px; padding: 16px;">
+        <h5 style="margin-bottom: 8px; font-size: 0.9rem; color: #6B7280;">💡 LSI Keywords (Semantic)</h5>
+        <div style="font-size: 0.85rem; color: #374151; line-height: 1.8;">
+          ${keywords.lsi.join(', ')}
+        </div>
+      </div>
+      <div style="background: white; border: 2px solid #E5E7EB; border-radius: 12px; padding: 16px;">
+        <h5 style="margin-bottom: 8px; font-size: 0.9rem; color: #6B7280;">💰 Buying Intent</h5>
+        <div style="font-size: 0.85rem; color: #374151; line-height: 1.8;">
+          ${keywords.buyingIntent.join(', ')}
+        </div>
+      </div>
+    </div>
+  `;
+  
+  html += '</div>';
+  
+  panel.innerHTML = html;
 }
 
-function searchProducts() {
-  const searchTerm = document.getElementById('productSearch').value;
-  const clearBtn = document.getElementById('clearSearch');
+function countKeywordUsage(keyword) {
+  const content = document.getElementById('content').value.toLowerCase();
+  const title = document.getElementById('title').value.toLowerCase();
+  const combined = title + ' ' + content;
   
-  if (searchTerm) {
-    clearBtn.style.display = 'block';
-    const results = window.searchProducts(searchTerm);
-    renderSearchResults(results);
+  // Escape special regex characters
+  const escaped = keyword.toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const regex = new RegExp(escaped, 'gi');
+  const matches = combined.match(regex);
+  
+  return matches ? matches.length : 0;
+}
+
+function analyzeKeywordUsage() {
+  if (!currentKeywords) return;
+  
+  // Calculate scores
+  const primaryUsage = currentKeywords.primary.map(kw => countKeywordUsage(kw));
+  const avgPrimary = primaryUsage.reduce((a, b) => a + b, 0) / primaryUsage.length;
+  
+  const secondaryUsage = currentKeywords.secondary.map(kw => countKeywordUsage(kw));
+  const totalSecondary = secondaryUsage.reduce((a, b) => a + b, 0);
+  
+  const content = document.getElementById('content').value;
+  const headings = content.match(/#{2,3}\s+.+/g) || [];
+  const headingsWithLongTail = headings.filter(h => 
+    currentKeywords.longTail.some(kw => h.toLowerCase().includes(kw.toLowerCase()))
+  );
+  
+  let score = 0;
+  let feedback = [];
+  
+  // Primary keyword score (40 points)
+  if (avgPrimary >= 8 && avgPrimary <= 15) {
+    score += 40;
+    feedback.push('✅ Excellent primary keyword density (8-15x)');
+  } else if (avgPrimary >= 5) {
+    score += 25;
+    feedback.push(`⚠️ Primary keywords used ${Math.round(avgPrimary)}x (aim for 8-12x)`);
   } else {
-    clearBtn.style.display = 'none';
-    renderProductGrid();
+    score += 10;
+    feedback.push(`❌ Primary keywords under-used (${Math.round(avgPrimary)}x, need 8-12x)`);
+  }
+  
+  // Secondary keyword score (30 points)
+  if (totalSecondary >= 10) {
+    score += 30;
+    feedback.push('✅ Good secondary keyword coverage');
+  } else if (totalSecondary >= 5) {
+    score += 20;
+    feedback.push(`⚠️ Add more secondary keywords (${totalSecondary}/10+)`);
+  } else {
+    score += 5;
+    feedback.push(`❌ Secondary keywords need work (${totalSecondary}/10+)`);
+  }
+  
+  // Long-tail in headings (30 points)
+  if (headingsWithLongTail.length >= 3) {
+    score += 30;
+    feedback.push('✅ Long-tail keywords in headings');
+  } else if (headingsWithLongTail.length >= 1) {
+    score += 15;
+    feedback.push(`⚠️ Add more long-tail keywords to headings (${headingsWithLongTail.length}/3+)`);
+  } else {
+    score += 0;
+    feedback.push('❌ Use long-tail keywords in H2/H3 headings');
+  }
+  
+  // Update UI
+  const scoreEl = document.getElementById('keywordScore');
+  if (scoreEl) {
+    scoreEl.textContent = score;
+    const circle = scoreEl.parentElement;
+    circle.className = 'score-circle ' + getScoreGrade(score);
+  }
+  
+  const feedbackEl = document.getElementById('keywordFeedback');
+  if (feedbackEl) {
+    feedbackEl.innerHTML = `
+      <div style="line-height: 1.8; font-size: 0.9rem;">
+        ${feedback.join('<br>')}
+      </div>
+    `;
+  }
+  
+  // Update individual keyword counts
+  if (currentKeywords.primary) {
+    currentKeywords.primary.forEach(kw => {
+      const el = document.getElementById(`usage-primary-${slugify(kw)}`);
+      if (el) el.textContent = countKeywordUsage(kw) + 'x';
+    });
+  }
+  
+  if (currentKeywords.secondary) {
+    currentKeywords.secondary.forEach(kw => {
+      const el = document.getElementById(`usage-secondary-${slugify(kw)}`);
+      if (el) el.textContent = countKeywordUsage(kw) + 'x';
+    });
+  }
+  
+  if (currentKeywords.longTail) {
+    currentKeywords.longTail.forEach(kw => {
+      const el = document.getElementById(`usage-longtail-${slugify(kw)}`);
+      if (el) el.textContent = countKeywordUsage(kw) + 'x';
+    });
   }
 }
 
-function renderSearchResults(products) {
+function getScoreGrade(score) {
+  if (score >= 90) return 'grade-a';
+  if (score >= 70) return 'grade-b';
+  if (score >= 50) return 'grade-c';
+  return 'grade-d';
+}
+
+function copyKeyword(keyword) {
+  navigator.clipboard.writeText(keyword).then(() => {
+    showStatus(`✅ Copied: "${keyword}"`, 'success');
+    setTimeout(() => {
+      const statusEl = document.getElementById('statusMessage');
+      if (statusEl && statusEl.textContent.includes('Copied:')) {
+        statusEl.className = 'status-message';
+      }
+    }, 2000);
+  });
+}
+
+function insertKeyword(keyword) {
+  const textarea = document.getElementById('content');
+  if (!textarea) return;
+  
+  const start = textarea.selectionStart;
+  const end = textarea.selectionEnd;
+  const text = textarea.value;
+  
+  textarea.value = text.substring(0, start) + keyword + text.substring(end);
+  textarea.focus();
+  textarea.selectionStart = textarea.selectionEnd = start + keyword.length;
+  
+  updateWordCount();
+  if (currentKeywords) {
+    analyzeKeywordUsage();
+  }
+}
+
+async function optimizeWithKeywords() {
+  if (!currentKeywords) {
+    showStatus('❌ Please generate keywords first', 'error');
+    return;
+  }
+  
+  const content = document.getElementById('content').value;
+  
+  if (!content || content.length < 200) {
+    showStatus('❌ Please add more content first (at least 200 words)', 'error');
+    return;
+  }
+  
+  const btn = event.target;
+  btn.disabled = true;
+  btn.innerHTML = '<span class="loading-spinner"></span> Optimizing...';
+  
+  showStatus('🤖 AI is naturally incorporating keywords into your content...', 'info');
+  
+  try {
+    const optimizePrompt = `You are an SEO content optimizer for furniture and home decor articles.
+
+Optimize this content by naturally incorporating these keywords:
+
+**PRIMARY KEYWORDS** (use 8-12 times total): ${currentKeywords.primary.join(', ')}
+**SECONDARY KEYWORDS** (use 3-5 times each): ${currentKeywords.secondary.join(', ')}
+**LONG-TAIL KEYWORDS** (use in questions/subheadings): ${currentKeywords.longTail.join(', ')}
+**LSI TERMS** (sprinkle naturally): ${currentKeywords.lsi.join(', ')}
+
+CURRENT CONTENT:
+${content}
+
+OPTIMIZATION REQUIREMENTS:
+1. Naturally integrate primary keywords 8-12 times throughout (current count: ${countKeywordUsage(currentKeywords.primary[0])})
+2. Add secondary keywords 3-5 times each where they fit naturally
+3. Convert some H2 headings to long-tail keyword questions (e.g., "How to choose...")
+4. Sprinkle LSI terms where they fit naturally in context
+5. Maintain excellent readability - NO keyword stuffing
+6. Keep all existing structure, headings, and main points
+7. Preserve all [PRODUCT ZONE: ...] markers
+8. Keep all image links intact
+9. Don't change the markdown formatting
+
+The goal is to make the content more SEO-friendly while keeping it natural and reader-friendly.
+
+Return ONLY the optimized markdown content with no preamble or explanation.`;
+
+    const data = await callN8NProxy('optimize', {
+      prompt: optimizePrompt,
+      content: content,
+      keywords: currentKeywords,
+      max_tokens: 4000,
+      temperature: 0.5
+    });
+    
+    const optimized = data.choices[0].message.content;
+    
+    if (optimized.length > 200) {
+      document.getElementById('content').value = optimized;
+      updateAllMetrics();
+      analyzeKeywordUsage();
+      showStatus('✅ Content optimized with keywords naturally!', 'success');
+    } else {
+      throw new Error('Optimized content too short');
+    }
+    
+  } catch (error) {
+    console.error('Keyword Optimization Error:', error);
+    showStatus(`❌ Optimization failed: ${error.message}`, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '✨ Auto-Optimize Content with Keywords';
+  }
+}
+
+// ============================================
+// INTERNAL LINKING
+// ============================================
+
+async function suggestInternalLinks() {
+  const content = document.getElementById('content').value;
+  const title = document.getElementById('title').value;
+  const category = document.getElementById('category').value;
+  
+  if (!content || content.length < 200) {
+    showStatus('❌ Please add more content first', 'error');
+    return;
+  }
+  
+  const btn = event.target;
+  btn.disabled = true;
+  btn.innerHTML = '<span class="loading-spinner"></span> Finding Links...';
+  
+  showStatus('🤖 AI is analyzing content for internal link opportunities...', 'info');
+  
+  try {
+    // Mock existing posts - in production, fetch from your CMS
+    const existingPosts = generateMockPosts(category);
+    
+    const linkPrompt = `You are an internal linking strategist for a furniture and home decor blog.
+
+Analyze this blog post and suggest natural internal link opportunities:
+
+**Post Title:** ${title}
+**Category:** ${category || 'General'}
+
+**Content Preview:**
+${content.substring(0, 1000)}
+
+**Available Posts to Link To:**
+${existingPosts.map((p, i) => `${i + 1}. "${p.title}" (/${p.slug})`).join('\n')}
+
+**Task:** Find 4-6 places where these internal links would naturally enhance the reader's experience.
+
+**Guidelines:**
+- Links should add genuine value (e.g., complementary products, related guides)
+- Anchor text should be natural, not forced
+- Provide context for why each link helps the reader
+- Prioritize links that create topic clusters
+
+Return ONLY a JSON array with this EXACT format:
+[
+  {
+    "anchorText": "exact text from content to link",
+    "targetPost": "full post title",
+    "targetSlug": "post-slug",
+    "reason": "brief explanation why this link adds value",
+    "position": "where in the article this appears"
+  }
+]`;
+
+    const data = await callN8NProxy('links', {
+      prompt: linkPrompt,
+      content: content,
+      title: title,
+      category: category,
+      existingPosts: existingPosts,
+      max_tokens: 1200,
+      temperature: 0.6
+    });
+    
+    // Parse links
+    const aiResponse = data.choices[0].message.content;
+    let links;
+    
+    try {
+      const jsonMatch = aiResponse.match(/\[[\s\S]*\]/);
+      if (jsonMatch) {
+        links = JSON.parse(jsonMatch[0]);
+      } else {
+        throw new Error('No JSON array found');
+      }
+    } catch (parseError) {
+      console.warn('Link parsing failed, using fallback');
+      links = createFallbackLinks(category, existingPosts);
+    }
+    
+    displayInternalLinks(links);
+    showStatus('✅ Internal link opportunities identified!', 'success');
+    
+  } catch (error) {
+    console.error('Link Suggestion Error:', error);
+    showStatus(`❌ Link generation failed: ${error.message}`, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '🤖 Find Link Opportunities';
+  }
+}
+
+function generateMockPosts(category) {
+  // In production, this would fetch from your CMS
+  const posts = [
+    { title: "10 Modern Living Room Ideas for Small Spaces", slug: "modern-living-room-ideas-small-spaces" },
+    { title: "Best Minimalist Furniture for 2025", slug: "minimalist-furniture-guide-2025" },
+    { title: "Small Space Storage Solutions That Actually Work", slug: "small-space-storage-solutions" },
+    { title: "Scandinavian Design: Complete Guide", slug: "scandinavian-design-complete-guide" },
+    { title: "Budget-Friendly Home Decor Tips", slug: "budget-home-decor-tips" },
+    { title: "How to Choose the Perfect Sofa", slug: "how-to-choose-perfect-sofa" },
+    { title: "Coffee Table Buying Guide 2025", slug: "coffee-table-buying-guide" },
+    { title: "Best Accent Chairs for Every Room", slug: "best-accent-chairs-guide" },
+    { title: "Home Office Setup Guide", slug: "home-office-setup-guide" },
+    { title: "Bedroom Organization Hacks", slug: "bedroom-organization-hacks" }
+  ];
+  
+  return posts;
+}
+
+function createFallbackLinks(category, existingPosts) {
+  return existingPosts.slice(0, 3).map(post => ({
+    anchorText: post.title.toLowerCase(),
+    targetPost: post.title,
+    targetSlug: post.slug,
+    reason: "Related topic that provides additional value",
+    position: "Throughout the article"
+  }));
+}
+
+function displayInternalLinks(links) {
+  const panel = document.getElementById('linksPanel');
+  
+  if (!panel) return;
+  
+  if (!links || links.length === 0) {
+    panel.innerHTML = `
+      <div style="text-align: center; padding: 40px; color: #6B7280;">
+        <div style="font-size: 3rem; margin-bottom: 16px;">🔗</div>
+        <h3>No suitable link opportunities found</h3>
+        <p>AI couldn't find natural places to add internal links. Try adding more content or check back after editing.</p>
+      </div>
+    `;
+    return;
+  }
+  
+  let html = `
+    <h4 style="margin-bottom: 16px; color: #1A1D2E;">💡 ${links.length} Internal Link Opportunities Found</h4>
+    <div style="display: grid; gap: 12px;">
+  `;
+  
+  links.forEach((link, index) => {
+    html += `
+      <div class="link-suggestion">
+        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">
+          <strong style="color: #1A1D2E;">${index + 1}. Link: "${link.anchorText}"</strong>
+          <button 
+            onclick="insertInternalLink('${escapeQuotes(link.anchorText)}', '${link.targetSlug}')" 
+            class="btn btn-secondary" 
+            style="padding: 4px 12px; font-size: 0.8rem;"
+          >
+            🔗 Insert
+          </button>
+        </div>
+        <div style="color: #7B1FA2; font-weight: 600; font-size: 0.9rem; margin-bottom: 4px;">
+          → ${link.targetPost}
+        </div>
+        <small style="color: #6B7280; display: block; margin-bottom: 4px;">
+          <strong>Why:</strong> ${link.reason}
+        </small>
+        <small style="color: #9CA3AF;">
+          <strong>Position:</strong> ${link.position}
+        </small>
+      </div>
+    `;
+  });
+  
+  html += `
+    </div>
+    
+    <div style="margin-top: 20px; padding: 16px; background: rgba(123, 31, 162, 0.05); border-radius: 8px; font-size: 0.9rem;">
+      <strong>💡 Pro Tip:</strong> Internal links help readers discover related content and improve SEO by distributing page authority. Aim for 3-5 quality internal links per post.
+    </div>
+  `;
+  
+  panel.innerHTML = html;
+  updateLinkStats();
+}
+
+function insertInternalLink(anchorText, slug) {
+  const content = document.getElementById('content').value;
+  const link = `[${anchorText}](/${slug})`;
+  
+  // Try to find exact match first
+  let newContent = content.replace(anchorText, link);
+  
+  // If no exact match, try case-insensitive
+  if (newContent === content) {
+    const regex = new RegExp(escapeRegex(anchorText), 'i');
+    newContent = content.replace(regex, link);
+  }
+  
+  if (newContent !== content) {
+    document.getElementById('content').value = newContent;
+    updatePreview();
+    updateLinkStats();
+    showStatus(`✅ Link inserted: "${anchorText}"`, 'success');
+  } else {
+    showStatus(`⚠️ Could not find exact text "${anchorText}" in content`, 'error');
+  }
+}
+
+function updateLinkStats() {
+  const content = document.getElementById('content').value;
+  const linkMatches = content.match(/\[.+?\]\(.+?\)/g);
+  const linkCount = linkMatches ? linkMatches.length : 0;
+  
+  const currentLinksEl = document.getElementById('currentLinks');
+  const linkStatusEl = document.getElementById('linkStatus');
+  
+  if (currentLinksEl) {
+    currentLinksEl.textContent = linkCount;
+  }
+  
+  if (linkStatusEl) {
+    let status = '❌';
+    if (linkCount >= 3 && linkCount <= 7) status = '✅';
+    else if (linkCount >= 1) status = '⚠️';
+    linkStatusEl.textContent = status;
+  }
+}
+
+// ============================================
+// PRODUCT MANAGEMENT
+// ============================================
+
+function loadProducts() {
+  // Load from window.AFFILIATE_PRODUCTS (from config-complete.js)
+  if (window.AFFILIATE_PRODUCTS) {
+    allProducts = Object.entries(window.AFFILIATE_PRODUCTS).map(([id, product]) => ({
+      id: id,
+      name: product.name,
+      category: product.category,
+      price: product.price || '',
+      keywords: product.keywords.join(', '),
+      affiliateUrl: product.url
+    }));
+  } else {
+    // Fallback mock data
+    allProducts = [
+      {
+        id: 'mock-1',
+        name: "Modern Minimalist Sofa",
+        category: "Living Room",
+        price: "$899",
+        keywords: "modern sofa, minimalist furniture, living room",
+        affiliateUrl: "https://example.com/product1"
+      },
+      {
+        id: 'mock-2',
+        name: "Scandinavian Coffee Table",
+        category: "Living Room",
+        price: "$249",
+        keywords: "coffee table, scandinavian, modern furniture",
+        affiliateUrl: "https://example.com/product2"
+      }
+    ];
+  }
+  
+  renderProductGrid(allProducts);
+  renderCategoryFilters();
+  
+  console.log(`✅ Loaded ${allProducts.length} products`);
+}
+
+function renderProductGrid(products) {
   const grid = document.getElementById('productGrid');
+  
   if (!grid) return;
   
-  let html = '';
-  let count = 0;
+  if (products.length === 0) {
+    grid.innerHTML = `
+      <div class="no-results" style="grid-column: 1 / -1;">
+        <div class="no-results-icon">🔍</div>
+        <h3>No products found</h3>
+        <p>Try adjusting your search or filters</p>
+      </div>
+    `;
+    return;
+  }
   
-  for (const [id, product] of Object.entries(products)) {
-    const isSelected = selectedProducts.has(id);
-    html += `
-      <div class="product-card ${isSelected ? 'selected' : ''}" onclick="toggleProduct('${id}')">
-        <div class="checkbox">${isSelected ? '✓' : ''}</div>
+  grid.innerHTML = products.map(product => {
+    const isSelected = selectedProducts.includes(product.id);
+    return `
+      <div class="product-card ${isSelected ? 'selected' : ''}" 
+           onclick="toggleProduct('${product.id}')">
+        <div class="checkbox">
+          ${isSelected ? '✓' : ''}
+        </div>
         <div class="product-category">${product.category}</div>
         <div class="product-name">${product.name}</div>
         ${product.price ? `<div class="product-price">${product.price}</div>` : ''}
-        <div class="product-keywords">${product.keywords.slice(0, 3).join(', ')}</div>
+        <div class="product-keywords">${product.keywords.split(',').slice(0, 3).join(', ')}</div>
       </div>
     `;
-    count++;
-  }
+  }).join('');
   
-  if (count === 0) {
-    html = `
-      <div class="no-results">
-        <div class="no-results-icon">🔍</div>
-        <h3>No products found</h3>
-        <p>Try different keywords</p>
-      </div>
-    `;
+  const countEl = document.getElementById('productCount');
+  if (countEl) {
+    countEl.textContent = `${products.length} products available`;
   }
-  
-  grid.innerHTML = html;
-  updateProductCount(count);
 }
 
-function clearProductSearch() {
-  document.getElementById('productSearch').value = '';
-  document.getElementById('clearSearch').style.display = 'none';
-  renderProductGrid();
+function renderCategoryFilters() {
+  const categories = [...new Set(allProducts.map(p => p.category))].sort();
+  const filterSection = document.getElementById('categoryFilters');
+  
+  if (!filterSection) return;
+  
+  filterSection.innerHTML = `
+    <button class="category-filter active" onclick="filterByCategory('all')">
+      All (${allProducts.length})
+    </button>
+    ${categories.map(cat => {
+      const count = allProducts.filter(p => p.category === cat).length;
+      return `<button class="category-filter" onclick="filterByCategory('${escapeQuotes(cat)}')">${cat} (${count})</button>`;
+    }).join('')}
+  `;
 }
 
-function toggleProduct(productId) {
-  if (selectedProducts.has(productId)) {
-    selectedProducts.delete(productId);
+function toggleProduct(id) {
+  const index = selectedProducts.indexOf(id);
+  
+  if (index > -1) {
+    selectedProducts.splice(index, 1);
   } else {
-    selectedProducts.add(productId);
+    selectedProducts.push(id);
   }
   
   // Re-render to update selection state
-  const searchTerm = document.getElementById('productSearch').value;
-  if (searchTerm) {
+  const searchQuery = document.getElementById('productSearch')?.value || '';
+  if (searchQuery) {
     searchProducts();
   } else {
     const activeFilter = document.querySelector('.category-filter.active');
-    const category = activeFilter && activeFilter.textContent !== 'All' ? activeFilter.textContent : '';
-    renderProductGrid(category);
+    if (activeFilter) {
+      const category = activeFilter.textContent.split('(')[0].trim();
+      if (category === 'All') {
+        renderProductGrid(allProducts);
+      } else {
+        const filtered = allProducts.filter(p => p.category === category);
+        renderProductGrid(filtered);
+      }
+    } else {
+      renderProductGrid(allProducts);
+    }
   }
   
-  updateSelectedCount();
-}
-
-function updateProductCount(count) {
-  const el = document.getElementById('productCount');
-  if (el) {
-    el.textContent = `${count} products ${document.getElementById('productSearch').value ? 'found' : 'available'}`;
+  const selectedCountEl = document.getElementById('selectedCount');
+  if (selectedCountEl) {
+    selectedCountEl.textContent = `${selectedProducts.length} selected`;
   }
 }
 
-function updateSelectedCount() {
-  const el = document.getElementById('selectedCount');
-  if (el) {
-    el.textContent = `${selectedProducts.size} selected`;
+function searchProducts() {
+  const searchInput = document.getElementById('productSearch');
+  const clearBtn = document.getElementById('clearSearch');
+  
+  if (!searchInput) return;
+  
+  const query = searchInput.value.toLowerCase();
+  
+  if (clearBtn) {
+    clearBtn.style.display = query ? 'block' : 'none';
+  }
+  
+  if (!query) {
+    renderProductGrid(allProducts);
+    return;
+  }
+  
+  const filtered = allProducts.filter(p => 
+    p.name.toLowerCase().includes(query) ||
+    p.keywords.toLowerCase().includes(query) ||
+    p.category.toLowerCase().includes(query)
+  );
+  
+  renderProductGrid(filtered);
+}
+
+function clearProductSearch() {
+  const searchInput = document.getElementById('productSearch');
+  const clearBtn = document.getElementById('clearSearch');
+  
+  if (searchInput) searchInput.value = '';
+  if (clearBtn) clearBtn.style.display = 'none';
+  
+  renderProductGrid(allProducts);
+}
+
+function filterByCategory(category) {
+  // Update active filter
+  document.querySelectorAll('.category-filter').forEach(btn => {
+    btn.classList.remove('active');
+  });
+  
+  if (event && event.target) {
+    event.target.classList.add('active');
+  }
+  
+  if (category === 'all') {
+    renderProductGrid(allProducts);
+  } else {
+    const filtered = allProducts.filter(p => p.category === category);
+    renderProductGrid(filtered);
   }
 }
 
 function clearAllSelections() {
-  selectedProducts.clear();
-  const searchTerm = document.getElementById('productSearch').value;
-  if (searchTerm) {
+  selectedProducts = [];
+  
+  // Re-render current view
+  const searchQuery = document.getElementById('productSearch')?.value || '';
+  if (searchQuery) {
     searchProducts();
   } else {
-    renderProductGrid();
+    const activeFilter = document.querySelector('.category-filter.active');
+    if (activeFilter) {
+      const category = activeFilter.textContent.split('(')[0].trim();
+      if (category === 'All') {
+        renderProductGrid(allProducts);
+      } else {
+        const filtered = allProducts.filter(p => p.category === category);
+        renderProductGrid(filtered);
+      }
+    } else {
+      renderProductGrid(allProducts);
+    }
   }
-  updateSelectedCount();
+  
+  const selectedCountEl = document.getElementById('selectedCount');
+  if (selectedCountEl) {
+    selectedCountEl.textContent = '0 selected';
+  }
+  
   showStatus('✅ All selections cleared', 'success');
 }
 
 function insertProductLinks() {
-  if (selectedProducts.size === 0) {
-    showStatus('❌ Please select at least one product first', 'error');
+  if (selectedProducts.length === 0) {
+    showStatus('❌ Please select products first', 'error');
     return;
   }
   
-  const content = document.getElementById('content');
-  let insertedCount = 0;
-  let linksText = '\n\n## Recommended Products\n\n';
+  const products = allProducts.filter(p => selectedProducts.includes(p.id));
+  const content = document.getElementById('content').value;
   
-  selectedProducts.forEach(productId => {
-    const product = window.AFFILIATE_PRODUCTS[productId];
-    if (product) {
-      linksText += `- [${product.name}](${product.url})${product.price ? ' - ' + product.price : ''}\n`;
-      insertedCount++;
+  // Smart insertion strategy
+  let newContent = content;
+  const insertedProducts = [];
+  
+  // Try to insert contextually first
+  products.forEach(product => {
+    const keywords = product.keywords.split(',').map(k => k.trim().toLowerCase());
+    
+    // Look for natural insertion points
+    for (const keyword of keywords) {
+      const regex = new RegExp(`(#{2,3}.*${escapeRegex(keyword)}.*\\n\\n[^#]+)`, 'i');
+      const match = newContent.match(regex);
+      
+      if (match) {
+        const productLink = `\n\n**[→ Check Price: ${product.name}](${product.affiliateUrl})** ${product.price}\n`;
+        newContent = newContent.replace(match[0], match[0] + productLink);
+        insertedProducts.push(product);
+        break; // Move to next product
+      }
     }
   });
   
-  content.value += linksText;
-  updateWordCount();
+  // If no contextual matches, add a products section at the end
+  if (insertedProducts.length === 0) {
+    newContent += '\n\n## Recommended Products\n\n';
+    products.forEach(product => {
+      newContent += `### ${product.name}\n\n`;
+      newContent += `${product.keywords.split(',')[0].trim()} ${product.price ? `- ${product.price}` : ''}\n\n`;
+      newContent += `**[→ Check Price](${product.affiliateUrl})**\n\n`;
+      insertedProducts.push(product);
+    });
+  }
   
-  showStatus(`✅ Inserted ${insertedCount} product links!`, 'success');
+  document.getElementById('content').value = newContent;
+  updatePreview();
+  updateAllMetrics();
   
-  // Show affiliate stats
-  displayAffiliateStats();
-}
-
-function displayAffiliateStats() {
-  const panel = document.getElementById('affiliateStatsPanel');
-  const stats = document.getElementById('affiliateStats');
+  showStatus(`✅ Inserted ${insertedProducts.length} product link${insertedProducts.length > 1 ? 's' : ''}!`, 'success');
   
-  if (!panel || !stats) return;
+  // Show stats
+  const statsPanel = document.getElementById('affiliateStatsPanel');
+  const statsDiv = document.getElementById('affiliateStats');
   
-  let html = '<div style="display: grid; gap: 12px;">';
-  
-  selectedProducts.forEach(productId => {
-    const product = window.AFFILIATE_PRODUCTS[productId];
-    if (product) {
-      html += `
-        <div style="padding: 12px; background: #F9FAFB; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
-          <div>
-            <strong>${product.name}</strong>
-            <div style="font-size: 0.85rem; color: #6B7280;">${product.category}</div>
+  if (statsPanel && statsDiv) {
+    statsPanel.style.display = 'block';
+    
+    const categories = [...new Set(insertedProducts.map(p => p.category))];
+    
+    statsDiv.innerHTML = `
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 12px;">
+        ${insertedProducts.map(product => `
+          <div style="background: white; border: 2px solid #E5E7EB; border-radius: 8px; padding: 12px;">
+            <div style="font-weight: 700; color: #7B1FA2; font-size: 0.9rem; margin-bottom: 4px;">
+              ${product.name}
+            </div>
+            <div style="font-size: 0.8rem; color: #6B7280;">
+              ${product.category} ${product.price ? `• ${product.price}` : ''}
+            </div>
           </div>
-          <div style="font-weight: 700; color: #10B981;">${product.price || 'N/A'}</div>
-        </div>
-      `;
-    }
-  });
-  
-  html += '</div>';
-  stats.innerHTML = html;
-  panel.style.display = 'block';
+        `).join('')}
+      </div>
+      <div style="margin-top: 16px; padding: 12px; background: #F9FAFB; border-radius: 8px; text-align: center;">
+        <strong>${insertedProducts.length} affiliate link${insertedProducts.length > 1 ? 's' : ''}</strong> inserted across <strong>${categories.length} ${categories.length > 1 ? 'categories' : 'category'}</strong>
+      </div>
+    `;
+  }
 }
 
 // ============================================
-// PREVIEW
+// UI HELPERS & METRICS
 // ============================================
+
+function switchTab(index) {
+  // Update tab buttons
+  const tabs = document.querySelectorAll('.tab');
+  const contents = document.querySelectorAll('.tab-content');
+  
+  tabs.forEach((t, i) => t.classList.toggle('active', i === index));
+  contents.forEach((c, i) => c.classList.toggle('active', i === index));
+  
+  // Update preview if switching to preview tab
+  if (index === 5) {
+    updatePreview();
+  }
+  
+  // Update keyword analysis if on keywords tab
+  if (index === 2 && currentKeywords) {
+    analyzeKeywordUsage();
+  }
+}
+
+function updateAllMetrics() {
+  updateTitleCounter();
+  updateWordCount();
+  updateSEOTitleCounter();
+  updateSEODescCounter();
+  updateGooglePreview();
+  calculateSEOScore();
+  updateLinkStats();
+  
+  if (currentKeywords) {
+    analyzeKeywordUsage();
+  }
+}
+
+function updateTitleCounter() {
+  const titleInput = document.getElementById('title');
+  const counter = document.getElementById('titleCounter');
+  
+  if (!titleInput || !counter) return;
+  
+  const title = titleInput.value;
+  const length = title.length;
+  
+  counter.textContent = `${length} / 60 characters`;
+  
+  if (length === 0) {
+    counter.className = 'counter bad';
+  } else if (length >= 40 && length <= 60) {
+    counter.className = 'counter good';
+  } else {
+    counter.className = 'counter warning';
+  }
+}
+
+function updateWordCount() {
+  const contentInput = document.getElementById('content');
+  const wordCounter = document.getElementById('wordCounter');
+  const readingTime = document.getElementById('readingTime');
+  
+  if (!contentInput || !wordCounter) return;
+  
+  const content = contentInput.value;
+  const words = content.trim().split(/\s+/).filter(w => w.length > 0).length;
+  const minutes = Math.ceil(words / 200); // Average reading speed
+  
+  wordCounter.textContent = `${words} words`;
+  if (readingTime) {
+    readingTime.textContent = `${minutes} min read`;
+  }
+  
+  // Color coding
+  if (words >= 1500) {
+    wordCounter.className = 'counter good';
+  } else if (words >= 800) {
+    wordCounter.className = 'counter warning';
+  } else {
+    wordCounter.className = 'counter bad';
+  }
+}
+
+function updateSEOTitleCounter() {
+  const input = document.getElementById('seoTitle');
+  const counter = document.getElementById('seoTitleCounter');
+  
+  if (!input || !counter) return;
+  
+  const length = input.value.length;
+  counter.textContent = `${length} / 60 characters`;
+  
+  if (length >= 50 && length <= 60) {
+    counter.className = 'counter good';
+  } else if (length >= 40 || (length > 60 && length <= 70)) {
+    counter.className = 'counter warning';
+  } else {
+    counter.className = 'counter bad';
+  }
+}
+
+function updateSEODescCounter() {
+  const input = document.getElementById('seoDescription');
+  const counter = document.getElementById('seoDescCounter');
+  
+  if (!input || !counter) return;
+  
+  const length = input.value.length;
+  counter.textContent = `${length} / 160 characters`;
+  
+  if (length >= 150 && length <= 160) {
+    counter.className = 'counter good';
+  } else if (length >= 120 || (length > 160 && length <= 180)) {
+    counter.className = 'counter warning';
+  } else {
+    counter.className = 'counter bad';
+  }
+}
+
+function updateGooglePreview() {
+  const titleInput = document.getElementById('title');
+  const seoTitleInput = document.getElementById('seoTitle');
+  const seoDescInput = document.getElementById('seoDescription');
+  const googleTitle = document.getElementById('googleTitle');
+  const googleDesc = document.getElementById('googleDesc');
+  const googleUrl = document.getElementById('googleUrl');
+  
+  if (!googleTitle || !googleDesc || !googleUrl) return;
+  
+  const title = seoTitleInput?.value || titleInput?.value || 'Your title will appear here';
+  const desc = seoDescInput?.value || 'Your meta description will appear here...';
+  const slug = (titleInput?.value || '')
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .substring(0, 50);
+  
+  googleTitle.textContent = title;
+  googleDesc.textContent = desc;
+  googleUrl.textContent = `${window.CONFIG?.BLOG_CONFIG?.siteUrl?.replace('https://', '') || 'wowglamdecor.com'} › blog › ${slug || 'your-slug'}`;
+}
+
+function calculateSEOScore() {
+  const titleInput = document.getElementById('title');
+  const contentInput = document.getElementById('content');
+  
+  if (!titleInput || !contentInput) return;
+  
+  let score = 0;
+  const details = {
+    title: '❌',
+    content: '❌',
+    headings: '❌',
+    affiliate: 0
+  };
+  
+  // Title check (25 points)
+  const titleLength = titleInput.value.length;
+  if (titleLength >= 40 && titleLength <= 60) {
+    score += 25;
+    details.title = '✅';
+  } else if (titleLength >= 30) {
+    score += 15;
+    details.title = '⚠️';
+  }
+  
+  // Content check (35 points)
+  const content = contentInput.value;
+  const words = content.trim().split(/\s+/).filter(w => w.length > 0).length;
+  if (words >= 1500) {
+    score += 35;
+    details.content = `✅ ${words} words`;
+  } else if (words >= 800) {
+    score += 20;
+    details.content = `⚠️ ${words} words`;
+  } else {
+    details.content = `❌ ${words} words (need 1500+)`;
+  }
+  
+  // Headings check (20 points)
+  const h2Count = (content.match(/^##\s+/gm) || []).length;
+  const h3Count = (content.match(/^###\s+/gm) || []).length;
+  const totalHeadings = h2Count + h3Count;
+  
+  if (totalHeadings >= 7) {
+    score += 20;
+    details.headings = `✅ ${totalHeadings} headings`;
+  } else if (totalHeadings >= 4) {
+    score += 12;
+    details.headings = `⚠️ ${totalHeadings} headings`;
+  } else {
+    details.headings = `❌ ${totalHeadings} headings (need 7+)`;
+  }
+  
+  // Affiliate/product links (20 points)
+  const linkMatches = content.match(/\[.+?\]\(.+?\)/g);
+  const linkCount = linkMatches ? linkMatches.length : 0;
+  
+  if (linkCount >= 8) {
+    score += 20;
+    details.affiliate = `✅ ${linkCount} links`;
+  } else if (linkCount >= 4) {
+    score += 12;
+    details.affiliate = `⚠️ ${linkCount} links`;
+  } else {
+    details.affiliate = `❌ ${linkCount} links (need 8+)`;
+  }
+  
+  // Update UI
+  const scoreEl = document.getElementById('seoScore');
+  const titleScoreEl = document.getElementById('titleScore');
+  const contentScoreEl = document.getElementById('contentScore');
+  const headingScoreEl = document.getElementById('headingScore');
+  const affiliateScoreEl = document.getElementById('affiliateScore');
+  const circleEl = document.getElementById('scoreCircle');
+  
+  if (scoreEl) scoreEl.textContent = score;
+  if (titleScoreEl) titleScoreEl.textContent = details.title;
+  if (contentScoreEl) contentScoreEl.textContent = details.content;
+  if (headingScoreEl) headingScoreEl.textContent = details.headings;
+  if (affiliateScoreEl) affiliateScoreEl.textContent = details.affiliate;
+  
+  if (circleEl) {
+    circleEl.className = 'score-circle ' + getScoreGrade(score);
+  }
+}
 
 function updatePreview() {
-  const content = document.getElementById('content').value;
-  const previewEl = document.getElementById('previewContent');
+  const contentInput = document.getElementById('content');
+  const previewContent = document.getElementById('previewContent');
   
-  if (!previewEl) return;
+  if (!contentInput || !previewContent) return;
+  
+  const content = contentInput.value;
   
   if (!content) {
-    previewEl.innerHTML = '<p>Your blog post preview will appear here...</p>';
+    previewContent.innerHTML = '<p style="color: #6B7280;">Your blog post preview will appear here...</p>';
     return;
   }
   
-  // Simple markdown to HTML conversion
+  // Enhanced markdown to HTML conversion
   let html = content
+    // Headers
     .replace(/^### (.+)$/gm, '<h3>$1</h3>')
     .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+    .replace(/^# (.+)$/gm, '<h1>$1</h1>')
+    // Bold and italic
+    .replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>')
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
     .replace(/\*(.+?)\*/g, '<em>$1</em>')
-    .replace(/\[([^\]]+)\]\(([^\)]+)\)/g, '<a href="$2" target="_blank">$1</a>')
+    // Links (before images to avoid conflicts)
+    .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" style="color: #7B1FA2; font-weight: 600; text-decoration: none;">$1 →</a>')
+    // Images
+    .replace(/!\[(.+?)\]\((.+?)\)/g, '<img src="$2" alt="$1" style="max-width: 100%; height: auto; border-radius: 12px; margin: 24px 0; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" />')
+    // Lists
     .replace(/^- (.+)$/gm, '<li>$1</li>')
-    .replace(/\n\n/g, '</p><p>')
-    .replace(/^(?!<[h|l])/gm, '<p>')
-    .replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>');
+    .replace(/(<li>.*<\/li>\n?)+/g, '<ul style="margin: 16px 0; padding-left: 24px;">$&</ul>')
+    // Paragraphs
+    .split('\n\n')
+    .map(para => {
+      if (para.startsWith('<h') || para.startsWith('<ul') || para.startsWith('<img')) {
+        return para;
+      } else if (para.trim()) {
+        return `<p style="margin-bottom: 16px; line-height: 1.8;">${para}</p>`;
+      }
+      return '';
+    })
+    .join('\n');
   
-  previewEl.innerHTML = html;
+  previewContent.innerHTML = html;
+}
+
+function addTag(tagText) {
+  if (!tagText || !tagText.trim()) return;
+  
+  const cleaned = tagText.trim();
+  
+  if (!tags.includes(cleaned)) {
+    tags.push(cleaned);
+    renderAllTags();
+  }
+}
+
+function renderAllTags() {
+  const container = document.getElementById('tagsContainer');
+  const input = document.getElementById('tagInput');
+  
+  if (!container || !input) return;
+  
+  // Clear existing tags (except input)
+  const existingTags = container.querySelectorAll('.tag');
+  existingTags.forEach(tag => tag.remove());
+  
+  // Render tags
+  tags.forEach(tagText => {
+    const tag = document.createElement('span');
+    tag.className = 'tag';
+    tag.innerHTML = `
+      ${tagText}
+      <button type="button" onclick="removeTag('${escapeQuotes(tagText)}')">×</button>
+    `;
+    container.insertBefore(tag, input);
+  });
+}
+
+function removeTag(tagText) {
+  tags = tags.filter(t => t !== tagText);
+  renderAllTags();
+}
+
+function showStatus(message, type) {
+  const status = document.getElementById('statusMessage');
+  
+  if (!status) return;
+  
+  status.textContent = message;
+  status.className = `status-message ${type}`;
+  
+  // Auto-hide success/info messages after 5 seconds
+  if (type === 'success' || type === 'info') {
+    setTimeout(() => {
+      if (status.className.includes(type)) {
+        status.className = 'status-message';
+      }
+    }, 5000);
+  }
 }
 
 // ============================================
-// EXPORT & PUBLISH
+// EXPORT & PUBLISH FUNCTIONS
 // ============================================
 
 function saveDraft() {
   const data = collectFormData();
-  localStorage.setItem('blogDraft', JSON.stringify(data));
-  showStatus('✅ Draft saved to browser storage!', 'success');
+  
+  try {
+    localStorage.setItem('blogDraft', JSON.stringify(data));
+    localStorage.setItem('blogDraftTimestamp', new Date().toISOString());
+    showStatus('✅ Draft saved locally!', 'success');
+  } catch (error) {
+    console.error('Save error:', error);
+    showStatus('❌ Failed to save draft', 'error');
+  }
 }
 
 function exportMarkdown() {
   const content = document.getElementById('content').value;
   const title = document.getElementById('title').value;
   
-  const blob = new Blob([content], { type: 'text/markdown' });
+  if (!title || !content) {
+    showStatus('❌ Please add title and content first', 'error');
+    return;
+  }
+  
+  const markdown = `# ${title}\n\n${content}`;
+  const blob = new Blob([markdown], { type: 'text/markdown;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `${title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.md`;
+  a.download = `${slugify(title)}.md`;
+  document.body.appendChild(a);
   a.click();
+  document.body.removeChild(a);
   URL.revokeObjectURL(url);
   
   showStatus('✅ Markdown file downloaded!', 'success');
@@ -784,46 +2012,78 @@ function exportMarkdown() {
 function exportFullHTML() {
   const data = collectFormData();
   
+  if (!data.title || !data.content) {
+    showStatus('❌ Please add title and content first', 'error');
+    return;
+  }
+  
+  // Convert markdown to HTML (simplified)
+  let htmlContent = data.content
+    .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+    .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2">$1</a>')
+    .replace(/!\[(.+?)\]\((.+?)\)/g, '<img src="$2" alt="$1" style="max-width: 100%;" />')
+    .split('\n\n')
+    .map(p => p.startsWith('<h') || p.startsWith('<img') ? p : `<p>${p}</p>`)
+    .join('\n');
+  
   const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${data.seoTitle || data.title}</title>
-  <meta name="description" content="${data.seoDescription}">
+  <meta name="description" content="${data.seoDescription || ''}">
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 0 20px;
+      line-height: 1.8;
+      color: #1A1D2E;
+    }
+    h1 { font-size: 2.5rem; margin-bottom: 24px; font-weight: 800; }
+    h2 { font-size: 1.75rem; margin: 32px 0 16px; font-weight: 700; }
+    h3 { font-size: 1.25rem; margin: 24px 0 12px; font-weight: 600; }
+    p { margin-bottom: 16px; }
+    a { color: #7B1FA2; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    img { border-radius: 12px; margin: 24px 0; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    .meta { color: #6B7280; font-size: 0.9rem; margin-bottom: 32px; }
+  </style>
 </head>
 <body>
   <article>
     <h1>${data.title}</h1>
-    <div class="content">
-      ${document.getElementById('previewContent').innerHTML}
+    <div class="meta">
+      By ${data.author.name} | ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
     </div>
+    ${htmlContent}
   </article>
 </body>
 </html>`;
   
-  const blob = new Blob([html], { type: 'text/html' });
+  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `${data.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.html`;
+  a.download = `${slugify(data.title)}.html`;
+  document.body.appendChild(a);
   a.click();
+  document.body.removeChild(a);
   URL.revokeObjectURL(url);
   
-  showStatus('✅ HTML file downloaded!', 'success');
+  showStatus('✅ HTML file exported!', 'success');
 }
 
 async function publishToN8N() {
   const data = collectFormData();
   
   if (!data.title || !data.content) {
-    showStatus('❌ Please add a title and content first', 'error');
-    return;
-  }
-  
-  if (!window.CONFIG || !window.CONFIG.N8N_WEBHOOK_URL) {
-    showStatus('❌ N8N Webhook URL not configured. Exporting instead...', 'error');
-    exportMarkdown();
+    showStatus('❌ Please add title and content first', 'error');
     return;
   }
   
@@ -831,27 +2091,31 @@ async function publishToN8N() {
   btn.disabled = true;
   btn.innerHTML = '<span class="loading-spinner"></span> Publishing...';
   
-  showStatus('🚀 Publishing to website...', 'info');
+  showStatus('🚀 Publishing to your website...', 'info');
   
   try {
-    const response = await fetch(window.CONFIG.N8N_WEBHOOK_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
+    // Call N8N publishing endpoint
+    const result = await callN8NProxy('publish', {
+      post: data,
+      siteConfig: window.CONFIG.BLOG_CONFIG
     });
     
-    if (!response.ok) {
-      throw new Error('Publishing failed');
+    showStatus('✅ Published successfully!', 'success');
+    
+    // Optional: Clear draft
+    localStorage.removeItem('blogDraft');
+    localStorage.removeItem('blogDraftTimestamp');
+    
+    // Optional: Show published URL if returned
+    if (result.publishedUrl) {
+      setTimeout(() => {
+        showStatus(`✅ Published at: ${result.publishedUrl}`, 'success');
+      }, 2000);
     }
     
-    showStatus('✅ Successfully published to website!', 'success');
-    
   } catch (error) {
-    console.error('Publish Error:', error);
-    showStatus(`❌ Error: ${error.message}. Downloading instead...`, 'error');
-    exportMarkdown();
+    console.error('Publishing error:', error);
+    showStatus(`❌ Publishing failed: ${error.message}`, 'error');
   } finally {
     btn.disabled = false;
     btn.innerHTML = '🚀 Publish to Website';
@@ -860,36 +2124,83 @@ async function publishToN8N() {
 
 function collectFormData() {
   return {
-    title: document.getElementById('title').value,
-    category: document.getElementById('category').value,
-    tags: currentTags,
-    content: document.getElementById('content').value,
-    seoTitle: document.getElementById('seoTitle').value || document.getElementById('title').value,
-    seoDescription: document.getElementById('seoDescription').value,
+    title: document.getElementById('title')?.value || '',
+    content: document.getElementById('content')?.value || '',
+    category: document.getElementById('category')?.value || '',
+    tags: tags,
+    seoTitle: document.getElementById('seoTitle')?.value || '',
+    seoDescription: document.getElementById('seoDescription')?.value || '',
     author: {
-      name: document.getElementById('authorName').value,
-      role: document.getElementById('authorRole').value,
-      bio: document.getElementById('authorBio').value
+      name: document.getElementById('authorName')?.value || 'Sarah Mitchell',
+      role: document.getElementById('authorRole')?.value || 'Interior Design Expert',
+      bio: document.getElementById('authorBio')?.value || 'Interior design enthusiast with 10+ years of experience.'
     },
-    selectedProducts: Array.from(selectedProducts),
-    timestamp: new Date().toISOString()
+    selectedProducts: selectedProducts,
+    keywords: currentKeywords,
+    publishedAt: new Date().toISOString(),
+    stats: {
+      wordCount: document.getElementById('content')?.value.trim().split(/\s+/).filter(w => w.length > 0).length || 0,
+      seoScore: parseInt(document.getElementById('seoScore')?.textContent) || 0,
+      linkCount: (document.getElementById('content')?.value.match(/\[.+?\]\(.+?\)/g) || []).length
+    }
   };
 }
 
 // ============================================
-// KEYWORDS (STUBS - TO BE COMPLETED)
+// UTILITY FUNCTIONS
 // ============================================
 
-async function generateKeywords() {
-  showStatus('🚧 Keyword generation feature coming soon!', 'info');
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
 }
 
-async function optimizeWithKeywords() {
-  showStatus('🚧 Keyword optimization feature coming soon!', 'info');
+function slugify(text) {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .substring(0, 50);
 }
 
-async function suggestInternalLinks() {
-  showStatus('🚧 Internal link suggestions feature coming soon!', 'info');
+function escapeQuotes(text) {
+  return text.replace(/'/g, "\\'").replace(/"/g, '\\"');
 }
 
-console.log('✅ Blog editor logic loaded successfully');
+function escapeRegex(text) {
+  return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+// ============================================
+// CLEANUP ON PAGE UNLOAD
+// ============================================
+
+window.addEventListener('beforeunload', function(e) {
+  // Save draft one final time
+  const data = collectFormData();
+  if (data.title || data.content) {
+    localStorage.setItem('blogDraft', JSON.stringify(data));
+    localStorage.setItem('blogDraftTimestamp', new Date().toISOString());
+  }
+  
+  // Clear autosave interval
+  if (autosaveInterval) {
+    clearInterval(autosaveInterval);
+  }
+});
+
+// ============================================
+// INITIALIZATION COMPLETE
+// ============================================
+
+console.log('✅ World-Class Blog Editor Logic Loaded Successfully');
+console.log('📊 Features: EEAT Optimization, Semantic SEO, Smart Product Integration');
+console.log('🎯 Quality Standard: Tom\'s Guide / Good Housekeeping / Veranda');
