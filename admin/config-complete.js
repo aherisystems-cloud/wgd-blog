@@ -20,7 +20,7 @@ window.CONFIG = {
   // Unsplash configuration (optional - handled in N8N)
   UNSPLASH: {
     enabled: true,
-    imagesPerArticle: 3
+    imagesPerArticle: 10
   }
 };
 
