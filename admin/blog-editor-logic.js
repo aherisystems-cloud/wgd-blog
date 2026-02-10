@@ -159,32 +159,42 @@ function restoreFormData(data) {
 // ENHANCED AI FUNCTIONS - N8N PROXY WITH EEAT
 // ============================================
 
+// blog-editor-logic.js
+
 async function callN8NProxy(action, data) {
-  if (!window.CONFIG || !window.CONFIG.N8N_GROQ_PROXY) {
-    throw new Error('N8N webhook not configured. Please check your config file.');
-  }
-  
   try {
-    const response = await fetch(window.CONFIG.N8N_GROQ_PROXY, {
+    console.log(`🚀 Calling N8N: ${action}`, data);
+    
+    const response = await fetch(CONFIG.N8N_WEBHOOK_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Accept': 'application/json'
       },
       body: JSON.stringify({
         action: action,
-        timestamp: new Date().toISOString(),
         ...data
       })
     });
-    
+
+    // Check if response is OK
     if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`N8N API error (${response.status}): ${errorText}`);
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
+
+    // Get the raw text first
+    const text = await response.text();
+    console.log('📥 Raw response:', text);
+
+    // Try to parse JSON
+    if (!text || text.trim() === '') {
+      throw new Error('Empty response from server');
+    }
+
+    const result = JSON.parse(text);
+    console.log('✅ Parsed result:', result);
     
-    return await response.json();
-    
+    return result;
+
   } catch (error) {
     console.error('N8N Proxy Error:', error);
     throw error;
