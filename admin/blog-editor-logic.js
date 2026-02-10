@@ -161,22 +161,55 @@ function restoreFormData(data) {
 
 // blog-editor-logic.js
 
+// ============================================
+// SAFE N8N PROXY CALL (FIXED VERSION)
+// ============================================
+
 const N8N_WEBHOOK_URL = "http://localhost:5678/webhook/groq-proxy";
-async function callN8NProxy(data) {
+
+async function callN8NProxy(action, payload = {}) {
   try {
+
+    const requestBody = {
+      action: action,
+      ...payload
+    };
+
     const response = await fetch(N8N_WEBHOOK_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify(requestBody)
     });
 
+    // Read response as TEXT first
+    const responseText = await response.text();
+
+    // Debug log (VERY useful)
+    console.log("N8N Raw Response:", responseText);
+
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      throw new Error(`HTTP ${response.status}: ${responseText}`);
     }
 
-    return await response.json();
+    // Check empty response
+    if (!responseText || responseText.trim() === "") {
+      throw new Error("Empty response from N8N");
+    }
+
+    // Try parsing JSON safely
+    let data;
+
+    try {
+      data = JSON.parse(responseText);
+    } catch (jsonError) {
+      console.error("Invalid JSON from N8N:", responseText);
+      throw new Error("N8N returned invalid JSON");
+    }
+
+    return data;
+
   } catch (error) {
     console.error("N8N Proxy Error:", error);
     throw error;
