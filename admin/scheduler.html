@@ -111,23 +111,39 @@ function runSEO(){
 }
 
 function preparePost(){
- let cats = categories.value.split(",").map(c=>c.trim());
- let tagsArr = tags.value.split(",").map(t=>t.trim());
- let keys = seoKeywords.value.split(",").map(k=>k.trim());
+
+ let cats = categories.value.split(",").map(c=>c.trim()).filter(Boolean);
+ let tagsArr = tags.value.split(",").map(t=>t.trim()).filter(Boolean);
+ let keys = seoKeywords.value.split(",").map(k=>k.trim()).filter(Boolean);
+
+ let scheduled = publishDate.value;
+
+ if(!scheduled){
+   alert("Please set publish date");
+   return;
+ }
+
+ // Convert to ISO UTC
+ let scheduledISO = new Date(scheduled).toISOString();
 
  let frontmatter =
 `---
 title: "${title.value}"
 description: "${description.value}"
 slug: "${slug.value}"
-date: ${publishDate.value}
+
+scheduled_date: ${scheduledISO}
+
 categories:
 ${cats.map(c=>"  - "+c).join("\n")}
+
 tags:
 ${tagsArr.map(t=>"  - "+t).join("\n")}
+
 keywords:
 ${keys.map(k=>"  - "+k).join("\n")}
-status: draft
+
+published: false
 ---\n\n`;
 
  let disclosure = disclaimer.checked
@@ -136,6 +152,7 @@ status: draft
 
  finalPost.innerText = frontmatter + disclosure + content.value;
 }
+
 
 function saveDraft(){
  if(!finalPost.innerText){ alert("Prepare post first"); return; }
