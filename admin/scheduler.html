@@ -3,1196 +3,484 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>📅 Blog Scheduler | Wow Glam Decor</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="fonts.gstatic.com" crossorigin>
+<title>📅 Affiliate Blog Scheduler | WowGlamDecor</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
   --primary: #7C3AED;
-  --primary-dark: #6D28D9;
   --secondary: #EC4899;
   --success: #10B981;
   --warning: #F59E0B;
   --danger: #EF4444;
-  --gray-50: #F9FAFB;
-  --gray-100: #F3F4F6;
-  --gray-200: #E5E7EB;
-  --gray-300: #D1D5DB;
-  --gray-600: #4B5563;
-  --gray-700: #374151;
-  --gray-900: #111827;
+  --bg: #F9FAFB;
+  --dark: #111827;
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  min-height: 100vh;
-  padding: 20px;
-  color: var(--gray-900);
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg,#667eea,#764ba2);
+  min-height:100vh;
+  padding:20px;
 }
 
-.container {
-  max-width: 1600px;
-  margin: 0 auto;
-  background: white;
-  border-radius: 20px;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-  overflow: hidden;
+.app {
+  max-width:1200px;
+  margin:auto;
+  background:white;
+  border-radius:16px;
+  padding:25px;
+  box-shadow:0 20px 40px rgba(0,0,0,0.2);
 }
 
-/* Header */
+/* HEADER */
+
 .header {
-  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-  color: white;
-  padding: 40px 50px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  text-align:center;
+  margin-bottom:25px;
 }
 
-.header-left h1 {
-  font-size: 2rem;
-  font-weight: 800;
-  margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
+.header h1 {
+  font-size:2.2rem;
+  color:var(--dark);
 }
 
-.header-left p {
-  opacity: 0.9;
-  font-size: 1rem;
-}
+/* TABS */
 
-.header-stats {
-  display: flex;
-  gap: 30px;
-}
-
-.stat {
-  text-align: center;
-}
-
-.stat-value {
-  font-size: 2rem;
-  font-weight: 800;
-  display: block;
-}
-
-.stat-label {
-  font-size: 0.875rem;
-  opacity: 0.9;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-/* Tabs */
 .tabs {
-  display: flex;
-  background: var(--gray-50);
-  border-bottom: 2px solid var(--gray-200);
+  display:flex;
+  gap:10px;
+  margin-bottom:25px;
+  flex-wrap:wrap;
 }
 
 .tab {
-  flex: 1;
-  padding: 20px;
-  text-align: center;
-  font-weight: 600;
-  cursor: pointer;
-  border: none;
-  background: transparent;
-  transition: all 0.3s;
-  font-size: 1rem;
-  position: relative;
-}
-
-.tab:hover {
-  background: var(--gray-100);
+  padding:10px 18px;
+  border:none;
+  background:#E5E7EB;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:600;
 }
 
 .tab.active {
-  background: white;
-  color: var(--primary);
+  background:var(--primary);
+  color:white;
 }
 
-.tab.active::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: var(--primary);
-}
+/* CONTENT */
 
-.tab-badge {
-  display: inline-block;
-  background: var(--primary);
-  color: white;
-  padding: 2px 8px;
-  border-radius: 10px;
-  font-size: 0.75rem;
-  margin-left: 8px;
-  font-weight: 700;
-}
-
-/* Content Areas */
 .tab-content {
-  display: none;
-  padding: 50px;
+  display:none;
 }
 
 .tab-content.active {
-  display: block;
+  display:block;
 }
 
-/* Create Post Form */
-.form-grid {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 40px;
-  margin-bottom: 30px;
+/* FORMS */
+
+input, select, textarea {
+  width:100%;
+  padding:10px;
+  margin-bottom:12px;
+  border-radius:6px;
+  border:1px solid #ccc;
 }
 
-.form-column h2 {
-  font-size: 1.5rem;
-  margin-bottom: 24px;
-  color: var(--gray-900);
-  font-weight: 700;
+button.primary {
+  background:var(--primary);
+  color:white;
+  border:none;
+  padding:10px 18px;
+  border-radius:8px;
+  cursor:pointer;
 }
 
-.form-group {
-  margin-bottom: 24px;
+button.secondary {
+  background:var(--secondary);
+  color:white;
+  border:none;
+  padding:8px 15px;
+  border-radius:6px;
 }
 
-.form-group label {
-  display: block;
-  font-weight: 600;
-  margin-bottom: 8px;
-  color: var(--gray-700);
-  font-size: 0.875rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+/* TABLE */
+
+table {
+  width:100%;
+  border-collapse:collapse;
+  margin-top:15px;
 }
 
-.form-group input[type="text"],
-.form-group input[type="datetime-local"],
-.form-group select,
-.form-group textarea {
-  width: 100%;
-  padding: 12px 16px;
-  border: 2px solid var(--gray-200);
-  border-radius: 10px;
-  font-size: 1rem;
-  font-family: 'Inter', sans-serif;
-  transition: all 0.3s;
+th,td {
+  padding:10px;
+  border-bottom:1px solid #ddd;
+  text-align:left;
 }
 
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-  outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+/* WARNINGS */
+
+.warning {
+  background:#FEF3C7;
+  padding:15px;
+  border-radius:8px;
+  margin-bottom:15px;
 }
 
-.form-group textarea {
-  min-height: 400px;
-  resize: vertical;
-  font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
-  line-height: 1.6;
+.success {
+  background:#D1FAE5;
+  padding:12px;
+  border-radius:8px;
+  margin-bottom:15px;
 }
 
-.tag-input-wrapper {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  padding: 8px;
-  border: 2px solid var(--gray-200);
-  border-radius: 10px;
-  min-height: 48px;
-}
-
-.tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: var(--primary);
-  color: white;
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 0.875rem;
-  font-weight: 500;
-}
-
-.tag button {
-  background: none;
-  border: none;
-  color: white;
-  cursor: pointer;
-  font-size: 1.2rem;
-  line-height: 1;
-  padding: 0;
-}
-
-.tag-input {
-  flex: 1;
-  border: none;
-  outline: none;
-  min-width: 120px;
-  font-size: 0.875rem;
-}
-
-/* Schedule Section */
-.schedule-options {
-  background: var(--gray-50);
-  padding: 24px;
-  border-radius: 12px;
-  border: 2px solid var(--gray-200);
-}
-
-.schedule-toggle {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 20px;
-}
-
-.schedule-btn {
-  flex: 1;
-  padding: 12px;
-  border: 2px solid var(--gray-300);
-  background: white;
-  border-radius: 10px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.schedule-btn.active {
-  background: var(--primary);
-  color: white;
-  border-color: var(--primary);
-}
-
-.datetime-picker {
-  display: none;
-}
-
-.datetime-picker.active {
-  display: block;
-  animation: slideDown 0.3s ease;
-}
-
-@keyframes slideDown {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Action Buttons */
-.action-buttons {
-  display: flex;
-  gap: 12px;
-  margin-top: 30px;
-}
-
-.btn {
-  padding: 14px 28px;
-  border: none;
-  border-radius: 10px;
-  font-size: 1rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s;
-  font-family: 'Inter', sans-serif;
-}
-
-.btn-primary {
-  background: var(--primary);
-  color: white;
-  flex: 1;
-}
-
-.btn-primary:hover {
-  background: var(--primary-dark);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(124, 58, 237, 0.3);
-}
-
-.btn-secondary {
-  background: var(--gray-200);
-  color: var(--gray-700);
-}
-
-.btn-secondary:hover {
-  background: var(--gray-300);
-}
-
-.btn-success {
-  background: var(--success);
-  color: white;
-}
-
-.btn-success:hover {
-  background: #059669;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
-}
-
-/* Posts Queue */
-.queue-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 30px;
-}
-
-.queue-header h2 {
-  font-size: 1.75rem;
-  font-weight: 800;
-}
-
-.filter-buttons {
-  display: flex;
-  gap: 8px;
-}
-
-.filter-btn {
-  padding: 8px 16px;
-  border: 2px solid var(--gray-300);
-  background: white;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s;
-  font-size: 0.875rem;
-}
-
-.filter-btn.active {
-  background: var(--primary);
-  color: white;
-  border-color: var(--primary);
-}
-
-.posts-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 24px;
-}
-
-.post-card {
-  background: white;
-  border: 2px solid var(--gray-200);
-  border-radius: 12px;
-  padding: 24px;
-  transition: all 0.3s;
-  position: relative;
-  overflow: hidden;
-}
-
-.post-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 30px rgba(0,0,0,0.1);
-  border-color: var(--primary);
-}
-
-.post-status {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-}
-
-.status-scheduled {
-  background: #FEF3C7;
-  color: #92400E;
-}
-
-.status-published {
-  background: #D1FAE5;
-  color: #065F46;
-}
-
-.status-draft {
-  background: var(--gray-200);
-  color: var(--gray-700);
-}
-
-.post-card h3 {
-  font-size: 1.25rem;
-  margin-bottom: 12px;
-  margin-top: 8px;
-  color: var(--gray-900);
-  font-weight: 700;
-  line-height: 1.4;
-}
-
-.post-meta {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 16px;
-  font-size: 0.875rem;
-  color: var(--gray-600);
-}
-
-.meta-item {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.post-tags {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-  margin-bottom: 16px;
-}
-
-.post-tag {
-  background: var(--gray-100);
-  color: var(--gray-700);
-  padding: 4px 10px;
-  border-radius: 12px;
-  font-size: 0.75rem;
-  font-weight: 500;
-}
-
-.post-actions {
-  display: flex;
-  gap: 8px;
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px solid var(--gray-200);
-}
-
-.btn-small {
-  padding: 8px 14px;
-  font-size: 0.875rem;
-  border-radius: 8px;
-  font-weight: 600;
-}
-
-.btn-edit {
-  background: var(--primary);
-  color: white;
-  border: none;
-  flex: 1;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.btn-edit:hover {
-  background: var(--primary-dark);
-}
-
-.btn-delete {
-  background: var(--danger);
-  color: white;
-  border: none;
-  padding: 8px 14px;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.btn-delete:hover {
-  background: #DC2626;
-}
-
-/* Empty State */
-.empty-state {
-  text-align: center;
-  padding: 80px 20px;
-  color: var(--gray-600);
-}
-
-.empty-state-icon {
-  font-size: 4rem;
-  margin-bottom: 16px;
-  opacity: 0.5;
-}
-
-.empty-state h3 {
-  font-size: 1.5rem;
-  margin-bottom: 8px;
-  color: var(--gray-700);
-}
-
-/* Success Message */
-.success-message {
-  background: var(--success);
-  color: white;
-  padding: 16px 24px;
-  border-radius: 12px;
-  margin-bottom: 24px;
-  display: none;
-  align-items: center;
-  gap: 12px;
-  font-weight: 600;
-  animation: slideDown 0.3s ease;
-}
-
-.success-message.show {
-  display: flex;
-}
-
-/* Calendar View */
-.calendar-view {
-  background: white;
-  border-radius: 12px;
-  padding: 24px;
-  border: 2px solid var(--gray-200);
-}
-
-.calendar-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
-  padding-bottom: 16px;
-  border-bottom: 2px solid var(--gray-200);
-}
-
-.calendar-nav {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-}
-
-.calendar-nav button {
-  background: var(--gray-100);
-  border: none;
-  padding: 8px 16px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: all 0.3s;
-}
-
-.calendar-nav button:hover {
-  background: var(--gray-200);
-}
-
-.month-label {
-  font-size: 1.5rem;
-  font-weight: 800;
-  min-width: 200px;
-  text-align: center;
-}
-
-/* Responsive */
-@media (max-width: 1024px) {
-  .form-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .header-stats {
-    display: none;
-  }
-  
-  .posts-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 768px) {
-  .tab-content {
-    padding: 24px;
-  }
-  
-  .header {
-    padding: 24px;
-  }
-  
-  .header-left h1 {
-    font-size: 1.5rem;
-  }
-}
-
-/* Utilities */
-.mt-4 { margin-top: 16px; }
-.mb-4 { margin-bottom: 16px; }
 </style>
 </head>
+
 <body>
 
-<div class="container">
-  <!-- Header -->
+<div class="app">
+
+  <!-- HEADER -->
   <div class="header">
-    <div class="header-left">
-      <h1>📅 Blog Scheduler</h1>
-      <p>Schedule and manage your blog posts like a pro</p>
-    </div>
-    <div class="header-stats">
-      <div class="stat">
-        <span class="stat-value" id="scheduled-count">0</span>
-        <span class="stat-label">Scheduled</span>
-      </div>
-      <div class="stat">
-        <span class="stat-value" id="draft-count">0</span>
-        <span class="stat-label">Drafts</span>
-      </div>
-      <div class="stat">
-        <span class="stat-value" id="published-count">0</span>
-        <span class="stat-label">Published</span>
-      </div>
-    </div>
+    <h1>📅 Affiliate Blog Scheduler</h1>
+    <p>Plan Content • Manage Links • Monetize Smarter</p>
   </div>
 
-  <!-- Tabs -->
+  <!-- TABS -->
   <div class="tabs">
-    <button class="tab active" onclick="switchTab('create')">
-      ✍️ Create Post
-    </button>
-    <button class="tab" onclick="switchTab('queue')">
-      📋 Queue <span class="tab-badge" id="queue-badge">0</span>
-    </button>
-    <button class="tab" onclick="switchTab('calendar')">
-      📅 Calendar
-    </button>
+
+    <button class="tab active" onclick="switchTab('planner')">📝 Planner</button>
+
+    <button class="tab" onclick="switchTab('calendar')">📆 Calendar</button>
+
+    <button class="tab" onclick="switchTab('affiliates')">💰 Affiliates</button>
+
+    <button class="tab" onclick="switchTab('stats')">📊 Stats</button>
+
   </div>
 
-  <!-- Create Post Tab -->
-  <div id="create-tab" class="tab-content active">
-    <div class="success-message" id="success-message">
-      ✅ Post saved successfully!
-    </div>
 
-    <form id="post-form">
-      <div class="form-grid">
-        <!-- Left Column -->
-        <div class="form-column">
-          <h2>Content</h2>
-          
-          <div class="form-group">
-            <label>Title</label>
-            <input type="text" id="title" placeholder="Enter your post title..." required>
-          </div>
+  <!-- ================= PLANNER ================= -->
 
-          <div class="form-group">
-            <label>Slug (URL)</label>
-            <input type="text" id="slug" placeholder="my-awesome-post">
-          </div>
+  <div id="planner" class="tab-content active">
 
-          <div class="form-group">
-            <label>Content (Markdown)</label>
-            <textarea id="content" placeholder="Write your post content in Markdown...
+    <h2>📝 Content Planner</h2>
 
-## Example Heading
+    <input id="postTitle" placeholder="Post Title">
 
-Your amazing content here..."></textarea>
-          </div>
-        </div>
+    <input id="postKeyword" placeholder="Main Keyword">
 
-        <!-- Right Column -->
-        <div class="form-column">
-          <h2>Settings</h2>
+    <input id="postDate" type="date">
 
-          <div class="form-group">
-            <label>Category</label>
-            <select id="category">
-              <option>Furniture</option>
-              <option>Decor</option>
-              <option>Lighting</option>
-              <option>Storage</option>
-              <option>Outdoor</option>
-              <option>DIY</option>
-            </select>
-          </div>
+    <textarea id="postNotes" rows="3" placeholder="Notes / Outline"></textarea>
 
-          <div class="form-group">
-            <label>Tags</label>
-            <div class="tag-input-wrapper" id="tag-wrapper">
-              <input type="text" class="tag-input" id="tag-input" placeholder="Add tag...">
-            </div>
-          </div>
+    <select id="affiliateLinkSelect"></select>
 
-          <div class="form-group">
-            <label>Author Name</label>
-            <input type="text" id="author-name" value="Rita N.">
-          </div>
+    <button class="primary" onclick="addPost()">Add Post</button>
 
-          <div class="form-group">
-            <label>Author Role</label>
-            <input type="text" id="author-role" value="Content Editor">
-          </div>
+    <table id="postsTable">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Date</th>
+          <th>Keyword</th>
+          <th>Affiliate</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
 
-          <div class="form-group">
-            <label>SEO Title</label>
-            <input type="text" id="seo-title" placeholder="Leave blank to auto-generate">
-          </div>
-
-          <div class="form-group">
-            <label>SEO Description</label>
-            <textarea id="seo-description" rows="3" placeholder="Brief description for search engines..."></textarea>
-          </div>
-
-          <!-- Schedule Options -->
-          <div class="schedule-options">
-            <label>Publication</label>
-            <div class="schedule-toggle">
-              <button type="button" class="schedule-btn active" onclick="setPublishMode('now')">
-                Publish Now
-              </button>
-              <button type="button" class="schedule-btn" onclick="setPublishMode('schedule')">
-                Schedule
-              </button>
-            </div>
-            <div class="datetime-picker" id="datetime-picker">
-              <div class="form-group">
-                <label>Schedule Date & Time (Your Timezone)</label>
-                <input type="datetime-local" id="scheduled-date">
-              </div>
-            </div>
-          </div>
-
-          <div class="action-buttons">
-            <button type="button" class="btn btn-secondary" onclick="saveDraft()">
-              💾 Save Draft
-            </button>
-            <button type="submit" class="btn btn-success" id="publish-btn">
-              🚀 Publish Now
-            </button>
-          </div>
-        </div>
-      </div>
-    </form>
   </div>
 
-  <!-- Queue Tab -->
-  <div id="queue-tab" class="tab-content">
-    <div class="queue-header">
-      <h2>Post Queue</h2>
-      <div class="filter-buttons">
-        <button class="filter-btn active" onclick="filterPosts('all')">All</button>
-        <button class="filter-btn" onclick="filterPosts('scheduled')">Scheduled</button>
-        <button class="filter-btn" onclick="filterPosts('draft')">Drafts</button>
-        <button class="filter-btn" onclick="filterPosts('published')">Published</button>
-      </div>
-    </div>
 
-    <div class="posts-grid" id="posts-grid">
-      <!-- Posts will be dynamically inserted here -->
-    </div>
+  <!-- ================= CALENDAR ================= -->
 
-    <div class="empty-state" id="empty-state" style="display: none;">
-      <div class="empty-state-icon">📭</div>
-      <h3>No posts yet</h3>
-      <p>Create your first post to get started!</p>
-    </div>
+  <div id="calendar" class="tab-content">
+
+    <h2>📆 Publishing Calendar</h2>
+
+    <div id="calendarList"></div>
+
   </div>
 
-  <!-- Calendar Tab -->
-  <div id="calendar-tab" class="tab-content">
-    <div class="calendar-view">
-      <div class="calendar-header">
-        <div class="calendar-nav">
-          <button onclick="changeMonth(-1)">← Prev</button>
-          <button onclick="changeMonth(1)">Next →</button>
-        </div>
-        <div class="month-label" id="month-label">February 2026</div>
-        <button class="btn btn-secondary btn-small" onclick="goToToday()">Today</button>
-      </div>
-      <div id="calendar-grid">
-        <!-- Calendar will be generated here -->
-      </div>
+
+  <!-- ================= AFFILIATES ================= -->
+
+  <div id="affiliates" class="tab-content">
+
+    <h2>💰 Affiliate Manager</h2>
+
+    <div class="warning">
+      ⚠️ Amazon & some networks don't allow cloaking. Use direct links.
     </div>
+
+    <input id="productName" placeholder="Product Name">
+
+    <input id="affiliateUrl" placeholder="Affiliate URL">
+
+    <select id="network">
+      <option>Amazon</option>
+      <option>Jumia</option>
+      <option>Impact</option>
+      <option>PartnerStack</option>
+      <option>Other</option>
+    </select>
+
+    <label>
+      <input type="checkbox" id="cloakLink"> Cloak Link
+    </label>
+
+    <br><br>
+
+    <button class="primary" onclick="addAffiliate()">Save Link</button>
+
+    <table id="affiliateTable">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Network</th>
+          <th>Link</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
   </div>
+
+
+  <!-- ================= STATS ================= -->
+
+  <div id="stats" class="tab-content">
+
+    <h2>📊 Monetization Overview</h2>
+
+    <div class="success" id="statsBox"></div>
+
+  </div>
+
+
 </div>
 
+
+<!-- ================= SCRIPT ================= -->
+
 <script>
-// State management
-let posts = [];
-let tags = [];
-let publishMode = 'now';
-let currentFilter = 'all';
-let currentMonth = new Date();
 
-// Initialize
-document.addEventListener('DOMContentLoaded', () => {
-  loadPosts();
-  setupTagInput();
-  autoGenerateSlug();
-  updateStats();
-  renderCalendar();
-  
-  // Set min datetime to now
-  const now = new Date();
-  now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-  document.getElementById('scheduled-date').min = now.toISOString().slice(0, 16);
-});
+/* ---------------- TAB SWITCH ---------------- */
 
-// Tab switching
 function switchTab(tab) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
-  
+
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+
   event.target.classList.add('active');
-  document.getElementById(`${tab}-tab`).classList.add('active');
-  
-  if (tab === 'queue') renderPosts();
-  if (tab === 'calendar') renderCalendar();
+  document.getElementById(tab).classList.add('active');
+
+  if(tab==="calendar") loadCalendar();
+  if(tab==="stats") loadStats();
+
 }
 
-// Publish mode
-function setPublishMode(mode) {
-  publishMode = mode;
-  document.querySelectorAll('.schedule-btn').forEach(btn => btn.classList.remove('active'));
-  event.target.classList.add('active');
-  
-  const picker = document.getElementById('datetime-picker');
-  const publishBtn = document.getElementById('publish-btn');
-  
-  if (mode === 'schedule') {
-    picker.classList.add('active');
-    publishBtn.textContent = '📅 Schedule Post';
-    publishBtn.className = 'btn btn-primary';
-  } else {
-    picker.classList.remove('active');
-    publishBtn.textContent = '🚀 Publish Now';
-    publishBtn.className = 'btn btn-success';
-  }
-}
 
-// Tag management
-function setupTagInput() {
-  const input = document.getElementById('tag-input');
-  const wrapper = document.getElementById('tag-wrapper');
-  
-  input.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ',') {
-      e.preventDefault();
-      const value = input.value.trim();
-      if (value && !tags.includes(value)) {
-        tags.push(value);
-        addTagElement(value);
-        input.value = '';
-      }
-    }
-  });
-}
+/* ---------------- STORAGE ---------------- */
 
-function addTagElement(tag) {
-  const wrapper = document.getElementById('tag-wrapper');
-  const input = document.getElementById('tag-input');
-  
-  const tagEl = document.createElement('div');
-  tagEl.className = 'tag';
-  tagEl.innerHTML = `
-    ${tag}
-    <button type="button" onclick="removeTag('${tag}')">×</button>
-  `;
-  
-  wrapper.insertBefore(tagEl, input);
-}
+let posts = JSON.parse(localStorage.getItem("posts")||"[]");
+let affiliates = JSON.parse(localStorage.getItem("affiliates")||"[]");
 
-function removeTag(tag) {
-  tags = tags.filter(t => t !== tag);
-  const wrapper = document.getElementById('tag-wrapper');
-  const tagElements = wrapper.querySelectorAll('.tag');
-  tagElements.forEach(el => {
-    if (el.textContent.includes(tag)) {
-      el.remove();
-    }
-  });
-}
 
-// Auto-generate slug
-function autoGenerateSlug() {
-  const titleInput = document.getElementById('title');
-  const slugInput = document.getElementById('slug');
-  
-  titleInput.addEventListener('input', () => {
-    if (!slugInput.value) {
-      const slug = titleInput.value
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/^-+|-+$/g, '');
-      slugInput.value = slug;
-    }
-  });
-}
+/* ---------------- POSTS ---------------- */
 
-// Form submission
-document.getElementById('post-form').addEventListener('submit', (e) => {
-  e.preventDefault();
-  savePost(publishMode === 'schedule' ? 'scheduled' : 'published');
-});
+function addPost(){
 
-function saveDraft() {
-  savePost('draft');
-}
-
-function savePost(status) {
-  const title = document.getElementById('title').value;
-  const slug = document.getElementById('slug').value;
-  const content = document.getElementById('content').value;
-  const category = document.getElementById('category').value;
-  const authorName = document.getElementById('author-name').value;
-  const authorRole = document.getElementById('author-role').value;
-  const seoTitle = document.getElementById('seo-title').value || title;
-  const seoDescription = document.getElementById('seo-description').value;
-  const scheduledDate = document.getElementById('scheduled-date').value;
-
-  const post = {
-    id: Date.now(),
-    title,
-    slug,
-    content,
-    category,
-    tags: [...tags],
-    author: {
-      name: authorName,
-      role: authorRole
-    },
-    seo: {
-      title: seoTitle,
-      description: seoDescription
-    },
-    status,
-    scheduledDate: status === 'scheduled' ? scheduledDate : null,
-    createdAt: new Date().toISOString(),
-    publishedAt: status === 'published' ? new Date().toISOString() : null
+  let post = {
+    title: postTitle.value,
+    keyword: postKeyword.value,
+    date: postDate.value,
+    notes: postNotes.value,
+    affiliate: affiliateLinkSelect.value
   };
+
+  if(!post.title || !post.date) return alert("Missing fields");
 
   posts.push(post);
-  savePosts();
-  
-  // Generate markdown file
-  generateMarkdownFile(post);
-  
-  // Show success message
-  const successMsg = document.getElementById('success-message');
-  successMsg.classList.add('show');
-  setTimeout(() => successMsg.classList.remove('show'), 3000);
-  
-  // Reset form
-  document.getElementById('post-form').reset();
-  tags = [];
-  document.querySelectorAll('.tag').forEach(tag => tag.remove());
-  
-  updateStats();
+
+  localStorage.setItem("posts",JSON.stringify(posts));
+
+  renderPosts();
+
+  postTitle.value="";
+  postKeyword.value="";
+  postNotes.value="";
 }
 
-function generateMarkdownFile(post) {
-  const frontmatter = {
-    title: post.title,
-    slug: post.slug,
-    date: post.publishedAt || post.createdAt,
-    category: post.category,
-    tags: post.tags,
-    author: post.author,
-    seo: post.seo
-  };
-  
-  if (post.status === 'scheduled') {
-    frontmatter.scheduled_date = post.scheduledDate;
-  }
-  
-  const yaml = Object.entries(frontmatter)
-    .map(([key, value]) => {
-      if (typeof value === 'object' && !Array.isArray(value)) {
-        const nested = Object.entries(value)
-          .map(([k, v]) => `  ${k}: "${v}"`)
-          .join('\n');
-        return `${key}:\n${nested}`;
-      } else if (Array.isArray(value)) {
-        return `${key}:\n${value.map(v => `  - ${v}`).join('\n')}`;
-      }
-      return `${key}: "${value}"`;
-    })
-    .join('\n');
-  
-  const markdown = `---\n${yaml}\n---\n\n${post.content}`;
-  
-  // Create download
-  const blob = new Blob([markdown], { type: 'text/markdown' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  
-  // Determine folder based on status
-  const folder = post.status === 'scheduled' || post.status === 'draft' ? 'drafts' : '';
-  a.download = `${folder ? folder + '/' : ''}${post.slug}.md`;
-  a.click();
-  URL.revokeObjectURL(url);
-  
-  console.log(`📝 Generated ${a.download}`);
-  console.log(`📁 Save this file to: content/posts/${a.download}`);
-}
 
-// Posts management
-function loadPosts() {
-  const saved = localStorage.getItem('scheduledPosts');
-  if (saved) {
-    posts = JSON.parse(saved);
-  }
-  updateStats();
-}
+function renderPosts(){
 
-function savePosts() {
-  localStorage.setItem('scheduledPosts', JSON.stringify(posts));
-  updateStats();
-}
+  let tbody = document.querySelector("#postsTable tbody");
 
-function updateStats() {
-  const scheduled = posts.filter(p => p.status === 'scheduled').length;
-  const drafts = posts.filter(p => p.status === 'draft').length;
-  const published = posts.filter(p => p.status === 'published').length;
-  
-  document.getElementById('scheduled-count').textContent = scheduled;
-  document.getElementById('draft-count').textContent = drafts;
-  document.getElementById('published-count').textContent = published;
-  document.getElementById('queue-badge').textContent = scheduled + drafts;
-}
+  tbody.innerHTML="";
 
-// Render posts in queue
-function renderPosts() {
-  const grid = document.getElementById('posts-grid');
-  const emptyState = document.getElementById('empty-state');
-  
-  let filtered = posts;
-  if (currentFilter !== 'all') {
-    filtered = posts.filter(p => p.status === currentFilter);
-  }
-  
-  if (filtered.length === 0) {
-    grid.style.display = 'none';
-    emptyState.style.display = 'block';
-    return;
-  }
-  
-  grid.style.display = 'grid';
-  emptyState.style.display = 'none';
-  
-  // Sort by date
-  filtered.sort((a, b) => {
-    const dateA = new Date(a.scheduledDate || a.publishedAt || a.createdAt);
-    const dateB = new Date(b.scheduledDate || b.publishedAt || b.createdAt);
-    return dateB - dateA;
-  });
-  
-  grid.innerHTML = filtered.map(post => {
-    const date = post.status === 'scheduled' 
-      ? new Date(post.scheduledDate)
-      : post.publishedAt 
-        ? new Date(post.publishedAt) 
-        : new Date(post.createdAt);
-    
-    return `
-      <div class="post-card">
-        <div class="post-status status-${post.status}">
-          ${post.status}
-        </div>
-        <h3>${post.title}</h3>
-        <div class="post-meta">
-          <div class="meta-item">
-            📁 ${post.category}
-          </div>
-          <div class="meta-item">
-            ${post.status === 'scheduled' ? '📅' : '📆'} 
-            ${date.toLocaleString()}
-          </div>
-          <div class="meta-item">
-            ✍️ ${post.author.name}
-          </div>
-        </div>
-        <div class="post-tags">
-          ${post.tags.map(tag => `<span class="post-tag">${tag}</span>`).join('')}
-        </div>
-        <div class="post-actions">
-          <button class="btn-small btn-edit" onclick="editPost(${post.id})">
-            ✏️ Edit
-          </button>
-          <button class="btn-small btn-delete" onclick="deletePost(${post.id})">
-            🗑️
-          </button>
-        </div>
-      </div>
+  posts.forEach(p=>{
+
+    tbody.innerHTML+=`
+
+      <tr>
+        <td>${p.title}</td>
+        <td>${p.date}</td>
+        <td>${p.keyword}</td>
+        <td>${p.affiliate||"-"}</td>
+      </tr>
+
     `;
-  }).join('');
+
+  });
+
 }
 
-function filterPosts(filter) {
-  currentFilter = filter;
-  document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-  event.target.classList.add('active');
-  renderPosts();
+
+/* ---------------- AFFILIATES ---------------- */
+
+function addAffiliate(){
+
+  let networkVal = network.value.toLowerCase();
+
+  let cloak = cloakLink.checked && !networkVal.includes("amazon");
+
+  let link = {
+    id:Date.now(),
+    name:productName.value,
+    url:affiliateUrl.value,
+    network:network.value,
+    cloak
+  };
+
+  if(!link.name || !link.url) return alert("Fill all fields");
+
+  affiliates.push(link);
+
+  localStorage.setItem("affiliates",JSON.stringify(affiliates));
+
+  renderAffiliates();
+  loadAffiliateSelect();
+
+  productName.value="";
+  affiliateUrl.value="";
+  cloakLink.checked=false;
+
 }
 
-function editPost(id) {
-  const post = posts.find(p => p.id === id);
-  if (!post) return;
-  
-  // Switch to create tab
-  switchTab('create');
-  
-  // Fill form
-  document.getElementById('title').value = post.title;
-  document.getElementById('slug').value = post.slug;
-  document.getElementById('content').value = post.content;
-  document.getElementById('category').value = post.category;
-  document.getElementById('author-name').value = post.author.name;
-  document.getElementById('author-role').value = post.author.role;
-  document.getElementById('seo-title').value = post.seo.title;
-  document.getElementById('seo-description').value = post.seo.description;
-  
-  // Set tags
-  tags = [...post.tags];
-  post.tags.forEach(tag => addTagElement(tag));
-  
-  // Delete original
-  deletePost(id, false);
+
+function renderAffiliates(){
+
+  let tbody = document.querySelector("#affiliateTable tbody");
+
+  tbody.innerHTML="";
+
+  affiliates.forEach(a=>{
+
+    tbody.innerHTML+=`
+
+      <tr>
+        <td>${a.name}</td>
+        <td>${a.network}</td>
+        <td><a href="${a.url}" target="_blank">Visit</a></td>
+        <td><button onclick="deleteAffiliate(${a.id})">❌</button></td>
+      </tr>
+
+    `;
+
+  });
+
 }
 
-function deletePost(id, confirm = true) {
-  if (confirm && !window.confirm('Are you sure you want to delete this post?')) {
-    return;
-  }
-  
-  posts = posts.filter(p => p.id !== id);
-  savePosts();
-  renderPosts();
+
+function deleteAffiliate(id){
+
+  affiliates = affiliates.filter(a=>a.id!==id);
+
+  localStorage.setItem("affiliates",JSON.stringify(affiliates));
+
+  renderAffiliates();
+  loadAffiliateSelect();
+
 }
 
-// Calendar
-function renderCalendar() {
-  const monthLabel = document.getElementById('month-label');
-  const year = currentMonth.getFullYear();
-  const month = currentMonth.getMonth();
-  
-  const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December'];
-  
-  monthLabel.textContent = `${monthNames[month]} ${year}`;
-  
-  // Simple calendar placeholder
-  const grid = document.getElementById('calendar-grid');
-  grid.innerHTML = `
-    <div style="text-align: center; padding: 60px; color: var(--gray-600);">
-      <div style="font-size: 3rem; margin-bottom: 16px;">📅</div>
-      <h3>Calendar View Coming Soon</h3>
-      <p>Visual calendar with scheduled posts will be available here</p>
-    </div>
+
+/* ---------------- DROPDOWN ---------------- */
+
+function loadAffiliateSelect(){
+
+  affiliateLinkSelect.innerHTML="<option value=''>-- Select Affiliate --</option>";
+
+  affiliates.forEach(a=>{
+
+    affiliateLinkSelect.innerHTML+=`
+
+      <option value="${a.name}">
+        ${a.name} (${a.network})
+      </option>
+
+    `;
+
+  });
+
+}
+
+
+/* ---------------- CALENDAR ---------------- */
+
+function loadCalendar(){
+
+  let div=document.getElementById("calendarList");
+
+  div.innerHTML="";
+
+  posts
+    .sort((a,b)=>new Date(a.date)-new Date(b.date))
+    .forEach(p=>{
+
+      div.innerHTML+=`
+
+        <p>📌 <b>${p.date}</b> — ${p.title}</p>
+
+      `;
+
+    });
+
+}
+
+
+/* ---------------- STATS ---------------- */
+
+function loadStats(){
+
+  let withAffiliate = posts.filter(p=>p.affiliate).length;
+
+  let stats = `
+    <b>Total Posts:</b> ${posts.length}<br>
+    <b>Monetized Posts:</b> ${withAffiliate}<br>
+    <b>Affiliate Links:</b> ${affiliates.length}<br>
+    <b>Revenue Potential:</b> ${withAffiliate*500} KES+
   `;
+
+  statsBox.innerHTML = stats;
+
 }
 
-function changeMonth(delta) {
-  currentMonth.setMonth(currentMonth.getMonth() + delta);
-  renderCalendar();
-}
 
-function goToToday() {
-  currentMonth = new Date();
-  renderCalendar();
-}
+/* ---------------- INIT ---------------- */
+
+renderPosts();
+renderAffiliates();
+loadAffiliateSelect();
+
 </script>
 
 </body>
