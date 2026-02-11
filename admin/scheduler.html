@@ -763,6 +763,201 @@ tbody tr:last-child td {
   color: var(--text-secondary);
 }
 
+/* Image Upload */
+.image-upload-area {
+  padding: 16px;
+  border: 2px dashed var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-main);
+  transition: all 0.2s ease;
+}
+
+.image-upload-area:hover {
+  border-color: var(--primary);
+  background: var(--bg-surface);
+}
+
+.image-preview {
+  position: relative;
+  display: inline-block;
+  margin-top: 12px;
+}
+
+.image-preview img {
+  max-width: 100%;
+  max-height: 200px;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--border);
+}
+
+.image-preview-info {
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.image-preview-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.remove-image {
+  background: var(--danger);
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.remove-image:hover {
+  background: #E63946;
+}
+
+.insert-image {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.insert-image:hover {
+  background: var(--primary-dark);
+}
+
+/* Autosave Status */
+#autosaveStatus {
+  animation: fadeIn 0.3s ease;
+}
+
+#autosaveIcon {
+  font-size: 16px;
+}
+
+.autosave-saving {
+  color: var(--warning);
+}
+
+.autosave-saved {
+  color: var(--success);
+}
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.2s ease;
+}
+
+.modal.active {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: var(--bg-surface);
+  padding: 32px;
+  border-radius: var(--radius);
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-lg);
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid var(--border);
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: var(--text-secondary);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.modal-close:hover {
+  background: var(--bg-main);
+  color: var(--text-primary);
+}
+
+.draft-item {
+  padding: 16px;
+  margin: 8px 0;
+  background: var(--bg-main);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
+}
+
+.draft-item:hover {
+  background: var(--bg-surface);
+  border-color: var(--primary);
+  transform: translateX(4px);
+}
+
+.draft-item-title {
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.draft-item-meta {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
 /* Responsive */
 @media (max-width: 968px) {
   .editor {
@@ -819,8 +1014,21 @@ tbody tr:last-child td {
 <body>
 
 <header>
-  <h2>Affiliate Blog Scheduler Pro</h2>
-  <div class="subtitle">Create, optimize, and schedule your affiliate content</div>
+  <div style="display: flex; justify-content: space-between; align-items: center;">
+    <div>
+      <h2>Affiliate Blog Scheduler Pro</h2>
+      <div class="subtitle">Create, optimize, and schedule your affiliate content</div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 16px;">
+      <div id="autosaveStatus" style="font-size: 13px; opacity: 0.8; display: flex; align-items: center; gap: 8px;">
+        <span id="autosaveIcon">💾</span>
+        <span id="autosaveText">Autosave enabled</span>
+      </div>
+      <button onclick="loadDraft()" class="btn btn-secondary" style="padding: 8px 16px; font-size: 13px;">
+        📂 Load Draft
+      </button>
+    </div>
+  </div>
 </header>
 
 <nav>
@@ -850,8 +1058,18 @@ tbody tr:last-child td {
     <div class="selected-categories" id="selectedCategories"></div>
     <div id="categorySelect" class="multi-select"></div>
     
+    <h4>Tags</h4>
+    <input id="tags" placeholder="Comma separated tags (e.g., review, comparison, budget-friendly)" type="text">
+    
     <h4>SEO Keywords</h4>
     <input id="seoKeywords" placeholder="Comma separated keywords (e.g., robot vacuum, smart home, cleaning)" type="text">
+    
+    <h4>Featured Image</h4>
+    <div class="image-upload-area">
+      <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+      <button onclick="document.getElementById('imageUpload').click()" class="btn btn-secondary" style="width: 100%;">📸 Upload Featured Image</button>
+      <div id="imagePreviewContainer" style="margin-top: 12px;"></div>
+    </div>
     
     <label>
       <input type="checkbox" id="disclaimer">
@@ -1023,9 +1241,22 @@ Your content goes here with **bold**, *italic*, and [links](https://example.com)
 
 </div>
 
+<!-- Load Draft Modal -->
+<div id="loadDraftModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Load Autosaved Draft</h3>
+      <button class="modal-close" onclick="closeLoadModal()">×</button>
+    </div>
+    <div id="autosaveDraftPreview"></div>
+  </div>
+</div>
+
 <script>
 /* ---------------- STATE ---------------- */
 let currentTab = 'editor';
+let autosaveInterval;
+let uploadedImage = null;
 let affiliateCatalog = [
   {name:"Roomba 960 Robot Vacuum", link:"https://amzn.to/roomba960", category: "Smart Home"},
   {name:"Dyson V11 Cordless Vacuum", link:"https://amzn.to/dysonv11", category: "Appliances"},
@@ -1033,6 +1264,237 @@ let affiliateCatalog = [
   {name:"Philips Hue Smart Lights", link:"https://amzn.to/philipshue", category: "Smart Home"},
   {name:"Instant Pot Duo 7-in-1", link:"https://amzn.to/instantpot", category: "Kitchen"},
 ];
+
+/* ---------------- IMAGE UPLOAD ---------------- */
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('imageUpload').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    if (!file.type.startsWith('image/')) {
+      alert('⚠️ Please upload an image file');
+      return;
+    }
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      uploadedImage = {
+        name: file.name,
+        size: file.size,
+        type: file.type,
+        data: e.target.result
+      };
+      
+      displayImagePreview();
+      triggerAutosave();
+    };
+    reader.readAsDataURL(file);
+  });
+});
+
+function displayImagePreview() {
+  const container = document.getElementById('imagePreviewContainer');
+  
+  if (!uploadedImage) {
+    container.innerHTML = '';
+    return;
+  }
+  
+  const sizeKB = (uploadedImage.size / 1024).toFixed(2);
+  
+  container.innerHTML = `
+    <div class="image-preview">
+      <img src="${uploadedImage.data}" alt="Featured image preview">
+      <div class="image-preview-info">
+        <span>${uploadedImage.name} (${sizeKB} KB)</span>
+      </div>
+      <div class="image-preview-actions">
+        <button onclick="insertImageIntoContent()" class="insert-image">📝 Insert into Content</button>
+        <button onclick="removeImage()" class="remove-image">🗑️ Remove</button>
+      </div>
+    </div>
+  `;
+}
+
+function insertImageIntoContent() {
+  const imageMarkdown = `![${uploadedImage.name}](${uploadedImage.data})`;
+  const textarea = content;
+  
+  const start = textarea.selectionStart;
+  const end = textarea.selectionEnd;
+  const text = textarea.value;
+  
+  textarea.value = text.substring(0, start) + imageMarkdown + text.substring(end);
+  textarea.selectionStart = textarea.selectionEnd = start + imageMarkdown.length;
+  textarea.focus();
+  
+  updatePreview();
+  alert('✅ Image inserted into content');
+}
+
+function removeImage() {
+  if (!confirm('Remove the featured image?')) return;
+  uploadedImage = null;
+  displayImagePreview();
+  document.getElementById('imageUpload').value = '';
+  triggerAutosave();
+}
+
+/* ---------------- AUTOSAVE ---------------- */
+function startAutosave() {
+  // Autosave every 30 seconds
+  autosaveInterval = setInterval(() => {
+    saveToAutosave();
+  }, 30000);
+  
+  // Add autosave triggers on input
+  const autoSaveInputs = [
+    document.getElementById('title'),
+    document.getElementById('slug'),
+    document.getElementById('content'),
+    document.getElementById('description'),
+    document.getElementById('tags'),
+    document.getElementById('seoKeywords')
+  ];
+  
+  autoSaveInputs.forEach(input => {
+    if (input) {
+      input.addEventListener('input', () => {
+        clearTimeout(window.autosaveTimeout);
+        window.autosaveTimeout = setTimeout(triggerAutosave, 2000);
+      });
+    }
+  });
+}
+
+function saveToAutosave() {
+  const autosaveData = {
+    title: title.value,
+    slug: slug.value,
+    description: document.getElementById('description').value,
+    content: content.value,
+    tags: document.getElementById('tags').value,
+    keywords: document.getElementById('seoKeywords').value,
+    categories: Array.from(document.querySelectorAll('#categorySelect input:checked')).map(c => c.value),
+    publishDate: document.getElementById('publishDate').value,
+    disclaimer: document.getElementById('disclaimer').checked,
+    image: uploadedImage,
+    timestamp: new Date().toISOString()
+  };
+  
+  localStorage.setItem('autosave', JSON.stringify(autosaveData));
+  updateAutosaveStatus('saved');
+}
+
+function triggerAutosave() {
+  updateAutosaveStatus('saving');
+  setTimeout(() => {
+    saveToAutosave();
+  }, 500);
+}
+
+function updateAutosaveStatus(status) {
+  const icon = document.getElementById('autosaveIcon');
+  const text = document.getElementById('autosaveText');
+  const statusEl = document.getElementById('autosaveStatus');
+  
+  if (!icon || !text) return;
+  
+  statusEl.className = '';
+  
+  if (status === 'saving') {
+    icon.textContent = '💾';
+    text.textContent = 'Saving...';
+    statusEl.classList.add('autosave-saving');
+  } else if (status === 'saved') {
+    icon.textContent = '✅';
+    text.textContent = 'Autosaved';
+    statusEl.classList.add('autosave-saved');
+    
+    setTimeout(() => {
+      icon.textContent = '💾';
+      text.textContent = 'Autosave enabled';
+      statusEl.className = '';
+    }, 2000);
+  }
+}
+
+function loadDraft() {
+  const autosaveData = localStorage.getItem('autosave');
+  
+  if (!autosaveData) {
+    alert('ℹ️ No autosaved draft found');
+    return;
+  }
+  
+  const modal = document.getElementById('loadDraftModal');
+  const preview = document.getElementById('autosaveDraftPreview');
+  
+  const data = JSON.parse(autosaveData);
+  const savedDate = new Date(data.timestamp);
+  
+  preview.innerHTML = `
+    <div class="draft-item" onclick="restoreAutosave()">
+      <div class="draft-item-title">${data.title || 'Untitled Post'}</div>
+      <div class="draft-item-meta">
+        Last saved: ${savedDate.toLocaleString()}<br>
+        ${data.content ? data.content.split(/\s+/).length + ' words' : 'No content'}<br>
+        ${data.categories ? data.categories.length + ' categories' : 'No categories'}
+      </div>
+      <div style="margin-top: 12px;">
+        <button class="btn btn-primary" onclick="restoreAutosave(); event.stopPropagation();">📂 Restore This Draft</button>
+        <button class="btn btn-secondary" onclick="clearAutosave(); event.stopPropagation();" style="margin-left: 8px;">🗑️ Delete</button>
+      </div>
+    </div>
+  `;
+  
+  modal.classList.add('active');
+}
+
+function closeLoadModal() {
+  document.getElementById('loadDraftModal').classList.remove('active');
+}
+
+function restoreAutosave() {
+  const autosaveData = localStorage.getItem('autosave');
+  if (!autosaveData) return;
+  
+  const data = JSON.parse(autosaveData);
+  
+  title.value = data.title || '';
+  slug.value = data.slug || '';
+  document.getElementById('description').value = data.description || '';
+  content.value = data.content || '';
+  document.getElementById('tags').value = data.tags || '';
+  document.getElementById('seoKeywords').value = data.keywords || '';
+  document.getElementById('publishDate').value = data.publishDate || '';
+  document.getElementById('disclaimer').checked = data.disclaimer || false;
+  
+  // Restore image
+  if (data.image) {
+    uploadedImage = data.image;
+    displayImagePreview();
+  }
+  
+  // Restore categories
+  document.querySelectorAll('#categorySelect input[type="checkbox"]').forEach(cb => {
+    cb.checked = data.categories && data.categories.includes(cb.value);
+  });
+  updateSelectedCategories();
+  
+  updatePreview();
+  closeLoadModal();
+  
+  alert('✅ Draft restored successfully!');
+}
+
+function clearAutosave() {
+  if (!confirm('Are you sure you want to delete the autosaved draft?')) return;
+  
+  localStorage.removeItem('autosave');
+  closeLoadModal();
+  alert('✅ Autosaved draft deleted');
+}
 
 /* ---------------- TAB NAVIGATION ---------------- */
 function openTab(tab) {
@@ -1226,6 +1688,7 @@ function runSEO() {
 /* ---------------- PREPARE POST ---------------- */
 function preparePost() {
   const selectedCats = Array.from(document.querySelectorAll('#categorySelect input:checked')).map(c => c.value);
+  const tags = document.getElementById('tags').value.split(',').map(t => t.trim()).filter(Boolean);
   const keys = document.getElementById('seoKeywords').value.split(',').map(k => k.trim()).filter(Boolean);
   const scheduled = document.getElementById('publishDate').value;
   
@@ -1253,8 +1716,11 @@ slug: "${slug.value}"
 scheduled_date: ${scheduledISO}
 categories:
 ${selectedCats.map(c => "  - " + c).join("\n")}
+tags:
+${tags.map(t => "  - " + t).join("\n")}
 keywords:
 ${keys.map(k => "  - " + k).join("\n")}
+${uploadedImage ? `featured_image: "${uploadedImage.name}"` : ''}
 published: false
 ---
 
@@ -1304,10 +1770,12 @@ function exportJSON() {
     slug: slug.value,
     description: document.getElementById('description').value,
     content: content.value,
-    categories: Array.from(document.querySelectorAll('#categorySelect input:checked')).map(c => c.value),
+    tags: document.getElementById('tags').value.split(',').map(t => t.trim()).filter(Boolean),
     keywords: document.getElementById('seoKeywords').value.split(',').map(k => k.trim()).filter(Boolean),
+    categories: Array.from(document.querySelectorAll('#categorySelect input:checked')).map(c => c.value),
     scheduledDate: document.getElementById('publishDate').value,
-    disclaimer: document.getElementById('disclaimer').checked
+    disclaimer: document.getElementById('disclaimer').checked,
+    featuredImage: uploadedImage
   };
   
   const blob = new Blob([JSON.stringify(data, null, 2)], {type: "application/json"});
@@ -1623,11 +2091,18 @@ function clearForm() {
   slug.value = '';
   document.getElementById('description').value = '';
   content.value = '';
+  document.getElementById('tags').value = '';
   document.getElementById('seoKeywords').value = '';
   document.getElementById('publishDate').value = '';
   document.getElementById('disclaimer').checked = false;
   
+  // Clear image
+  uploadedImage = null;
+  displayImagePreview();
+  document.getElementById('imageUpload').value = '';
+  
   document.querySelectorAll('#categorySelect input[type="checkbox"]').forEach(cb => cb.checked = false);
+  updateSelectedCategories();
   
   updatePreview();
   runSEO();
@@ -1662,6 +2137,25 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Show empty state for affiliate search
   document.getElementById('emptyAffiliate').style.display = 'block';
+  
+  // Start autosave
+  startAutosave();
+  
+  // Check for existing autosave
+  const autosaveData = localStorage.getItem('autosave');
+  if (autosaveData) {
+    const data = JSON.parse(autosaveData);
+    const savedDate = new Date(data.timestamp);
+    const minutesAgo = Math.floor((Date.now() - savedDate.getTime()) / 60000);
+    
+    if (minutesAgo < 1440) { // Less than 24 hours
+      setTimeout(() => {
+        if (confirm(`Found an autosaved draft from ${minutesAgo < 60 ? minutesAgo + ' minutes' : Math.floor(minutesAgo / 60) + ' hours'} ago. Would you like to restore it?`)) {
+          loadDraft();
+        }
+      }, 1000);
+    }
+  }
 });
 </script>
 
