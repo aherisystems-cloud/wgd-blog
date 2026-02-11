@@ -4,7 +4,22 @@
 <meta charset="UTF-8">
 <title>Affiliate Blog Scheduler Pro</title>
 
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" 
+ function generateSlug(text) {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/--+/g, "-");
+}
+
+title.addEventListener("input", () => {
+  if(!slug.value){
+    slug.value = generateSlug(title.value);
+  }
+});
+></script>
 
 <style>
 body { font-family: Arial; background:#f4f6f8; margin:0; }
