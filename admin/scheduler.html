@@ -472,8 +472,16 @@ button {
   background: var(--bg-main);
 }
 
+.multi-select label.hidden {
+  display: none;
+}
+
 .category-group {
   margin-bottom: 16px;
+}
+
+.category-group.hidden {
+  display: none;
 }
 
 .category-group-title {
@@ -486,6 +494,74 @@ button {
   font-size: 13px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+}
+
+/* Selected Categories */
+.selected-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+  min-height: 32px;
+}
+
+.selected-categories:empty::before {
+  content: 'No categories selected';
+  color: var(--text-tertiary);
+  font-size: 13px;
+  font-style: italic;
+}
+
+.category-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: var(--primary);
+  color: white;
+  border-radius: 16px;
+  font-size: 13px;
+  font-weight: 500;
+  animation: slideIn 0.2s ease;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.category-badge button {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 0;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background 0.2s ease;
+  font-size: 14px;
+  line-height: 1;
+}
+
+.category-badge button:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.no-results {
+  text-align: center;
+  padding: 20px;
+  color: var(--text-tertiary);
+  font-style: italic;
 }
 
 /* Final Post */
@@ -770,6 +846,8 @@ tbody tr:last-child td {
     <textarea id="description" placeholder="Meta Description (150-160 characters recommended)" rows="3"></textarea>
     
     <h4>Categories</h4>
+    <input type="text" id="categorySearch" placeholder="🔍 Search categories..." style="margin-bottom: 12px;">
+    <div class="selected-categories" id="selectedCategories"></div>
     <div id="categorySelect" class="multi-select"></div>
     
     <h4>SEO Keywords</h4>
@@ -1438,6 +1516,7 @@ function initializeCategories() {
   Object.keys(categoriesList).forEach(group => {
     const groupDiv = document.createElement('div');
     groupDiv.className = 'category-group';
+    groupDiv.dataset.group = group;
     
     const groupTitle = document.createElement('div');
     groupTitle.className = 'category-group-title';
@@ -1446,10 +1525,16 @@ function initializeCategories() {
     
     categoriesList[group].forEach(cat => {
       const label = document.createElement('label');
+      label.dataset.category = cat.toLowerCase();
+      label.dataset.group = group.toLowerCase();
+      
       const checkbox = document.createElement('input');
       checkbox.type = 'checkbox';
       checkbox.value = cat;
       checkbox.id = 'cat_' + cat.replace(/\s+/g, '_');
+      
+      // Add change event listener
+      checkbox.addEventListener('change', updateSelectedCategories);
       
       label.appendChild(checkbox);
       label.appendChild(document.createTextNode(' ' + cat));
@@ -1457,6 +1542,76 @@ function initializeCategories() {
     });
     
     categorySelectEl.appendChild(groupDiv);
+  });
+  
+  // Add search functionality
+  const searchInput = document.getElementById('categorySearch');
+  searchInput.addEventListener('input', filterCategories);
+}
+
+function filterCategories() {
+  const searchTerm = document.getElementById('categorySearch').value.toLowerCase().trim();
+  const groups = document.querySelectorAll('.category-group');
+  
+  if (!searchTerm) {
+    // Show all
+    groups.forEach(group => {
+      group.classList.remove('hidden');
+      group.querySelectorAll('label').forEach(label => {
+        label.classList.remove('hidden');
+      });
+    });
+    return;
+  }
+  
+  groups.forEach(group => {
+    let hasVisibleItems = false;
+    
+    group.querySelectorAll('label').forEach(label => {
+      const categoryName = label.dataset.category;
+      const groupName = label.dataset.group;
+      
+      if (categoryName.includes(searchTerm) || groupName.includes(searchTerm)) {
+        label.classList.remove('hidden');
+        hasVisibleItems = true;
+      } else {
+        label.classList.add('hidden');
+      }
+    });
+    
+    // Hide group if no items match
+    if (hasVisibleItems) {
+      group.classList.remove('hidden');
+    } else {
+      group.classList.add('hidden');
+    }
+  });
+}
+
+function updateSelectedCategories() {
+  const selectedContainer = document.getElementById('selectedCategories');
+  const selectedCheckboxes = document.querySelectorAll('#categorySelect input[type="checkbox"]:checked');
+  
+  selectedContainer.innerHTML = '';
+  
+  selectedCheckboxes.forEach(checkbox => {
+    const badge = document.createElement('div');
+    badge.className = 'category-badge';
+    
+    const text = document.createElement('span');
+    text.textContent = checkbox.value;
+    
+    const removeBtn = document.createElement('button');
+    removeBtn.innerHTML = '×';
+    removeBtn.title = 'Remove category';
+    removeBtn.onclick = () => {
+      checkbox.checked = false;
+      updateSelectedCategories();
+    };
+    
+    badge.appendChild(text);
+    badge.appendChild(removeBtn);
+    selectedContainer.appendChild(badge);
   });
 }
 
