@@ -155,9 +155,23 @@ published: false
 
 
 function saveDraft(){
- if(!finalPost.innerText){ alert("Prepare post first"); return; }
- let filename = `drafts/${slug.value}.md`;
- let blob = new Blob([finalPost.innerText],{type:"text/markdown"});
+
+ if(!finalPost.innerText){
+   alert("Prepare post first");
+   return;
+ }
+
+ if(!slug.value){
+   alert("Slug required");
+   return;
+ }
+
+ let filename = `content/posts/drafts/${slug.value}.md`;
+
+ let blob = new Blob([finalPost.innerText],{
+   type:"text/markdown"
+ });
+
  let a=document.createElement("a");
  a.href=URL.createObjectURL(blob);
  a.download=filename;
