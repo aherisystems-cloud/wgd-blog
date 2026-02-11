@@ -1,0 +1,30 @@
+{
+  "name": "wgd-blog-scheduler",
+  "version": "1.0.0",
+  "description": "World-class blog scheduling system with automatic publishing",
+  "scripts": {
+    "generate": "node scripts/generate-index.js && node scripts/generate-posts.js && node scripts/generate-sitemap.js",
+    "publish-scheduled": "node scripts/publish-scheduled.js",
+    "dev": "python -m http.server 8000",
+    "test-publish": "node scripts/publish-scheduled.js"
+  },
+  "keywords": [
+    "blog",
+    "cms",
+    "scheduler",
+    "markdown",
+    "static-site"
+  ],
+  "author": "Wow Glam Decor",
+  "license": "MIT",
+  "dependencies": {
+    "gray-matter": "^4.0.3",
+    "js-yaml": "^4.1.1",
+    "marked": "^12.0.2",
+    "moment-timezone": "^0.5.48"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/wgd-blog"
+  }
+}

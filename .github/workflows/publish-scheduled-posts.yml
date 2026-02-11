@@ -1,0 +1,54 @@
+name: 📅 Publish Scheduled Posts
+
+on:
+  schedule:
+    # Run every hour at minute 5
+    - cron: '5 * * * *'
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: |
+          npm install js-yaml gray-matter moment-timezone
+
+      - name: Check and publish scheduled posts
+        id: publish
+        run: |
+          node scripts/publish-scheduled.js
+        
+      - name: Generate blog content
+        if: steps.publish.outputs.posts_published == 'true'
+        run: |
+          npm install marked
+          node scripts/generate-index.js
+          node scripts/generate-posts.js
+          node scripts/generate-sitemap.js
+
+      - name: Commit and push changes
+        if: steps.publish.outputs.posts_published == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add content/posts/
+          git add posts/*.html
+          git add content/posts/index.json
+          git add sitemap.xml
+          git commit -m "🚀 Auto-publish scheduled posts [skip ci]" || echo "No changes"
+          git push
