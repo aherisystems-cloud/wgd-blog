@@ -7,79 +7,19 @@
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
 <style>
-body {
-  font-family: Arial, sans-serif;
-  background:#f4f6f8;
-  margin:0;
-}
-
-header {
-  background:#111;
-  color:white;
-  padding:15px;
-  text-align:center;
-}
-
-nav {
-  display:flex;
-  background:#222;
-}
-
-nav button {
-  flex:1;
-  padding:12px;
-  background:none;
-  color:white;
-  border:none;
-  cursor:pointer;
-}
-
-nav button:hover {
-  background:#444;
-}
-
-section {
-  display:none;
-  padding:20px;
-}
-
-.active {
-  display:block;
-}
-
-textarea,input,select {
-  width:100%;
-  padding:8px;
-  margin:5px 0;
-}
-
-.editor {
-  display:flex;
-  gap:15px;
-}
-
-.editor textarea {
-  height:500px;
-}
-
-.preview {
-  background:white;
-  padding:15px;
-  height:500px;
-  overflow:auto;
-}
-
-.panel {
-  background:white;
-  padding:15px;
-  margin-bottom:15px;
-  border-radius:5px;
-}
-
-.score {
-  font-size:22px;
-  font-weight:bold;
-}
+body { font-family: Arial; background:#f4f6f8; margin:0; }
+header { background:#111; color:#fff; padding:15px; text-align:center; }
+nav { display:flex; background:#222; }
+nav button { flex:1; padding:12px; color:#fff; background:none; border:none; cursor:pointer; }
+nav button:hover { background:#444; }
+section { display:none; padding:20px; }
+.active { display:block; }
+textarea,input { width:100%; padding:8px; margin:6px 0; }
+.editor { display:flex; gap:15px; }
+.editor textarea { height:480px; }
+.preview { background:#fff; padding:15px; height:480px; overflow:auto; }
+.panel { background:#fff; padding:15px; margin-bottom:15px; border-radius:5px; }
+.score { font-size:22px; font-weight:bold; }
 </style>
 </head>
 
@@ -92,350 +32,120 @@ textarea,input,select {
 <nav>
 <button onclick="openTab('editor')">Editor</button>
 <button onclick="openTab('seo')">SEO</button>
-<button onclick="openTab('templates')">Templates</button>
-<button onclick="openTab('tables')">Tables</button>
-<button onclick="openTab('keywords')">Keywords</button>
 <button onclick="openTab('schedule')">Schedule</button>
 <button onclick="openTab('deploy')">Deploy</button>
 </nav>
 
-<!-- EDITOR -->
 <section id="editor" class="active">
-
 <div class="panel">
 <h3>Post Metadata</h3>
 
 <input id="title" placeholder="Post Title">
-<input id="slug" placeholder="Slug (url)">
+<input id="slug" placeholder="Slug (best-robot-vacuum)">
 <input id="description" placeholder="Meta Description">
 
+<input id="categories" placeholder="Categories (comma separated)">
+<input id="tags" placeholder="Tags (comma separated)">
+<input id="seoKeywords" placeholder="SEO Keywords (comma separated)">
+
 <label>
-<input type="checkbox" id="disclaimer">
- Add FTC Disclaimer
+<input type="checkbox" id="disclaimer"> Add FTC Disclaimer
 </label>
 </div>
 
 <div class="editor">
-
-<textarea id="content" placeholder="Paste Claude content here..."></textarea>
-
+<textarea id="content" placeholder="Paste AI content here..."></textarea>
 <div class="preview" id="preview"></div>
-
 </div>
-
 </section>
 
-<!-- SEO -->
 <section id="seo">
-
 <div class="panel">
 <h3>SEO Score</h3>
 <div class="score" id="seoScore">0%</div>
 <ul id="seoList"></ul>
 </div>
-
 </section>
 
-<!-- TEMPLATES -->
-<section id="templates">
-
-<div class="panel">
-<h3>Templates</h3>
-
-<button onclick="loadTemplate('review')">Review</button>
-<button onclick="loadTemplate('comparison')">Comparison</button>
-<button onclick="loadTemplate('roundup')">Roundup</button>
-<button onclick="loadTemplate('guide')">Guide</button>
-
-</div>
-
-</section>
-
-<!-- TABLES -->
-<section id="tables">
-
-<div class="panel">
-<h3>Comparison Table Builder</h3>
-
-<textarea id="tableInput" placeholder="Product | Price | Rating | Link"></textarea>
-
-<button onclick="generateTable()">Generate</button>
-
-</div>
-
-</section>
-
-<!-- KEYWORDS -->
-<section id="keywords">
-
-<div class="panel">
-<h3>Keyword Tracker</h3>
-
-<input id="keyword">
-<button onclick="addKeyword()">Add</button>
-
-<ul id="keywordList"></ul>
-
-</div>
-
-</section>
-
-<!-- SCHEDULE -->
 <section id="schedule">
-
 <div class="panel">
-
 <h3>Scheduler</h3>
-
 <input type="datetime-local" id="publishDate">
-
 <button onclick="preparePost()">Prepare Post</button>
-
 <pre id="finalPost"></pre>
-
 </div>
-
 </section>
 
-<!-- DEPLOY -->
 <section id="deploy">
-
 <div class="panel">
-
-<h3>GitHub Deploy</h3>
-
-<input id="repo" placeholder="username/repo">
-<input id="branch" placeholder="main">
-<input id="token" placeholder="GitHub Token">
-
-<input id="path" placeholder="posts/my-post.md">
-
-<button onclick="pushGitHub()">Push Live</button>
-
-<div id="deployStatus"></div>
-
+<h3>Local Save (GitHub Desktop)</h3>
+<button onclick="saveDraft()">💾 Save to drafts/</button>
 </div>
-
 </section>
 
 <script>
-
 function openTab(tab){
  document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
  document.getElementById(tab).classList.add('active');
 }
 
 const content = document.getElementById('content');
-
 content.addEventListener('input',()=>{
  document.getElementById('preview').innerHTML = marked.parse(content.value);
  runSEO();
 });
 
-/* ---------- TEMPLATES ---------- */
-
-const templates = {
-
-review:`## Overview
-
-## Features
-
-## Pros
-
-## Cons
-
-## Verdict`,
-
-comparison:`## Comparison
-
-| Product | Price | Rating | Link |
-|---------|-------|--------|------|`,
-
-roundup:`## Top Picks
-
-### #1
-
-### #2
-
-### #3`,
-
-guide:`## Introduction
-
-## Step 1
-
-## Step 2
-
-## Conclusion`
-
-};
-
-function loadTemplate(t){
- content.value = templates[t];
-}
-
-/* ---------- SEO ---------- */
-
 function runSEO(){
+ let score=0, report=[];
+ let text=content.value;
 
- let text = content.value;
- let score = 0;
- let report = [];
+ if(text.length>800){score+=20;report.push("✓ Length OK")} else report.push("✗ Too short");
+ if(text.includes("##")){score+=20;report.push("✓ Headings")} else report.push("✗ No headings");
+ if(text.match(/\[.*?\]\(.*?\)/)){score+=20;report.push("✓ Links")} else report.push("✗ No links");
+ if(text.includes("![")){score+=20;report.push("✓ Images")} else report.push("✗ No images");
+ if(title.value.length>20){score+=20;report.push("✓ Title length")} else report.push("✗ Short title");
 
- if(text.length > 800){
-  score+=20; report.push("✓ Good length");
- } else report.push("✗ Too short");
-
- if(text.includes("##")){
-  score+=20; report.push("✓ Headings");
- } else report.push("✗ No headings");
-
- if(text.match(/\[.*?\]\(.*?\)/)){
-  score+=20; report.push("✓ Links");
- } else report.push("✗ No links");
-
- if(text.includes("![")){
-  score+=20; report.push("✓ Images");
- } else report.push("✗ No images");
-
- if(document.getElementById('title').value.length > 20){
-  score+=20; report.push("✓ Title OK");
- } else report.push("✗ Short title");
-
- document.getElementById('seoScore').innerText = score+"%";
-
- let ul = document.getElementById('seoList');
- ul.innerHTML="";
-
- report.forEach(r=>{
-  let li=document.createElement('li');
-  li.innerText=r;
-  ul.appendChild(li);
- });
-
+ seoScore.innerText=score+"%";
+ seoList.innerHTML="";
+ report.forEach(r=>{let li=document.createElement("li");li.innerText=r;seoList.appendChild(li);});
 }
-
-/* ---------- KEYWORDS ---------- */
-
-let keywords=[];
-
-function addKeyword(){
-
- let k = document.getElementById('keyword').value;
-
- if(!k) return;
-
- keywords.push(k);
-
- renderKeywords();
-}
-
-function renderKeywords(){
-
- let ul=document.getElementById('keywordList');
- ul.innerHTML="";
-
- keywords.forEach(k=>{
-  let li=document.createElement('li');
-  li.innerText=k;
-  ul.appendChild(li);
- });
-
-}
-
-/* ---------- TABLE ---------- */
-
-function generateTable(){
-
- let input = document.getElementById('tableInput').value;
-
- let rows = input.split("\n");
-
- let md="| Product | Price | Rating | Link |\n";
- md+="|---------|-------|--------|------|\n";
-
- rows.forEach(r=>{
-  let c=r.split("|");
-  if(c.length>=4){
-   md+=`| ${c[0]} | ${c[1]} | ${c[2]} | ${c[3]} |\n`;
-  }
- });
-
- content.value += "\n\n"+md;
-}
-
-/* ---------- PREPARE POST ---------- */
 
 function preparePost(){
+ let cats = categories.value.split(",").map(c=>c.trim());
+ let tagsArr = tags.value.split(",").map(t=>t.trim());
+ let keys = seoKeywords.value.split(",").map(k=>k.trim());
 
- let title = document.getElementById('title').value;
- let slug = document.getElementById('slug').value;
- let desc = document.getElementById('description').value;
+ let frontmatter =
+`---
+title: "${title.value}"
+description: "${description.value}"
+slug: "${slug.value}"
+date: ${publishDate.value}
+categories:
+${cats.map(c=>"  - "+c).join("\n")}
+tags:
+${tagsArr.map(t=>"  - "+t).join("\n")}
+keywords:
+${keys.map(k=>"  - "+k).join("\n")}
+status: draft
+---\n\n`;
 
- let date = document.getElementById('publishDate').value;
+ let disclosure = disclaimer.checked
+ ? "\n---\n⚠️ Disclosure: This post contains affiliate links.\n---\n\n"
+ : "";
 
- let disclaimer="";
-
- if(document.getElementById('disclaimer').checked){
-
- disclaimer = `
----
-⚠️ Disclosure: This post contains affiliate links. We may earn a commission at no cost to you.
----
-`;
-
- }
-
- let frontmatter = `---
-title: "${title}"
-description: "${desc}"
-slug: "${slug}"
-date: "${date}"
-keywords: [${keywords.join(",")}]
----
-
-`;
-
- let final = frontmatter + disclaimer + content.value;
-
- document.getElementById('finalPost').innerText = final;
-
+ finalPost.innerText = frontmatter + disclosure + content.value;
 }
 
-/* ---------- GITHUB PUSH ---------- */
-
-async function pushGitHub(){
-
- let repo=document.getElementById('repo').value;
- let branch=document.getElementById('branch').value;
- let token=document.getElementById('token').value;
- let path=document.getElementById('path').value;
-
- let data=document.getElementById('finalPost').innerText;
-
- let url=`https://api.github.com/repos/${repo}/contents/${path}`;
-
- let encoded=btoa(unescape(encodeURIComponent(data)));
-
- let res=await fetch(url,{
-  method:"PUT",
-  headers:{
-   "Authorization":"token "+token,
-   "Content-Type":"application/json"
-  },
-  body:JSON.stringify({
-   message:"New blog post",
-   content:encoded,
-   branch:branch
-  })
- });
-
- let json=await res.json();
-
- document.getElementById('deployStatus').innerText=
-  json.content ? "✅ Published!" : "❌ Error";
-
+function saveDraft(){
+ if(!finalPost.innerText){ alert("Prepare post first"); return; }
+ let filename = `drafts/${slug.value}.md`;
+ let blob = new Blob([finalPost.innerText],{type:"text/markdown"});
+ let a=document.createElement("a");
+ a.href=URL.createObjectURL(blob);
+ a.download=filename;
+ a.click();
 }
-
 </script>
 
 </body>
