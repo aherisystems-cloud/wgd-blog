@@ -1,485 +1,440 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>📅 Affiliate Blog Scheduler | WowGlamDecor</title>
+<meta charset="UTF-8">
+<title>Affiliate Blog Scheduler Pro</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
 <style>
-
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
-:root {
-  --primary: #7C3AED;
-  --secondary: #EC4899;
-  --success: #10B981;
-  --warning: #F59E0B;
-  --danger: #EF4444;
-  --bg: #F9FAFB;
-  --dark: #111827;
+body {
+  font-family: Arial, sans-serif;
+  background:#f4f6f8;
+  margin:0;
 }
 
-body {
-  font-family: 'Inter', sans-serif;
-  background: linear-gradient(135deg,#667eea,#764ba2);
-  min-height:100vh;
+header {
+  background:#111;
+  color:white;
+  padding:15px;
+  text-align:center;
+}
+
+nav {
+  display:flex;
+  background:#222;
+}
+
+nav button {
+  flex:1;
+  padding:12px;
+  background:none;
+  color:white;
+  border:none;
+  cursor:pointer;
+}
+
+nav button:hover {
+  background:#444;
+}
+
+section {
+  display:none;
   padding:20px;
 }
 
-.app {
-  max-width:1200px;
-  margin:auto;
-  background:white;
-  border-radius:16px;
-  padding:25px;
-  box-shadow:0 20px 40px rgba(0,0,0,0.2);
-}
-
-/* HEADER */
-
-.header {
-  text-align:center;
-  margin-bottom:25px;
-}
-
-.header h1 {
-  font-size:2.2rem;
-  color:var(--dark);
-}
-
-/* TABS */
-
-.tabs {
-  display:flex;
-  gap:10px;
-  margin-bottom:25px;
-  flex-wrap:wrap;
-}
-
-.tab {
-  padding:10px 18px;
-  border:none;
-  background:#E5E7EB;
-  border-radius:8px;
-  cursor:pointer;
-  font-weight:600;
-}
-
-.tab.active {
-  background:var(--primary);
-  color:white;
-}
-
-/* CONTENT */
-
-.tab-content {
-  display:none;
-}
-
-.tab-content.active {
+.active {
   display:block;
 }
 
-/* FORMS */
-
-input, select, textarea {
+textarea,input,select {
   width:100%;
-  padding:10px;
-  margin-bottom:12px;
-  border-radius:6px;
-  border:1px solid #ccc;
+  padding:8px;
+  margin:5px 0;
 }
 
-button.primary {
-  background:var(--primary);
-  color:white;
-  border:none;
-  padding:10px 18px;
-  border-radius:8px;
-  cursor:pointer;
+.editor {
+  display:flex;
+  gap:15px;
 }
 
-button.secondary {
-  background:var(--secondary);
-  color:white;
-  border:none;
-  padding:8px 15px;
-  border-radius:6px;
+.editor textarea {
+  height:500px;
 }
 
-/* TABLE */
-
-table {
-  width:100%;
-  border-collapse:collapse;
-  margin-top:15px;
-}
-
-th,td {
-  padding:10px;
-  border-bottom:1px solid #ddd;
-  text-align:left;
-}
-
-/* WARNINGS */
-
-.warning {
-  background:#FEF3C7;
+.preview {
+  background:white;
   padding:15px;
-  border-radius:8px;
-  margin-bottom:15px;
+  height:500px;
+  overflow:auto;
 }
 
-.success {
-  background:#D1FAE5;
-  padding:12px;
-  border-radius:8px;
+.panel {
+  background:white;
+  padding:15px;
   margin-bottom:15px;
+  border-radius:5px;
 }
 
+.score {
+  font-size:22px;
+  font-weight:bold;
+}
 </style>
 </head>
 
 <body>
 
-<div class="app">
+<header>
+<h2>Affiliate Blog Scheduler Pro</h2>
+</header>
 
-  <!-- HEADER -->
-  <div class="header">
-    <h1>📅 Affiliate Blog Scheduler</h1>
-    <p>Plan Content • Manage Links • Monetize Smarter</p>
-  </div>
+<nav>
+<button onclick="openTab('editor')">Editor</button>
+<button onclick="openTab('seo')">SEO</button>
+<button onclick="openTab('templates')">Templates</button>
+<button onclick="openTab('tables')">Tables</button>
+<button onclick="openTab('keywords')">Keywords</button>
+<button onclick="openTab('schedule')">Schedule</button>
+<button onclick="openTab('deploy')">Deploy</button>
+</nav>
 
-  <!-- TABS -->
-  <div class="tabs">
+<!-- EDITOR -->
+<section id="editor" class="active">
 
-    <button class="tab active" onclick="switchTab('planner')">📝 Planner</button>
+<div class="panel">
+<h3>Post Metadata</h3>
 
-    <button class="tab" onclick="switchTab('calendar')">📆 Calendar</button>
+<input id="title" placeholder="Post Title">
+<input id="slug" placeholder="Slug (url)">
+<input id="description" placeholder="Meta Description">
 
-    <button class="tab" onclick="switchTab('affiliates')">💰 Affiliates</button>
+<label>
+<input type="checkbox" id="disclaimer">
+ Add FTC Disclaimer
+</label>
+</div>
 
-    <button class="tab" onclick="switchTab('stats')">📊 Stats</button>
+<div class="editor">
 
-  </div>
+<textarea id="content" placeholder="Paste Claude content here..."></textarea>
 
-
-  <!-- ================= PLANNER ================= -->
-
-  <div id="planner" class="tab-content active">
-
-    <h2>📝 Content Planner</h2>
-
-    <input id="postTitle" placeholder="Post Title">
-
-    <input id="postKeyword" placeholder="Main Keyword">
-
-    <input id="postDate" type="date">
-
-    <textarea id="postNotes" rows="3" placeholder="Notes / Outline"></textarea>
-
-    <select id="affiliateLinkSelect"></select>
-
-    <button class="primary" onclick="addPost()">Add Post</button>
-
-    <table id="postsTable">
-      <thead>
-        <tr>
-          <th>Title</th>
-          <th>Date</th>
-          <th>Keyword</th>
-          <th>Affiliate</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-
-  </div>
-
-
-  <!-- ================= CALENDAR ================= -->
-
-  <div id="calendar" class="tab-content">
-
-    <h2>📆 Publishing Calendar</h2>
-
-    <div id="calendarList"></div>
-
-  </div>
-
-
-  <!-- ================= AFFILIATES ================= -->
-
-  <div id="affiliates" class="tab-content">
-
-    <h2>💰 Affiliate Manager</h2>
-
-    <div class="warning">
-      ⚠️ Amazon & some networks don't allow cloaking. Use direct links.
-    </div>
-
-    <input id="productName" placeholder="Product Name">
-
-    <input id="affiliateUrl" placeholder="Affiliate URL">
-
-    <select id="network">
-      <option>Amazon</option>
-      <option>Jumia</option>
-      <option>Impact</option>
-      <option>PartnerStack</option>
-      <option>Other</option>
-    </select>
-
-    <label>
-      <input type="checkbox" id="cloakLink"> Cloak Link
-    </label>
-
-    <br><br>
-
-    <button class="primary" onclick="addAffiliate()">Save Link</button>
-
-    <table id="affiliateTable">
-      <thead>
-        <tr>
-          <th>Product</th>
-          <th>Network</th>
-          <th>Link</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-
-  </div>
-
-
-  <!-- ================= STATS ================= -->
-
-  <div id="stats" class="tab-content">
-
-    <h2>📊 Monetization Overview</h2>
-
-    <div class="success" id="statsBox"></div>
-
-  </div>
-
+<div class="preview" id="preview"></div>
 
 </div>
 
+</section>
 
-<!-- ================= SCRIPT ================= -->
+<!-- SEO -->
+<section id="seo">
+
+<div class="panel">
+<h3>SEO Score</h3>
+<div class="score" id="seoScore">0%</div>
+<ul id="seoList"></ul>
+</div>
+
+</section>
+
+<!-- TEMPLATES -->
+<section id="templates">
+
+<div class="panel">
+<h3>Templates</h3>
+
+<button onclick="loadTemplate('review')">Review</button>
+<button onclick="loadTemplate('comparison')">Comparison</button>
+<button onclick="loadTemplate('roundup')">Roundup</button>
+<button onclick="loadTemplate('guide')">Guide</button>
+
+</div>
+
+</section>
+
+<!-- TABLES -->
+<section id="tables">
+
+<div class="panel">
+<h3>Comparison Table Builder</h3>
+
+<textarea id="tableInput" placeholder="Product | Price | Rating | Link"></textarea>
+
+<button onclick="generateTable()">Generate</button>
+
+</div>
+
+</section>
+
+<!-- KEYWORDS -->
+<section id="keywords">
+
+<div class="panel">
+<h3>Keyword Tracker</h3>
+
+<input id="keyword">
+<button onclick="addKeyword()">Add</button>
+
+<ul id="keywordList"></ul>
+
+</div>
+
+</section>
+
+<!-- SCHEDULE -->
+<section id="schedule">
+
+<div class="panel">
+
+<h3>Scheduler</h3>
+
+<input type="datetime-local" id="publishDate">
+
+<button onclick="preparePost()">Prepare Post</button>
+
+<pre id="finalPost"></pre>
+
+</div>
+
+</section>
+
+<!-- DEPLOY -->
+<section id="deploy">
+
+<div class="panel">
+
+<h3>GitHub Deploy</h3>
+
+<input id="repo" placeholder="username/repo">
+<input id="branch" placeholder="main">
+<input id="token" placeholder="GitHub Token">
+
+<input id="path" placeholder="posts/my-post.md">
+
+<button onclick="pushGitHub()">Push Live</button>
+
+<div id="deployStatus"></div>
+
+</div>
+
+</section>
 
 <script>
 
-/* ---------------- TAB SWITCH ---------------- */
+function openTab(tab){
+ document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+ document.getElementById(tab).classList.add('active');
+}
 
-function switchTab(tab) {
+const content = document.getElementById('content');
 
-  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+content.addEventListener('input',()=>{
+ document.getElementById('preview').innerHTML = marked.parse(content.value);
+ runSEO();
+});
 
-  event.target.classList.add('active');
-  document.getElementById(tab).classList.add('active');
+/* ---------- TEMPLATES ---------- */
 
-  if(tab==="calendar") loadCalendar();
-  if(tab==="stats") loadStats();
+const templates = {
+
+review:`## Overview
+
+## Features
+
+## Pros
+
+## Cons
+
+## Verdict`,
+
+comparison:`## Comparison
+
+| Product | Price | Rating | Link |
+|---------|-------|--------|------|`,
+
+roundup:`## Top Picks
+
+### #1
+
+### #2
+
+### #3`,
+
+guide:`## Introduction
+
+## Step 1
+
+## Step 2
+
+## Conclusion`
+
+};
+
+function loadTemplate(t){
+ content.value = templates[t];
+}
+
+/* ---------- SEO ---------- */
+
+function runSEO(){
+
+ let text = content.value;
+ let score = 0;
+ let report = [];
+
+ if(text.length > 800){
+  score+=20; report.push("✓ Good length");
+ } else report.push("✗ Too short");
+
+ if(text.includes("##")){
+  score+=20; report.push("✓ Headings");
+ } else report.push("✗ No headings");
+
+ if(text.match(/\[.*?\]\(.*?\)/)){
+  score+=20; report.push("✓ Links");
+ } else report.push("✗ No links");
+
+ if(text.includes("![")){
+  score+=20; report.push("✓ Images");
+ } else report.push("✗ No images");
+
+ if(document.getElementById('title').value.length > 20){
+  score+=20; report.push("✓ Title OK");
+ } else report.push("✗ Short title");
+
+ document.getElementById('seoScore').innerText = score+"%";
+
+ let ul = document.getElementById('seoList');
+ ul.innerHTML="";
+
+ report.forEach(r=>{
+  let li=document.createElement('li');
+  li.innerText=r;
+  ul.appendChild(li);
+ });
 
 }
 
+/* ---------- KEYWORDS ---------- */
 
-/* ---------------- STORAGE ---------------- */
+let keywords=[];
 
-let posts = JSON.parse(localStorage.getItem("posts")||"[]");
-let affiliates = JSON.parse(localStorage.getItem("affiliates")||"[]");
+function addKeyword(){
 
+ let k = document.getElementById('keyword').value;
 
-/* ---------------- POSTS ---------------- */
+ if(!k) return;
 
-function addPost(){
+ keywords.push(k);
 
-  let post = {
-    title: postTitle.value,
-    keyword: postKeyword.value,
-    date: postDate.value,
-    notes: postNotes.value,
-    affiliate: affiliateLinkSelect.value
-  };
-
-  if(!post.title || !post.date) return alert("Missing fields");
-
-  posts.push(post);
-
-  localStorage.setItem("posts",JSON.stringify(posts));
-
-  renderPosts();
-
-  postTitle.value="";
-  postKeyword.value="";
-  postNotes.value="";
+ renderKeywords();
 }
 
+function renderKeywords(){
 
-function renderPosts(){
+ let ul=document.getElementById('keywordList');
+ ul.innerHTML="";
 
-  let tbody = document.querySelector("#postsTable tbody");
-
-  tbody.innerHTML="";
-
-  posts.forEach(p=>{
-
-    tbody.innerHTML+=`
-
-      <tr>
-        <td>${p.title}</td>
-        <td>${p.date}</td>
-        <td>${p.keyword}</td>
-        <td>${p.affiliate||"-"}</td>
-      </tr>
-
-    `;
-
-  });
+ keywords.forEach(k=>{
+  let li=document.createElement('li');
+  li.innerText=k;
+  ul.appendChild(li);
+ });
 
 }
 
+/* ---------- TABLE ---------- */
 
-/* ---------------- AFFILIATES ---------------- */
+function generateTable(){
 
-function addAffiliate(){
+ let input = document.getElementById('tableInput').value;
 
-  let networkVal = network.value.toLowerCase();
+ let rows = input.split("\n");
 
-  let cloak = cloakLink.checked && !networkVal.includes("amazon");
+ let md="| Product | Price | Rating | Link |\n";
+ md+="|---------|-------|--------|------|\n";
 
-  let link = {
-    id:Date.now(),
-    name:productName.value,
-    url:affiliateUrl.value,
-    network:network.value,
-    cloak
-  };
+ rows.forEach(r=>{
+  let c=r.split("|");
+  if(c.length>=4){
+   md+=`| ${c[0]} | ${c[1]} | ${c[2]} | ${c[3]} |\n`;
+  }
+ });
 
-  if(!link.name || !link.url) return alert("Fill all fields");
+ content.value += "\n\n"+md;
+}
 
-  affiliates.push(link);
+/* ---------- PREPARE POST ---------- */
 
-  localStorage.setItem("affiliates",JSON.stringify(affiliates));
+function preparePost(){
 
-  renderAffiliates();
-  loadAffiliateSelect();
+ let title = document.getElementById('title').value;
+ let slug = document.getElementById('slug').value;
+ let desc = document.getElementById('description').value;
 
-  productName.value="";
-  affiliateUrl.value="";
-  cloakLink.checked=false;
+ let date = document.getElementById('publishDate').value;
+
+ let disclaimer="";
+
+ if(document.getElementById('disclaimer').checked){
+
+ disclaimer = `
+---
+⚠️ Disclosure: This post contains affiliate links. We may earn a commission at no cost to you.
+---
+`;
+
+ }
+
+ let frontmatter = `---
+title: "${title}"
+description: "${desc}"
+slug: "${slug}"
+date: "${date}"
+keywords: [${keywords.join(",")}]
+---
+
+`;
+
+ let final = frontmatter + disclaimer + content.value;
+
+ document.getElementById('finalPost').innerText = final;
 
 }
 
+/* ---------- GITHUB PUSH ---------- */
 
-function renderAffiliates(){
+async function pushGitHub(){
 
-  let tbody = document.querySelector("#affiliateTable tbody");
+ let repo=document.getElementById('repo').value;
+ let branch=document.getElementById('branch').value;
+ let token=document.getElementById('token').value;
+ let path=document.getElementById('path').value;
 
-  tbody.innerHTML="";
+ let data=document.getElementById('finalPost').innerText;
 
-  affiliates.forEach(a=>{
+ let url=`https://api.github.com/repos/${repo}/contents/${path}`;
 
-    tbody.innerHTML+=`
+ let encoded=btoa(unescape(encodeURIComponent(data)));
 
-      <tr>
-        <td>${a.name}</td>
-        <td>${a.network}</td>
-        <td><a href="${a.url}" target="_blank">Visit</a></td>
-        <td><button onclick="deleteAffiliate(${a.id})">❌</button></td>
-      </tr>
+ let res=await fetch(url,{
+  method:"PUT",
+  headers:{
+   "Authorization":"token "+token,
+   "Content-Type":"application/json"
+  },
+  body:JSON.stringify({
+   message:"New blog post",
+   content:encoded,
+   branch:branch
+  })
+ });
 
-    `;
+ let json=await res.json();
 
-  });
-
-}
-
-
-function deleteAffiliate(id){
-
-  affiliates = affiliates.filter(a=>a.id!==id);
-
-  localStorage.setItem("affiliates",JSON.stringify(affiliates));
-
-  renderAffiliates();
-  loadAffiliateSelect();
-
-}
-
-
-/* ---------------- DROPDOWN ---------------- */
-
-function loadAffiliateSelect(){
-
-  affiliateLinkSelect.innerHTML="<option value=''>-- Select Affiliate --</option>";
-
-  affiliates.forEach(a=>{
-
-    affiliateLinkSelect.innerHTML+=`
-
-      <option value="${a.name}">
-        ${a.name} (${a.network})
-      </option>
-
-    `;
-
-  });
+ document.getElementById('deployStatus').innerText=
+  json.content ? "✅ Published!" : "❌ Error";
 
 }
-
-
-/* ---------------- CALENDAR ---------------- */
-
-function loadCalendar(){
-
-  let div=document.getElementById("calendarList");
-
-  div.innerHTML="";
-
-  posts
-    .sort((a,b)=>new Date(a.date)-new Date(b.date))
-    .forEach(p=>{
-
-      div.innerHTML+=`
-
-        <p>📌 <b>${p.date}</b> — ${p.title}</p>
-
-      `;
-
-    });
-
-}
-
-
-/* ---------------- STATS ---------------- */
-
-function loadStats(){
-
-  let withAffiliate = posts.filter(p=>p.affiliate).length;
-
-  let stats = `
-    <b>Total Posts:</b> ${posts.length}<br>
-    <b>Monetized Posts:</b> ${withAffiliate}<br>
-    <b>Affiliate Links:</b> ${affiliates.length}<br>
-    <b>Revenue Potential:</b> ${withAffiliate*500} KES+
-  `;
-
-  statsBox.innerHTML = stats;
-
-}
-
-
-/* ---------------- INIT ---------------- */
-
-renderPosts();
-renderAffiliates();
-loadAffiliateSelect();
 
 </script>
 
