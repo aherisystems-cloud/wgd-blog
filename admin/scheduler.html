@@ -3,23 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Affiliate Blog Scheduler Pro</title>
-
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" 
- function generateSlug(text) {
-  return text
-    .toLowerCase()
-    .trim()
-    .replace(/[^\w\s-]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/--+/g, "-");
-}
-
-title.addEventListener("input", () => {
-  if(!slug.value){
-    slug.value = generateSlug(title.value);
-  }
-});
-></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
 <style>
 body { font-family: Arial; background:#f4f6f8; margin:0; }
@@ -29,12 +13,14 @@ nav button { flex:1; padding:12px; color:#fff; background:none; border:none; cur
 nav button:hover { background:#444; }
 section { display:none; padding:20px; }
 .active { display:block; }
-textarea,input { width:100%; padding:8px; margin:6px 0; }
+textarea,input,select { width:100%; padding:8px; margin:6px 0; }
 .editor { display:flex; gap:15px; }
 .editor textarea { height:480px; }
 .preview { background:#fff; padding:15px; height:480px; overflow:auto; }
 .panel { background:#fff; padding:15px; margin-bottom:15px; border-radius:5px; }
 .score { font-size:22px; font-weight:bold; }
+.multi-select { height:150px; overflow:auto; border:1px solid #ccc; padding:5px; background:white; }
+.multi-select label { display:block; margin:2px 0; cursor:pointer; }
 </style>
 </head>
 
@@ -48,9 +34,11 @@ textarea,input { width:100%; padding:8px; margin:6px 0; }
 <button onclick="openTab('editor')">Editor</button>
 <button onclick="openTab('seo')">SEO</button>
 <button onclick="openTab('schedule')">Schedule</button>
-<button onclick="openTab('deploy')">Deploy</button>
+<button onclick="openTab('deploy')">Drafts / Save</button>
+<button onclick="openTab('affiliate')">Affiliate Links</button>
 </nav>
 
+<!-- EDITOR -->
 <section id="editor" class="active">
 <div class="panel">
 <h3>Post Metadata</h3>
@@ -59,13 +47,14 @@ textarea,input { width:100%; padding:8px; margin:6px 0; }
 <input id="slug" placeholder="Slug (best-robot-vacuum)">
 <input id="description" placeholder="Meta Description">
 
-<input id="categories" placeholder="Categories (comma separated)">
-<input id="tags" placeholder="Tags (comma separated)">
-<input id="seoKeywords" placeholder="SEO Keywords (comma separated)">
+<h4>Categories</h4>
+<div id="categorySelect" class="multi-select"></div>
 
-<label>
-<input type="checkbox" id="disclaimer"> Add FTC Disclaimer
-</label>
+<h4>Tags / Style / Intent</h4>
+<div id="tagSelect" class="multi-select"></div>
+
+<input id="seoKeywords" placeholder="SEO Keywords (comma separated)">
+<label><input type="checkbox" id="disclaimer"> Add FTC Disclaimer</label>
 </div>
 
 <div class="editor">
@@ -74,6 +63,7 @@ textarea,input { width:100%; padding:8px; margin:6px 0; }
 </div>
 </section>
 
+<!-- SEO -->
 <section id="seo">
 <div class="panel">
 <h3>SEO Score</h3>
@@ -82,6 +72,7 @@ textarea,input { width:100%; padding:8px; margin:6px 0; }
 </div>
 </section>
 
+<!-- SCHEDULE -->
 <section id="schedule">
 <div class="panel">
 <h3>Scheduler</h3>
@@ -91,107 +82,167 @@ textarea,input { width:100%; padding:8px; margin:6px 0; }
 </div>
 </section>
 
+<!-- DEPLOY / DRAFTS -->
 <section id="deploy">
 <div class="panel">
 <h3>Local Save (GitHub Desktop)</h3>
 <button onclick="saveDraft()">💾 Save to drafts/</button>
+<h4>Draft Status</h4>
+<table border="1" width="100%">
+<thead><tr><th>Slug</th><th>Title</th><th>Scheduled</th><th>Status</th></tr></thead>
+<tbody id="draftList"></tbody>
+</table>
+</div>
+</section>
+
+<!-- AFFILIATE LINKS -->
+<section id="affiliate">
+<div class="panel">
+<h3>Affiliate Links Catalog</h3>
+<input type="text" id="affiliateSearch" placeholder="Search link name or product">
+<button onclick="searchAffiliate()">Search</button>
+<ul id="affiliateResults"></ul>
 </div>
 </section>
 
 <script>
+/* ---------------- TAB ---------------- */
 function openTab(tab){
  document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
  document.getElementById(tab).classList.add('active');
 }
 
+/* ---------------- SLUG ---------------- */
+function generateSlug(text){
+ return text.toLowerCase().trim()
+   .replace(/[^\w\s-]/g,"")
+   .replace(/\s+/g,"-")
+   .replace(/--+/g,"-");
+}
+title.addEventListener('input',()=>{ if(!slug.value) slug.value=generateSlug(title.value); });
+
+/* ---------------- SEO ---------------- */
 const content = document.getElementById('content');
-content.addEventListener('input',()=>{
- document.getElementById('preview').innerHTML = marked.parse(content.value);
- runSEO();
-});
+content.addEventListener('input',()=>{ document.getElementById('preview').innerHTML=marked.parse(content.value); runSEO(); });
 
 function runSEO(){
- let score=0, report=[];
- let text=content.value;
-
- if(text.length>800){score+=20;report.push("✓ Length OK")} else report.push("✗ Too short");
- if(text.includes("##")){score+=20;report.push("✓ Headings")} else report.push("✗ No headings");
- if(text.match(/\[.*?\]\(.*?\)/)){score+=20;report.push("✓ Links")} else report.push("✗ No links");
- if(text.includes("![")){score+=20;report.push("✓ Images")} else report.push("✗ No images");
- if(title.value.length>20){score+=20;report.push("✓ Title length")} else report.push("✗ Short title");
-
+ let score=0, report=[]; let text=content.value;
+ if(text.length>800){score+=20;report.push("✓ Length OK")}else report.push("✗ Too short");
+ if(text.includes("##")){score+=20;report.push("✓ Headings")}else report.push("✗ No headings");
+ if(text.match(/\[.*?\]\(.*?\)/)){score+=20;report.push("✓ Links")}else report.push("✗ No links");
+ if(text.includes("![")){score+=20;report.push("✓ Images")}else report.push("✗ No images");
+ if(title.value.length>20){score+=20;report.push("✓ Title length")}else report.push("✗ Short title");
  seoScore.innerText=score+"%";
- seoList.innerHTML="";
- report.forEach(r=>{let li=document.createElement("li");li.innerText=r;seoList.appendChild(li);});
+ seoList.innerHTML=""; report.forEach(r=>{let li=document.createElement("li");li.innerText=r;seoList.appendChild(li);});
 }
 
+/* ---------------- PREPARE POST ---------------- */
 function preparePost(){
+ const selectedCats = Array.from(document.querySelectorAll('#categorySelect input:checked')).map(c=>c.value);
+ const selectedTags = Array.from(document.querySelectorAll('#tagSelect input:checked')).map(t=>t.value);
+ const keys = seoKeywords.value.split(",").map(k=>k.trim()).filter(Boolean);
+ const scheduled = publishDate.value;
+ if(!scheduled){ alert("Please set publish date"); return; }
+ const scheduledISO = new Date(scheduled).toISOString();
 
- let cats = categories.value.split(",").map(c=>c.trim()).filter(Boolean);
- let tagsArr = tags.value.split(",").map(t=>t.trim()).filter(Boolean);
- let keys = seoKeywords.value.split(",").map(k=>k.trim()).filter(Boolean);
-
- let scheduled = publishDate.value;
-
- if(!scheduled){
-   alert("Please set publish date");
-   return;
- }
-
- // Convert to ISO UTC
- let scheduledISO = new Date(scheduled).toISOString();
-
- let frontmatter =
-`---
+ let frontmatter = `---
 title: "${title.value}"
 description: "${description.value}"
 slug: "${slug.value}"
-
 scheduled_date: ${scheduledISO}
-
-categories:
-${cats.map(c=>"  - "+c).join("\n")}
-
-tags:
-${tagsArr.map(t=>"  - "+t).join("\n")}
-
-keywords:
-${keys.map(k=>"  - "+k).join("\n")}
-
+categories:\n${selectedCats.map(c=>"  - "+c).join("\n")}
+tags:\n${selectedTags.map(t=>"  - "+t).join("\n")}
+keywords:\n${keys.map(k=>"  - "+k).join("\n")}
 published: false
----\n\n`;
+---
 
- let disclosure = disclaimer.checked
- ? "\n---\n⚠️ Disclosure: This post contains affiliate links.\n---\n\n"
- : "";
-
+`;
+ let disclosure = disclaimer.checked ? "\n---\n⚠️ Disclosure: This post contains affiliate links.\n---\n\n" : "";
  finalPost.innerText = frontmatter + disclosure + content.value;
+ updateDraftStatus();
 }
 
-
+/* ---------------- SAVE DRAFT ---------------- */
 function saveDraft(){
-
- if(!finalPost.innerText){
-   alert("Prepare post first");
-   return;
- }
-
- if(!slug.value){
-   alert("Slug required");
-   return;
- }
-
- let filename = `content/posts/drafts/${slug.value}.md`;
-
- let blob = new Blob([finalPost.innerText],{
-   type:"text/markdown"
- });
-
- let a=document.createElement("a");
- a.href=URL.createObjectURL(blob);
- a.download=filename;
- a.click();
+ if(!finalPost.innerText){ alert("Prepare post first"); return; }
+ if(!slug.value){ alert("Slug required"); return; }
+ const filename = `content/posts/drafts/${slug.value}.md`;
+ const blob = new Blob([finalPost.innerText],{type:"text/markdown"});
+ const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=filename; a.click();
+ updateDraftStatus();
 }
+
+/* ---------------- DRAFT STATUS TRACKER ---------------- */
+function updateDraftStatus(){
+ const draftListEl = document.getElementById('draftList');
+ draftListEl.innerHTML="";
+ let drafts = JSON.parse(localStorage.getItem('drafts')||'[]');
+ if(slug.value && !drafts.includes(slug.value)) drafts.push(slug.value);
+ localStorage.setItem('drafts', JSON.stringify(drafts));
+ drafts.forEach(s=>{
+   let tr=document.createElement('tr');
+   const scheduled = publishDate.value || '—';
+   const status = scheduled ? (new Date(scheduled)<=new Date() ? '✅ Ready' : '⏳ Scheduled') : '📝 Draft';
+   tr.innerHTML=`<td>${s}</td><td>${title.value}</td><td>${scheduled}</td><td>${status}</td>`;
+   draftListEl.appendChild(tr);
+ });
+}
+
+/* ---------------- CATEGORIES & TAGS ---------------- */
+const categoriesList = [
+"Core Rooms:Living Room","Core Rooms:Bedroom","Core Rooms:Dining Room","Core Rooms:Home Office",
+"Core Rooms:Kitchen","Core Rooms:Bathroom","Core Rooms:Entryway & Hallway","Core Rooms:Laundry Room",
+"Core Rooms:Kids Room & Nursery","Core Rooms:Outdoor & Patio","Core Rooms:Balcony & Small Spaces",
+"Furniture Types:Sofas & Seating","Furniture Types:Beds & Bed Frames","Furniture Types:Mattresses",
+"Furniture Types:Tables & Desks","Furniture Types:Chairs & Stools","Furniture Types:Wardrobes & Closets",
+"Furniture Types:TV Stands & Media Units","Furniture Types:Shelving & Bookcases","Furniture Types:Storage Furniture",
+"Decor:Wall Decor","Decor:Lighting & Lamps","Decor:Rugs & Carpets","Decor:Curtains & Window Treatments",
+"Decor:Mirrors","Decor:Cushions & Throws","Decor:Vases & Decorative Accents","Decor:Clocks","Decor:Plants & Planters",
+"Storage & Organization:Storage & Organization","Storage & Organization:Closet Organization","Storage & Organization:Shoe Storage",
+"Storage & Organization:Kitchen Storage Solutions","Storage & Organization:Bathroom Storage Solutions","Storage & Organization:Small Space Storage",
+"Style-Based:Modern Style","Style-Based:Minimalist Style","Style-Based:Scandinavian Style","Style-Based:Luxury & Glam Decor",
+"Style-Based:Boho & Rustic Decor","Style-Based:Traditional & Classic","Style-Based:Industrial Style",
+"Buying Intent / Money Pages:Budget Furniture","Buying Intent / Money Pages:Luxury Furniture",
+"Buying Intent / Money Pages:Space-Saving Furniture","Buying Intent / Money Pages:Multifunctional Furniture",
+"Buying Intent / Money Pages:Furniture Buying Guides","Buying Intent / Money Pages:Best Of Lists",
+"Buying Intent / Money Pages:Product Reviews","Buying Intent / Money Pages:Comparisons",
+"DIY & Care:DIY & Home Improvement","DIY & Care:Furniture Care & Maintenance","DIY & Care:Cleaning & Care Tips","DIY & Care:Furniture Assembly Tips",
+"Seasonal & Lifestyle:Seasonal Decor","Seasonal & Lifestyle:Holiday Decor","Seasonal & Lifestyle:Home Makeovers",
+"Seasonal & Lifestyle:Rental-Friendly Decor","Gifts (High-Converting):Home Gift Ideas","Gifts (High-Converting):Housewarming Gifts",
+"Gifts (High-Converting):Luxury Home Gifts","Gifts (High-Converting):Budget Gift Ideas"
+];
+
+const tagSelectEl = document.getElementById('tagSelect');
+const categorySelectEl = document.getElementById('categorySelect');
+
+categoriesList.forEach(c=>{
+ let [group, name] = c.split(":");
+ let checkbox = document.createElement('input'); checkbox.type='checkbox'; checkbox.value=name; checkbox.id='cat_'+name;
+ let label = document.createElement('label'); label.appendChild(checkbox); label.appendChild(document.createTextNode(" "+name)); 
+ if(group.includes("Rooms")||group.includes("Furniture Types")||group.includes("Decor")||group.includes("Storage")||group.includes("Style")||group.includes("Buying Intent")||group.includes("DIY")||group.includes("Seasonal")||group.includes("Gifts")) categorySelectEl.appendChild(label); 
+});
+
+/* ---------------- AFFILIATE LINKS ---------------- */
+const affiliateCatalog = [
+ {name:"Roomba 960", link:"https://example.com/roomba?affid=123"},
+ {name:"Dyson V11", link:"https://example.com/dyson?affid=123"},
+ {name:"Ikea Kallax", link:"https://example.com/kallax?affid=123"}
+];
+
+function searchAffiliate(){
+ const query = document.getElementById('affiliateSearch').value.toLowerCase();
+ const resultsEl = document.getElementById('affiliateResults');
+ resultsEl.innerHTML="";
+ affiliateCatalog.filter(a=>a.name.toLowerCase().includes(query)).forEach(a=>{
+   let li=document.createElement('li'); li.innerHTML=`${a.name} - <a href="${a.link}" target="_blank">Insert</a>`;
+   resultsEl.appendChild(li);
+ });
+}
+
+/* ---------------- INIT ---------------- */
+document.addEventListener('DOMContentLoaded',()=>{
+ updateDraftStatus();
+});
 </script>
 
 </body>
