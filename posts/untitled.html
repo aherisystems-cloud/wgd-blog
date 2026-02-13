@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Meta Tags -->
+    <title>undefined</title>
+    <meta name="description" content="undefined">
+    <meta name="keywords" content="">
+    <meta name="author" content="Wow Glam Decor Team">
+    <meta name="publish_date" content="2026-02-06T06:21:56.901Z">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://yourdomain.com/blog/blog/untitled">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://yourdomain.com/blog/blog/untitled">
+    <meta property="og:title" content="undefined">
+    <meta property="og:description" content="undefined">
+    <meta property="og:image" content="/images/untitled.jpg">
+    <meta property="article:published_time" content="2026-02-06T06:21:56.901Z">
+    <meta property="article:author" content="Wow Glam Decor Team">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://yourdomain.com/blog/blog/untitled">
+    <meta property="twitter:title" content="undefined">
+    <meta property="twitter:description" content="undefined">
+    <meta property="twitter:image" content="/images/untitled.jpg">
+    
+    <!-- Structured Data (Schema.org) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": "undefined",
+      "image": "/images/untitled.jpg",
+      "datePublished": "2026-02-06T06:21:56.901Z",
+      "dateModified": "2026-02-06T06:21:56.901Z",
+      "author": {
+        "@type": "Person",
+        "name": "Wow Glam Decor Team"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Your Blog Name",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://yourdomain.com/logo.png"
+        }
+      },
+      "description": "undefined",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://yourdomain.com/blog/blog/untitled"
+      }
+    }
+    </script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2E75B6;
+            --secondary-color: #D5E8F0;
+            --text-color: #333;
+            --light-gray: #f5f5f5;
+            --border-color: #ddd;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: #fff;
+        }
+
+        /* Header Navigation */
+        .header-nav {
+            background-color: white;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .back-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: opacity 0.2s;
+        }
+
+        .back-link:hover {
+            opacity: 0.7;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            background-color: var(--light-gray);
+            padding: 1rem 2rem;
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+
+        .breadcrumb a:hover {
+            opacity: 0.7;
+        }
+
+        .breadcrumb span {
+            color: #666;
+            margin: 0 0.5rem;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 3rem;
+        }
+
+        /* Main Article */
+        .article-main {
+            max-width: 750px;
+        }
+
+        .category-badge {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 1rem;
+            text-decoration: none;
+        }
+
+        .article-title {
+            font-size: 2.5rem;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+            font-family: 'Georgia', serif;
+        }
+
+        .article-meta {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .author-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .author-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        /* Affiliate Disclosure */
+        .affiliate-disclosure {
+            background-color: #FFF9E6;
+            border-left: 4px solid #FFD700;
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .affiliate-disclosure strong {
+            color: #B8860B;
+        }
+
+        /* Featured Image */
+        .featured-image {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        /* Article Content */
+        .article-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-color);
+        }
+
+        .article-content h2 {
+            font-size: 1.8rem;
+            margin: 2rem 0 1rem 0;
+            color: var(--text-color);
+        }
+
+        .article-content h3 {
+            font-size: 1.4rem;
+            margin: 1.5rem 0 0.8rem 0;
+            color: var(--text-color);
+        }
+
+        .article-content p {
+            margin-bottom: 1.2rem;
+        }
+
+        .article-content ul, .article-content ol {
+            margin: 1rem 0 1.5rem 2rem;
+        }
+
+        .article-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .article-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+
+        .article-content blockquote {
+            border-left: 4px solid var(--primary-color);
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            background-color: var(--light-gray);
+            font-style: italic;
+        }
+
+        .article-content a {
+            color: var(--primary-color);
+            text-decoration: underline;
+            transition: opacity 0.2s;
+        }
+
+        .article-content a:hover {
+            opacity: 0.7;
+        }
+
+        /* Tags */
+        .tags-section {
+            margin: 3rem 0 2rem 0;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .tags-section h4 {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 1rem;
+            color: #666;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tag {
+            background-color: var(--light-gray);
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--text-color);
+            text-decoration: none;
+            transition: background-color 0.2s;
+        }
+
+        .tag:hover {
+            background-color: var(--secondary-color);
+        }
+
+        /* Author Box */
+        .author-box {
+            background-color: var(--light-gray);
+            padding: 2rem;
+            border-radius: 8px;
+            margin: 3rem 0;
+            display: flex;
+            gap: 1.5rem;
+            align-items: start;
+        }
+
+        .author-box-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .author-box-info h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .author-box-info .author-role {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .author-box-info p {
+            line-height: 1.6;
+            color: var(--text-color);
+            margin-bottom: 1rem;
+        }
+
+        .author-social {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .author-social a {
+            font-size: 1.5rem;
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+
+        .author-social a:hover {
+            opacity: 0.7;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: sticky;
+            top: 100px;
+            align-self: start;
+        }
+
+        .sidebar h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-color);
+        }
+
+        .sidebar-product {
+            background-color: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            transition: box-shadow 0.2s;
+        }
+
+        .sidebar-product:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .sidebar-product img {
+            width: 100%;
+            height: auto;
+            border-radius: 4px;
+            margin-bottom: 0.8rem;
+        }
+
+        .sidebar-product h4 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+        }
+
+        .sidebar-product a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .sidebar-product a:hover {
+            text-decoration: underline;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), #4A90E2);
+            z-index: 1000;
+            transition: width 0.2s;
+        }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background-color: var(--primary-color);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+            z-index: 99;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background-color: #1a5a8e;
+        }
+
+        /* Exit Popup */
+        .exit-popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .exit-popup.active {
+            display: flex;
+        }
+
+        .popup-content {
+            background-color: white;
+            padding: 3rem;
+            border-radius: 12px;
+            max-width: 500px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .popup-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #666;
+            background: none;
+            border: none;
+            line-height: 1;
+        }
+
+        .popup-content h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+
+        .popup-content p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            color: #666;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            padding: 0.8rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .newsletter-form button {
+            padding: 0.8rem 2rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .newsletter-form button:hover {
+            background-color: #1a5a8e;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: static;
+            }
+
+            .article-title {
+                font-size: 2rem;
+            }
+
+            .popup-content {
+                margin: 1rem;
+                padding: 2rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .header-nav, .breadcrumb, .container {
+                padding: 1rem;
+            }
+
+            .article-title {
+                font-size: 1.6rem;
+            }
+
+            .article-meta {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+            .author-box {
+                flex-direction: column;
+                text-align: center;
+                align-items: center;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Header Navigation -->
+    <nav class="header-nav">
+        <a href="/" class="back-link">← Back to Blog</a>
+    </nav>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <a href="/">Home</a>
+        <span>›</span>
+        <a href="/blog">Blog</a>
+        <span>›</span>
+        <a href="/blog/blog">Blog</a>
+        <span>›</span>
+        <span>undefined</span>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Main Article -->
+        <article class="article-main">
+            <!-- Category Badge -->
+            <a href="/blog/blog" class="category-badge">Blog</a>
+
+            <!-- Article Title -->
+            <h1 class="article-title">undefined</h1>
+
+            <!-- Article Meta -->
+            <div class="article-meta">
+                <div class="author-info">
+                    <img src="/content/images/author-avatar.jpg" alt="Wow Glam Decor Team" class="author-avatar">
+                    <span>Wow Glam Decor Team</span>
+                </div>
+                <span>February 6, 2026</span>
+                <span>1 min read</span>
+            </div>
+
+            <!-- Affiliate Disclosure -->
+            <div class="affiliate-disclosure">
+                <strong>💡 Affiliate Disclosure:</strong> This post contains affiliate links. If you purchase through our links, we may earn a small commission at no extra cost to you. We only recommend products we genuinely use and love. <a href="/disclosure">Read our full disclosure policy</a>.
+            </div>
+
+            <!-- Featured Image -->
+            <img src="/images/untitled.jpg" alt="undefined" class="featured-image">
+
+            <!-- Article Content -->
+            <div class="article-content">
+                <p>undefined</p>
+
+            </div>
+
+            <!-- Tags Section -->
+            <div class="tags-section">
+                <h4>Tagged in:</h4>
+                <div class="tags">
+                    <a href="/tag/interior-design" class="tag">interior design</a>
+                </div>
+            </div>
+
+            <!-- Author Box -->
+            <div class="author-box">
+                <img src="/content/images/author-avatar.jpg" alt="Wow Glam Decor Team" class="author-box-avatar">
+                <div class="author-box-info">
+                    <h3>Wow Glam Decor Team</h3>
+                    <div class="author-role">Interior Design Expert</div>
+                    <p>Interior design enthusiast sharing decor inspiration</p>
+                    <div class="author-social">
+                        <a href="#" title="Website">📘</a>
+                        <a href="#" title="Instagram">📷</a>
+                        <a href="#" title="Twitter">🐦</a>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <h3>🌟 Editor's Picks</h3>
+            
+        </aside>
+    </div>
+
+    <!-- Back to Top Button -->
+    <div class="back-to-top" id="backToTop">↑</div>
+
+    <!-- Exit Popup -->
+    <div class="exit-popup" id="exitPopup">
+        <div class="popup-content">
+            <button class="popup-close" id="popupClose">×</button>
+            <h2>Before You Go! 🏠✨</h2>
+            <p>Join our community for exclusive decor tips, product recommendations, and inspiration delivered to your inbox!</p>
+            <form class="newsletter-form" id="newsletterForm">
+                <input type="email" placeholder="Enter your email" required>
+                <button type="submit">Subscribe</button>
+            </form>
+            <p style="font-size: 0.85rem; color: #999;">We respect your privacy. Unsubscribe anytime.</p>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Progress Bar
+        window.addEventListener('scroll', function() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progressBar').style.width = scrolled + '%';
+        });
+
+        // Back to Top Button
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', function() {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        backToTop.addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Exit Intent Popup
+        let exitPopupShown = false;
+        const exitPopup = document.getElementById('exitPopup');
+        const popupClose = document.getElementById('popupClose');
+
+        document.addEventListener('mouseleave', function(e) {
+            if (e.clientY <= 0 && !exitPopupShown) {
+                exitPopup.classList.add('active');
+                exitPopupShown = true;
+            }
+        });
+
+        popupClose.addEventListener('click', function() {
+            exitPopup.classList.remove('active');
+        });
+
+        exitPopup.addEventListener('click', function(e) {
+            if (e.target === exitPopup) {
+                exitPopup.classList.remove('active');
+            }
+        });
+
+        // Newsletter Form
+        const newsletterForm = document.getElementById('newsletterForm');
+        newsletterForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for subscribing! 🎉');
+            exitPopup.classList.remove('active');
+        });
+
+        // Smooth scroll for internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

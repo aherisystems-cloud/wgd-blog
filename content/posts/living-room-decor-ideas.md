@@ -1,8 +1,11 @@
 ---
-title: "Living Room Decor Ideas: Transform Your Space with These Stunning Design Tips & Ideas"
-description: "Discover 25+ living room decor ideas to refresh your space. From budget-friendly updates to luxe touches, create a stylish home you love."
-slug: "living-room-decor-ideas"
-scheduled_date: 2026-02-12T10:00:00.000Z
+title: >-
+  Living Room Decor Ideas: Transform Your Space with These Stunning Design Tips
+  & Ideas
+description: >-
+  Discover 25+ living room decor ideas to refresh your space. From
+  budget-friendly updates to luxe touches, create a stylish home you love.
+slug: living-room-decor-ideas
 categories:
   - Living Room
   - Modern Style
@@ -38,8 +41,8 @@ keywords:
   - living room furniture arrangement
   - living room color schemes
   - affordable living room makeover
-
-published: false
+published: true
+date: '2026-02-12T10:00:00.000Z'
 ---
 
 > ⚠️ **FTC Disclosure**: This post contains affiliate links. We may earn a commission if you make a purchase through these links at no additional cost to you.
