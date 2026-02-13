@@ -6,7 +6,7 @@ on:
   workflow_dispatch:  # Manual trigger
 
 permissions:
-  contents: write  # ← THIS FIXES THE PUSH ERROR
+  contents: write
 
 jobs:
   publish:
@@ -15,8 +15,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
       
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -30,37 +28,45 @@ jobs:
         run: |
           mkdir -p content/posts/drafts
           mkdir -p posts
-          mkdir -p templates
       
-      - name: Check for drafts
+      - name: List drafts before publishing
         run: |
-          echo "Checking drafts directory..."
-          ls -la content/posts/drafts/ 2>/dev/null || echo "No drafts found"
+          echo "=== BEFORE PUBLISHING ==="
+          ls -la content/posts/drafts/ || echo "No drafts"
+          ls -la content/posts/ || echo "No posts"
       
       - name: Publish scheduled posts
         run: node scripts/publish-scheduled.js
       
+      - name: List files after publishing
+        run: |
+          echo "=== AFTER PUBLISHING ==="
+          ls -la content/posts/drafts/ || echo "No drafts"
+          ls -la content/posts/
+      
       - name: Build HTML from Markdown
         run: node scripts/build-posts.js
       
-      - name: Check if there are changes
-        id: verify_diff
+      - name: List HTML files
         run: |
-          if git diff --quiet .; then
-            echo "changed=false" >> $GITHUB_OUTPUT
-          else
-            echo "changed=true" >> $GITHUB_OUTPUT
-          fi
+          echo "=== HTML FILES ==="
+          ls -la posts/
       
-      - name: Commit and push changes
-        if: steps.verify_diff.outputs.changed == 'true'
+      - name: Show git status
+        run: |
+          echo "=== GIT STATUS ==="
+          git status
+          git diff --name-only
+      
+      - name: Commit and push ALL changes
         run: |
           git config --local user.name 'GitHub Actions Bot'
           git config --local user.email 'actions@github.com'
-          git add .
-          git commit -m "🤖 Auto-publish scheduled posts [skip ci]"
-          git push
-      
-      - name: No changes to commit
-        if: steps.verify_diff.outputs.changed != 'true'
-        run: echo "✅ No scheduled posts to publish at this time"
+          git add -A
+          if git diff-index --quiet HEAD --; then
+            echo "No changes to commit"
+          else
+            git commit -m "🤖 Auto-publish scheduled posts [skip ci]"
+            git push
+            echo "✅ Changes pushed successfully!"
+          fi
