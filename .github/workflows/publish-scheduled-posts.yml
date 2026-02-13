@@ -5,6 +5,9 @@ on:
     - cron: '0 */6 * * *'  # Every 6 hours
   workflow_dispatch:  # Manual trigger
 
+permissions:
+  contents: write  # ← THIS FIXES THE PUSH ERROR
+
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -13,7 +16,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
       
       - name: Setup Node.js
@@ -33,32 +35,32 @@ jobs:
       - name: Check for drafts
         run: |
           echo "Checking drafts directory..."
-          ls -la content/posts/drafts/ || echo "No drafts directory"
+          ls -la content/posts/drafts/ 2>/dev/null || echo "No drafts found"
       
       - name: Publish scheduled posts
         run: node scripts/publish-scheduled.js
-        continue-on-error: false
       
       - name: Build HTML from Markdown
         run: node scripts/build-posts.js
-        continue-on-error: false
       
       - name: Check if there are changes
         id: verify_diff
         run: |
-          git diff --quiet . || echo "changed=true" >> $GITHUB_OUTPUT
+          if git diff --quiet .; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
       
       - name: Commit and push changes
         if: steps.verify_diff.outputs.changed == 'true'
         run: |
-          git config --global user.name 'GitHub Actions Bot'
-          git config --global user.email 'actions@github.com'
+          git config --local user.name 'GitHub Actions Bot'
+          git config --local user.email 'actions@github.com'
           git add .
           git commit -m "🤖 Auto-publish scheduled posts [skip ci]"
           git push
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
       - name: No changes to commit
         if: steps.verify_diff.outputs.changed != 'true'
-        run: echo "✅ No scheduled posts to publish"
+        run: echo "✅ No scheduled posts to publish at this time"
