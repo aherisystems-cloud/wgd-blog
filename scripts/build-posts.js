@@ -68,6 +68,37 @@ mdFiles.forEach(file => {
     .replace(/\{\{AUTHOR_AVATAR\}\}/g, '/content/images/author-avatar.jpg')
     .replace(/\{\{SIDEBAR_PRODUCTS\}\}/g, ''); // Add sidebar products HTML if needed
   
+  // Sidebar: Mix of top posts and products
+const sidebarProducts = `
+  <!-- Top Editor's Pick Product -->
+  <a href="https://amzn.to/4aumant" class="sidebar-product" target="_blank" rel="nofollow sponsored">
+    <img src="/content/images/products/sectional-sofa-thumb.jpg" alt="Modern Sectional Sofa" class="sidebar-product-image">
+    <div class="sidebar-product-info">
+      <h4>Modern Sectional Sofa</h4>
+      <div class="sidebar-product-price">$500-650</div>
+      <span class="sidebar-cta">Shop Now →</span>
+    </div>
+  </a>
+  
+  <!-- Featured Blog Post -->
+  <a href="/posts/best-standing-desks.html" class="sidebar-product">
+    <img src="/content/images/posts/standing-desk-thumb.jpg" alt="Best Standing Desks" class="sidebar-product-image">
+    <div class="sidebar-product-info">
+      <h4>Best Standing Desks 2026</h4>
+      <span class="sidebar-cta">Read More →</span>
+    </div>
+  </a>
+  
+  <!-- Another Product -->
+  <a href="https://amzn.to/4rle6N6" class="sidebar-product" target="_blank" rel="nofollow sponsored">
+    <img src="/content/images/products/throw-pillows-thumb.jpg" alt="Velvet Throw Pillows" class="sidebar-product-image">
+    <div class="sidebar-product-info">
+      <h4>Luxury Throw Pillows</h4>
+      <div class="sidebar-product-price">$35-58</div>
+      <span class="sidebar-cta">Shop Now →</span>
+    </div>
+  </a>
+`;
   // Write HTML file
   const outputPath = path.join(OUTPUT_DIR, `${frontmatter.slug}.html`);
   fs.writeFileSync(outputPath, html, 'utf8');
