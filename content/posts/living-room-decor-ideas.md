@@ -995,7 +995,7 @@ Learn from others' mistakes so you don't waste money or time on these common err
 
 ### Mistake #4: Choosing Style Over Comfort
 
-**The Problem:** A beautiful sofa you hate sitting on isn't serving its purpose.
+**The Problem:** A beautiful sofa you bought yet hate sitting on isn't serving its purpose.
 
 **The Solution:**
 - Test furniture in person when possible
