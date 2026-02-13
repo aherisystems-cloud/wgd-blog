@@ -1,5 +1,4 @@
 name: Publish Scheduled Posts
-
 on:
   schedule:
     - cron: '0 */6 * * *'  # Every 6 hours
@@ -57,6 +56,9 @@ jobs:
           echo "=== GIT STATUS ==="
           git status
           git diff --name-only
+      
+      - name: Generate category pages
+        run: node scripts/generate-categories.js
       
       - name: Commit and push ALL changes
         run: |
