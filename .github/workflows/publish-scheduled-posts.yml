@@ -3,13 +3,18 @@ name: Publish Scheduled Posts
 on:
   schedule:
     - cron: '0 */6 * * *'  # Every 6 hours
-  workflow_dispatch:
+  workflow_dispatch:  # Manual trigger
 
 jobs:
   publish:
     runs-on: ubuntu-latest
+    
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
       
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -19,16 +24,41 @@ jobs:
       - name: Install dependencies
         run: npm install js-yaml gray-matter marked
       
+      - name: Create necessary directories
+        run: |
+          mkdir -p content/posts/drafts
+          mkdir -p posts
+          mkdir -p templates
+      
+      - name: Check for drafts
+        run: |
+          echo "Checking drafts directory..."
+          ls -la content/posts/drafts/ || echo "No drafts directory"
+      
       - name: Publish scheduled posts
         run: node scripts/publish-scheduled.js
+        continue-on-error: false
       
       - name: Build HTML from Markdown
         run: node scripts/build-posts.js
+        continue-on-error: false
       
-      - name: Commit and push
+      - name: Check if there are changes
+        id: verify_diff
         run: |
-          git config --global user.name 'GitHub Actions'
+          git diff --quiet . || echo "changed=true" >> $GITHUB_OUTPUT
+      
+      - name: Commit and push changes
+        if: steps.verify_diff.outputs.changed == 'true'
+        run: |
+          git config --global user.name 'GitHub Actions Bot'
           git config --global user.email 'actions@github.com'
           git add .
-          git commit -m "Auto-publish scheduled posts" || exit 0
+          git commit -m "🤖 Auto-publish scheduled posts [skip ci]"
           git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: No changes to commit
+        if: steps.verify_diff.outputs.changed != 'true'
+        run: echo "✅ No scheduled posts to publish"
