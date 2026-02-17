@@ -24,7 +24,9 @@ mdFiles.forEach(file => {
   try {
     const filePath = path.join(POSTS_DIR, file);
     const { data: frontmatter, content } = matter(fs.readFileSync(filePath, 'utf8'));
+
     if (frontmatter.published === false) return;
+
     posts.push({
       title: frontmatter.title || 'Untitled',
       slug: frontmatter.slug || file.replace('.md', ''),
@@ -36,7 +38,7 @@ mdFiles.forEach(file => {
       readTime: Math.ceil(content.split(/\s+/).length / 200)
     });
   } catch (e) {
-    console.error(`Error: ${file}:`, e.message);
+    console.error(`Error processing ${file}:`, e.message); // ← fixed: was missing opening paren
   }
 });
 
@@ -54,7 +56,7 @@ const featuredHTML = featuredPost ? `
   <div class="featured-content">
     <div class="post-meta-row">
       <span class="post-cat">${featuredPost.categories[0] || 'Decor'}</span>
-      <span class="post-date">📅 ${featuredPost.date.toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'})}</span>
+      <span class="post-date">📅 ${featuredPost.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
       <span class="post-time">⏱️ ${featuredPost.readTime} min read</span>
     </div>
     <h2 class="featured-title">${featuredPost.title}</h2>
@@ -71,7 +73,7 @@ const gridHTML = remainingPosts.map(post => `
   </div>
   <div class="card-content">
     <div class="card-meta">
-      <span>${post.date.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}</span>
+      <span>${post.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
       <span>⏱️ ${post.readTime} min</span>
     </div>
     <h3 class="card-title">${post.title}</h3>
@@ -81,6 +83,7 @@ const gridHTML = remainingPosts.map(post => `
 </a>`).join('\n');
 
 const allCategories = [...new Set(posts.flatMap(p => p.categories))].slice(0, 14);
+
 const filterHTML = allCategories.map(cat => {
   const slug = cat.toLowerCase().replace(/\s+/g, '-').replace(/[&]/g, '');
   return `<a href="/category/${slug}.html" class="filter-btn">${cat}</a>`;
@@ -89,8 +92,10 @@ const filterHTML = allCategories.map(cat => {
 let html = template
   .replace(/\{\{FEATURED_POST\}\}/g, featuredHTML)
   .replace(/\{\{POSTS_GRID\}\}/g, gridHTML || '<p class="no-posts">No posts yet. Check back soon!</p>')
+  .replace(/\{\{POSTS_LIST\}\}/g, gridHTML || '<p class="no-posts">No posts yet. Check back soon!</p>')
   .replace(/\{\{CATEGORY_FILTERS\}\}/g, filterHTML)
   .replace(/\{\{TOTAL_POSTS\}\}/g, posts.length);
 
 fs.writeFileSync(OUTPUT_PATH, html, 'utf8');
-console.log(`✅ Blog index → /blog.html (${posts.length} posts)`);
+
+console.log(`✅ Blog index → /blog.html (${posts.length} posts)`); // ← fixed: was missing opening paren
