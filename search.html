@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<link rel="icon" type="image/png" sizes="32x32" href="/content/images/favicon-32x32.png">
+<title>Search Results - Wow Glam Decor</title>
+<!-- Copy all the same CSS from blog.html -->
+<style>
+/* Paste the same styles from blog-template.html here */
+</style>
+</head>
+<body>
+<!-- Copy navbar from blog.html -->
+
+<div class="container">
+  <h1>Search Results</h1>
+  <div id="searchResults">
+    <p>Loading results...</p>
+  </div>
+</div>
+
+<!-- Copy footer from blog.html -->
+
+<script>
+// Simple client-side search
+function getQueryParam(param) {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get(param);
+}
+
+async function performSearch() {
+  const query = getQueryParam('q');
+  if (!query) {
+    document.getElementById('searchResults').innerHTML = '<p>No search query provided.</p>';
+    return;
+  }
+  
+  document.getElementById('searchResults').innerHTML = `<h2>Searching for: "${query}"</h2>`;
+  
+  // Fetch your posts data (you'll need to generate a posts.json file)
+  try {
+    const response = await fetch('/posts.json');
+    const posts = await response.json();
+    
+    // Simple search filtering
+    const results = posts.filter(post => {
+      const searchText = `${post.title} ${post.content} ${post.tags}`.toLowerCase();
+      return searchText.includes(query.toLowerCase());
+    });
+    
+    if (results.length === 0) {
+      document.getElementById('searchResults').innerHTML += '<p>No results found.</p>';
+    } else {
+      const html = results.map(post => `
+        <div class="post-card">
+          <a href="${post.url}">
+            <img src="${post.image}" alt="${post.title}">
+            <h3>${post.title}</h3>
+            <p>${post.excerpt}</p>
+          </a>
+        </div>
+      `).join('');
+      document.getElementById('searchResults').innerHTML += `<div class="posts-grid">${html}</div>`;
+    }
+  } catch (error) {
+    document.getElementById('searchResults').innerHTML = '<p>Error loading search results.</p>';
+  }
+}
+
+performSearch();
+</script>
+</body>
+</html>
