@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const matter = require('gray-matter');
-const { marked } = require('marked');  // ← FIX: Destructure marked
+const { marked } = require('marked');
 
 const POSTS_DIR = path.join(__dirname, '../content/posts');
 const OUTPUT_DIR = path.join(__dirname, '../posts');
@@ -15,15 +15,76 @@ if (!fs.existsSync(OUTPUT_DIR)) {
 // Read template
 const template = fs.readFileSync(TEMPLATE_PATH, 'utf8');
 
+// Default sidebar products (fallback if post doesn't specify)
+const DEFAULT_SIDEBAR_PRODUCTS = `
+  <a href="https://amzn.to/4aumant" class="sidebar-product" target="_blank" rel="nofollow sponsored">
+    <img src="/content/images/products/sectional-sofa-thumb.jpg" alt="Modern Sectional Sofa" class="sidebar-product-image">
+    <div class="sidebar-product-info">
+      <h4>Modern Sectional Sofa</h4>
+      <div class="sidebar-product-price">$500-650</div>
+      <span class="sidebar-cta">Shop Now →</span>
+    </div>
+  </a>
+  
+  <a href="/posts/best-standing-desks.html" class="sidebar-product">
+    <img src="/content/images/posts/standing-desk-thumb.jpg" alt="Best Standing Desks" class="sidebar-product-image">
+    <div class="sidebar-product-info">
+      <h4>Best Standing Desks 2026</h4>
+      <span class="sidebar-cta">Read More →</span>
+    </div>
+  </a>
+  
+  <a href="https://amzn.to/4rle6N6" class="sidebar-product" target="_blank" rel="nofollow sponsored">
+    <img src="/content/images/products/throw-pillows-thumb.jpg" alt="Velvet Throw Pillows" class="sidebar-product-image">
+    <div class="sidebar-product-info">
+      <h4>Luxury Throw Pillows</h4>
+      <div class="sidebar-product-price">$35-58</div>
+      <span class="sidebar-cta">Shop Now →</span>
+    </div>
+  </a>
+`;
+
+// Function to generate sidebar products from frontmatter
+function generateSidebarProducts(frontmatter) {
+  // If post has custom featured_products in frontmatter, use those
+  if (frontmatter.featured_products && Array.isArray(frontmatter.featured_products)) {
+    return frontmatter.featured_products.map(product => {
+      // Determine if it's a product (has price) or a blog post
+      const isProduct = product.price;
+      
+      return `
+  <a href="${product.link}" class="sidebar-product" target="_blank" rel="nofollow ${isProduct ? 'sponsored' : ''}">
+    <img src="${product.image}" alt="${product.name}" class="sidebar-product-image">
+    <div class="sidebar-product-info">
+      <h4>${product.name}</h4>
+      ${isProduct ? `<div class="sidebar-product-price">${product.price}</div>` : ''}
+      <span class="sidebar-cta">${isProduct ? 'Shop Now' : 'Read More'} →</span>
+    </div>
+  </a>`;
+    }).join('\n  ');
+  }
+  
+  // Otherwise, use default sidebar products
+  return DEFAULT_SIDEBAR_PRODUCTS;
+}
+
 // Get all .md files (exclude files in subdirectories like drafts/)
 const mdFiles = fs.readdirSync(POSTS_DIR)
   .filter(f => f.endsWith('.md') && fs.statSync(path.join(POSTS_DIR, f)).isFile());
+
+console.log(`📝 Found ${mdFiles.length} posts to build...\n`);
 
 mdFiles.forEach(file => {
   const filePath = path.join(POSTS_DIR, file);
   const fileContent = fs.readFileSync(filePath, 'utf8');
   
   const { data: frontmatter, content } = matter(fileContent);
+  
+  // Skip if no slug (required field)
+  if (!frontmatter.slug) {
+    console.log(`⚠️  Skipped ${file}: Missing slug`);
+    return;
+  }
   
   // Convert markdown to HTML
   const htmlContent = marked.parse(content);
@@ -43,67 +104,44 @@ mdFiles.forEach(file => {
   // Primary category
   const primaryCategory = Array.isArray(frontmatter.categories) 
     ? frontmatter.categories[0] 
-    : 'Blog';
+    : (frontmatter.category || 'Blog');
   const categorySlug = primaryCategory.toLowerCase().replace(/\s+/g, '-');
+  
+  // Generate sidebar products
+  const sidebarProducts = generateSidebarProducts(frontmatter);
+  
+  // Generate tags HTML
+  const tagsHTML = (frontmatter.tags || [])
+    .map(t => `<a href="/tag/${t.toLowerCase().replace(/\s+/g, '-')}.html" class="tag">${t}</a>`)
+    .join('\n        ');
   
   // Replace placeholders in template
   let html = template
-    .replace(/\{\{TITLE\}\}/g, frontmatter.title)
-    .replace(/\{\{SEO_TITLE\}\}/g, frontmatter.title)
-    .replace(/\{\{SEO_DESCRIPTION\}\}/g, frontmatter.description)
+    .replace(/\{\{TITLE\}\}/g, frontmatter.title || 'Untitled Post')
+    .replace(/\{\{SEO_TITLE\}\}/g, frontmatter.seo_title || frontmatter.title || 'Untitled Post')
+    .replace(/\{\{SEO_DESCRIPTION\}\}/g, frontmatter.description || frontmatter.excerpt || '')
     .replace(/\{\{SLUG\}\}/g, frontmatter.slug)
     .replace(/\{\{CATEGORY\}\}/g, primaryCategory)
     .replace(/\{\{CATEGORY_SLUG\}\}/g, categorySlug)
     .replace(/\{\{ARTICLE_CONTENT\}\}/g, htmlContent)
     .replace(/\{\{FEATURED_IMAGE\}\}/g, frontmatter.featured_image || '/content/images/default.jpg')
-    .replace(/\{\{FEATURED_IMAGE_ALT\}\}/g, frontmatter.title || '')
+    .replace(/\{\{FEATURED_IMAGE_ALT\}\}/g, frontmatter.featured_image_alt || frontmatter.title || 'Blog post image')
     .replace(/\{\{PUBLISH_DATE\}\}/g, publishDate.toISOString())
     .replace(/\{\{PUBLISH_DATE_FORMATTED\}\}/g, formattedDate)
     .replace(/\{\{READ_TIME\}\}/g, readTime)
-    .replace(/\{\{TAGS_HTML\}\}/g, (frontmatter.tags || []).map(t => `<a href="/tag/${t.toLowerCase().replace(/\s+/g, '-')}" class="tag">${t}</a>`).join('\n        '))
-    .replace(/\{\{KEYWORDS\}\}/g, (frontmatter.keywords || []).join(', '))
-    .replace(/\{\{AUTHOR_NAME\}\}/g, 'Wow Glam Decor Team')
-    .replace(/\{\{AUTHOR_ROLE\}\}/g, 'Interior Design Expert')
-    .replace(/\{\{AUTHOR_BIO\}\}/g, 'Interior design enthusiast sharing decor inspiration')
-    .replace(/\{\{AUTHOR_AVATAR\}\}/g, '/content/images/author-avatar.jpg')
-    .replace(/\{\{SIDEBAR_PRODUCTS\}\}/g, ''); // Add sidebar products HTML if needed
+    .replace(/\{\{TAGS_HTML\}\}/g, tagsHTML)
+    .replace(/\{\{KEYWORDS\}\}/g, (frontmatter.keywords || frontmatter.tags || []).join(', '))
+    .replace(/\{\{AUTHOR_NAME\}\}/g, frontmatter.author_name || 'Wow Glam Decor Team')
+    .replace(/\{\{AUTHOR_ROLE\}\}/g, frontmatter.author_role || 'Interior Design Expert')
+    .replace(/\{\{AUTHOR_BIO\}\}/g, frontmatter.author_bio || 'Passionate about creating beautiful, functional living spaces on any budget.')
+    .replace(/\{\{AUTHOR_AVATAR\}\}/g, frontmatter.author_avatar || '/content/images/author-avatar.jpg')
+    .replace(/\{\{SIDEBAR_PRODUCTS\}\}/g, sidebarProducts);
   
-  // Sidebar: Mix of top posts and products
-const sidebarProducts = `
-  <!-- Top Editor's Pick Product -->
-  <a href="https://amzn.to/4aumant" class="sidebar-product" target="_blank" rel="nofollow sponsored">
-    <img src="/content/images/products/sectional-sofa-thumb.jpg" alt="Modern Sectional Sofa" class="sidebar-product-image">
-    <div class="sidebar-product-info">
-      <h4>Modern Sectional Sofa</h4>
-      <div class="sidebar-product-price">$500-650</div>
-      <span class="sidebar-cta">Shop Now →</span>
-    </div>
-  </a>
-  
-  <!-- Featured Blog Post -->
-  <a href="/posts/best-standing-desks.html" class="sidebar-product">
-    <img src="/content/images/posts/standing-desk-thumb.jpg" alt="Best Standing Desks" class="sidebar-product-image">
-    <div class="sidebar-product-info">
-      <h4>Best Standing Desks 2026</h4>
-      <span class="sidebar-cta">Read More →</span>
-    </div>
-  </a>
-  
-  <!-- Another Product -->
-  <a href="https://amzn.to/4rle6N6" class="sidebar-product" target="_blank" rel="nofollow sponsored">
-    <img src="/content/images/products/throw-pillows-thumb.jpg" alt="Velvet Throw Pillows" class="sidebar-product-image">
-    <div class="sidebar-product-info">
-      <h4>Luxury Throw Pillows</h4>
-      <div class="sidebar-product-price">$35-58</div>
-      <span class="sidebar-cta">Shop Now →</span>
-    </div>
-  </a>
-`;
   // Write HTML file
   const outputPath = path.join(OUTPUT_DIR, `${frontmatter.slug}.html`);
   fs.writeFileSync(outputPath, html, 'utf8');
   
-  console.log(`✅ Built: ${frontmatter.slug}.html`);  // ← FIX: Remove backtick before console.log
+  console.log(`✅ Built: ${frontmatter.slug}.html (${readTime} min read, ${wordCount} words)`);
 });
 
-console.log('\n✨ Build complete!');
+console.log(`\n✨ Build complete! Generated ${mdFiles.length} posts.`);
