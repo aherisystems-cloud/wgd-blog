@@ -4,6 +4,12 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
+<!-- Favicon -->
+<link rel="icon" type="image/png" sizes="32x32" href="/content/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/content/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/content/images/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+
 <!-- SEO Meta Tags -->
 <title>Living Room Decor Ideas: Transform Your Space with These Stunning Design Tips & Ideas</title>
 <meta name="description" content="Discover 25+ living room decor ideas to refresh your space. From budget-friendly updates to luxe touches, create a stylish home you love."/>
@@ -94,6 +100,51 @@ img { max-width:100%; display:block; }
   transition:all 0.2s var(--ease);
 }
 .nav-link:hover { background:var(--brand-pale); color:var(--brand); }
+
+/* SEARCH BOX */
+.search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.search-input {
+  width: 240px;
+  padding: 8px 36px 8px 14px;
+  border: 2px solid var(--gray-200);
+  border-radius: 8px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+.search-input:focus {
+  outline: none;
+  border-color: var(--brand);
+  width: 280px;
+}
+.search-btn {
+  position: absolute;
+  right: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  color: var(--gray-600);
+  padding: 4px;
+}
+.search-btn:hover {
+  color: var(--brand);
+}
+
+/* Mobile menu toggle */
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: var(--gray-800);
+  padding: 8px;
+}
 
 /* ═══════════════════════════════════
    BREADCRUMB
@@ -394,6 +445,9 @@ footer { background:var(--gray-900); color:#fff; padding:56px 24px 24px; margin-
 }
 @media(max-width:768px) {
   .nav-menu { display:none; }
+  .mobile-menu-btn { display:block; }
+  .search-input { width: 180px; }
+  .search-input:focus { width: 220px; }
   .article-content { padding:32px 24px; }
   .article-title { font-size:1.75rem; }
   .content-body { font-size:1.05rem; }
@@ -411,6 +465,13 @@ footer { background:var(--gray-900); color:#fff; padding:56px 24px 24px; margin-
 <nav class="navbar">
   <div class="nav-container">
     <a href="/"><img src="/content/images/logo.jpg" alt="Wow Glam Decor" class="logo"></a>
+    
+    <!-- Search Box -->
+    <div class="search-box">
+      <input type="text" id="searchInput" class="search-input" placeholder="Search articles...">
+      <button class="search-btn" onclick="performSearch()">🔍</button>
+    </div>
+    
     <div class="nav-menu">
       <a href="/" class="nav-link">Home</a>
       <a href="/blog.html" class="nav-link">Blog</a>
@@ -419,6 +480,8 @@ footer { background:var(--gray-900); color:#fff; padding:56px 24px 24px; margin-
       <a href="/category/best-of-lists.html" class="nav-link">Best Of Lists</a>
       <a href="/about.html" class="nav-link">About</a>
     </div>
+    
+    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
   </div>
 </nav>
 
@@ -1405,20 +1468,20 @@ A: Absolutely! Mixing styles creates character and prevents boring, showroom-lik
     <div class="tags-section">
       <h4>Tagged In:</h4>
       <div class="tags">
-        <a href="/tag/iving-room-decor" class="tag">iving room decor</a>
-        <a href="/tag/interior-design" class="tag">interior design</a>
-        <a href="/tag/home-styling" class="tag">home styling</a>
-        <a href="/tag/budget-decorating" class="tag">budget decorating</a>
-        <a href="/tag/modern-furniture" class="tag">modern furniture</a>
-        <a href="/tag/small-space-solutions" class="tag">small space solutions</a>
-        <a href="/tag/cozy-interiors" class="tag">cozy interiors</a>
-        <a href="/tag/diy-decor" class="tag">DIY decor</a>
-        <a href="/tag/furniture-arrangement" class="tag">furniture arrangement</a>
-        <a href="/tag/color-schemes" class="tag">color schemes</a>
-        <a href="/tag/lighting-design" class="tag">lighting design</a>
-        <a href="/tag/storage-solutions" class="tag">storage solutions</a>
-        <a href="/tag/accent-walls" class="tag">accent walls</a>
-        <a href="/tag/throw-pillows" class="tag">throw pillows</a>
+        <a href="/tag/iving-room-decor.html" class="tag">iving room decor</a>
+        <a href="/tag/interior-design.html" class="tag">interior design</a>
+        <a href="/tag/home-styling.html" class="tag">home styling</a>
+        <a href="/tag/budget-decorating.html" class="tag">budget decorating</a>
+        <a href="/tag/modern-furniture.html" class="tag">modern furniture</a>
+        <a href="/tag/small-space-solutions.html" class="tag">small space solutions</a>
+        <a href="/tag/cozy-interiors.html" class="tag">cozy interiors</a>
+        <a href="/tag/diy-decor.html" class="tag">DIY decor</a>
+        <a href="/tag/furniture-arrangement.html" class="tag">furniture arrangement</a>
+        <a href="/tag/color-schemes.html" class="tag">color schemes</a>
+        <a href="/tag/lighting-design.html" class="tag">lighting design</a>
+        <a href="/tag/storage-solutions.html" class="tag">storage solutions</a>
+        <a href="/tag/accent-walls.html" class="tag">accent walls</a>
+        <a href="/tag/throw-pillows.html" class="tag">throw pillows</a>
       </div>
     </div>
 
@@ -1426,7 +1489,7 @@ A: Absolutely! Mixing styles creates character and prevents boring, showroom-lik
     <div class="author-box">
       <h3>Wow Glam Decor Team</h3>
       <div class="author-role">Interior Design Expert</div>
-      <p>Interior design enthusiast sharing decor inspiration</p>
+      <p>Passionate about creating beautiful, functional living spaces on any budget.</p>
     </div>
   </article>
 
@@ -1434,6 +1497,32 @@ A: Absolutely! Mixing styles creates character and prevents boring, showroom-lik
   <aside class="sidebar">
     <h3 class="sidebar-title">🌟 Featured Products</h3>
     
+  <a href="https://amzn.to/4aumant" class="sidebar-product" target="_blank" rel="nofollow sponsored">
+    <img src="/content/images/products/sectional-sofa-thumb.jpg" alt="Modern Sectional Sofa" class="sidebar-product-image">
+    <div class="sidebar-product-info">
+      <h4>Modern Sectional Sofa</h4>
+      <div class="sidebar-product-price">$500-650</div>
+      <span class="sidebar-cta">Shop Now →</span>
+    </div>
+  </a>
+  
+  <a href="/posts/best-standing-desks.html" class="sidebar-product">
+    <img src="/content/images/posts/standing-desk-thumb.jpg" alt="Best Standing Desks" class="sidebar-product-image">
+    <div class="sidebar-product-info">
+      <h4>Best Standing Desks 2026</h4>
+      <span class="sidebar-cta">Read More →</span>
+    </div>
+  </a>
+  
+  <a href="https://amzn.to/4rle6N6" class="sidebar-product" target="_blank" rel="nofollow sponsored">
+    <img src="/content/images/products/throw-pillows-thumb.jpg" alt="Velvet Throw Pillows" class="sidebar-product-image">
+    <div class="sidebar-product-info">
+      <h4>Luxury Throw Pillows</h4>
+      <div class="sidebar-product-price">$35-58</div>
+      <span class="sidebar-cta">Shop Now →</span>
+    </div>
+  </a>
+
   </aside>
 
 </div>
@@ -1509,6 +1598,27 @@ window.addEventListener('scroll', () => {
 btn.addEventListener('click', () => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 });
+
+// Search function
+function performSearch() {
+  const query = document.getElementById('searchInput').value.trim();
+  if (query) {
+    window.location.href = `/search.html?q=${encodeURIComponent(query)}`;
+  }
+}
+
+// Enter key for search
+document.getElementById('searchInput').addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') {
+    performSearch();
+  }
+});
+
+// Mobile menu toggle
+function toggleMobileMenu() {
+  const menu = document.querySelector('.nav-menu');
+  menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+}
 
 // Share functions
 function shareOn(platform) {
