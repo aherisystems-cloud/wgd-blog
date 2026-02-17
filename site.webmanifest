@@ -1,0 +1,49 @@
+{
+  "name": "Wow Glam Decor - Home Decor Ideas & Reviews",
+  "short_name": "WGD",
+  "description": "Your trusted source for home decor inspiration, honest product reviews, and curated recommendations.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#7e0882",
+  "theme_color": "#7e0882",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/content/images/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/content/images/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/content/images/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/content/images/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["lifestyle", "shopping"],
+  "screenshots": [
+    {
+      "src": "/content/images/screenshot-desktop.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/content/images/screenshot-mobile.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ]
+}
