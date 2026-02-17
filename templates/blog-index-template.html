@@ -3,6 +3,13 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<!-- Favicon -->
+<link rel="icon" type="image/png" sizes="32x32" href="/content/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/content/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/content/images/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+
 <title>Blog - Home Decor Ideas, Guides & Product Reviews | Wow Glam Decor</title>
 <meta name="description" content="Discover stunning living room, bedroom, kitchen decor ideas with honest product reviews and curated affiliate recommendations for every budget."/>
 <meta name="robots" content="index, follow"/>
@@ -28,6 +35,16 @@ a{text-decoration:none}
 .nav-link:hover,.nav-link.active{background:var(--brand-pale);color:var(--brand)}
 .nav-cta{background:var(--brand);color:#fff!important;padding:10px 20px!important;border-radius:8px;font-weight:800}
 .nav-cta:hover{background:var(--brand-dark)!important}
+
+/* SEARCH BOX */
+.search-box{position:relative;display:flex;align-items:center}
+.search-input{width:240px;padding:8px 36px 8px 14px;border:2px solid var(--gray-200);border-radius:8px;font-family:'Nunito',sans-serif;font-size:14px;transition:all 0.2s}
+.search-input:focus{outline:none;border-color:var(--brand);width:280px}
+.search-btn{position:absolute;right:8px;background:none;border:none;cursor:pointer;font-size:18px;color:var(--gray-600);padding:4px}
+.search-btn:hover{color:var(--brand)}
+
+.mobile-menu-btn{display:none;background:none;border:none;font-size:24px;cursor:pointer;color:var(--gray-800);padding:8px}
+
 .disclosure-bar{background:var(--gray-900);color:rgba(255,255,255,0.85);padding:10px 24px;text-align:center;font-size:13px;font-weight:600}
 .disclosure-bar a{color:rgba(255,255,255,0.6);text-decoration:underline}
 .blog-hero{background:linear-gradient(140deg,var(--brand-dark) 0%,var(--brand) 55%,var(--brand-light) 100%);color:#fff;padding:72px 24px;text-align:center;position:relative;overflow:hidden}
@@ -39,10 +56,17 @@ a{text-decoration:none}
 .hero-stat strong{display:block;font-size:2.2rem;font-weight:900}
 .hero-stat span{font-size:12px;opacity:0.82;text-transform:uppercase;letter-spacing:1px}
 .filter-bar{background:#fff;border-bottom:1px solid var(--gray-200);padding:14px 24px;position:sticky;top:74px;z-index:90;box-shadow:0 2px 8px rgba(0,0,0,0.04)}
-.filter-inner{max-width:1400px;margin:0 auto;display:flex;gap:10px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.filter-inner{max-width:1400px;margin:0 auto;display:flex;gap:10px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none;align-items:center}
 .filter-inner::-webkit-scrollbar{display:none}
 .filter-btn{flex-shrink:0;padding:8px 18px;border-radius:20px;background:var(--gray-100);color:var(--gray-800);font-size:13px;font-weight:700;transition:all 0.2s;white-space:nowrap}
 .filter-btn:hover{background:var(--brand);color:#fff;transform:translateY(-1px)}
+
+/* VIEW TOGGLE */
+.view-toggle{display:flex;gap:8px;margin-left:auto;flex-shrink:0}
+.view-btn{width:36px;height:36px;border-radius:8px;background:var(--gray-100);border:2px solid transparent;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:all 0.2s}
+.view-btn.active{background:var(--brand);color:#fff;border-color:var(--brand)}
+.view-btn:hover{background:var(--brand-pale);border-color:var(--brand)}
+
 .container{max-width:1400px;margin:0 auto;padding:56px 24px}
 /* FEATURED */
 .featured-post{display:grid;grid-template-columns:1fr 1fr;background:#fff;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-md);margin-bottom:64px;transition:all 0.3s var(--ease);color:inherit}
@@ -59,12 +83,8 @@ a{text-decoration:none}
 .featured-excerpt{color:var(--gray-600);font-size:1rem;line-height:1.75;margin-bottom:28px;flex:1}
 .read-more-btn{display:inline-flex;align-items:center;gap:8px;background:var(--brand);color:#fff;padding:15px 28px;border-radius:10px;font-weight:800;font-size:15px;transition:all 0.25s;width:fit-content}
 .read-more-btn:hover{background:var(--brand-dark);gap:12px}
-/* GRID */
-.section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px}
-.section-title{font-size:1.8rem;font-weight:900}
-.section-title span{color:var(--brand)}
-.view-all{color:var(--brand);font-weight:800;font-size:14px;display:flex;align-items:center;gap:6px}
-.view-all:hover{gap:10px}
+
+/* GRID VIEW */
 .posts-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:28px;margin-bottom:72px}
 .post-card{background:#fff;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;transition:all 0.3s var(--ease);color:inherit}
 .post-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-md)}
@@ -78,6 +98,19 @@ a{text-decoration:none}
 .card-excerpt{font-size:14px;color:var(--gray-600);line-height:1.65;flex:1;margin-bottom:16px}
 .card-link{color:var(--brand);font-weight:800;font-size:14px;display:flex;align-items:center;gap:6px}
 .post-card:hover .card-link{gap:10px}
+
+/* LIST VIEW */
+.posts-list{display:flex;flex-direction:column;gap:24px;margin-bottom:72px}
+.posts-list .post-card{flex-direction:row;height:auto}
+.posts-list .card-image-wrap{width:320px;flex-shrink:0}
+.posts-list .card-image{height:100%;min-height:200px}
+.posts-list .card-content{padding:32px}
+.posts-list .card-title{font-size:1.4rem;margin-bottom:12px}
+.posts-list .card-excerpt{font-size:15px;margin-bottom:20px}
+
+/* Hide list view by default */
+.posts-list{display:none}
+
 /* NEWSLETTER */
 .newsletter{background:linear-gradient(135deg,var(--brand-dark),var(--brand-light));color:#fff;border-radius:var(--radius);padding:56px;text-align:center;margin-bottom:48px;position:relative;overflow:hidden}
 .newsletter::before{content:'';position:absolute;top:-30%;right:-10%;width:400px;height:400px;background:radial-gradient(circle,rgba(255,255,255,0.08) 0%,transparent 70%);border-radius:50%}
@@ -85,6 +118,12 @@ a{text-decoration:none}
 .newsletter h2{font-size:2rem;font-weight:900;margin-bottom:12px}
 .newsletter p{font-size:1.1rem;opacity:0.93;margin-bottom:28px}
 .newsletter iframe{border-radius:12px;max-width:100%;margin:0 auto}
+.section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px}
+.section-title{font-size:1.8rem;font-weight:900}
+.section-title span{color:var(--brand)}
+.view-all{color:var(--brand);font-weight:800;font-size:14px;display:flex;align-items:center;gap:6px}
+.view-all:hover{gap:10px}
+
 /* FOOTER */
 footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0}
 .footer-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:40px}
@@ -102,14 +141,21 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
 .footer-bottom a{color:rgba(255,255,255,0.55)}
 .footer-bottom a:hover{color:#fff;opacity:1}
 .footer-legal{display:flex;gap:20px}
-@media(max-width:1024px){.featured-post{grid-template-columns:1fr}.featured-image{min-height:280px}.footer-grid{grid-template-columns:1fr 1fr}}
-@media(max-width:768px){.nav-menu{display:none}.posts-grid{grid-template-columns:1fr}.featured-content{padding:28px}.footer-grid{grid-template-columns:1fr}.footer-bottom{flex-direction:column;text-align:center}.newsletter{padding:32px 20px}}
+@media(max-width:1024px){.featured-post{grid-template-columns:1fr}.featured-image{min-height:280px}.footer-grid{grid-template-columns:1fr 1fr}.posts-list .post-card{flex-direction:column}.posts-list .card-image-wrap{width:100%}}
+@media(max-width:768px){.nav-menu{display:none}.mobile-menu-btn{display:block}.search-input{width:180px}.search-input:focus{width:220px}.posts-grid{grid-template-columns:1fr}.featured-content{padding:28px}.footer-grid{grid-template-columns:1fr}.footer-bottom{flex-direction:column;text-align:center}.newsletter{padding:32px 20px}}
 </style>
 </head>
 <body>
 <nav class="navbar">
   <div class="nav-container">
     <a href="/"><img src="/content/images/logo.jpg" alt="Wow Glam Decor" class="logo"></a>
+    
+    <!-- Search Box -->
+    <div class="search-box">
+      <input type="text" id="searchInput" class="search-input" placeholder="Search articles...">
+      <button class="search-btn" onclick="performSearch()">🔍</button>
+    </div>
+    
     <div class="nav-menu">
       <a href="/" class="nav-link">Home</a>
       <a href="/blog.html" class="nav-link">Blog</a>
@@ -118,6 +164,8 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
       <a href="/category/best-of-lists.html" class="nav-link nav-cta">Best Of Lists</a>
       <a href="/about.html" class="nav-link">About</a>
     </div>
+    
+    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
   </div>
 </nav>
 <div class="disclosure-bar">💡 <strong>Disclosure:</strong> This site contains affiliate links. We may earn a small commission at no extra cost to you. <a href="/affiliate-disclosure.html">Learn more</a></div>
@@ -136,6 +184,12 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
   <div class="filter-inner">
     <a href="/blog.html" class="filter-btn">🏠 All Posts</a>
     {{CATEGORY_FILTERS}}
+    
+    <!-- View Toggle Buttons -->
+    <div class="view-toggle">
+      <button class="view-btn active" id="gridViewBtn" onclick="switchView('grid')" title="Grid View">⊞</button>
+      <button class="view-btn" id="listViewBtn" onclick="switchView('list')" title="List View">☰</button>
+    </div>
   </div>
 </div>
 <div class="container">
@@ -144,7 +198,17 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
     <h2 class="section-title">Latest <span>Articles</span></h2>
     <a href="#" class="view-all">All {{TOTAL_POSTS}} posts →</a>
   </div>
-  {{POSTS_GRID}}
+  
+  <!-- Grid View (Default) -->
+  <div class="posts-grid" id="postsGrid">
+    {{POSTS_GRID}}
+  </div>
+  
+  <!-- List View (Hidden by default) -->
+  <div class="posts-list" id="postsList">
+    {{POSTS_LIST}}
+  </div>
+  
   <div class="newsletter">
     <div class="newsletter-inner">
       <h2>Get Decor Ideas Straight to Your Inbox 📬</h2>
@@ -206,5 +270,68 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
     </div>
   </div>
 </footer>
+
+<script>
+// Search function
+function performSearch() {
+  const query = document.getElementById('searchInput').value.trim();
+  if (query) {
+    window.location.href = `/search.html?q=${encodeURIComponent(query)}`;
+  }
+}
+
+// Enter key for search
+document.getElementById('searchInput').addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') {
+    performSearch();
+  }
+});
+
+// Mobile menu toggle
+function toggleMobileMenu() {
+  const menu = document.querySelector('.nav-menu');
+  if (menu.style.display === 'flex') {
+    menu.style.display = 'none';
+  } else {
+    menu.style.display = 'flex';
+    menu.style.flexDirection = 'column';
+    menu.style.position = 'absolute';
+    menu.style.top = '100%';
+    menu.style.left = '0';
+    menu.style.right = '0';
+    menu.style.background = '#fff';
+    menu.style.padding = '20px';
+    menu.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+  }
+}
+
+// View toggle functionality
+function switchView(viewType) {
+  const gridView = document.getElementById('postsGrid');
+  const listView = document.getElementById('postsList');
+  const gridBtn = document.getElementById('gridViewBtn');
+  const listBtn = document.getElementById('listViewBtn');
+  
+  if (viewType === 'grid') {
+    gridView.style.display = 'grid';
+    listView.style.display = 'none';
+    gridBtn.classList.add('active');
+    listBtn.classList.remove('active');
+    localStorage.setItem('preferredView', 'grid');
+  } else {
+    gridView.style.display = 'none';
+    listView.style.display = 'flex';
+    gridBtn.classList.remove('active');
+    listBtn.classList.add('active');
+    localStorage.setItem('preferredView', 'list');
+  }
+}
+
+// Load preferred view on page load
+window.addEventListener('DOMContentLoaded', () => {
+  const preferredView = localStorage.getItem('preferredView') || 'grid';
+  switchView(preferredView);
+});
+</script>
 </body>
 </html>
