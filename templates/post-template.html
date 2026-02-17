@@ -4,6 +4,12 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
+<!-- Favicon -->
+<link rel="icon" type="image/png" sizes="32x32" href="/content/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/content/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/content/images/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+
 <!-- SEO Meta Tags -->
 <title>{{SEO_TITLE}}</title>
 <meta name="description" content="{{SEO_DESCRIPTION}}"/>
@@ -94,6 +100,51 @@ img { max-width:100%; display:block; }
   transition:all 0.2s var(--ease);
 }
 .nav-link:hover { background:var(--brand-pale); color:var(--brand); }
+
+/* SEARCH BOX */
+.search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.search-input {
+  width: 240px;
+  padding: 8px 36px 8px 14px;
+  border: 2px solid var(--gray-200);
+  border-radius: 8px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+.search-input:focus {
+  outline: none;
+  border-color: var(--brand);
+  width: 280px;
+}
+.search-btn {
+  position: absolute;
+  right: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  color: var(--gray-600);
+  padding: 4px;
+}
+.search-btn:hover {
+  color: var(--brand);
+}
+
+/* Mobile menu toggle */
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: var(--gray-800);
+  padding: 8px;
+}
 
 /* ═══════════════════════════════════
    BREADCRUMB
@@ -394,6 +445,9 @@ footer { background:var(--gray-900); color:#fff; padding:56px 24px 24px; margin-
 }
 @media(max-width:768px) {
   .nav-menu { display:none; }
+  .mobile-menu-btn { display:block; }
+  .search-input { width: 180px; }
+  .search-input:focus { width: 220px; }
   .article-content { padding:32px 24px; }
   .article-title { font-size:1.75rem; }
   .content-body { font-size:1.05rem; }
@@ -411,6 +465,13 @@ footer { background:var(--gray-900); color:#fff; padding:56px 24px 24px; margin-
 <nav class="navbar">
   <div class="nav-container">
     <a href="/"><img src="/content/images/logo.jpg" alt="Wow Glam Decor" class="logo"></a>
+    
+    <!-- Search Box -->
+    <div class="search-box">
+      <input type="text" id="searchInput" class="search-input" placeholder="Search articles...">
+      <button class="search-btn" onclick="performSearch()">🔍</button>
+    </div>
+    
     <div class="nav-menu">
       <a href="/" class="nav-link">Home</a>
       <a href="/blog.html" class="nav-link">Blog</a>
@@ -419,6 +480,8 @@ footer { background:var(--gray-900); color:#fff; padding:56px 24px 24px; margin-
       <a href="/category/best-of-lists.html" class="nav-link">Best Of Lists</a>
       <a href="/about.html" class="nav-link">About</a>
     </div>
+    
+    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
   </div>
 </nav>
 
@@ -568,6 +631,27 @@ window.addEventListener('scroll', () => {
 btn.addEventListener('click', () => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 });
+
+// Search function
+function performSearch() {
+  const query = document.getElementById('searchInput').value.trim();
+  if (query) {
+    window.location.href = `/search.html?q=${encodeURIComponent(query)}`;
+  }
+}
+
+// Enter key for search
+document.getElementById('searchInput').addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') {
+    performSearch();
+  }
+});
+
+// Mobile menu toggle
+function toggleMobileMenu() {
+  const menu = document.querySelector('.nav-menu');
+  menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+}
 
 // Share functions
 function shareOn(platform) {
