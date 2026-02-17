@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "World-class blog scheduling system with automatic publishing",
   "scripts": {
-    "generate": "node scripts/generate-index.js && node scripts/generate-posts.js && node scripts/generate-sitemap.js",
+    "generate": "node scripts/generate-index.js && node scripts/generate-posts.js && node scripts/generate-sitemap.js && node scripts/generate-posts-json.js",
     "publish-scheduled": "node scripts/publish-scheduled.js",
     "dev": "python -m http.server 8000",
     "test-publish": "node scripts/publish-scheduled.js"
