@@ -1,178 +1,206 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<!-- Favicons -->
+<link rel="icon" type="image/png" sizes="32x32" href="/content/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/content/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/content/images/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#7e0882">
 
 <!-- Primary SEO Meta Tags -->
 <title>Living Room - Wow Glam Decor | Interior Design & Decor Ideas</title>
-<meta name="title" content="Living Room - Wow Glam Decor" />
-<meta name="description" content="Discover stunning living room decor ideas, furniture recommendations, and design inspiration to create your perfect gathering space." />
-<meta name="robots" content="index, follow" />
+<meta name="title" content="Living Room - Wow Glam Decor"/>
+<meta name="description" content="Discover stunning living room decor ideas, furniture recommendations, and design inspiration to create your perfect gathering space."/>
+<meta name="robots" content="index, follow"/>
+<link rel="canonical" href="https://wowglamdecor.com/category/living-room.html"/>
 
-<!-- Open Graph / Facebook -->
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://wowglamdecor.com/category/living-room.html" />
-<meta property="og:title" content="Living Room - Wow Glam Decor" />
-<meta property="og:description" content="Discover stunning living room decor ideas, furniture recommendations, and design inspiration to create your perfect gathering space." />
-<meta property="og:image" content="https://wowglamdecor.com/content/images/logo.jpg" />
+<!-- Open Graph -->
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://wowglamdecor.com/category/living-room.html"/>
+<meta property="og:title" content="Living Room - Wow Glam Decor"/>
+<meta property="og:description" content="Discover stunning living room decor ideas, furniture recommendations, and design inspiration to create your perfect gathering space."/>
+<meta property="og:image" content="https://wowglamdecor.com/content/images/logo.jpg"/>
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Living Room - Wow Glam Decor"/>
+<meta name="twitter:description" content="Discover stunning living room decor ideas, furniture recommendations, and design inspiration to create your perfect gathering space."/>
+
+<!-- Schema.org -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Living Room",
+  "description": "Discover stunning living room decor ideas, furniture recommendations, and design inspiration to create your perfect gathering space.",
+  "url": "https://wowglamdecor.com/category/living-room.html",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Wow Glam Decor",
+    "logo": { "@type": "ImageObject", "url": "https://wowglamdecor.com/content/images/logo.jpg" }
+  }
+}
+</script>
 
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
 
 <style>
 :root {
-  --purple-primary: #7e0882;
-  --purple-dark: #5a0660;
-  --purple-light: #a020a8;
-  --white: #FFFFFF;
-  --off-white: #FAFAFA;
-  --gray-100: #F5F5F5;
-  --gray-200: #EEEEEE;
-  --gray-300: #E0E0E0;
+  --brand: #7e0882;
+  --brand-dark: #5a0660;
+  --brand-light: #a020a8;
+  --brand-pale: rgba(126,8,130,0.07);
+  --white: #fff;
+  --off-white: #fafafa;
+  --gray-100: #f5f5f5;
+  --gray-200: #eee;
   --gray-600: #757575;
   --gray-800: #424242;
   --gray-900: #212121;
+  --shadow-sm: 0 2px 12px rgba(126,8,130,0.08);
+  --shadow-md: 0 8px 32px rgba(126,8,130,0.13);
+  --radius: 16px;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Nunito', sans-serif; background: var(--off-white); color: var(--gray-900); line-height: 1.75; }
+a { text-decoration: none; color: inherit; }
+img { max-width: 100%; display: block; }
 
-body {
-  font-family: 'Nunito', system-ui, -apple-system, sans-serif;
-  background: var(--off-white);
-  color: var(--gray-900);
-  line-height: 1.6;
-}
-
-/* Navigation */
+/* ── NAVBAR ── */
 .navbar {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 2px 8px rgba(126, 8, 130, 0.08);
+  background: rgba(255,255,255,0.96);
+  backdrop-filter: blur(16px);
+  box-shadow: var(--shadow-sm);
   position: sticky;
   top: 0;
   z-index: 100;
 }
-
 .nav-container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 16px 24px;
+  padding: 12px 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-}
-
-.logo {
-  height: 48px;
-  width: auto;
-}
-
-.nav-menu {
-  display: flex;
   gap: 24px;
-  align-items: center;
 }
-
+.logo { height: 44px; width: auto; }
+.nav-menu { display: flex; gap: 2px; align-items: center; }
 .nav-link {
   color: var(--gray-800);
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 15px;
-  transition: color 0.2s;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  transition: all 0.2s;
 }
+.nav-link:hover { background: var(--brand-pale); color: var(--brand); }
+.nav-link.active { background: var(--brand-pale); color: var(--brand); }
 
-.nav-link:hover {
-  color: var(--purple-primary);
+/* Search box */
+.search-box { position: relative; display: flex; align-items: center; }
+.search-input {
+  width: 220px;
+  padding: 8px 36px 8px 14px;
+  border: 2px solid var(--gray-200);
+  border-radius: 8px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  transition: all 0.2s;
 }
+.search-input:focus { outline: none; border-color: var(--brand); width: 260px; }
+.search-btn {
+  position: absolute;
+  right: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: var(--gray-600);
+  padding: 4px;
+}
+.search-btn:hover { color: var(--brand); }
+.mobile-menu-btn { display: none; background: none; border: none; font-size: 24px; cursor: pointer; color: var(--gray-800); padding: 8px; }
 
-/* Hero Section */
+/* ── HERO ── */
 .category-hero {
-  background: linear-gradient(135deg, var(--purple-primary), var(--purple-light));
+  background: linear-gradient(135deg, var(--brand), var(--brand-light));
   color: white;
   padding: 80px 24px;
   text-align: center;
 }
-
 .category-hero h1 {
-  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
   font-weight: 900;
   margin-bottom: 16px;
+  line-height: 1.15;
 }
-
 .category-hero p {
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   opacity: 0.95;
-  max-width: 700px;
+  max-width: 680px;
   margin: 0 auto;
+  line-height: 1.7;
 }
-
 .category-stats {
-  margin-top: 32px;
+  margin-top: 36px;
   display: flex;
-  gap: 40px;
+  gap: 48px;
   justify-content: center;
   flex-wrap: wrap;
 }
+.stat { text-align: center; }
+.stat-number { font-size: 2.5rem; font-weight: 900; display: block; }
+.stat-label { font-size: 0.8rem; opacity: 0.85; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 4px; display: block; }
 
-.stat {
-  text-align: center;
-}
-
-.stat-number {
-  font-size: 2.5rem;
-  font-weight: 900;
-  display: block;
-}
-
-.stat-label {
-  font-size: 0.875rem;
-  opacity: 0.9;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-/* Container */
-.container {
+/* ── BREADCRUMB ── */
+.breadcrumb {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 48px 24px;
+  padding: 14px 24px;
+  font-size: 13px;
+  color: var(--gray-600);
 }
+.breadcrumb a { color: var(--brand); transition: color 0.2s; }
+.breadcrumb a:hover { color: var(--brand-dark); }
+.breadcrumb span { margin: 0 8px; opacity: 0.4; }
 
-/* Post Grid */
+/* ── POSTS GRID ── */
+.container { max-width: 1400px; margin: 0 auto; padding: 40px 24px 80px; }
+
 .posts-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 32px;
-  margin-bottom: 48px;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 28px;
 }
 
 .post-card {
   background: white;
-  border-radius: 16px;
+  border-radius: var(--radius);
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(126, 8, 130, 0.08);
-  transition: all 0.3s ease;
-  text-decoration: none;
-  color: inherit;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s;
   display: flex;
   flex-direction: column;
+  border: 2px solid transparent;
 }
-
 .post-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(126, 8, 130, 0.15);
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-md);
+  border-color: rgba(126,8,130,0.12);
 }
 
 .post-thumbnail {
   width: 100%;
-  height: 240px;
+  height: 220px;
   object-fit: cover;
   background: var(--gray-100);
 }
@@ -184,233 +212,135 @@ body {
   flex-direction: column;
 }
 
-.post-category {
+.post-category-badge {
   display: inline-block;
-  background: rgba(126, 8, 130, 0.1);
-  color: var(--purple-primary);
-  padding: 6px 12px;
+  background: var(--brand-pale);
+  color: var(--brand);
+  padding: 5px 12px;
   border-radius: 20px;
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 11px;
+  font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin-bottom: 12px;
 }
 
 .post-title {
-  font-size: 1.5rem;
-  font-weight: 800;
-  margin-bottom: 12px;
+  font-size: 1.35rem;
+  font-weight: 900;
+  margin-bottom: 10px;
   line-height: 1.3;
   color: var(--gray-900);
 }
 
 .post-excerpt {
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   color: var(--gray-600);
   margin-bottom: 16px;
-  line-height: 1.6;
+  line-height: 1.65;
   flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .post-meta {
   display: flex;
   align-items: center;
-  gap: 12px;
-  font-size: 0.875rem;
+  gap: 14px;
+  font-size: 13px;
   color: var(--gray-600);
-  padding-top: 16px;
+  padding-top: 14px;
   border-top: 1px solid var(--gray-200);
-}
-
-.post-date {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.post-read-time {
-  display: flex;
-  align-items: center;
-  gap: 6px;
+  flex-wrap: wrap;
 }
 
 .read-more {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  color: var(--purple-primary);
-  font-weight: 700;
-  font-size: 0.95rem;
-  margin-top: 12px;
+  gap: 6px;
+  color: var(--brand);
+  font-weight: 800;
+  font-size: 13px;
+  margin-top: 14px;
+  transition: gap 0.2s;
 }
+.post-card:hover .read-more { gap: 10px; }
 
-.read-more:hover {
-  gap: 12px;
-}
+/* ── EMPTY STATE ── */
+.empty-state { text-align: center; padding: 80px 24px; }
+.empty-state-icon { font-size: 4rem; margin-bottom: 16px; opacity: 0.25; }
+.empty-state h2 { font-size: 1.75rem; margin-bottom: 12px; color: var(--gray-800); }
+.empty-state p { font-size: 1.1rem; color: var(--gray-600); margin-bottom: 24px; }
+.empty-state a { display: inline-block; background: var(--brand); color: white; padding: 14px 32px; border-radius: 10px; font-weight: 700; transition: all 0.2s; }
+.empty-state a:hover { background: var(--brand-dark); transform: translateY(-2px); }
 
-/* Empty State */
-.empty-state {
-  text-align: center;
-  padding: 80px 24px;
-}
-
-.empty-state-icon {
-  font-size: 4rem;
-  margin-bottom: 16px;
-  opacity: 0.3;
-}
-
-.empty-state h2 {
-  font-size: 1.75rem;
-  margin-bottom: 12px;
-  color: var(--gray-800);
-}
-
-.empty-state p {
-  font-size: 1.125rem;
-  color: var(--gray-600);
-  margin-bottom: 24px;
-}
-
-.empty-state a {
-  display: inline-block;
-  background: var(--purple-primary);
-  color: white;
-  padding: 14px 32px;
-  border-radius: 8px;
-  font-weight: 700;
-  text-decoration: none;
-  transition: all 0.2s;
-}
-
-.empty-state a:hover {
-  background: var(--purple-dark);
-  transform: translateY(-2px);
-}
-
-/* Footer */
-footer {
-  background: var(--gray-900);
-  color: white;
-  padding: 48px 24px 24px;
-  margin-top: 80px;
-}
-
-.footer-content {
+/* ── FOOTER ── */
+footer { background: var(--gray-900); color: #fff; padding: 56px 24px 24px; margin-top: 0; }
+.footer-grid {
   max-width: 1200px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 40px;
-  margin-bottom: 32px;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 48px;
+  margin-bottom: 40px;
 }
+.footer-logo { height: 40px; margin-bottom: 14px; }
+.footer-brand p { opacity: 0.7; font-size: 14px; line-height: 1.7; margin-bottom: 20px; }
+.social-row { display: flex; gap: 10px; }
+.social-btn { width: 38px; height: 38px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 15px; transition: all 0.2s; }
+.social-btn:hover { background: var(--brand); transform: translateY(-2px); }
+.footer-col h4 { font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 18px; opacity: 0.88; }
+.footer-links { list-style: none; }
+.footer-links li { margin-bottom: 10px; }
+.footer-links a { color: rgba(255,255,255,0.6); font-size: 14px; transition: color 0.2s; }
+.footer-links a:hover { color: #fff; }
+.footer-bottom { max-width: 1200px; margin: 0 auto; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; font-size: 13px; opacity: 0.55; flex-wrap: wrap; gap: 12px; }
+.footer-bottom a { color: rgba(255,255,255,0.55); }
+.footer-bottom a:hover { color: #fff; opacity: 1; }
+.footer-legal { display: flex; gap: 20px; }
 
-.footer-section h3 {
-  margin-bottom: 16px;
-  font-size: 18px;
+/* ── RESPONSIVE ── */
+@media (max-width: 1100px) {
+  .footer-grid { grid-template-columns: 1fr 1fr; }
 }
-
-.footer-section h4 {
-  margin-bottom: 16px;
-  font-size: 16px;
-}
-
-.footer-section p {
-  opacity: 0.8;
-  font-size: 14px;
-  line-height: 1.6;
-}
-
-.footer-links {
-  list-style: none;
-  padding: 0;
-}
-
-.footer-links li {
-  margin-bottom: 8px;
-}
-
-.footer-links a {
-  color: rgba(255,255,255,0.8);
-  text-decoration: none;
-  transition: color 0.2s;
-}
-
-.footer-links a:hover {
-  color: white;
-}
-
-.social-links {
-  display: flex;
-  gap: 12px;
-}
-
-.social-icon {
-  width: 40px;
-  height: 40px;
-  background: rgba(255,255,255,0.1);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  color: white;
-  transition: all 0.2s;
-}
-
-.social-icon:hover {
-  background: var(--purple-primary);
-  transform: translateY(-2px);
-}
-
-.footer-bottom {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding-top: 24px;
-  border-top: 1px solid rgba(255,255,255,0.1);
-  text-align: center;
-  font-size: 14px;
-  opacity: 0.7;
-}
-
-/* Responsive */
 @media (max-width: 768px) {
-  .nav-menu {
-    display: none;
-  }
-  
-  .posts-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .category-hero {
-    padding: 48px 24px;
-  }
-  
-  .category-stats {
-    gap: 20px;
-  }
+  .nav-menu { display: none; }
+  .mobile-menu-btn { display: block; }
+  .search-input { width: 160px; }
+  .posts-grid { grid-template-columns: 1fr; }
+  .category-hero { padding: 48px 24px; }
+  .category-stats { gap: 24px; }
+  .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+  .footer-bottom { flex-direction: column; text-align: center; }
 }
 </style>
 </head>
-
 <body>
 
-<!-- NAVIGATION -->
+<!-- NAVBAR -->
 <nav class="navbar">
   <div class="nav-container">
-    <a href="/" aria-label="Wow Glam Decor Homepage">
-      <img src="/content/images/logo.jpg" alt="Wow Glam Decor Logo" class="logo">
-    </a>
+    <a href="/"><img src="/content/images/logo.jpg" alt="Wow Glam Decor" class="logo"></a>
+
+    <div class="search-box">
+      <input type="text" id="searchInput" class="search-input" placeholder="Search articles...">
+      <button class="search-btn" onclick="performSearch()">🔍</button>
+    </div>
+
     <div class="nav-menu">
-  <a href="/index.html" class="nav-link">Home</a>
-  <a href="/blog.html" class="nav-link">Blog</a>
-  <a href="/category/living-room.html" class="nav-link">Living Room</a>
-  <a href="/category/bedroom.html" class="nav-link">Bedroom</a>
-  <a href="/category/best-of-lists.html" class="nav-link nav-cta">Best Of Lists</a>
-  <a href="/about.html" class="nav-link">About</a>
-</div>
+      <a href="/index.html" class="nav-link">Home</a>
+      <a href="/blog.html" class="nav-link">Blog</a>
+      <a href="/category/living-room.html" class="nav-link">Living Room</a>
+      <a href="/category/bedroom.html" class="nav-link">Bedroom</a>
+      <a href="/category/best-of-lists.html" class="nav-link">Best Of Lists</a>
+      <a href="/about.html" class="nav-link">About</a>
+    </div>
+
+    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+  </div>
+</nav>
 
 <!-- HERO -->
 <header class="category-hero">
@@ -423,6 +353,15 @@ footer {
     </div>
   </div>
 </header>
+
+<!-- BREADCRUMB -->
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <a href="/">Home</a>
+  <span>›</span>
+  <a href="/blog.html">Blog</a>
+  <span>›</span>
+  <span>Living Room</span>
+</nav>
 
 <!-- POSTS -->
 <div class="container">
@@ -446,48 +385,75 @@ footer {
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-content">
-    
-    <div class="footer-section">
-      <h3>Wow Glam Decor</h3>
-      <p>Transform your space with stunning interior design ideas, tips, and curated product recommendations.</p>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <img src="/content/images/logo.jpg" alt="Wow Glam Decor" class="footer-logo">
+      <p>Your trusted source for home decor inspiration, honest product reviews, and curated recommendations for every style and budget.</p>
+      <div class="social-row">
+        <a href="#" class="social-btn">📘</a>
+        <a href="#" class="social-btn">📷</a>
+        <a href="#" class="social-btn">🐦</a>
+        <a href="#" class="social-btn">📌</a>
+      </div>
     </div>
-    
-    <div class="footer-section">
-      <h4>Quick Links</h4>
-      <ul class="footer-links">
-        <li><a href="/blog.html">Blog</a></li>
-        <li><a href="/about.html">About</a></li>
-        <li><a href="/contact.html">Contact</a></li>
-        <li><a href="/affiliate-disclosure.html">Affiliate Disclosure</a></li>
-      </ul>
-    </div>
-    
-    <div class="footer-section">
-      <h4>Popular Categories</h4>
+    <div class="footer-col">
+      <h4>Shop By Room</h4>
       <ul class="footer-links">
         <li><a href="/category/living-room.html">Living Room</a></li>
         <li><a href="/category/bedroom.html">Bedroom</a></li>
         <li><a href="/category/kitchen.html">Kitchen</a></li>
-        <li><a href="/category/modern-style.html">Modern Style</a></li>
+        <li><a href="/category/bathroom.html">Bathroom</a></li>
+        <li><a href="/category/home-office.html">Home Office</a></li>
       </ul>
     </div>
-    
-    <div class="footer-section">
-      <h4>Follow Us</h4>
-      <div class="social-links">
-        <a href="#" class="social-icon">📘</a>
-        <a href="#" class="social-icon">📷</a>
-        <a href="#" class="social-icon">🐦</a>
-      </div>
+    <div class="footer-col">
+      <h4>Buying Guides</h4>
+      <ul class="footer-links">
+        <li><a href="/category/best-of-lists.html">Best Of Lists</a></li>
+        <li><a href="/category/product-reviews.html">Reviews</a></li>
+        <li><a href="/category/budget-furniture.html">Budget Picks</a></li>
+        <li><a href="/category/comparisons.html">Comparisons</a></li>
+      </ul>
     </div>
-    
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul class="footer-links">
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+        <li><a href="/affiliate-disclosure.html">Disclosure</a></li>
+        <li><a href="/sitemap.xml">Sitemap</a></li>
+        <li><a href="/feed.xml">RSS</a></li>
+      </ul>
+    </div>
   </div>
-  
   <div class="footer-bottom">
     <p>&copy; 2026 Wow Glam Decor. All rights reserved.</p>
+    <div class="footer-legal">
+      <a href="/privacy-policy.html">Privacy</a>
+      <a href="/affiliate-disclosure.html">Disclosure</a>
+    </div>
   </div>
 </footer>
 
+<script>
+function performSearch() {
+  const query = document.getElementById('searchInput').value.trim();
+  if (query) window.location.href = `/search.html?q=${encodeURIComponent(query)}`;
+}
+document.getElementById('searchInput').addEventListener('keypress', e => {
+  if (e.key === 'Enter') performSearch();
+});
+function toggleMobileMenu() {
+  const menu = document.querySelector('.nav-menu');
+  menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+}
+// Highlight active category in nav
+(function() {
+  const path = window.location.pathname;
+  document.querySelectorAll('.nav-link').forEach(link => {
+    if (link.getAttribute('href') === path) link.classList.add('active');
+  });
+})();
+</script>
 </body>
 </html>
