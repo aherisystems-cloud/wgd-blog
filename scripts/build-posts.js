@@ -6,6 +6,7 @@ const { marked } = require('marked');
 const POSTS_DIR = path.join(__dirname, '../content/posts');
 const OUTPUT_DIR = path.join(__dirname, '../posts');
 const TEMPLATE_PATH = path.join(__dirname, '../templates/post-template.html');
+const POSTS_JSON_PATH = path.join(__dirname, '../posts.json');
 
 // Ensure output directory exists
 if (!fs.existsSync(OUTPUT_DIR)) {
@@ -74,6 +75,9 @@ const mdFiles = fs.readdirSync(POSTS_DIR)
 
 console.log(`📝 Found ${mdFiles.length} posts to build...\n`);
 
+// Array to store post metadata for posts.json
+const postsMetadata = [];
+
 mdFiles.forEach(file => {
   const filePath = path.join(POSTS_DIR, file);
   const fileContent = fs.readFileSync(filePath, 'utf8');
@@ -115,11 +119,15 @@ mdFiles.forEach(file => {
     .map(t => `<a href="/tag/${t.toLowerCase().replace(/\s+/g, '-')}.html" class="tag">${t}</a>`)
     .join('\n        ');
   
+  // Create excerpt from content (first 160 characters, strip HTML)
+  const excerpt = frontmatter.description || 
+                  content.replace(/[#*_\[\]]/g, '').substring(0, 160).trim() + '...';
+  
   // Replace placeholders in template
   let html = template
     .replace(/\{\{TITLE\}\}/g, frontmatter.title || 'Untitled Post')
     .replace(/\{\{SEO_TITLE\}\}/g, frontmatter.seo_title || frontmatter.title || 'Untitled Post')
-    .replace(/\{\{SEO_DESCRIPTION\}\}/g, frontmatter.description || frontmatter.excerpt || '')
+    .replace(/\{\{SEO_DESCRIPTION\}\}/g, frontmatter.description || excerpt)
     .replace(/\{\{SLUG\}\}/g, frontmatter.slug)
     .replace(/\{\{CATEGORY\}\}/g, primaryCategory)
     .replace(/\{\{CATEGORY_SLUG\}\}/g, categorySlug)
@@ -142,6 +150,37 @@ mdFiles.forEach(file => {
   fs.writeFileSync(outputPath, html, 'utf8');
   
   console.log(`✅ Built: ${frontmatter.slug}.html (${readTime} min read, ${wordCount} words)`);
+  
+  // Add to posts metadata for posts.json (for search functionality)
+  postsMetadata.push({
+    title: frontmatter.title || 'Untitled Post',
+    slug: frontmatter.slug,
+    url: `/posts/${frontmatter.slug}.html`,
+    description: excerpt,
+    excerpt: excerpt,
+    category: primaryCategory,
+    categorySlug: categorySlug,
+    categories: frontmatter.categories || [primaryCategory],
+    tags: frontmatter.tags || [],
+    featured_image: frontmatter.featured_image || '/content/images/default.jpg',
+    date: publishDate.toISOString(),
+    dateFormatted: formattedDate,
+    readTime: readTime,
+    wordCount: wordCount,
+    author: frontmatter.author_name || 'Wow Glam Decor Team',
+    // Full content for search (strip HTML tags)
+    content: content.substring(0, 500) // First 500 chars for search preview
+  });
 });
 
-console.log(`\n✨ Build complete! Generated ${mdFiles.length} posts.`);
+// Generate posts.json for search functionality
+console.log('\n📦 Generating posts.json for search...');
+fs.writeFileSync(POSTS_JSON_PATH, JSON.stringify(postsMetadata, null, 2), 'utf8');
+console.log(`✅ Created posts.json with ${postsMetadata.length} posts`);
+
+// Generate a summary
+console.log(`\n✨ Build complete!`);
+console.log(`   📄 Generated ${mdFiles.length} HTML files`);
+console.log(`   🔍 Created posts.json for search`);
+console.log(`   📊 Total words: ${postsMetadata.reduce((sum, p) => sum + p.wordCount, 0).toLocaleString()}`);
+console.log(`   ⏱️  Average read time: ${Math.round(postsMetadata.reduce((sum, p) => sum + p.readTime, 0) / postsMetadata.length)} minutes`);
