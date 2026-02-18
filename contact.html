@@ -85,17 +85,160 @@ footer p{opacity:0.55;font-size:13px}
 </style>
 </head>
 <body>
+
 <nav class="navbar">
   <div class="nav-container">
     <a href="/"><img src="/content/images/logo.jpg" alt="Wow Glam Decor" class="logo"></a>
+    
+    <!-- AUTO-SUGGEST SEARCH -->
+    <div class="search-box">
+      <input 
+        type="text" 
+        id="searchInput" 
+        class="search-input" 
+        placeholder="Search articles, rooms, styles..."
+        autocomplete="off"
+      >
+      <button class="search-btn" onclick="performSearch()" aria-label="Search">🔍</button>
+      
+      <!-- Suggestions dropdown -->
+      <div class="search-suggestions" id="searchSuggestions"></div>
+    </div>
+    
     <div class="nav-menu">
       <a href="/" class="nav-link">Home</a>
       <a href="/blog.html" class="nav-link">Blog</a>
-      <a href="/category/living-room.html" class="nav-link">Living Room</a>
-      <a href="/category/bedroom.html" class="nav-link">Bedroom</a>
-      <a href="/category/best-of-lists.html" class="nav-link nav-cta">Best Of Lists</a>
+      
+      <!-- MEGA MENU: Rooms -->
+      <div class="mega-menu-wrapper">
+        <span class="nav-link mega-menu-trigger">Rooms</span>
+        <div class="mega-menu">
+          <div class="mega-menu-grid">
+            <div class="mega-menu-section">
+              <h4>Living Spaces</h4>
+              <ul class="mega-menu-links">
+                <li><a href="/category/living-room.html"><span class="icon">🛋️</span>Living Room</a></li>
+                <li><a href="/category/bedroom.html"><span class="icon">🛏️</span>Bedroom</a></li>
+                <li><a href="/category/dining-room.html"><span class="icon">🍽️</span>Dining Room</a></li>
+                <li><a href="/category/home-office.html"><span class="icon">💻</span>Home Office</a></li>
+              </ul>
+            </div>
+            <div class="mega-menu-section">
+              <h4>Functional Rooms</h4>
+              <ul class="mega-menu-links">
+                <li><a href="/category/kitchen.html"><span class="icon">🍳</span>Kitchen</a></li>
+                <li><a href="/category/bathroom.html"><span class="icon">🚿</span>Bathroom</a></li>
+                <li><a href="/category/laundry-room.html"><span class="icon">🧺</span>Laundry Room</a></li>
+                <li><a href="/category/entryway-hallway.html"><span class="icon">🚪</span>Entryway & Hallway</a></li>
+              </ul>
+            </div>
+            <div class="mega-menu-section">
+              <h4>Special Spaces</h4>
+              <ul class="mega-menu-links">
+                <li><a href="/category/kids-room-nursery.html"><span class="icon">🧸</span>Kids Room & Nursery</a></li>
+                <li><a href="/category/outdoor-patio.html"><span class="icon">🌿</span>Outdoor & Patio</a></li>
+                <li><a href="/category/balcony-small-spaces.html"><span class="icon">🪴</span>Balcony & Small Spaces</a></li>
+              </ul>
+            </div>
+            <div class="mega-menu-section">
+              <h4>Popular Guides</h4>
+              <ul class="mega-menu-links">
+                <li><a href="/category/small-space-storage.html"><span class="icon">📦</span>Small Space Storage</a></li>
+                <li><a href="/category/rental-friendly-decor.html"><span class="icon">🔑</span>Rental-Friendly</a></li>
+                <li><a href="/category/home-makeovers.html"><span class="icon">✨</span>Home Makeovers</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- MEGA MENU: Styles -->
+      <div class="mega-menu-wrapper">
+        <span class="nav-link mega-menu-trigger">Styles</span>
+        <div class="mega-menu">
+          <div class="mega-menu-grid">
+            <div class="mega-menu-section">
+              <h4>Modern Styles</h4>
+              <ul class="mega-menu-links">
+                <li><a href="/category/modern-style.html"><span class="icon">🏙️</span>Modern</a></li>
+                <li><a href="/category/minimalist-style.html"><span class="icon">◻️</span>Minimalist</a></li>
+                <li><a href="/category/scandinavian-style.html"><span class="icon">🌿</span>Scandinavian</a></li>
+                <li><a href="/category/industrial-style.html"><span class="icon">🏭</span>Industrial</a></li>
+              </ul>
+            </div>
+            <div class="mega-menu-section">
+              <h4>Classic Styles</h4>
+              <ul class="mega-menu-links">
+                <li><a href="/category/traditional-classic.html"><span class="icon">🏛️</span>Traditional & Classic</a></li>
+                <li><a href="/category/luxury-glam-decor.html"><span class="icon">👑</span>Luxury & Glam</a></li>
+                <li><a href="/category/boho-rustic-decor.html"><span class="icon">🌻</span>Boho & Rustic</a></li>
+              </ul>
+            </div>
+            <div class="mega-menu-section">
+              <h4>Decor Elements</h4>
+              <ul class="mega-menu-links">
+                <li><a href="/category/wall-decor.html"><span class="icon">🖼️</span>Wall Decor</a></li>
+                <li><a href="/category/lighting-lamps.html"><span class="icon">💡</span>Lighting & Lamps</a></li>
+                <li><a href="/category/rugs-carpets.html"><span class="icon">🟫</span>Rugs & Carpets</a></li>
+                <li><a href="/category/plants-planters.html"><span class="icon">🪴</span>Plants & Planters</a></li>
+              </ul>
+            </div>
+            <div class="mega-menu-section">
+              <h4>Seasonal</h4>
+              <ul class="mega-menu-links">
+                <li><a href="/category/seasonal-decor.html"><span class="icon">🍂</span>Seasonal Decor</a></li>
+                <li><a href="/category/holiday-decor.html"><span class="icon">🎄</span>Holiday Decor</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- MEGA MENU: Buying Guides -->
+      <div class="mega-menu-wrapper">
+        <span class="nav-link mega-menu-trigger">Buying Guides</span>
+        <div class="mega-menu">
+          <div class="mega-menu-grid">
+            <div class="mega-menu-section">
+              <h4>By Budget</h4>
+              <ul class="mega-menu-links">
+                <li><a href="/category/budget-furniture.html"><span class="icon">💰</span>Budget Furniture</a></li>
+                <li><a href="/category/luxury-furniture.html"><span class="icon">💎</span>Luxury Furniture</a></li>
+                <li><a href="/category/budget-gift-ideas.html"><span class="icon">🎁</span>Budget Gifts</a></li>
+                <li><a href="/category/luxury-home-gifts.html"><span class="icon">✨</span>Luxury Gifts</a></li>
+              </ul>
+            </div>
+            <div class="mega-menu-section">
+              <h4>By Type</h4>
+              <ul class="mega-menu-links">
+                <li><a href="/category/space-saving-furniture.html"><span class="icon">📐</span>Space-Saving</a></li>
+                <li><a href="/category/multifunctional-furniture.html"><span class="icon">🔄</span>Multifunctional</a></li>
+                <li><a href="/category/furniture-buying-guides.html"><span class="icon">📖</span>Buying Guides</a></li>
+              </ul>
+            </div>
+            <div class="mega-menu-section">
+              <h4>Reviews & Lists</h4>
+              <ul class="mega-menu-links">
+                <li><a href="/category/best-of-lists.html"><span class="icon">🏆</span>Best Of Lists</a></li>
+                <li><a href="/category/product-reviews.html"><span class="icon">⭐</span>Product Reviews</a></li>
+                <li><a href="/category/comparisons.html"><span class="icon">⚖️</span>Comparisons</a></li>
+              </ul>
+            </div>
+            <div class="mega-menu-section">
+              <h4>Gift Ideas</h4>
+              <ul class="mega-menu-links">
+                <li><a href="/category/home-gift-ideas.html"><span class="icon">🎁</span>Home Gift Ideas</a></li>
+                <li><a href="/category/housewarming-gifts.html"><span class="icon">🏡</span>Housewarming</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      
       <a href="/about.html" class="nav-link">About</a>
     </div>
+    
+    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
   </div>
 </nav>
 <header class="hero">
