@@ -357,20 +357,251 @@ footer { background:var(--gray-900); color:#fff; padding:64px 24px 24px; }
 <body>
 
 <!-- NAVIGATION -->
+<!-- ═══════════════════════════════════
+   MEGA MENU NAVIGATION
+   Copy this entire block into all templates
+═══════════════════════════════════ -->
+
+<style>
+/* Mega Menu Specific Styles */
+.mega-menu-wrapper { position: relative; }
+.mega-menu-trigger {
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.mega-menu-trigger::after {
+  content: '▾';
+  font-size: 10px;
+  transition: transform 0.2s;
+}
+.mega-menu-trigger:hover::after { transform: rotate(180deg); }
+
+.mega-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100vw;
+  max-width: 1200px;
+  background: #fff;
+  box-shadow: 0 12px 48px rgba(126,8,130,0.18);
+  border-radius: 0 0 16px 16px;
+  padding: 32px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+  z-index: 999;
+  margin-left: -100px;
+}
+.mega-menu-wrapper:hover .mega-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.mega-menu-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+}
+.mega-menu-section h4 {
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--brand);
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--brand-pale);
+}
+.mega-menu-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.mega-menu-links li a {
+  color: var(--gray-800);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 6px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+.mega-menu-links li a:hover {
+  color: var(--brand);
+  padding-left: 8px;
+}
+.mega-menu-links .icon {
+  font-size: 16px;
+  width: 20px;
+  text-align: center;
+}
+
+/* Mobile: hide mega menu, show simple links */
+@media (max-width: 1024px) {
+  .mega-menu-wrapper { display: none; }
+}
+</style>
+
 <nav class="navbar">
   <div class="nav-container">
     <a href="/"><img src="/content/images/logo.jpg" alt="Wow Glam Decor" class="logo"></a>
+    
     <div class="nav-menu">
       <a href="/" class="nav-link">Home</a>
       <a href="/blog.html" class="nav-link">Blog</a>
-      <a href="/category/living-room.html" class="nav-link">Living Room</a>
-      <a href="/category/bedroom.html" class="nav-link">Bedroom</a>
-      <a href="/category/best-of-lists.html" class="nav-link nav-cta">Best Of Lists</a>
+      
+      <!-- MEGA MENU: Rooms -->
+      <div class="mega-menu-wrapper">
+        <span class="nav-link mega-menu-trigger">Rooms</span>
+        <div class="mega-menu">
+          <div class="mega-menu-grid">
+            
+            <div class="mega-menu-section">
+              <h4>Living Spaces</h4>
+              <ul class="mega-menu-links">
+                <li><a href="/category/living-room.html"><span class="icon">🛋️</span>Living Room</a></li>
+                <li><a href="/category/bedroom.html"><span class="icon">🛏️</span>Bedroom</a></li>
+                <li><a href="/category/dining-room.html"><span class="icon">🍽️</span>Dining Room</a></li>
+                <li><a href="/category/home-office.html"><span class="icon">💻</span>Home Office</a></li>
+              </ul>
+            </div>
+            
+            <div class="mega-menu-section">
+              <h4>Functional Rooms</h4>
+              <ul class="mega-menu-links">
+                <li><a href="/category/kitchen.html"><span class="icon">🍳</span>Kitchen</a></li>
+                <li><a href="/category/bathroom.html"><span class="icon">🚿</span>Bathroom</a></li>
+                <li><a href="/category/laundry-room.html"><span class="icon">🧺</span>Laundry Room</a></li>
+                <li><a href="/category/entryway-hallway.html"><span class="icon">🚪</span>Entryway & Hallway</a></li>
+              </ul>
+            </div>
+            
+            <div class="mega-menu-section">
+              <h4>Special Spaces</h4>
+              <ul class="mega-menu-links">
+                <li><a href="/category/kids-room-nursery.html"><span class="icon">🧸</span>Kids Room & Nursery</a></li>
+                <li><a href="/category/outdoor-patio.html"><span class="icon">🌿</span>Outdoor & Patio</a></li>
+                <li><a href="/category/balcony-small-spaces.html"><span class="icon">🪴</span>Balcony & Small Spaces</a></li>
+              </ul>
+            </div>
+            
+            <div class="mega-menu-section">
+              <h4>Popular Guides</h4>
+              <ul class="mega-menu-links">
+                <li><a href="/category/small-space-storage.html"><span class="icon">📦</span>Small Space Storage</a></li>
+                <li><a href="/category/rental-friendly-decor.html"><span class="icon">🔑</span>Rental-Friendly</a></li>
+                <li><a href="/category/home-makeovers.html"><span class="icon">✨</span>Home Makeovers</a></li>
+              </ul>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+      
+      <!-- MEGA MENU: Styles -->
+      <div class="mega-menu-wrapper">
+        <span class="nav-link mega-menu-trigger">Styles</span>
+        <div class="mega-menu">
+          <div class="mega-menu-grid">
+            
+            <div class="mega-menu-section">
+              <h4>Modern Styles</h4>
+              <ul class="mega-menu-links">
+                <li><a href="/category/modern-style.html"><span class="icon">🏙️</span>Modern</a></li>
+                <li><a href="/category/minimalist-style.html"><span class="icon">◻️</span>Minimalist</a></li>
+                <li><a href="/category/scandinavian-style.html"><span class="icon">🌿</span>Scandinavian</a></li>
+                <li><a href="/category/industrial-style.html"><span class="icon">🏭</span>Industrial</a></li>
+              </ul>
+            </div>
+            
+            <div class="mega-menu-section">
+              <h4>Classic Styles</h4>
+              <ul class="mega-menu-links">
+                <li><a href="/category/traditional-classic.html"><span class="icon">🏛️</span>Traditional & Classic</a></li>
+                <li><a href="/category/luxury-glam-decor.html"><span class="icon">👑</span>Luxury & Glam</a></li>
+                <li><a href="/category/boho-rustic-decor.html"><span class="icon">🌻</span>Boho & Rustic</a></li>
+              </ul>
+            </div>
+            
+            <div class="mega-menu-section">
+              <h4>Decor Elements</h4>
+              <ul class="mega-menu-links">
+                <li><a href="/category/wall-decor.html"><span class="icon">🖼️</span>Wall Decor</a></li>
+                <li><a href="/category/lighting-lamps.html"><span class="icon">💡</span>Lighting & Lamps</a></li>
+                <li><a href="/category/rugs-carpets.html"><span class="icon">🟫</span>Rugs & Carpets</a></li>
+                <li><a href="/category/plants-planters.html"><span class="icon">🪴</span>Plants & Planters</a></li>
+              </ul>
+            </div>
+            
+            <div class="mega-menu-section">
+              <h4>Seasonal</h4>
+              <ul class="mega-menu-links">
+                <li><a href="/category/seasonal-decor.html"><span class="icon">🍂</span>Seasonal Decor</a></li>
+                <li><a href="/category/holiday-decor.html"><span class="icon">🎄</span>Holiday Decor</a></li>
+              </ul>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+      
+      <!-- MEGA MENU: Buying Guides -->
+      <div class="mega-menu-wrapper">
+        <span class="nav-link mega-menu-trigger">Buying Guides</span>
+        <div class="mega-menu">
+          <div class="mega-menu-grid">
+            
+            <div class="mega-menu-section">
+              <h4>By Budget</h4>
+              <ul class="mega-menu-links">
+                <li><a href="/category/budget-furniture.html"><span class="icon">💰</span>Budget Furniture</a></li>
+                <li><a href="/category/luxury-furniture.html"><span class="icon">💎</span>Luxury Furniture</a></li>
+                <li><a href="/category/budget-gift-ideas.html"><span class="icon">🎁</span>Budget Gifts</a></li>
+                <li><a href="/category/luxury-home-gifts.html"><span class="icon">✨</span>Luxury Gifts</a></li>
+              </ul>
+            </div>
+            
+            <div class="mega-menu-section">
+              <h4>By Type</h4>
+              <ul class="mega-menu-links">
+                <li><a href="/category/space-saving-furniture.html"><span class="icon">📐</span>Space-Saving</a></li>
+                <li><a href="/category/multifunctional-furniture.html"><span class="icon">🔄</span>Multifunctional</a></li>
+                <li><a href="/category/furniture-buying-guides.html"><span class="icon">📖</span>Buying Guides</a></li>
+              </ul>
+            </div>
+            
+            <div class="mega-menu-section">
+              <h4>Reviews & Lists</h4>
+              <ul class="mega-menu-links">
+                <li><a href="/category/best-of-lists.html"><span class="icon">🏆</span>Best Of Lists</a></li>
+                <li><a href="/category/product-reviews.html"><span class="icon">⭐</span>Product Reviews</a></li>
+                <li><a href="/category/comparisons.html"><span class="icon">⚖️</span>Comparisons</a></li>
+              </ul>
+            </div>
+            
+            <div class="mega-menu-section">
+              <h4>Gift Ideas</h4>
+              <ul class="mega-menu-links">
+                <li><a href="/category/home-gift-ideas.html"><span class="icon">🎁</span>Home Gift Ideas</a></li>
+                <li><a href="/category/housewarming-gifts.html"><span class="icon">🏡</span>Housewarming</a></li>
+              </ul>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+      
       <a href="/about.html" class="nav-link">About</a>
     </div>
   </div>
 </nav>
-
 <!-- AFFILIATE DISCLOSURE -->
 <div class="disclosure-bar">
   💡 <strong>Disclosure:</strong> This site contains affiliate links. We may earn a small commission at no extra cost to you. <a href="/affiliate-disclosure.html">Learn more</a>
