@@ -454,6 +454,314 @@ footer { background:var(--gray-900); color:#fff; padding:56px 24px 24px; margin-
   .footer-grid { grid-template-columns:1fr; }
   .footer-bottom { flex-direction:column; text-align:center; }
 }
+  
+<style>
+/* ═══ SEARCH WITH AUTO-SUGGEST ═══ */
+.search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+}
+.search-input {
+  width: 280px;
+  padding: 10px 40px 10px 16px;
+  border: 2px solid var(--gray-200);
+  border-radius: 24px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+  background: var(--gray-100);
+}
+.search-input:focus {
+  outline: none;
+  border-color: var(--brand);
+  background: #fff;
+  width: 360px;
+  box-shadow: 0 4px 16px rgba(126,8,130,0.15);
+  border-radius: 24px 24px 0 0;
+}
+.search-input.has-results:focus {
+  border-radius: 24px 24px 0 0;
+}
+.search-input::placeholder {
+  color: var(--gray-600);
+  font-weight: 500;
+}
+.search-btn {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  color: var(--gray-600);
+  padding: 6px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+.search-btn:hover {
+  color: var(--brand);
+  transform: scale(1.1);
+}
+
+/* Auto-suggest dropdown */
+.search-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 2px solid var(--brand);
+  border-top: none;
+  border-radius: 0 0 16px 16px;
+  box-shadow: 0 12px 32px rgba(126,8,130,0.18);
+  max-height: 420px;
+  overflow-y: auto;
+  z-index: 999;
+  display: none;
+}
+.search-suggestions.active {
+  display: block;
+}
+
+.suggestion-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-bottom: 1px solid var(--gray-100);
+}
+.suggestion-item:last-child {
+  border-bottom: none;
+}
+.suggestion-item:hover,
+.suggestion-item.selected {
+  background: var(--brand-pale);
+}
+.suggestion-thumb {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: var(--gray-100);
+}
+.suggestion-content {
+  flex: 1;
+  min-width: 0;
+}
+.suggestion-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--gray-900);
+  margin-bottom: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.suggestion-meta {
+  font-size: 12px;
+  color: var(--gray-600);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.suggestion-category {
+  background: var(--brand-pale);
+  color: var(--brand);
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 11px;
+}
+
+.search-footer {
+  padding: 12px 16px;
+  background: var(--gray-100);
+  text-align: center;
+  border-radius: 0 0 14px 14px;
+}
+.search-footer a {
+  color: var(--brand);
+  font-weight: 700;
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: gap 0.2s;
+}
+.search-footer a:hover {
+  gap: 10px;
+}
+
+.no-results {
+  padding: 32px 16px;
+  text-align: center;
+  color: var(--gray-600);
+}
+.no-results-icon {
+  font-size: 2.5rem;
+  margin-bottom: 8px;
+  opacity: 0.3;
+}
+.no-results p {
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+.popular-searches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  margin-top: 12px;
+}
+.popular-tag {
+  background: var(--brand-pale);
+  color: var(--brand);
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.popular-tag:hover {
+  background: var(--brand);
+  color: #fff;
+}
+
+/* Highlight matched text */
+.highlight {
+  background: rgba(126,8,130,0.15);
+  font-weight: 800;
+  color: var(--brand);
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
+/* Loading state */
+.search-loading {
+  padding: 24px;
+  text-align: center;
+  color: var(--gray-600);
+  font-size: 14px;
+}
+.loading-dots {
+  display: inline-flex;
+  gap: 4px;
+  margin-left: 8px;
+}
+.loading-dots span {
+  width: 6px;
+  height: 6px;
+  background: var(--brand);
+  border-radius: 50%;
+  animation: bounce 1.2s infinite;
+}
+.loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+.loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes bounce {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+  40% { transform: scale(1); opacity: 1; }
+}
+
+/* ═══ MEGA MENU STYLES ═══ */
+.mega-menu-wrapper { position: relative; }
+.mega-menu-trigger {
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.mega-menu-trigger::after {
+  content: '▾';
+  font-size: 10px;
+  transition: transform 0.2s;
+}
+.mega-menu-trigger:hover::after { transform: rotate(180deg); }
+
+.mega-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100vw;
+  max-width: 1200px;
+  background: #fff;
+  box-shadow: 0 12px 48px rgba(126,8,130,0.18);
+  border-radius: 0 0 16px 16px;
+  padding: 32px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+  z-index: 999;
+  margin-left: -100px;
+}
+.mega-menu-wrapper:hover .mega-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.mega-menu-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+}
+.mega-menu-section h4 {
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--brand);
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--brand-pale);
+}
+.mega-menu-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.mega-menu-links li a {
+  color: var(--gray-800);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 6px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+.mega-menu-links li a:hover {
+  color: var(--brand);
+  padding-left: 8px;
+}
+.mega-menu-links .icon {
+  font-size: 16px;
+  width: 20px;
+  text-align: center;
+}
+
+/* Mobile responsive */
+@media (max-width: 1024px) {
+  .mega-menu-wrapper { display: none; }
+  .search-box { margin-right: 8px; }
+  .search-input { width: 200px; }
+  .search-input:focus { width: 260px; }
+}
+@media (max-width: 768px) {
+  .search-box { display: none; }
+}
 </style>
 </head>
 <body>
@@ -462,29 +770,162 @@ footer { background:var(--gray-900); color:#fff; padding:56px 24px 24px; margin-
 <div class="progress-bar" id="progressBar"></div>
 
 <!-- NAVIGATION -->
+
 <nav class="navbar">
   <div class="nav-container">
     <a href="/"><img src="/content/images/logo.jpg" alt="Wow Glam Decor" class="logo"></a>
     
-    <!-- Search Box -->
+    <!-- AUTO-SUGGEST SEARCH -->
     <div class="search-box">
-      <input type="text" id="searchInput" class="search-input" placeholder="Search articles...">
-      <button class="search-btn" onclick="performSearch()">🔍</button>
+      <input 
+        type="text" 
+        id="searchInput" 
+        class="search-input" 
+        placeholder="Search articles, rooms, styles..."
+        autocomplete="off"
+      >
+      <button class="search-btn" onclick="performSearch()" aria-label="Search">🔍</button>
+      
+      <!-- Suggestions dropdown -->
+      <div class="search-suggestions" id="searchSuggestions"></div>
     </div>
     
     <div class="nav-menu">
       <a href="/" class="nav-link">Home</a>
       <a href="/blog.html" class="nav-link">Blog</a>
-      <a href="/category/living-room.html" class="nav-link">Living Room</a>
-      <a href="/category/bedroom.html" class="nav-link">Bedroom</a>
-      <a href="/category/best-of-lists.html" class="nav-link">Best Of Lists</a>
+      
+      <!-- MEGA MENU: Rooms -->
+      <div class="mega-menu-wrapper">
+        <span class="nav-link mega-menu-trigger">Rooms</span>
+        <div class="mega-menu">
+          <div class="mega-menu-grid">
+            <div class="mega-menu-section">
+              <h4>Living Spaces</h4>
+              <ul class="mega-menu-links">
+                <li><a href="/category/living-room.html"><span class="icon">🛋️</span>Living Room</a></li>
+                <li><a href="/category/bedroom.html"><span class="icon">🛏️</span>Bedroom</a></li>
+                <li><a href="/category/dining-room.html"><span class="icon">🍽️</span>Dining Room</a></li>
+                <li><a href="/category/home-office.html"><span class="icon">💻</span>Home Office</a></li>
+              </ul>
+            </div>
+            <div class="mega-menu-section">
+              <h4>Functional Rooms</h4>
+              <ul class="mega-menu-links">
+                <li><a href="/category/kitchen.html"><span class="icon">🍳</span>Kitchen</a></li>
+                <li><a href="/category/bathroom.html"><span class="icon">🚿</span>Bathroom</a></li>
+                <li><a href="/category/laundry-room.html"><span class="icon">🧺</span>Laundry Room</a></li>
+                <li><a href="/category/entryway-hallway.html"><span class="icon">🚪</span>Entryway & Hallway</a></li>
+              </ul>
+            </div>
+            <div class="mega-menu-section">
+              <h4>Special Spaces</h4>
+              <ul class="mega-menu-links">
+                <li><a href="/category/kids-room-nursery.html"><span class="icon">🧸</span>Kids Room & Nursery</a></li>
+                <li><a href="/category/outdoor-patio.html"><span class="icon">🌿</span>Outdoor & Patio</a></li>
+                <li><a href="/category/balcony-small-spaces.html"><span class="icon">🪴</span>Balcony & Small Spaces</a></li>
+              </ul>
+            </div>
+            <div class="mega-menu-section">
+              <h4>Popular Guides</h4>
+              <ul class="mega-menu-links">
+                <li><a href="/category/small-space-storage.html"><span class="icon">📦</span>Small Space Storage</a></li>
+                <li><a href="/category/rental-friendly-decor.html"><span class="icon">🔑</span>Rental-Friendly</a></li>
+                <li><a href="/category/home-makeovers.html"><span class="icon">✨</span>Home Makeovers</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- MEGA MENU: Styles -->
+      <div class="mega-menu-wrapper">
+        <span class="nav-link mega-menu-trigger">Styles</span>
+        <div class="mega-menu">
+          <div class="mega-menu-grid">
+            <div class="mega-menu-section">
+              <h4>Modern Styles</h4>
+              <ul class="mega-menu-links">
+                <li><a href="/category/modern-style.html"><span class="icon">🏙️</span>Modern</a></li>
+                <li><a href="/category/minimalist-style.html"><span class="icon">◻️</span>Minimalist</a></li>
+                <li><a href="/category/scandinavian-style.html"><span class="icon">🌿</span>Scandinavian</a></li>
+                <li><a href="/category/industrial-style.html"><span class="icon">🏭</span>Industrial</a></li>
+              </ul>
+            </div>
+            <div class="mega-menu-section">
+              <h4>Classic Styles</h4>
+              <ul class="mega-menu-links">
+                <li><a href="/category/traditional-classic.html"><span class="icon">🏛️</span>Traditional & Classic</a></li>
+                <li><a href="/category/luxury-glam-decor.html"><span class="icon">👑</span>Luxury & Glam</a></li>
+                <li><a href="/category/boho-rustic-decor.html"><span class="icon">🌻</span>Boho & Rustic</a></li>
+              </ul>
+            </div>
+            <div class="mega-menu-section">
+              <h4>Decor Elements</h4>
+              <ul class="mega-menu-links">
+                <li><a href="/category/wall-decor.html"><span class="icon">🖼️</span>Wall Decor</a></li>
+                <li><a href="/category/lighting-lamps.html"><span class="icon">💡</span>Lighting & Lamps</a></li>
+                <li><a href="/category/rugs-carpets.html"><span class="icon">🟫</span>Rugs & Carpets</a></li>
+                <li><a href="/category/plants-planters.html"><span class="icon">🪴</span>Plants & Planters</a></li>
+              </ul>
+            </div>
+            <div class="mega-menu-section">
+              <h4>Seasonal</h4>
+              <ul class="mega-menu-links">
+                <li><a href="/category/seasonal-decor.html"><span class="icon">🍂</span>Seasonal Decor</a></li>
+                <li><a href="/category/holiday-decor.html"><span class="icon">🎄</span>Holiday Decor</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- MEGA MENU: Buying Guides -->
+      <div class="mega-menu-wrapper">
+        <span class="nav-link mega-menu-trigger">Buying Guides</span>
+        <div class="mega-menu">
+          <div class="mega-menu-grid">
+            <div class="mega-menu-section">
+              <h4>By Budget</h4>
+              <ul class="mega-menu-links">
+                <li><a href="/category/budget-furniture.html"><span class="icon">💰</span>Budget Furniture</a></li>
+                <li><a href="/category/luxury-furniture.html"><span class="icon">💎</span>Luxury Furniture</a></li>
+                <li><a href="/category/budget-gift-ideas.html"><span class="icon">🎁</span>Budget Gifts</a></li>
+                <li><a href="/category/luxury-home-gifts.html"><span class="icon">✨</span>Luxury Gifts</a></li>
+              </ul>
+            </div>
+            <div class="mega-menu-section">
+              <h4>By Type</h4>
+              <ul class="mega-menu-links">
+                <li><a href="/category/space-saving-furniture.html"><span class="icon">📐</span>Space-Saving</a></li>
+                <li><a href="/category/multifunctional-furniture.html"><span class="icon">🔄</span>Multifunctional</a></li>
+                <li><a href="/category/furniture-buying-guides.html"><span class="icon">📖</span>Buying Guides</a></li>
+              </ul>
+            </div>
+            <div class="mega-menu-section">
+              <h4>Reviews & Lists</h4>
+              <ul class="mega-menu-links">
+                <li><a href="/category/best-of-lists.html"><span class="icon">🏆</span>Best Of Lists</a></li>
+                <li><a href="/category/product-reviews.html"><span class="icon">⭐</span>Product Reviews</a></li>
+                <li><a href="/category/comparisons.html"><span class="icon">⚖️</span>Comparisons</a></li>
+              </ul>
+            </div>
+            <div class="mega-menu-section">
+              <h4>Gift Ideas</h4>
+              <ul class="mega-menu-links">
+                <li><a href="/category/home-gift-ideas.html"><span class="icon">🎁</span>Home Gift Ideas</a></li>
+                <li><a href="/category/housewarming-gifts.html"><span class="icon">🏡</span>Housewarming</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      
       <a href="/about.html" class="nav-link">About</a>
     </div>
     
     <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
   </div>
 </nav>
-
 <!-- BREADCRUMB -->
 <nav class="breadcrumb">
   <a href="/">Home</a>
@@ -702,5 +1143,184 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 });
 </script>
 
+<script>
+(function() {
+  const searchInput = document.getElementById('searchInput');
+  const suggestionsBox = document.getElementById('searchSuggestions');
+  let searchTimeout;
+  let selectedIndex = -1;
+  let cachedPosts = null;
+
+  // Popular searches for no results state
+  const popularSearches = ['Living Room', 'Bedroom Decor', 'Budget Furniture', 'Minimalist', 'Best Of Lists'];
+
+  // Load posts data
+  async function loadPosts() {
+    if (cachedPosts) return cachedPosts;
+    try {
+      const res = await fetch('/posts.json');
+      if (res.ok) {
+        cachedPosts = await res.json();
+        return cachedPosts;
+      }
+    } catch (e) {
+      console.log('Posts data not available yet');
+    }
+    return [];
+  }
+
+  // Highlight matching text
+  function highlightText(text, query) {
+    if (!query || !text) return text;
+    const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+    return text.replace(regex, '<span class="highlight">$1</span>');
+  }
+
+  // Perform search
+  async function searchPosts(query) {
+    const posts = await loadPosts();
+    if (!posts.length) return [];
+
+    const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
+    
+    return posts
+      .map(post => {
+        const searchable = `${post.title} ${post.description || post.excerpt || ''} ${(post.tags||[]).join(' ')} ${(post.categories||[]).join(' ')}`.toLowerCase();
+        const score = terms.reduce((s, t) => s + (searchable.split(t).length - 1), 0);
+        return { ...post, score };
+      })
+      .filter(p => p.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 5); // Show top 5 results
+  }
+
+  // Render suggestions
+  function renderSuggestions(results, query) {
+    if (!results.length) {
+      suggestionsBox.innerHTML = `
+        <div class="no-results">
+          <div class="no-results-icon">🔍</div>
+          <p>No results for "<strong>${query}</strong>"</p>
+          <div class="popular-searches">
+            ${popularSearches.map(term => 
+              `<span class="popular-tag" onclick="document.getElementById('searchInput').value='${term}'; document.getElementById('searchInput').dispatchEvent(new Event('input'));">${term}</span>`
+            ).join('')}
+          </div>
+        </div>`;
+      suggestionsBox.classList.add('active');
+      return;
+    }
+
+    const html = results.map((post, idx) => {
+      const img = post.featured_image || post.image || '/content/images/default-post.jpg';
+      const cat = (post.categories && post.categories[0]) || post.category || 'Decor';
+      const readTime = post.readTime || Math.ceil((post.content || '').split(/\s+/).length / 200) || '5';
+      const url = post.url || `/posts/${post.slug}.html`;
+      
+      return `
+        <a href="${url}" class="suggestion-item" data-index="${idx}">
+          <img src="${img}" alt="${post.title}" class="suggestion-thumb" loading="lazy">
+          <div class="suggestion-content">
+            <div class="suggestion-title">${highlightText(post.title, query)}</div>
+            <div class="suggestion-meta">
+              <span class="suggestion-category">${cat}</span>
+              <span>⏱️ ${readTime} min read</span>
+            </div>
+          </div>
+        </a>`;
+    }).join('');
+
+    suggestionsBox.innerHTML = html + `
+      <div class="search-footer">
+        <a href="/search.html?q=${encodeURIComponent(query)}">View all results for "${query}" →</a>
+      </div>`;
+    
+    suggestionsBox.classList.add('active');
+    selectedIndex = -1;
+  }
+
+  // Handle input
+  searchInput.addEventListener('input', (e) => {
+    const query = e.target.value.trim();
+    
+    clearTimeout(searchTimeout);
+    
+    if (!query) {
+      suggestionsBox.classList.remove('active');
+      searchInput.classList.remove('has-results');
+      return;
+    }
+
+    if (query.length < 2) return;
+
+    suggestionsBox.innerHTML = '<div class="search-loading">Searching<div class="loading-dots"><span></span><span></span><span></span></div></div>';
+    suggestionsBox.classList.add('active');
+    searchInput.classList.add('has-results');
+
+    searchTimeout = setTimeout(async () => {
+      const results = await searchPosts(query);
+      renderSuggestions(results, query);
+    }, 300);
+  });
+
+  // Handle keyboard navigation
+  searchInput.addEventListener('keydown', (e) => {
+    const items = suggestionsBox.querySelectorAll('.suggestion-item');
+    
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      selectedIndex = Math.min(selectedIndex + 1, items.length - 1);
+      updateSelection(items);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      selectedIndex = Math.max(selectedIndex - 1, -1);
+      updateSelection(items);
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (selectedIndex >= 0 && items[selectedIndex]) {
+        items[selectedIndex].click();
+      } else {
+        performSearch();
+      }
+    } else if (e.key === 'Escape') {
+      suggestionsBox.classList.remove('active');
+      searchInput.blur();
+    }
+  });
+
+  function updateSelection(items) {
+    items.forEach((item, idx) => {
+      item.classList.toggle('selected', idx === selectedIndex);
+    });
+    if (selectedIndex >= 0 && items[selectedIndex]) {
+      items[selectedIndex].scrollIntoView({ block: 'nearest' });
+    }
+  }
+
+  // Close suggestions when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!searchInput.contains(e.target) && !suggestionsBox.contains(e.target)) {
+      suggestionsBox.classList.remove('active');
+      searchInput.classList.remove('has-results');
+    }
+  });
+
+  // Focus on "/" key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === '/' && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+      e.preventDefault();
+      searchInput.focus();
+    }
+  });
+
+  // Regular search function
+  window.performSearch = function() {
+    const query = searchInput.value.trim();
+    if (query) {
+      window.location.href = `/search.html?q=${encodeURIComponent(query)}`;
+    }
+  };
+})();
+</script>
 </body>
 </html>
