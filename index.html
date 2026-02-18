@@ -449,9 +449,25 @@ footer { background:var(--gray-900); color:#fff; padding:64px 24px 24px; }
 }
 </style>
 
+
 <nav class="navbar">
   <div class="nav-container">
     <a href="/"><img src="/content/images/logo.jpg" alt="Wow Glam Decor" class="logo"></a>
+    
+    <!-- AUTO-SUGGEST SEARCH -->
+    <div class="search-box">
+      <input 
+        type="text" 
+        id="searchInput" 
+        class="search-input" 
+        placeholder="Search articles, rooms, styles..."
+        autocomplete="off"
+      >
+      <button class="search-btn" onclick="performSearch()" aria-label="Search">🔍</button>
+      
+      <!-- Suggestions dropdown -->
+      <div class="search-suggestions" id="searchSuggestions"></div>
+    </div>
     
     <div class="nav-menu">
       <a href="/" class="nav-link">Home</a>
@@ -462,7 +478,6 @@ footer { background:var(--gray-900); color:#fff; padding:64px 24px 24px; }
         <span class="nav-link mega-menu-trigger">Rooms</span>
         <div class="mega-menu">
           <div class="mega-menu-grid">
-            
             <div class="mega-menu-section">
               <h4>Living Spaces</h4>
               <ul class="mega-menu-links">
@@ -472,7 +487,6 @@ footer { background:var(--gray-900); color:#fff; padding:64px 24px 24px; }
                 <li><a href="/category/home-office.html"><span class="icon">💻</span>Home Office</a></li>
               </ul>
             </div>
-            
             <div class="mega-menu-section">
               <h4>Functional Rooms</h4>
               <ul class="mega-menu-links">
@@ -482,7 +496,6 @@ footer { background:var(--gray-900); color:#fff; padding:64px 24px 24px; }
                 <li><a href="/category/entryway-hallway.html"><span class="icon">🚪</span>Entryway & Hallway</a></li>
               </ul>
             </div>
-            
             <div class="mega-menu-section">
               <h4>Special Spaces</h4>
               <ul class="mega-menu-links">
@@ -491,7 +504,6 @@ footer { background:var(--gray-900); color:#fff; padding:64px 24px 24px; }
                 <li><a href="/category/balcony-small-spaces.html"><span class="icon">🪴</span>Balcony & Small Spaces</a></li>
               </ul>
             </div>
-            
             <div class="mega-menu-section">
               <h4>Popular Guides</h4>
               <ul class="mega-menu-links">
@@ -500,7 +512,6 @@ footer { background:var(--gray-900); color:#fff; padding:64px 24px 24px; }
                 <li><a href="/category/home-makeovers.html"><span class="icon">✨</span>Home Makeovers</a></li>
               </ul>
             </div>
-            
           </div>
         </div>
       </div>
@@ -510,7 +521,6 @@ footer { background:var(--gray-900); color:#fff; padding:64px 24px 24px; }
         <span class="nav-link mega-menu-trigger">Styles</span>
         <div class="mega-menu">
           <div class="mega-menu-grid">
-            
             <div class="mega-menu-section">
               <h4>Modern Styles</h4>
               <ul class="mega-menu-links">
@@ -520,7 +530,6 @@ footer { background:var(--gray-900); color:#fff; padding:64px 24px 24px; }
                 <li><a href="/category/industrial-style.html"><span class="icon">🏭</span>Industrial</a></li>
               </ul>
             </div>
-            
             <div class="mega-menu-section">
               <h4>Classic Styles</h4>
               <ul class="mega-menu-links">
@@ -529,7 +538,6 @@ footer { background:var(--gray-900); color:#fff; padding:64px 24px 24px; }
                 <li><a href="/category/boho-rustic-decor.html"><span class="icon">🌻</span>Boho & Rustic</a></li>
               </ul>
             </div>
-            
             <div class="mega-menu-section">
               <h4>Decor Elements</h4>
               <ul class="mega-menu-links">
@@ -539,7 +547,6 @@ footer { background:var(--gray-900); color:#fff; padding:64px 24px 24px; }
                 <li><a href="/category/plants-planters.html"><span class="icon">🪴</span>Plants & Planters</a></li>
               </ul>
             </div>
-            
             <div class="mega-menu-section">
               <h4>Seasonal</h4>
               <ul class="mega-menu-links">
@@ -547,7 +554,6 @@ footer { background:var(--gray-900); color:#fff; padding:64px 24px 24px; }
                 <li><a href="/category/holiday-decor.html"><span class="icon">🎄</span>Holiday Decor</a></li>
               </ul>
             </div>
-            
           </div>
         </div>
       </div>
@@ -557,7 +563,6 @@ footer { background:var(--gray-900); color:#fff; padding:64px 24px 24px; }
         <span class="nav-link mega-menu-trigger">Buying Guides</span>
         <div class="mega-menu">
           <div class="mega-menu-grid">
-            
             <div class="mega-menu-section">
               <h4>By Budget</h4>
               <ul class="mega-menu-links">
@@ -567,7 +572,6 @@ footer { background:var(--gray-900); color:#fff; padding:64px 24px 24px; }
                 <li><a href="/category/luxury-home-gifts.html"><span class="icon">✨</span>Luxury Gifts</a></li>
               </ul>
             </div>
-            
             <div class="mega-menu-section">
               <h4>By Type</h4>
               <ul class="mega-menu-links">
@@ -576,7 +580,6 @@ footer { background:var(--gray-900); color:#fff; padding:64px 24px 24px; }
                 <li><a href="/category/furniture-buying-guides.html"><span class="icon">📖</span>Buying Guides</a></li>
               </ul>
             </div>
-            
             <div class="mega-menu-section">
               <h4>Reviews & Lists</h4>
               <ul class="mega-menu-links">
@@ -585,7 +588,6 @@ footer { background:var(--gray-900); color:#fff; padding:64px 24px 24px; }
                 <li><a href="/category/comparisons.html"><span class="icon">⚖️</span>Comparisons</a></li>
               </ul>
             </div>
-            
             <div class="mega-menu-section">
               <h4>Gift Ideas</h4>
               <ul class="mega-menu-links">
@@ -593,13 +595,14 @@ footer { background:var(--gray-900); color:#fff; padding:64px 24px 24px; }
                 <li><a href="/category/housewarming-gifts.html"><span class="icon">🏡</span>Housewarming</a></li>
               </ul>
             </div>
-            
           </div>
         </div>
       </div>
       
       <a href="/about.html" class="nav-link">About</a>
     </div>
+    
+    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
   </div>
 </nav>
 <!-- AFFILIATE DISCLOSURE -->
