@@ -775,5 +775,185 @@ window.addEventListener('DOMContentLoaded', () => {
   switchView(preferredView);
 });
 </script>
+
+<script>
+(function() {
+  const searchInput = document.getElementById('searchInput');
+  const suggestionsBox = document.getElementById('searchSuggestions');
+  let searchTimeout;
+  let selectedIndex = -1;
+  let cachedPosts = null;
+
+  // Popular searches for no results state
+  const popularSearches = ['Living Room', 'Bedroom Decor', 'Budget Furniture', 'Minimalist', 'Best Of Lists'];
+
+  // Load posts data
+  async function loadPosts() {
+    if (cachedPosts) return cachedPosts;
+    try {
+      const res = await fetch('/posts.json');
+      if (res.ok) {
+        cachedPosts = await res.json();
+        return cachedPosts;
+      }
+    } catch (e) {
+      console.log('Posts data not available yet');
+    }
+    return [];
+  }
+
+  // Highlight matching text
+  function highlightText(text, query) {
+    if (!query || !text) return text;
+    const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+    return text.replace(regex, '<span class="highlight">$1</span>');
+  }
+
+  // Perform search
+  async function searchPosts(query) {
+    const posts = await loadPosts();
+    if (!posts.length) return [];
+
+    const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
+    
+    return posts
+      .map(post => {
+        const searchable = `${post.title} ${post.description || post.excerpt || ''} ${(post.tags||[]).join(' ')} ${(post.categories||[]).join(' ')}`.toLowerCase();
+        const score = terms.reduce((s, t) => s + (searchable.split(t).length - 1), 0);
+        return { ...post, score };
+      })
+      .filter(p => p.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 5); // Show top 5 results
+  }
+
+  // Render suggestions
+  function renderSuggestions(results, query) {
+    if (!results.length) {
+      suggestionsBox.innerHTML = `
+        <div class="no-results">
+          <div class="no-results-icon">🔍</div>
+          <p>No results for "<strong>${query}</strong>"</p>
+          <div class="popular-searches">
+            ${popularSearches.map(term => 
+              `<span class="popular-tag" onclick="document.getElementById('searchInput').value='${term}'; document.getElementById('searchInput').dispatchEvent(new Event('input'));">${term}</span>`
+            ).join('')}
+          </div>
+        </div>`;
+      suggestionsBox.classList.add('active');
+      return;
+    }
+
+    const html = results.map((post, idx) => {
+      const img = post.featured_image || post.image || '/content/images/default-post.jpg';
+      const cat = (post.categories && post.categories[0]) || post.category || 'Decor';
+      const readTime = post.readTime || Math.ceil((post.content || '').split(/\s+/).length / 200) || '5';
+      const url = post.url || `/posts/${post.slug}.html`;
+      
+      return `
+        <a href="${url}" class="suggestion-item" data-index="${idx}">
+          <img src="${img}" alt="${post.title}" class="suggestion-thumb" loading="lazy">
+          <div class="suggestion-content">
+            <div class="suggestion-title">${highlightText(post.title, query)}</div>
+            <div class="suggestion-meta">
+              <span class="suggestion-category">${cat}</span>
+              <span>⏱️ ${readTime} min read</span>
+            </div>
+          </div>
+        </a>`;
+    }).join('');
+
+    suggestionsBox.innerHTML = html + `
+      <div class="search-footer">
+        <a href="/search.html?q=${encodeURIComponent(query)}">View all results for "${query}" →</a>
+      </div>`;
+    
+    suggestionsBox.classList.add('active');
+    selectedIndex = -1;
+  }
+
+  // Handle input
+  searchInput.addEventListener('input', (e) => {
+    const query = e.target.value.trim();
+    
+    clearTimeout(searchTimeout);
+    
+    if (!query) {
+      suggestionsBox.classList.remove('active');
+      searchInput.classList.remove('has-results');
+      return;
+    }
+
+    if (query.length < 2) return;
+
+    suggestionsBox.innerHTML = '<div class="search-loading">Searching<div class="loading-dots"><span></span><span></span><span></span></div></div>';
+    suggestionsBox.classList.add('active');
+    searchInput.classList.add('has-results');
+
+    searchTimeout = setTimeout(async () => {
+      const results = await searchPosts(query);
+      renderSuggestions(results, query);
+    }, 300);
+  });
+
+  // Handle keyboard navigation
+  searchInput.addEventListener('keydown', (e) => {
+    const items = suggestionsBox.querySelectorAll('.suggestion-item');
+    
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      selectedIndex = Math.min(selectedIndex + 1, items.length - 1);
+      updateSelection(items);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      selectedIndex = Math.max(selectedIndex - 1, -1);
+      updateSelection(items);
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (selectedIndex >= 0 && items[selectedIndex]) {
+        items[selectedIndex].click();
+      } else {
+        performSearch();
+      }
+    } else if (e.key === 'Escape') {
+      suggestionsBox.classList.remove('active');
+      searchInput.blur();
+    }
+  });
+
+  function updateSelection(items) {
+    items.forEach((item, idx) => {
+      item.classList.toggle('selected', idx === selectedIndex);
+    });
+    if (selectedIndex >= 0 && items[selectedIndex]) {
+      items[selectedIndex].scrollIntoView({ block: 'nearest' });
+    }
+  }
+
+  // Close suggestions when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!searchInput.contains(e.target) && !suggestionsBox.contains(e.target)) {
+      suggestionsBox.classList.remove('active');
+      searchInput.classList.remove('has-results');
+    }
+  });
+
+  // Focus on "/" key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === '/' && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+      e.preventDefault();
+      searchInput.focus();
+    }
+  });
+
+  // Regular search function
+  window.performSearch = function() {
+    const query = searchInput.value.trim();
+    if (query) {
+      window.location.href = `/search.html?q=${encodeURIComponent(query)}`;
+    }
+  };
+})();
+</script>
 </body>
 </html>
