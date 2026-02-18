@@ -173,46 +173,65 @@ a { text-decoration:none; }
 /* ═══════════════════════════════════
    MEGA MENU
 ═══════════════════════════════════ */
-.mega-menu-wrapper { position: relative; }
+
+/* Navbar must be the positioning context */
+.navbar { position: sticky; top: 0; z-index: 100; }
+
+.mega-menu-wrapper { position: static; }
 .mega-menu-trigger {
   cursor: pointer; display: flex; align-items: center; gap: 4px;
 }
 .mega-menu-trigger::after { content:'▾'; font-size:10px; transition:transform 0.2s; }
 .mega-menu-trigger:hover::after { transform:rotate(180deg); }
+
 .mega-menu {
-  position: absolute; top: 100%; left: 0;
-  width: 680px;
+  /* Anchored to navbar edges, not the trigger */
+  position: fixed;
+  top: 74px; /* height of navbar */
+  left: 0;
+  right: 0;
+  width: 100%;
   background: #fff;
   box-shadow: 0 12px 48px rgba(126,8,130,0.18);
   border-radius: 0 0 16px 16px;
-  padding: 28px 32px;
+  padding: 32px 0;
   opacity: 0; visibility: hidden;
-  transform: translateY(-10px);
+  transform: translateY(-8px);
   transition: all 0.3s var(--ease);
   z-index: 999;
 }
 .mega-menu-wrapper:hover .mega-menu {
   opacity: 1; visibility: visible; transform: translateY(0);
 }
+
+/* Inner content matches site max-width and stays centered */
+.mega-menu-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
 .mega-menu-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 24px 28px;
+  gap: 32px 48px;
 }
 .mega-menu-section h4 {
   font-size: 11px; font-weight: 800; text-transform: uppercase;
   letter-spacing: 1px; color: var(--brand);
-  margin-bottom: 12px; padding-bottom: 8px;
+  margin-bottom: 14px; padding-bottom: 10px;
   border-bottom: 2px solid var(--brand-pale);
+  white-space: nowrap;
 }
-.mega-menu-links { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+.mega-menu-links { list-style: none; display: flex; flex-direction: column; gap: 2px; }
 .mega-menu-links li a {
-  color: var(--gray-800); font-size: 13px; font-weight: 600;
-  padding: 5px 0; display: flex; align-items: center; gap: 7px;
-  transition: all 0.2s; border-radius: 4px;
+  color: var(--gray-800); font-size: 14px; font-weight: 600;
+  padding: 6px 8px; display: flex; align-items: center; gap: 8px;
+  transition: all 0.2s; border-radius: 6px;
+  white-space: nowrap;
 }
-.mega-menu-links li a:hover { color: var(--brand); padding-left: 6px; }
-.mega-menu-links .icon { font-size: 14px; width: 18px; text-align: center; flex-shrink: 0; }
+.mega-menu-links li a:hover { color: var(--brand); background: var(--brand-pale); padding-left: 12px; }
+.mega-menu-links .icon { font-size: 15px; width: 20px; text-align: center; flex-shrink: 0; }
 
 /* ═══════════════════════════════════
    DISCLOSURE BAR
@@ -427,8 +446,6 @@ footer { background:var(--gray-900); color:#fff; padding:64px 24px 24px; }
 ═══════════════════════════════════ */
 @media(max-width:1100px) {
   .footer-grid { grid-template-columns:1fr 1fr; }
-  .mega-menu { width:560px; }
-  .mega-menu-grid { grid-template-columns:repeat(2,1fr); }
 }
 @media(max-width:1024px) {
   .mega-menu-wrapper { display:none; }
@@ -474,6 +491,7 @@ footer { background:var(--gray-900); color:#fff; padding:64px 24px 24px; }
       <div class="mega-menu-wrapper">
         <span class="nav-link mega-menu-trigger">Rooms</span>
         <div class="mega-menu">
+          <div class="mega-menu-inner">
           <div class="mega-menu-grid">
             <div class="mega-menu-section">
               <h4>Living Spaces</h4>
@@ -510,6 +528,7 @@ footer { background:var(--gray-900); color:#fff; padding:64px 24px 24px; }
               </ul>
             </div>
           </div>
+          </div><!-- /mega-menu-inner -->
         </div>
       </div>
 
@@ -517,6 +536,7 @@ footer { background:var(--gray-900); color:#fff; padding:64px 24px 24px; }
       <div class="mega-menu-wrapper">
         <span class="nav-link mega-menu-trigger">Styles</span>
         <div class="mega-menu">
+          <div class="mega-menu-inner">
           <div class="mega-menu-grid">
             <div class="mega-menu-section">
               <h4>Modern Styles</h4>
@@ -552,6 +572,7 @@ footer { background:var(--gray-900); color:#fff; padding:64px 24px 24px; }
               </ul>
             </div>
           </div>
+          </div><!-- /mega-menu-inner -->
         </div>
       </div>
 
@@ -559,6 +580,7 @@ footer { background:var(--gray-900); color:#fff; padding:64px 24px 24px; }
       <div class="mega-menu-wrapper">
         <span class="nav-link mega-menu-trigger">Buying Guides</span>
         <div class="mega-menu">
+          <div class="mega-menu-inner">
           <div class="mega-menu-grid">
             <div class="mega-menu-section">
               <h4>By Budget</h4>
@@ -593,6 +615,7 @@ footer { background:var(--gray-900); color:#fff; padding:64px 24px 24px; }
               </ul>
             </div>
           </div>
+          </div><!-- /mega-menu-inner -->
         </div>
       </div>
 
