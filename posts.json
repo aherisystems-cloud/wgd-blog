@@ -1,10 +1,39 @@
 [
   {
+    "title": "Best Standing Desks for Small Apartments",
+    "slug": "best-standing-desks",
+    "url": "/posts/best-standing-desks.html",
+    "description": "Why Standing Desks Are Perfect for Small Spaces\n\nLiving in a small apartment doesn't mean you have to sacrifice your health or productivity. Standing desks ha...",
+    "excerpt": "Why Standing Desks Are Perfect for Small Spaces\n\nLiving in a small apartment doesn't mean you have to sacrifice your health or productivity. Standing desks ha...",
+    "category": "Furniture",
+    "categorySlug": "furniture",
+    "categories": [
+      "Furniture"
+    ],
+    "tags": [
+      "standing desk",
+      "home office",
+      "small spaces"
+    ],
+    "featured_image": {
+      "src": "/content/images/standing-desk-hero.jpg",
+      "alt": "Compact standing desk in small apartment home office"
+    },
+    "date": "2026-02-05T10:00:00.000Z",
+    "dateFormatted": "February 5, 2026",
+    "readTime": 1,
+    "wordCount": 50,
+    "author": "Wow Glam Decor Team",
+    "content": "\n## Why Standing Desks Are Perfect for Small Spaces\n\nLiving in a small apartment doesn't mean you have to sacrifice your health or productivity. Standing desks have revolutionized how we work from home...\n\n### Top 5 Compact Standing Desks\n\nHere are our carefully tested recommendations...\n\n[Your content continues...]\n"
+  },
+  {
     "title": "Living Room Decor Ideas: Transform Your Space with These Stunning Design Tips & Ideas",
     "slug": "living-room-decor-ideas",
     "url": "/posts/living-room-decor-ideas.html",
     "description": "Discover 25+ living room decor ideas to refresh your space. From budget-friendly updates to luxe touches, create a stylish home you love.",
-    "date": "2026-02-12T10:00:00.000Z",
+    "excerpt": "Discover 25+ living room decor ideas to refresh your space. From budget-friendly updates to luxe touches, create a stylish home you love.",
+    "category": "Living Room",
+    "categorySlug": "living-room",
     "categories": [
       "Living Room",
       "Modern Style",
@@ -30,77 +59,56 @@
       "accent walls",
       "throw pillows"
     ],
-    "keywords": [
-      "living room decor",
-      "living room decor ideas",
-      "small living room decor",
-      "modern living room decor",
-      "budget living room decor",
-      "cozy living room ideas",
-      "living room design tips",
-      "how to decorate a living room",
-      "living room furniture arrangement",
-      "living room color schemes",
-      "affordable living room makeover"
-    ],
-    "featured_image": "/content/images/default-post.jpg",
+    "featured_image": "/content/images/default.jpg",
+    "date": "2026-02-12T10:00:00.000Z",
+    "dateFormatted": "February 12, 2026",
     "readTime": 35,
-    "excerpt": "!Stunning modern living room decor with cozy furniture and stylish accessories(/content/images/modern-living-room-decor-transformation.jpg)\r\n\r\n\r\n Key Takeaways\r\n\r\n- Living room decor starts with understanding your space, lifestyle, and personal style preferences\r\n- Budget-friendly transformations ar"
+    "wordCount": 6953,
+    "author": "Wow Glam Decor Team",
+    "content": "\n![Stunning modern living room decor with cozy furniture and stylish accessories](/content/images/modern-living-room-decor-transformation.jpg)\n\n\n## Key Takeaways\n\n- Living room decor starts with understanding your space, lifestyle, and personal style preferences\n- Budget-friendly transformations are possible with strategic furniture placement and affordable accent pieces\n- Lighting creates ambiance—layer ambient, task, and accent lighting for the perfect atmosphere\n- Color psychology matters—cho"
   },
   {
     "title": "Untitled Post",
     "slug": "untitled-post",
     "url": "/posts/untitled-post.html",
-    "description": "",
-    "date": "2026-02-06T07:14:16.428Z",
+    "description": "...",
+    "excerpt": "...",
+    "category": "general",
+    "categorySlug": "general",
     "categories": [
       "general"
     ],
     "tags": [
       "interior design"
     ],
-    "keywords": [],
     "featured_image": "/images/untitled-post.jpg",
-    "readTime": 0,
-    "excerpt": ""
+    "date": "2026-02-06T07:14:16.428Z",
+    "dateFormatted": "February 6, 2026",
+    "readTime": 1,
+    "wordCount": 2,
+    "author": "Wow Glam Decor Team",
+    "content": "\n"
   },
   {
     "title": "undefined",
     "slug": "untitled",
     "url": "/posts/untitled.html",
-    "description": "",
-    "date": "2026-02-06T06:21:56.901Z",
+    "description": "undefined...",
+    "excerpt": "undefined...",
+    "category": "undefined",
+    "categorySlug": "undefined",
     "categories": [
       "undefined"
     ],
     "tags": [
       "interior design"
     ],
-    "keywords": [],
     "featured_image": "/images/untitled.jpg",
+    "date": "2026-02-06T06:21:56.901Z",
+    "dateFormatted": "February 6, 2026",
     "readTime": 1,
-    "excerpt": "undefined"
-  },
-  {
-    "title": "Best Standing Desks for Small Apartments",
-    "slug": "best-standing-desks",
-    "url": "/posts/best-standing-desks.html",
-    "description": "",
-    "date": "2026-02-05T10:00:00.000Z",
-    "categories": [
-      "Furniture"
-    ],
-    "tags": [
-      "standing desk",
-      "home office",
-      "small spaces"
-    ],
-    "keywords": [],
-    "featured_image": {
-      "src": "/content/images/standing-desk-hero.jpg",
-      "alt": "Compact standing desk in small apartment home office"
-    },
-    "readTime": 1,
-    "excerpt": "Why Standing Desks Are Perfect for Small Spaces\r\n\r\nLiving in a small apartment doesn't mean you have to sacrifice your health or productivity. Standing desks have revolutionized how we work from home...\r\n\r\n Top 5 Compact Standing Desks\r\n\r\nHere are our carefully tested recommendations...\r\n\r\nYour cont"
+    "wordCount": 2,
+    "author": "Wow Glam Decor Team",
+    "content": "\nundefined"
   }
 ]

@@ -5,16 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
 <!-- Favicon -->
-<link rel="icon" type="image/png" sizes="32x32" href="/content/images/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/content/images/favicon-16x16.png">
+<link rel="icon" type="image/svg+xml" href="/content/images/favicon.svg">
+<link rel="icon" type="image/png" sizes="96x96" href="/content/images/favicon-96x96.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/content/images/apple-touch-icon.png">
+<link rel="shortcut icon" href="/content/images/favicon.ico">
 <link rel="manifest" href="/site.webmanifest">
 
 <!-- SEO Meta Tags -->
 <title>Best Standing Desks for Small Apartments</title>
 <meta name="description" content="Why Standing Desks Are Perfect for Small Spaces
 
-Living in a small apartment doesn't mean you have to sacrifice your health or productivity. Standing desks..."/>
+Living in a small apartment doesn't mean you have to sacrifice your health or productivity. Standing desks ha..."/>
 <meta name="keywords" content="standing desk, home office, small spaces"/>
 <meta name="author" content="Wow Glam Decor Team"/>
 <link rel="canonical" href="https://wowglamdecor.com/posts/best-standing-desks.html"/>
@@ -25,7 +26,7 @@ Living in a small apartment doesn't mean you have to sacrifice your health or pr
 <meta property="og:title" content="Best Standing Desks for Small Apartments"/>
 <meta property="og:description" content="Why Standing Desks Are Perfect for Small Spaces
 
-Living in a small apartment doesn't mean you have to sacrifice your health or productivity. Standing desks..."/>
+Living in a small apartment doesn't mean you have to sacrifice your health or productivity. Standing desks ha..."/>
 <meta property="og:image" content="https://wowglamdecor.com[object Object]"/>
 <meta property="article:published_time" content="2026-02-05T10:00:00.000Z"/>
 
@@ -34,7 +35,7 @@ Living in a small apartment doesn't mean you have to sacrifice your health or pr
 <meta name="twitter:title" content="Best Standing Desks for Small Apartments"/>
 <meta name="twitter:description" content="Why Standing Desks Are Perfect for Small Spaces
 
-Living in a small apartment doesn't mean you have to sacrifice your health or productivity. Standing desks..."/>
+Living in a small apartment doesn't mean you have to sacrifice your health or productivity. Standing desks ha..."/>
 <meta name="twitter:image" content="https://wowglamdecor.com[object Object]"/>
 
 <!-- Schema.org -->
@@ -54,7 +55,7 @@ Living in a small apartment doesn't mean you have to sacrifice your health or pr
   },
   "description": "Why Standing Desks Are Perfect for Small Spaces
 
-Living in a small apartment doesn't mean you have to sacrifice your health or productivity. Standing desks..."
+Living in a small apartment doesn't mean you have to sacrifice your health or productivity. Standing desks ha..."
 }
 </script>
 
@@ -681,7 +682,12 @@ footer { background:var(--gray-900); color:#fff; padding:56px 24px 24px; margin-
 }
 
 /* ═══ MEGA MENU STYLES ═══ */
-.mega-menu-wrapper { position: relative; }
+/* ═══ MEGA MENU FIX - Replace your mega menu CSS with this ═══ */
+
+.mega-menu-wrapper { 
+  position: relative; 
+}
+
 .mega-menu-trigger {
   position: relative;
   cursor: pointer;
@@ -689,34 +695,39 @@ footer { background:var(--gray-900); color:#fff; padding:56px 24px 24px; margin-
   align-items: center;
   gap: 4px;
 }
+
 .mega-menu-trigger::after {
   content: '▾';
   font-size: 10px;
   transition: transform 0.2s;
 }
-.mega-menu-trigger:hover::after { transform: rotate(180deg); }
 
+.mega-menu-trigger:hover::after { 
+  transform: rotate(180deg); 
+}
+
+/* FIXED: Menu stays within viewport */
 .mega-menu {
   position: absolute;
   top: 100%;
-  left: 0;
-  width: 100vw;
-  max-width: 1200px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-10px);
+  width: 1200px;
+  max-width: calc(100vw - 48px); /* Stay within viewport with padding */
   background: #fff;
   box-shadow: 0 12px 48px rgba(126,8,130,0.18);
   border-radius: 0 0 16px 16px;
   padding: 32px;
   opacity: 0;
   visibility: hidden;
-  transform: translateY(-10px);
   transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
   z-index: 999;
-  margin-left: -100px;
 }
+
 .mega-menu-wrapper:hover .mega-menu {
   opacity: 1;
   visibility: visible;
-  transform: translateY(0);
+  transform: translateX(-50%) translateY(0);
 }
 
 .mega-menu-grid {
@@ -724,6 +735,7 @@ footer { background:var(--gray-900); color:#fff; padding:56px 24px 24px; margin-
   grid-template-columns: repeat(4, 1fr);
   gap: 32px;
 }
+
 .mega-menu-section h4 {
   font-size: 12px;
   font-weight: 800;
@@ -734,12 +746,14 @@ footer { background:var(--gray-900); color:#fff; padding:56px 24px 24px; margin-
   padding-bottom: 8px;
   border-bottom: 2px solid var(--brand-pale);
 }
+
 .mega-menu-links {
   list-style: none;
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
+
 .mega-menu-links li a {
   color: var(--gray-800);
   font-size: 14px;
@@ -750,10 +764,12 @@ footer { background:var(--gray-900); color:#fff; padding:56px 24px 24px; margin-
   gap: 8px;
   transition: all 0.2s;
 }
+
 .mega-menu-links li a:hover {
   color: var(--brand);
   padding-left: 8px;
 }
+
 .mega-menu-links .icon {
   font-size: 16px;
   width: 20px;
@@ -763,12 +779,6 @@ footer { background:var(--gray-900); color:#fff; padding:56px 24px 24px; margin-
 /* Mobile responsive */
 @media (max-width: 1024px) {
   .mega-menu-wrapper { display: none; }
-  .search-box { margin-right: 8px; }
-  .search-input { width: 200px; }
-  .search-input:focus { width: 260px; }
-}
-@media (max-width: 768px) {
-  .search-box { display: none; }
 }
 </style>
 </head>
