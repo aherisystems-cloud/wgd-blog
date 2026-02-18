@@ -1109,10 +1109,14 @@ footer { background:var(--gray-900); color:#fff; padding:64px 24px 24px; }
   </div>
 </footer>
 
+
 <script>
 (function() {
   const searchInput = document.getElementById('searchInput');
   const suggestionsBox = document.getElementById('searchSuggestions');
+  
+  if (!searchInput || !suggestionsBox) return; // Exit if elements don't exist
+  
   let searchTimeout;
   let selectedIndex = -1;
   let cachedPosts = null;
@@ -1284,6 +1288,25 @@ footer { background:var(--gray-900); color:#fff; padding:64px 24px 24px; }
     const query = searchInput.value.trim();
     if (query) {
       window.location.href = `/search.html?q=${encodeURIComponent(query)}`;
+    }
+  };
+  
+  // Mobile menu toggle
+  window.toggleMobileMenu = function() {
+    const menu = document.querySelector('.nav-menu');
+    if (!menu) return;
+    if (menu.style.display === 'flex') {
+      menu.style.display = 'none';
+    } else {
+      menu.style.display = 'flex';
+      menu.style.flexDirection = 'column';
+      menu.style.position = 'absolute';
+      menu.style.top = '100%';
+      menu.style.left = '0';
+      menu.style.right = '0';
+      menu.style.background = '#fff';
+      menu.style.padding = '20px';
+      menu.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
     }
   };
 })();
