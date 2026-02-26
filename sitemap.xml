@@ -44,26 +44,14 @@
 
   <!-- BLOG POSTS (priority 0.8 = high value content) -->
   <url>
-    <loc>https://wowglamdecor.com/posts/best-standing-desks.html</loc>
-    <lastmod>2026-02-05</lastmod>
+    <loc>https://wowglamdecor.com/posts/best-bedroom-decor-ideas.html</loc>
+    <lastmod>2026-02-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://wowglamdecor.com/posts/living-room-decor-ideas.html</loc>
     <lastmod>2026-02-12</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://wowglamdecor.com/posts/untitled-post.html</loc>
-    <lastmod>2026-02-06</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://wowglamdecor.com/posts/untitled.html</loc>
-    <lastmod>2026-02-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -438,19 +426,91 @@
 
   <!-- TAG PAGES -->
   <url>
-    <loc>https://wowglamdecor.com/tag/standing-desk.html</loc>
+    <loc>https://wowglamdecor.com/tag/bedroom-decor.html</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://wowglamdecor.com/tag/home-office.html</loc>
+    <loc>https://wowglamdecor.com/tag/bedroom-ideas.html</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://wowglamdecor.com/tag/small-spaces.html</loc>
+    <loc>https://wowglamdecor.com/tag/bedroom-makeover.html</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://wowglamdecor.com/tag/cozy-bedroom.html</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://wowglamdecor.com/tag/modern-bedroom.html</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://wowglamdecor.com/tag/minimalist-bedroom.html</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://wowglamdecor.com/tag/luxury-bedroom.html</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://wowglamdecor.com/tag/bedroom-wall-decor.html</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://wowglamdecor.com/tag/bedroom-lighting-ideas.html</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://wowglamdecor.com/tag/bedroom-rugs.html</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://wowglamdecor.com/tag/bedroom-aesthetic-2026.html</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://wowglamdecor.com/tag/budget-bedroom-decor.html</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://wowglamdecor.com/tag/bedroom-accessories.html</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://wowglamdecor.com/tag/home-decor-2026.html</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://wowglamdecor.com/tag/glam-bedroom.html</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
