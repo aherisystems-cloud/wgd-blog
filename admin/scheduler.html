@@ -265,6 +265,10 @@ tbody tr:hover { background: var(--bg-main); }
 ::-webkit-scrollbar-track { background: var(--bg-main); }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 5px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--text-tertiary); }
+
+/* ── FOLDER SAVE BOX ── */
+.folder-save-box { background:rgba(0,208,132,0.06); border:1px solid rgba(0,208,132,0.25); border-radius:var(--radius-sm); padding:16px 20px; margin-bottom:20px; }
+.folder-save-box code { background:rgba(0,208,132,0.12); padding:1px 5px; border-radius:3px; font-family:var(--font-mono); font-size:12px; color:#065F46; }
 </style>
 </head>
 <body>
@@ -436,12 +440,24 @@ tbody tr:hover { background: var(--bg-main); }
 <section id="deploy">
   <div class="panel">
     <h3>Save &amp; Export</h3>
-    <p style="color:var(--text-secondary); margin-bottom:20px;">Save your prepared post as a Markdown file.</p>
+    <div class="folder-save-box">
+      <div style="font-size:14px;font-weight:700;color:#065F46;margin-bottom:6px;">📁 Save directly to your repo folder</div>
+      <div style="font-size:13px;color:var(--text-secondary);margin-bottom:14px;line-height:1.6;">
+        Pick your repo's <code>posts/</code> folder once — the scheduler remembers it. After that, one click saves the <code>.md</code> file directly there. Then just open GitHub Desktop and push.
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+        <button onclick="pickRepoFolder()" class="btn btn-secondary btn-sm" id="pickFolderBtn">📂 Pick posts/ folder</button>
+        <div id="folderStatus" style="font-size:13px;color:var(--text-secondary);font-family:var(--font-mono);"></div>
+      </div>
+      <div id="folderUnsupported" style="display:none;margin-top:10px;font-size:13px;color:var(--warning);">⚠️ Your browser does not support folder-save. Use the standard save button below (Chrome or Edge recommended).</div>
+    </div>
     <div class="action-row">
-      <button onclick="saveDraft()" class="btn btn-success">💾 Save Draft to File</button>
+      <button onclick="saveDraftToFolder()" class="btn btn-success" id="saveFolderBtn" style="display:none;">💾 Save to Repo Folder</button>
+      <button onclick="saveDraft()" class="btn btn-success" id="saveDownloadBtn">💾 Save Draft to File</button>
       <button onclick="exportJSON()" class="btn btn-secondary">📄 Export as JSON</button>
       <button onclick="copyToClipboard()" class="btn btn-secondary">📋 Copy to Clipboard</button>
     </div>
+    <div id="saveConfirm" style="display:none;margin-top:12px;padding:10px 16px;background:#D1FAE5;color:#065F46;border-radius:var(--radius-sm);font-size:14px;font-weight:600;"></div>
   </div>
   <div class="panel">
     <h3>Draft History</h3>
@@ -1273,14 +1289,14 @@ function preparePost() {
 title: "${title.value}"
 description: "${document.getElementById('description').value}"
 slug: "${slug.value}"
-scheduled_date: ${new Date(scheduled).toISOString()}
+date: ${new Date(scheduled).toISOString()}
 categories:
 ${selectedCats.map(c=>'  - '+c).join('\n')}
 tags:
 ${tags.map(t=>'  - '+t).join('\n')}
 keywords:
 ${keys.map(k=>'  - '+k).join('\n')}
-${imageEntry}${productsYAML}published: false
+${imageEntry}${productsYAML}published: true
 ---
 
 `;
@@ -1295,9 +1311,137 @@ ${imageEntry}${productsYAML}published: false
 }
 
 /* ══════════════════════════════════════════
+   FOLDER SAVE — File System Access API
+══════════════════════════════════════════ */
+const FOLDER_KEY = 'wgd_repo_folder';
+let repoFolderHandle = null;
+
+// Check API support on load
+document.addEventListener('DOMContentLoaded', () => {
+  if (!window.showDirectoryPicker) {
+    document.getElementById('folderUnsupported').style.display = 'block';
+    document.getElementById('pickFolderBtn').style.display = 'none';
+  } else {
+    restoreFolder();
+  }
+});
+
+async function restoreFolder() {
+  // Try to restore a previously granted folder handle from IndexedDB
+  try {
+    const db = await openFolderDB();
+    const handle = await dbGet(db, 'folderHandle');
+    if (handle) {
+      const perm = await handle.queryPermission({ mode: 'readwrite' });
+      if (perm === 'granted') {
+        repoFolderHandle = handle;
+        showFolderStatus(handle.name, true);
+      } else {
+        // Need to re-verify permission
+        showFolderStatus(handle.name + ' (click to re-allow)', false);
+        // Store handle anyway for re-request on save
+        repoFolderHandle = handle;
+      }
+    }
+  } catch(e) { /* IndexedDB not available */ }
+}
+
+async function pickRepoFolder() {
+  if (!window.showDirectoryPicker) {
+    document.getElementById('folderUnsupported').style.display = 'block';
+    return;
+  }
+  try {
+    const handle = await window.showDirectoryPicker({ mode: 'readwrite', startIn: 'documents' });
+    repoFolderHandle = handle;
+    // Save to IndexedDB for persistence
+    try {
+      const db = await openFolderDB();
+      await dbSet(db, 'folderHandle', handle);
+    } catch(e) {}
+    showFolderStatus(handle.name, true);
+    document.getElementById('saveFolderBtn').style.display = 'inline-flex';
+    document.getElementById('saveDownloadBtn').style.display = 'none';
+  } catch(e) {
+    if (e.name !== 'AbortError') alert('❌ Could not access folder: ' + e.message);
+  }
+}
+
+function showFolderStatus(name, ready) {
+  const el = document.getElementById('folderStatus');
+  const btn = document.getElementById('pickFolderBtn');
+  el.innerHTML = ready
+    ? `✅ <strong>${name}/</strong> selected — saves go here`
+    : `📁 ${name} — <em>needs permission</em>`;
+  el.style.color = ready ? '#065F46' : '#92400E';
+  btn.textContent = '🔄 Change folder';
+  if (ready) {
+    document.getElementById('saveFolderBtn').style.display = 'inline-flex';
+    document.getElementById('saveDownloadBtn').style.display = 'none';
+  }
+}
+
+async function saveDraftToFolder() {
+  const fp = document.getElementById('finalPost');
+  if (!fp.textContent) { alert('⚠️ Please prepare the post first in the Schedule tab'); return; }
+  if (!slug.value)     { alert('⚠️ Slug is required'); return; }
+  if (!repoFolderHandle) { alert('⚠️ Pick a folder first'); return; }
+
+  try {
+    // Re-request permission if needed
+    const perm = await repoFolderHandle.requestPermission({ mode: 'readwrite' });
+    if (perm !== 'granted') { alert('⚠️ Permission denied — please pick the folder again'); return; }
+
+    const fileName = slug.value + '.md';
+    const fileHandle = await repoFolderHandle.getFileHandle(fileName, { create: true });
+    const writable = await fileHandle.createWritable();
+    await writable.write(fp.textContent);
+    await writable.close();
+
+    showSaveConfirm(`✅ Saved as ${fileName} in ${repoFolderHandle.name}/ — open GitHub Desktop and push!`);
+    saveToDraftHistory();
+  } catch(e) {
+    alert('❌ Save failed: ' + e.message);
+  }
+}
+
+function showSaveConfirm(msg) {
+  const el = document.getElementById('saveConfirm');
+  el.textContent = msg; el.style.display = 'block';
+  setTimeout(() => el.style.display = 'none', 6000);
+}
+
+// IndexedDB helpers for persisting folder handle across sessions
+function openFolderDB() {
+  return new Promise((res, rej) => {
+    const req = indexedDB.open('wgd_scheduler', 1);
+    req.onupgradeneeded = e => e.target.result.createObjectStore('meta');
+    req.onsuccess = e => res(e.target.result);
+    req.onerror = () => rej(req.error);
+  });
+}
+function dbGet(db, key) {
+  return new Promise((res, rej) => {
+    const tx = db.transaction('meta', 'readonly');
+    const req = tx.objectStore('meta').get(key);
+    req.onsuccess = () => res(req.result);
+    req.onerror = () => rej(req.error);
+  });
+}
+function dbSet(db, key, val) {
+  return new Promise((res, rej) => {
+    const tx = db.transaction('meta', 'readwrite');
+    const req = tx.objectStore('meta').put(val, key);
+    req.onsuccess = () => res();
+    req.onerror = () => rej(req.error);
+  });
+}
+
+/* ══════════════════════════════════════════
    SAVE / EXPORT
 ══════════════════════════════════════════ */
 function saveDraft() {
+  // Fallback download — used when no folder is picked or browser unsupported
   const fp = document.getElementById('finalPost');
   if (!fp.textContent) { alert('⚠️ Please prepare the post first in the Schedule tab'); return; }
   if (!slug.value)     { alert('⚠️ Slug is required to save'); return; }
@@ -1305,7 +1449,8 @@ function saveDraft() {
     href: URL.createObjectURL(new Blob([fp.textContent],{type:'text/markdown'})),
     download: `${slug.value}.md`
   });
-  a.click(); alert('✅ Draft saved!');
+  a.click();
+  showSaveConfirm('✅ Downloaded — move the file to your posts/ folder, then push from GitHub Desktop.');
 }
 
 function exportJSON() {
