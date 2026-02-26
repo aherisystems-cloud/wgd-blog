@@ -77,13 +77,13 @@ button { font-family: var(--font-main); }
 .action-row { display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap; }
 
 .meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.editor { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 20px; }
+.editor { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 20px; align-items: start; }
 .editor-pane { display: flex; flex-direction: column; }
 .editor-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 2px solid var(--border); }
 .editor-title { font-size: 14px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; }
 .word-count { font-size: 13px; color: var(--text-tertiary); font-family: var(--font-mono); }
-.editor textarea { height: 520px; flex: 1; }
-.preview { background: var(--bg-surface); padding: 28px; height: 520px; overflow-y: auto; border: 2px solid var(--border); border-radius: var(--radius-sm); line-height: 1.8; }
+.editor textarea { height: 560px; flex: 1; resize: vertical; }
+.preview { background: var(--bg-surface); padding: 28px; height: 560px; max-height: 560px; overflow-y: auto; border: 2px solid var(--border); border-radius: var(--radius-sm); line-height: 1.8; }
 .preview h1 { margin: 24px 0 16px; font-size: 32px; }
 .preview h2 { margin: 20px 0 12px; font-size: 24px; }
 .preview h3 { margin: 16px 0 10px; font-size: 20px; }
@@ -325,11 +325,14 @@ tbody tr:hover { background: var(--bg-main); }
     <label style="font-size:13px;font-weight:600;color:var(--text-secondary);margin-bottom:0;display:block;">
       Step 1 — Image path in repo <span style="color:var(--text-tertiary);font-weight:400;">(written into frontmatter)</span>
     </label>
-    <div class="image-path-row">
-      <input type="text" id="imagePath" placeholder="/content/images/posts/your-image.jpg" oninput="triggerAutosave()">
-      <button onclick="copyImagePath()" class="btn btn-secondary btn-sm" title="Copy path to clipboard">📋 Copy</button>
+    <div style="display:flex;gap:8px;align-items:center;margin-top:6px;">
+      <div class="image-path-group" style="flex:1;">
+        <span class="image-path-prefix">/content/images/</span>
+        <input type="text" id="imagePath" placeholder="your-post-hero.jpg" oninput="triggerAutosave()" style="margin:0;">
+      </div>
+      <button onclick="copyImagePath()" class="btn btn-secondary btn-sm" title="Copy full path to clipboard">📋 Copy</button>
     </div>
-    <div class="image-path-hint">Convention: /content/images/posts/<em>slug</em>.jpg — commit this file to your repo separately</div>
+    <div class="image-path-hint">Commit this file to your repo at <code>/content/images/</code> separately</div>
     <div class="image-upload-area">
       <input type="file" id="imageUpload" accept="image/*" style="display:none;">
       <button onclick="document.getElementById('imageUpload').click()" class="btn btn-secondary" style="width:100%;">
@@ -485,10 +488,52 @@ tbody tr:hover { background: var(--bg-main); }
     </div>
     <input type="text" id="newLinkUrl" placeholder="Affiliate URL (e.g. https://amzn.to/xxxxx)">
     <input type="text" id="newLinkPrice" placeholder="Price (optional, e.g. $69–$129)">
+    <div style="margin-top:4px;">
+      <div style="font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.4px;">
+        Product Image <span style="font-weight:400;font-style:italic;text-transform:none;">— filename only, e.g. <code style="font-size:11px;">chair.jpg</code></span>
+      </div>
+      <div class="image-path-group">
+        <span class="image-path-prefix">/content/images/products/</span>
+        <input type="text" id="newLinkImage" placeholder="chair.jpg" style="margin:0;">
+      </div>
+      <div style="font-size:11px;color:var(--text-tertiary);margin-top:3px;font-family:var(--font-mono);">Leave blank if no image yet — you can add it later when editing the product card</div>
+    </div>
+    <div style="margin-top:10px;">
+      <div style="font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.4px;">🏷️ Sidebar Label <span style="font-weight:400;font-style:italic;text-transform:none;">(optional)</span></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <select id="newLinkLabelSelect" class="label-select" onchange="onCatalogLabelChange(this)">
+          <option value="">— No Label —</option>
+          <option value="NEW">🟢 New</option>
+          <option value="SALE">🔴 Sale</option>
+          <option value="TOP PICK">⭐ Top Pick</option>
+          <option value="EDITOR'S PICK">💜 Editor's Pick</option>
+          <option value="BEST VALUE">💙 Best Value</option>
+          <option value="LIMITED">🔥 Limited</option>
+          <option value="CUSTOM">✏️ Custom label…</option>
+        </select>
+        <input type="text" id="newLinkLabelCustom" placeholder="e.g. Staff Pick, Hot Deal…" style="display:none;margin:0;">
+      </div>
+    </div>
     <div class="action-row">
       <button onclick="addAffiliateLink()" class="btn btn-primary">➕ Add to Catalog</button>
       <button onclick="clearCatalog()" class="btn btn-danger btn-sm">🗑️ Clear Entire Catalog</button>
     </div>
+  </div>
+
+  <!-- ── CATALOG BACKUP PANEL ── -->
+  <div class="panel">
+    <h3>Catalog Backup</h3>
+    <div class="catalog-info">
+      📦 <strong>Export your catalog</strong> as a JSON file to back it up or move it to another browser. <strong>Import</strong> to restore from a backup — existing links with the same URL won't be duplicated.
+    </div>
+    <div class="action-row" style="margin-top:0;">
+      <button onclick="exportCatalog()" class="btn btn-success">⬇️ Download Backup (.json)</button>
+      <label class="btn btn-secondary" style="cursor:pointer; margin:0;">
+        ⬆️ Import Backup
+        <input type="file" id="catalogImportFile" accept=".json" style="display:none;" onchange="importCatalog(this)">
+      </label>
+    </div>
+    <div id="importStatus" style="display:none; margin-top:12px; padding:10px 16px; border-radius:var(--radius-sm); font-size:14px; font-weight:600;"></div>
   </div>
 </section>
 
@@ -550,11 +595,11 @@ function getLabelStyle(val) {
 ══════════════════════════════════════════ */
 const CATALOG_KEY = 'wgd_affiliate_catalog';
 const DEFAULT_CATALOG = [
-  { name: "Casaluna Linen Blend Duvet Cover Set",  link: "https://amzn.to/3Mt92ag", category: "Bedroom",    price: "$69–$129" },
-  { name: "Brightech Sparq Arc LED Floor Lamp",    link: "https://amzn.to/4ubPrMK", category: "Lighting",   price: "$79–$109" },
-  { name: "nuLOOM Rigo Handwoven Jute Area Rug",   link: "https://amzn.to/3ZSUXG9", category: "Rugs",       price: "$65–$175" },
-  { name: "Uttermost Abelard Abstract Canvas Art", link: "https://amzn.to/4qTb8hx", category: "Wall Decor", price: "$180–$320" },
-  { name: "Bedsure Satin Pillowcase Set (2-Pack)",  link: "https://amzn.to/4aT3kXd", category: "Bedroom",   price: "$10–$18" },
+  { name: "Casaluna Linen Blend Duvet Cover Set",  link: "https://amzn.to/3Mt92ag", category: "Bedroom",    price: "$69–$129",  image: "casaluna-linen-duvet-cover.jpg" },
+  { name: "Brightech Sparq Arc LED Floor Lamp",    link: "https://amzn.to/4ubPrMK", category: "Lighting",   price: "$79–$109",  image: "brightech-sparq-floor-lamp.jpg" },
+  { name: "nuLOOM Rigo Handwoven Jute Area Rug",   link: "https://amzn.to/3ZSUXG9", category: "Rugs",       price: "$65–$175",  image: "nuloom-rigo-jute-rug.jpg" },
+  { name: "Uttermost Abelard Abstract Canvas Art", link: "https://amzn.to/4qTb8hx", category: "Wall Decor", price: "$180–$320", image: "uttermost-abelard-canvas.jpg" },
+  { name: "Bedsure Satin Pillowcase Set (2-Pack)",  link: "https://amzn.to/4aT3kXd", category: "Bedroom",   price: "$10–$18",   image: "bedsure-satin-pillowcase.jpg" },
 ];
 
 function loadCatalog() {
@@ -591,15 +636,24 @@ function renderAffiliateResults(items) {
   ul.innerHTML = items.map(a => {
     const trueIdx = catalog.findIndex(c => c.link === a.link && c.name === a.name);
     const shortLink = a.link.length > 45 ? a.link.slice(0,45)+'…' : a.link;
+    const imgFile    = a.image || '';
+    const labelVal   = a.label || '';
+    const imgDisplay = imgFile
+      ? `<span style="color:var(--success);font-size:11px;">🖼️ ${imgFile}</span>`
+      : `<span style="color:var(--text-tertiary);font-size:11px;font-style:italic;">no image saved</span>`;
+    const labelDisplay = labelVal
+      ? `<span style="margin-left:8px;padding:1px 7px;border-radius:8px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.4px;${getLabelStyle(labelVal)}">${labelVal}</span>`
+      : '';
     return `<li>
-      <div>
-        <div class="affiliate-name">${a.name}</div>
+      <div style="flex:1;min-width:0;">
+        <div class="affiliate-name">${a.name}${labelDisplay}</div>
         <div class="affiliate-category">${a.category||'Uncategorized'}${a.price?' · '+a.price:''}</div>
-        <div style="font-size:11px;color:var(--text-tertiary);margin-top:3px;font-family:var(--font-mono);">${shortLink}</div>
+        <div style="font-size:11px;color:var(--text-tertiary);margin-top:2px;font-family:var(--font-mono);">${shortLink}</div>
+        <div style="margin-top:3px;">${imgDisplay}</div>
       </div>
       <div class="affiliate-actions">
         <button class="affiliate-link" onclick="insertAffiliateLink('${esc(a.name)}','${esc(a.link)}')">📎 Insert</button>
-        <button class="affiliate-link affiliate-link-purple" onclick="addLinkToProducts('${esc(a.name)}','${esc(a.link)}','${esc(a.price||'')}')">🛍️ Add to Sidebar</button>
+        <button class="affiliate-link affiliate-link-purple" onclick="addLinkToProducts('${esc(a.name)}','${esc(a.link)}','${esc(a.price||'')}','${esc(imgFile)}','${esc(labelVal)}')">🛍️ Add to Sidebar</button>
         <button class="affiliate-link affiliate-link-danger" onclick="deleteAffiliateLink(${trueIdx})" title="Delete from catalog">🗑️</button>
       </div>
     </li>`;
@@ -611,15 +665,26 @@ function addAffiliateLink() {
   const url      = document.getElementById('newLinkUrl').value.trim();
   const category = document.getElementById('newLinkCategory').value.trim();
   const price    = document.getElementById('newLinkPrice').value.trim();
+  const image    = document.getElementById('newLinkImage').value.trim();
+  let   label    = document.getElementById('newLinkLabelSelect').value;
+  if (label === 'CUSTOM') label = document.getElementById('newLinkLabelCustom').value.trim();
   if (!name) { alert('⚠️ Please enter a product name'); return; }
   if (!url)  { alert('⚠️ Please enter an affiliate URL'); return; }
   const catalog = loadCatalog();
   if (catalog.find(c => c.link === url)) { alert('⚠️ This URL is already in your catalog'); return; }
-  catalog.push({ name, link: url, category: category||'General', price: price||'' });
+  catalog.push({ name, link: url, category: category||'General', price: price||'', image: image||'', label: label||'' });
   saveCatalog(catalog);
-  ['newLinkName','newLinkUrl','newLinkCategory','newLinkPrice'].forEach(id => { document.getElementById(id).value=''; });
+  ['newLinkName','newLinkUrl','newLinkCategory','newLinkPrice','newLinkImage','newLinkLabelCustom'].forEach(id => { document.getElementById(id).value=''; });
+  document.getElementById('newLinkLabelSelect').value = '';
+  document.getElementById('newLinkLabelCustom').style.display = 'none';
   updateCatalogCount(); searchAffiliate();
   alert(`✅ "${name}" added to your permanent catalog`);
+}
+
+function onCatalogLabelChange(sel) {
+  const custom = document.getElementById('newLinkLabelCustom');
+  if (sel.value === 'CUSTOM') { custom.style.display = 'block'; custom.focus(); }
+  else { custom.style.display = 'none'; custom.value = ''; }
 }
 
 function deleteAffiliateLink(idx) {
@@ -637,6 +702,79 @@ function clearCatalog() {
   alert('✅ Catalog cleared');
 }
 
+function exportCatalog() {
+  const catalog = loadCatalog();
+  if (!catalog.length) { alert('⚠️ Your catalog is empty — nothing to export'); return; }
+  const payload = {
+    exported:  new Date().toISOString(),
+    tool:      'Affiliate Blog Scheduler Pro',
+    version:   1,
+    count:     catalog.length,
+    catalog
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  const a = Object.assign(document.createElement('a'), {
+    href:     URL.createObjectURL(blob),
+    download: `wgd-catalog-backup-${new Date().toISOString().slice(0,10)}.json`
+  });
+  a.click();
+}
+
+function importCatalog(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const parsed = JSON.parse(ev.target.result);
+      // Accept either raw array or wrapped export format
+      const incoming = Array.isArray(parsed) ? parsed : (parsed.catalog || []);
+      if (!incoming.length) { showImportStatus('⚠️ No links found in this file', 'warning'); return; }
+
+      const catalog = loadCatalog();
+      let added = 0, skipped = 0;
+      incoming.forEach(item => {
+        if (!item.name || !item.link) { skipped++; return; }
+        if (catalog.find(c => c.link === item.link)) { skipped++; return; }
+        catalog.push({
+          name:     item.name,
+          link:     item.link,
+          category: item.category || 'General',
+          price:    item.price    || '',
+          image:    item.image    || '',
+        });
+        added++;
+      });
+
+      saveCatalog(catalog);
+      updateCatalogCount();
+      searchAffiliate();
+      showImportStatus(
+        `✅ Imported ${added} link${added!==1?'s':''}${skipped?' · '+skipped+' skipped (duplicates or invalid)':''}`,
+        'success'
+      );
+    } catch(e) {
+      showImportStatus('❌ Invalid file — make sure it\'s a catalog backup JSON', 'error');
+    }
+    // Reset input so same file can be re-imported if needed
+    input.value = '';
+  };
+  reader.readAsText(file);
+}
+
+function showImportStatus(msg, type) {
+  const el = document.getElementById('importStatus');
+  const styles = {
+    success: 'background:#D1FAE5;color:#065F46;border:1px solid #6EE7B7;',
+    warning: 'background:#FEF3C7;color:#92400E;border:1px solid #FCD34D;',
+    error:   'background:#FEE2E2;color:#DC2626;border:1px solid #FCA5A5;',
+  };
+  el.style.cssText = styles[type] || styles.success;
+  el.textContent = msg;
+  el.style.display = 'block';
+  setTimeout(() => { el.style.display='none'; }, 5000);
+}
+
 function insertAffiliateLink(name, link) {
   const ta = document.getElementById('content');
   const md = `[${name}](${link})`;
@@ -646,9 +784,9 @@ function insertAffiliateLink(name, link) {
   ta.focus(); updatePreview(); openTab('editor');
 }
 
-function addLinkToProducts(name, link, price) {
+function addLinkToProducts(name, link, price, imageFile, label) {
   openTab('products');
-  addProductCard({ name, link, type:'product', price: price||'' });
+  addProductCard({ name, link, type:'product', price: price||'', image: imageFile ? '/content/images/products/'+imageFile : '', label: label||'' });
 }
 
 function esc(str) {
@@ -659,9 +797,10 @@ function esc(str) {
    IMAGE PATH HELPERS
 ══════════════════════════════════════════ */
 function copyImagePath() {
-  const val = document.getElementById('imagePath').value.trim();
-  if (!val) { alert('⚠️ Enter a repo image path first'); return; }
-  navigator.clipboard.writeText(val).then(() => alert('✅ Path copied: '+val)).catch(() => alert('❌ Copy failed — copy manually'));
+  const file = document.getElementById('imagePath').value.trim();
+  if (!file) { alert('⚠️ Enter an image filename first'); return; }
+  const full = '/content/images/' + file;
+  navigator.clipboard.writeText(full).then(() => alert('✅ Path copied: '+full)).catch(() => alert('❌ Copy failed — copy manually'));
 }
 
 /* ══════════════════════════════════════════
@@ -888,7 +1027,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const file = e.target.files[0];
     if (!file || !file.type.startsWith('image/')) { if (file) alert('⚠️ Please upload an image file'); return; }
     const pathField = document.getElementById('imagePath');
-    if (!pathField.value && slug.value) pathField.value = `/content/images/posts/${slug.value}.jpg`;
+    // Auto-suggest filename from slug if field is empty
+    if (!pathField.value && slug.value) pathField.value = `${slug.value}.jpg`;
     const reader = new FileReader();
     reader.onload = ev => {
       uploadedImage = { name:file.name, size:file.size, type:file.type, data:ev.target.result };
@@ -915,8 +1055,8 @@ function displayImagePreview() {
 }
 
 function insertImageIntoContent() {
-  const path = document.getElementById('imagePath').value.trim();
-  const src  = path || uploadedImage.data;
+  const file = document.getElementById('imagePath').value.trim();
+  const src  = file ? '/content/images/' + file : uploadedImage.data;
   const md   = `![${uploadedImage.name}](${src})`;
   const ta   = document.getElementById('content');
   const s=ta.selectionStart, e=ta.selectionEnd;
@@ -1119,13 +1259,14 @@ function preparePost() {
   const selectedCats = Array.from(document.querySelectorAll('#categorySelect input:checked')).map(c=>c.value);
   const tags    = document.getElementById('tags').value.split(',').map(t=>t.trim()).filter(Boolean);
   const keys    = document.getElementById('seoKeywords').value.split(',').map(k=>k.trim()).filter(Boolean);
-  const imagePath = document.getElementById('imagePath').value.trim();
-  const productsYAML = buildProductsYAML();
+  const imageFile     = document.getElementById('imagePath').value.trim();
+  const fullImagePath = imageFile ? '/content/images/' + imageFile : '';
+  const productsYAML  = buildProductsYAML();
 
-  const imageEntry = imagePath
-    ? `featured_image: "${imagePath}"\n`
+  const imageEntry = fullImagePath
+    ? `featured_image: "${fullImagePath}"\n`
     : uploadedImage
-      ? `featured_image: "/content/images/posts/${slug.value}.jpg"  # ⚠️ Add this file to your repo\n`
+      ? `featured_image: "/content/images/${slug.value}.jpg"  # ⚠️ Add this file to your repo\n`
       : '';
 
   const fm = `---
