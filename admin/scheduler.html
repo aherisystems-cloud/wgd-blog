@@ -35,31 +35,26 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: var(--font-main); background: var(--bg-main); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; }
 
-/* Header */
 header { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; padding: 24px 32px; box-shadow: var(--shadow-md); position: sticky; top: 0; z-index: 100; }
 header h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; margin: 0; }
 header .subtitle { font-size: 14px; opacity: 0.9; margin-top: 4px; }
 
-/* Nav */
 nav { display: flex; background: var(--bg-surface); border-bottom: 1px solid var(--border); overflow-x: auto; position: sticky; top: 81px; z-index: 99; box-shadow: var(--shadow-sm); }
 nav button { flex: 1; min-width: 110px; padding: 16px 10px; color: var(--text-secondary); background: none; border: none; cursor: pointer; font-family: var(--font-main); font-size: 14px; font-weight: 600; transition: all 0.2s; border-bottom: 3px solid transparent; }
 nav button:hover { background: var(--bg-main); color: var(--text-primary); }
 nav button.active { color: var(--primary); border-bottom-color: var(--primary); }
 
-/* Container & Sections */
 .container { max-width: 1400px; margin: 0 auto; padding: 32px; }
 section { display: none; animation: fadeIn 0.3s ease; }
 section.active { display: block; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-/* Panels */
 .panel { background: var(--bg-surface); padding: 28px; margin-bottom: 24px; border-radius: var(--radius); box-shadow: var(--shadow-sm); border: 1px solid var(--border); transition: box-shadow 0.2s; }
 .panel:hover { box-shadow: var(--shadow-md); }
 .panel h3 { font-size: 20px; font-weight: 700; margin-bottom: 20px; color: var(--text-primary); display: flex; align-items: center; gap: 10px; }
 .panel h3::before { content: ''; width: 4px; height: 24px; background: var(--primary); border-radius: 2px; }
 .panel h4 { font-size: 13px; font-weight: 600; margin: 20px 0 10px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; }
 
-/* Form */
 input[type="text"], input[type="datetime-local"], textarea, select { width: 100%; padding: 12px 16px; margin: 8px 0; border: 2px solid var(--border); border-radius: var(--radius-sm); font-family: var(--font-main); font-size: 15px; transition: all 0.2s; background: var(--bg-surface); color: var(--text-primary); }
 input:focus, textarea:focus, select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(45,91,255,0.1); }
 input::placeholder, textarea::placeholder { color: var(--text-tertiary); }
@@ -68,7 +63,6 @@ input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; accent-colo
 label { display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 6px 0; transition: color 0.2s; }
 label:hover { color: var(--primary); }
 
-/* Buttons */
 button { font-family: var(--font-main); }
 .btn { padding: 12px 24px; border: none; border-radius: var(--radius-sm); font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
 .btn-primary { background: var(--primary); color: white; }
@@ -82,7 +76,6 @@ button { font-family: var(--font-main); }
 .btn-sm { padding: 7px 14px; font-size: 13px; }
 .action-row { display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap; }
 
-/* Editor */
 .meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .editor { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 20px; }
 .editor-pane { display: flex; flex-direction: column; }
@@ -102,7 +95,6 @@ button { font-family: var(--font-main); }
 .preview code { background: var(--bg-main); padding: 2px 6px; border-radius: 4px; font-family: var(--font-mono); font-size: 13px; }
 .preview blockquote { border-left: 4px solid var(--primary); padding-left: 20px; margin: 16px 0; color: var(--text-secondary); font-style: italic; }
 
-/* SEO */
 .score-container { display: flex; align-items: center; gap: 24px; margin-bottom: 24px; padding: 20px; background: var(--bg-main); border-radius: var(--radius-sm); }
 .score-circle { width: 100px; height: 100px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 700; background: linear-gradient(135deg, var(--primary-light), var(--primary)); color: white; box-shadow: var(--shadow-md); }
 .score-circle.low { background: linear-gradient(135deg, #FF6B6B, #EE5A6F); }
@@ -121,7 +113,6 @@ button { font-family: var(--font-main); }
 .stat-value { font-size: 32px; font-weight: 700; color: var(--primary); margin-bottom: 4px; }
 .stat-label { font-size: 13px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; }
 
-/* Categories */
 .multi-select { max-height: 200px; overflow-y: auto; border: 2px solid var(--border); padding: 12px; background: var(--bg-surface); border-radius: var(--radius-sm); }
 .multi-select label { display: flex; align-items: center; gap: 10px; margin: 6px 0; padding: 8px 12px; border-radius: var(--radius-sm); }
 .multi-select label:hover { background: var(--bg-main); }
@@ -137,16 +128,7 @@ button { font-family: var(--font-main); }
 .category-badge button:hover { background: rgba(255,255,255,0.2); }
 
 /* ── IMAGE SECTION ── */
-.image-workflow-note {
-  background: rgba(45,91,255,0.05);
-  border: 1px solid rgba(45,91,255,0.18);
-  border-radius: var(--radius-sm);
-  padding: 14px 18px;
-  margin-bottom: 14px;
-  font-size: 14px;
-  line-height: 1.65;
-  color: var(--text-secondary);
-}
+.image-workflow-note { background: rgba(45,91,255,0.05); border: 1px solid rgba(45,91,255,0.18); border-radius: var(--radius-sm); padding: 14px 18px; margin-bottom: 14px; font-size: 14px; line-height: 1.65; color: var(--text-secondary); }
 .image-workflow-note strong { color: var(--primary); }
 .image-workflow-note code { background: rgba(45,91,255,0.08); padding: 1px 5px; border-radius: 4px; font-family: var(--font-mono); font-size: 12px; color: var(--primary); }
 .image-workflow-note ol { margin: 8px 0 0 20px; }
@@ -161,7 +143,7 @@ button { font-family: var(--font-main); }
 .remove-image { background: var(--danger); color: white; border: none; padding: 6px 12px; border-radius: var(--radius-sm); cursor: pointer; font-size: 13px; font-weight: 600; }
 .insert-image { background: var(--primary); color: white; border: none; padding: 6px 12px; border-radius: var(--radius-sm); cursor: pointer; font-size: 13px; font-weight: 600; }
 
-/* Draft table */
+/* ── PRODUCT CARDS ── */
 #finalPost { background: var(--bg-main); padding: 24px; border-radius: var(--radius-sm); overflow-x: auto; font-family: var(--font-mono); font-size: 13px; line-height: 1.6; border: 2px solid var(--border); max-height: 600px; overflow-y: auto; }
 table { width: 100%; border-collapse: collapse; margin-top: 20px; background: var(--bg-surface); border-radius: var(--radius-sm); overflow: hidden; }
 thead { background: var(--bg-main); }
@@ -173,25 +155,31 @@ tbody tr:hover { background: var(--bg-main); }
 .status-scheduled { background: #FEF3C7; color: #92400E; }
 .status-draft { background: #E5E7EB; color: #374151; }
 
-/* Affiliate */
+/* ── AFFILIATE MANAGER ── */
 .search-container { display: flex; gap: 12px; margin-bottom: 20px; }
 .search-container input { flex: 1; margin: 0; }
 #affiliateResults { list-style: none; padding: 0; }
 #affiliateResults li { padding: 16px; margin: 8px 0; background: var(--bg-main); border-radius: var(--radius-sm); display: flex; justify-content: space-between; align-items: center; transition: all 0.2s; }
 #affiliateResults li:hover { background: var(--bg-surface); box-shadow: var(--shadow-sm); transform: translateX(4px); }
 .affiliate-name { font-weight: 600; }
-.affiliate-actions { display: flex; gap: 8px; }
+.affiliate-category { font-size: 13px; color: var(--text-tertiary); margin-top: 3px; }
+.affiliate-actions { display: flex; gap: 8px; align-items: center; }
 .affiliate-link { color: var(--primary); text-decoration: none; font-weight: 600; padding: 6px 14px; border-radius: var(--radius-sm); background: rgba(45,91,255,0.1); transition: all 0.2s; font-size: 13px; cursor: pointer; border: none; font-family: var(--font-main); }
 .affiliate-link:hover { background: var(--primary); color: white; }
 .affiliate-link-purple { color: var(--purple); background: var(--purple-pale); }
 .affiliate-link-purple:hover { background: var(--purple); color: white; }
-
-/* Empty State */
+.affiliate-link-danger { color: var(--danger); background: rgba(255,71,87,0.08); }
+.affiliate-link-danger:hover { background: var(--danger); color: white; }
+.catalog-count { font-size: 13px; color: var(--text-secondary); padding: 8px 14px; background: var(--bg-main); border-radius: var(--radius-sm); font-family: var(--font-mono); }
+.catalog-actions { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px; }
+.catalog-info { background: rgba(45,91,255,0.05); border: 1px solid rgba(45,91,255,0.18); border-radius: var(--radius-sm); padding: 12px 16px; font-size: 14px; color: var(--text-secondary); margin-bottom: 16px; }
+.catalog-info strong { color: var(--primary); }
+.no-results-state { text-align: center; padding: 32px 20px; color: var(--text-tertiary); }
+.no-results-state .icon { font-size: 36px; margin-bottom: 12px; opacity: 0.4; }
 .empty-state { text-align: center; padding: 60px 20px; color: var(--text-tertiary); }
 .empty-state-icon { font-size: 48px; margin-bottom: 16px; opacity: 0.3; }
 .empty-state-text { font-size: 16px; color: var(--text-secondary); }
 
-/* Modal */
 .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); }
 .modal.active { display: flex; align-items: center; justify-content: center; }
 .modal-content { background: var(--bg-surface); padding: 32px; border-radius: var(--radius); max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto; box-shadow: var(--shadow-lg); animation: slideUp 0.3s ease; }
@@ -204,12 +192,10 @@ tbody tr:hover { background: var(--bg-main); }
 .draft-item:hover { border-color: var(--primary); }
 .draft-item-title { font-weight: 600; margin-bottom: 4px; }
 .draft-item-meta { font-size: 13px; color: var(--text-secondary); }
-
-/* Autosave */
 .autosave-saving { color: var(--warning); }
 .autosave-saved { color: var(--success); }
 
-/* Featured Products */
+/* ── PRODUCT CARDS (enhanced) ── */
 .product-card { background: var(--bg-main); border: 2px solid var(--border); border-radius: var(--radius-sm); padding: 20px; margin-bottom: 16px; transition: all 0.2s; }
 .product-card:hover { border-color: var(--purple); box-shadow: var(--shadow-sm); }
 .product-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
@@ -218,9 +204,36 @@ tbody tr:hover { background: var(--bg-main); }
 .type-btn { padding: 5px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; border: 2px solid var(--border); background: var(--bg-surface); color: var(--text-secondary); transition: all 0.2s; font-family: var(--font-main); }
 .type-btn.active-product { border-color: var(--purple); background: var(--purple-pale); color: var(--purple); }
 .type-btn.active-blog { border-color: var(--primary); background: rgba(45,91,255,0.08); color: var(--primary); }
+
+/* Product fields grid — 3 col for label row */
 .product-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.product-fields input { margin: 0; }
+.product-fields input, .product-fields select { margin: 0; }
 .product-fields .full-width { grid-column: 1 / -1; }
+
+/* Image path prefix input group */
+.image-path-group { display: flex; align-items: center; border: 2px solid var(--border); border-radius: var(--radius-sm); background: var(--bg-surface); overflow: hidden; transition: all 0.2s; }
+.image-path-group:focus-within { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(45,91,255,0.1); }
+.image-path-prefix { padding: 11px 10px 11px 14px; background: var(--bg-main); color: var(--text-tertiary); font-size: 13px; font-family: var(--font-mono); white-space: nowrap; border-right: 2px solid var(--border); flex-shrink: 0; user-select: none; }
+.image-path-group input { border: none !important; box-shadow: none !important; border-radius: 0 !important; margin: 0 !important; flex: 1; min-width: 0; padding: 11px 14px; font-family: var(--font-mono); font-size: 13px; }
+.image-path-group input:focus { outline: none; border: none; box-shadow: none; }
+
+/* Label row */
+.label-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.label-select { width: 100%; padding: 11px 14px; border: 2px solid var(--border); border-radius: var(--radius-sm); font-family: var(--font-main); font-size: 14px; background: var(--bg-surface); color: var(--text-primary); cursor: pointer; transition: all 0.2s; }
+.label-select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(45,91,255,0.1); }
+.label-custom { display: none; }
+.label-custom.visible { display: block; }
+
+/* Label preview chips */
+.label-preview { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; margin-left: 6px; }
+.label-sale { background: #FEE2E2; color: #DC2626; }
+.label-new { background: #D1FAE5; color: #065F46; }
+.label-top-pick { background: #FEF3C7; color: #92400E; }
+.label-editors-pick { background: rgba(126,8,130,0.12); color: var(--purple); }
+.label-best-value { background: #DBEAFE; color: #1D4ED8; }
+.label-limited { background: #FEE2E2; color: #DC2626; }
+.label-custom-chip { background: #F3E8FF; color: #7C3AED; }
+
 .price-field { transition: all 0.3s ease; }
 .price-field.hidden-field { opacity: 0; pointer-events: none; height: 0 !important; min-height: 0 !important; padding: 0 !important; border: none !important; margin: 0 !important; overflow: hidden; }
 .add-product-btn { width: 100%; padding: 16px; border: 2px dashed var(--border); border-radius: var(--radius-sm); background: var(--bg-surface); color: var(--text-secondary); font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; font-family: var(--font-main); }
@@ -231,9 +244,10 @@ tbody tr:hover { background: var(--bg-main); }
 .yaml-comment { color: #585b70; font-style: italic; }
 .product-count-badge { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; background: var(--purple); color: white; border-radius: 50%; font-size: 11px; font-weight: 700; margin-left: 4px; vertical-align: middle; }
 .products-preview-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(175px, 1fr)); gap: 14px; margin-top: 16px; }
-.product-preview-card { background: var(--bg-surface); border: 2px solid var(--border); border-radius: var(--radius-sm); padding: 14px; text-align: center; transition: all 0.2s; }
+.product-preview-card { background: var(--bg-surface); border: 2px solid var(--border); border-radius: var(--radius-sm); padding: 14px; text-align: center; transition: all 0.2s; position: relative; }
 .product-preview-card:hover { border-color: var(--purple); transform: translateY(-2px); box-shadow: var(--shadow-md); }
-.product-preview-name { font-weight: 700; font-size: 13px; margin-bottom: 6px; line-height: 1.3; }
+.product-preview-label { position: absolute; top: -8px; left: 50%; transform: translateX(-50%); padding: 2px 10px; border-radius: 10px; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; }
+.product-preview-name { font-weight: 700; font-size: 13px; margin-bottom: 6px; line-height: 1.3; margin-top: 8px; }
 .product-preview-price { font-size: 15px; font-weight: 800; color: var(--purple); margin-bottom: 6px; }
 .product-preview-cta { font-size: 12px; color: var(--text-secondary); font-weight: 600; }
 .product-preview-link { font-size: 11px; color: var(--primary); word-break: break-all; margin-top: 6px; display: block; opacity: 0.7; }
@@ -242,9 +256,8 @@ tbody tr:hover { background: var(--bg-main); }
 .products-tip strong { color: var(--purple); }
 .products-tip code { background: rgba(126,8,130,0.1); padding: 2px 6px; border-radius: 4px; font-family: var(--font-mono); font-size: 12px; color: var(--purple); }
 
-/* Responsive */
 @media (max-width: 968px) {
-  .editor, .meta-grid, .product-fields { grid-template-columns: 1fr; }
+  .editor, .meta-grid, .product-fields, .label-row { grid-template-columns: 1fr; }
   nav button { min-width: 85px; font-size: 12px; padding: 12px 6px; }
   .container { padding: 16px; }
 }
@@ -292,45 +305,31 @@ tbody tr:hover { background: var(--bg-main); }
       <input id="slug" placeholder="Slug (e.g., best-accent-chairs)" type="text">
     </div>
     <textarea id="description" placeholder="Meta Description (150-160 characters recommended)" rows="3"></textarea>
-
     <h4>Categories</h4>
     <input type="text" id="categorySearch" placeholder="🔍 Search categories..." style="margin-bottom:12px;">
     <div class="selected-categories" id="selectedCategories"></div>
     <div id="categorySelect" class="multi-select"></div>
-
     <h4>Tags</h4>
     <input id="tags" placeholder="Comma separated tags (e.g., review, comparison, budget-friendly)" type="text">
-
     <h4>SEO Keywords</h4>
     <input id="seoKeywords" placeholder="Comma separated keywords" type="text">
-
-    <!-- ═══════════════════════════════════════════════════════
-         FEATURED IMAGE — clarified workflow
-    ════════════════════════════════════════════════════════ -->
     <h4>Featured Image</h4>
-
     <div class="image-workflow-note">
       <strong>📌 How images work with your GitHub repo:</strong><br>
-      Images <em>cannot</em> be pushed to GitHub from this scheduler — they must be added to your repo separately (drag &amp; drop on GitHub.com, via GitHub Desktop, or <code>git add</code>). Here's the two-step workflow:<br>
+      Images cannot be pushed to GitHub from this scheduler — they must be added to your repo separately. Two-step workflow:<br>
       <ol>
-        <li><strong>Set the repo path below</strong> — this is where you'll put the image in your repo and what goes into your frontmatter <code>featured_image:</code> field.</li>
-        <li><strong>Upload for local preview</strong> (optional) — lets you see how it looks in the editor. The preview file stays in your browser only and is never committed.</li>
+        <li><strong>Set the repo path below</strong> — written into your frontmatter <code>featured_image:</code> field.</li>
+        <li><strong>Upload for local preview</strong> (optional) — stays in your browser only, never committed.</li>
       </ol>
     </div>
-
-    <!-- Step 1: Repo path (the only thing that matters for publishing) -->
     <label style="font-size:13px;font-weight:600;color:var(--text-secondary);margin-bottom:0;display:block;">
       Step 1 — Image path in repo <span style="color:var(--text-tertiary);font-weight:400;">(written into frontmatter)</span>
     </label>
     <div class="image-path-row">
-      <input type="text" id="imagePath"
-        placeholder="/content/images/posts/your-image.jpg"
-        oninput="triggerAutosave()">
+      <input type="text" id="imagePath" placeholder="/content/images/posts/your-image.jpg" oninput="triggerAutosave()">
       <button onclick="copyImagePath()" class="btn btn-secondary btn-sm" title="Copy path to clipboard">📋 Copy</button>
     </div>
     <div class="image-path-hint">Convention: /content/images/posts/<em>slug</em>.jpg — commit this file to your repo separately</div>
-
-    <!-- Step 2: Local preview upload -->
     <div class="image-upload-area">
       <input type="file" id="imageUpload" accept="image/*" style="display:none;">
       <button onclick="document.getElementById('imageUpload').click()" class="btn btn-secondary" style="width:100%;">
@@ -338,10 +337,8 @@ tbody tr:hover { background: var(--bg-main); }
       </button>
       <div id="imagePreviewContainer" style="margin-top:12px;"></div>
     </div>
-
     <label style="margin-top:12px;"><input type="checkbox" id="disclaimer"><span>Add FTC Affiliate Disclosure</span></label>
   </div>
-
   <div class="panel">
     <h3>Content Editor</h3>
     <div class="editor">
@@ -367,15 +364,13 @@ tbody tr:hover { background: var(--bg-main); }
   <div class="panel">
     <h3>Featured Products for Sidebar</h3>
     <div class="products-tip">
-      Add up to <strong>5 products or blog post links</strong>. These populate the <code>featured_products:</code> block in your post's frontmatter — copy it straight into your <code>.md</code> file.<br><br>
-      🛍️ <strong>Product</strong> → generates "Shop Now →" with price &nbsp;|&nbsp; 📝 <strong>Blog Post</strong> → generates "Read More →" with no price
+      Add up to <strong>5 products or blog post links</strong>. These populate the <code>featured_products:</code> block in your post's frontmatter.<br><br>
+      🛍️ <strong>Product</strong> → generates "Shop Now →" with price &nbsp;|&nbsp; 📝 <strong>Blog Post</strong> → generates "Read More →" with no price<br>
+      🏷️ <strong>Labels</strong> → optional badges shown on the sidebar card (e.g. "NEW", "TOP PICK", or your own text)
     </div>
     <div id="productsList"></div>
-    <button class="add-product-btn" onclick="addProductCard()" id="addProductBtn">
-      ➕ Add Product or Blog Post Link
-    </button>
+    <button class="add-product-btn" onclick="addProductCard()" id="addProductBtn">➕ Add Product or Blog Post Link</button>
   </div>
-
   <div class="panel" id="productsOutputPanel" style="display:none;">
     <h3>Generated Frontmatter — Copy &amp; Paste into your .md file</h3>
     <div id="frontmatterOutput" class="frontmatter-output"></div>
@@ -419,6 +414,9 @@ tbody tr:hover { background: var(--bg-main); }
   <div class="panel">
     <h3>Schedule Publication</h3>
     <label><span style="font-weight:600;">Publication Date &amp; Time</span></label>
+    <p style="font-size:13px; color:var(--text-secondary); margin: 4px 0 8px;">
+      ⏰ Enter time in your local timezone — <strong>Nairobi (EAT, UTC+3)</strong>. The scheduler converts to UTC automatically.
+    </p>
     <input type="datetime-local" id="publishDate">
     <div class="action-row">
       <button onclick="preparePost()" class="btn btn-primary">🚀 Prepare Post for Publishing</button>
@@ -459,25 +457,42 @@ tbody tr:hover { background: var(--bg-main); }
 <section id="affiliate">
   <div class="panel">
     <h3>Affiliate Link Manager</h3>
-    <div class="search-container">
-      <input type="text" id="affiliateSearch" placeholder="Search products, brands, or categories...">
-      <button onclick="searchAffiliate()" class="btn btn-primary">🔍 Search</button>
+    <div class="catalog-info">
+      💾 <strong>Your catalog is saved permanently</strong> in your browser. Links you add here survive page refreshes and browser restarts — they're yours until you delete them.
+    </div>
+    <div class="catalog-actions">
+      <div class="search-container" style="flex:1; margin-bottom:0;">
+        <input type="text" id="affiliateSearch" placeholder="Search by product name or category...">
+        <button onclick="searchAffiliate()" class="btn btn-primary">🔍 Search</button>
+      </div>
+      <span id="catalogCountDisplay" class="catalog-count">0 links saved</span>
     </div>
     <ul id="affiliateResults"></ul>
     <div id="emptyAffiliate" class="empty-state" style="display:none;">
       <div class="empty-state-icon">🔗</div>
-      <div class="empty-state-text">Search for affiliate links to get started</div>
+      <div class="empty-state-text">Search your catalog or add links below</div>
+    </div>
+    <div id="noSearchResults" class="no-results-state" style="display:none;">
+      <div class="icon">🔍</div>
+      <div>No results found — try a different search term</div>
     </div>
   </div>
   <div class="panel">
-    <h3>Quick Add Link</h3>
-    <input type="text" id="newLinkName" placeholder="Product Name">
-    <input type="text" id="newLinkUrl" placeholder="Affiliate URL">
-    <button onclick="addAffiliateLink()" class="btn btn-primary" style="margin-top:8px;">➕ Add to Catalog</button>
+    <h3>Add New Link to Catalog</h3>
+    <div class="meta-grid">
+      <input type="text" id="newLinkName" placeholder="Product Name (e.g. Casaluna Linen Duvet Cover)">
+      <input type="text" id="newLinkCategory" placeholder="Category (e.g. Bedroom, Lighting, Rugs)">
+    </div>
+    <input type="text" id="newLinkUrl" placeholder="Affiliate URL (e.g. https://amzn.to/xxxxx)">
+    <input type="text" id="newLinkPrice" placeholder="Price (optional, e.g. $69–$129)">
+    <div class="action-row">
+      <button onclick="addAffiliateLink()" class="btn btn-primary">➕ Add to Catalog</button>
+      <button onclick="clearCatalog()" class="btn btn-danger btn-sm">🗑️ Clear Entire Catalog</button>
+    </div>
   </div>
 </section>
 
-</div><!-- /.container -->
+</div>
 
 <!-- Load Draft Modal -->
 <div id="loadDraftModal" class="modal">
@@ -497,13 +512,148 @@ tbody tr:hover { background: var(--bg-main); }
 let currentTab = 'editor';
 let uploadedImage = null;
 let productCounter = 0;
-let affiliateCatalog = [
-  {name:"Roomba 960 Robot Vacuum",   link:"https://amzn.to/roomba960",  category:"Smart Home"},
-  {name:"Dyson V11 Cordless Vacuum", link:"https://amzn.to/dysonv11",   category:"Appliances"},
-  {name:"Ikea Kallax Shelf Unit",    link:"https://ikea.com/kallax?aff=123", category:"Furniture"},
-  {name:"Philips Hue Smart Lights",  link:"https://amzn.to/philipshue", category:"Smart Home"},
-  {name:"Instant Pot Duo 7-in-1",   link:"https://amzn.to/instantpot", category:"Kitchen"},
+
+/* ══════════════════════════════════════════
+   LABEL HELPERS
+══════════════════════════════════════════ */
+const PRESET_LABELS = [
+  { value: '',            text: '— No Label —',    chip: '' },
+  { value: 'NEW',         text: '🟢 New',           chip: 'label-new' },
+  { value: 'SALE',        text: '🔴 Sale',          chip: 'label-sale' },
+  { value: 'TOP PICK',    text: '⭐ Top Pick',      chip: 'label-top-pick' },
+  { value: "EDITOR'S PICK", text: "💜 Editor's Pick", chip: 'label-editors-pick' },
+  { value: 'BEST VALUE',  text: '💙 Best Value',    chip: 'label-best-value' },
+  { value: 'LIMITED',     text: '🔥 Limited',       chip: 'label-limited' },
+  { value: 'CUSTOM',      text: '✏️ Custom label…', chip: 'label-custom-chip' },
 ];
+
+function getLabelChipClass(val) {
+  const p = PRESET_LABELS.find(l => l.value === val);
+  return p ? p.chip : 'label-custom-chip';
+}
+
+function getLabelStyle(val) {
+  // Returns inline style string for the preview chip based on preset
+  const map = {
+    'NEW':           'background:#D1FAE5;color:#065F46;',
+    'SALE':          'background:#FEE2E2;color:#DC2626;',
+    'TOP PICK':      'background:#FEF3C7;color:#92400E;',
+    "EDITOR'S PICK": 'background:rgba(126,8,130,0.12);color:#7e0882;',
+    'BEST VALUE':    'background:#DBEAFE;color:#1D4ED8;',
+    'LIMITED':       'background:#FEE2E2;color:#DC2626;',
+  };
+  return map[val] || 'background:#F3E8FF;color:#7C3AED;';
+}
+
+/* ══════════════════════════════════════════
+   AFFILIATE CATALOG — PERSISTENT localStorage
+══════════════════════════════════════════ */
+const CATALOG_KEY = 'wgd_affiliate_catalog';
+const DEFAULT_CATALOG = [
+  { name: "Casaluna Linen Blend Duvet Cover Set",  link: "https://amzn.to/3Mt92ag", category: "Bedroom",    price: "$69–$129" },
+  { name: "Brightech Sparq Arc LED Floor Lamp",    link: "https://amzn.to/4ubPrMK", category: "Lighting",   price: "$79–$109" },
+  { name: "nuLOOM Rigo Handwoven Jute Area Rug",   link: "https://amzn.to/3ZSUXG9", category: "Rugs",       price: "$65–$175" },
+  { name: "Uttermost Abelard Abstract Canvas Art", link: "https://amzn.to/4qTb8hx", category: "Wall Decor", price: "$180–$320" },
+  { name: "Bedsure Satin Pillowcase Set (2-Pack)",  link: "https://amzn.to/4aT3kXd", category: "Bedroom",   price: "$10–$18" },
+];
+
+function loadCatalog() {
+  const raw = localStorage.getItem(CATALOG_KEY);
+  if (raw) { try { return JSON.parse(raw); } catch(e) {} }
+  saveCatalog(DEFAULT_CATALOG);
+  return DEFAULT_CATALOG;
+}
+function saveCatalog(catalog) {
+  localStorage.setItem(CATALOG_KEY, JSON.stringify(catalog));
+  updateCatalogCount();
+}
+function updateCatalogCount() {
+  const catalog = loadCatalog();
+  const el = document.getElementById('catalogCountDisplay');
+  if (el) el.textContent = catalog.length + ' link' + (catalog.length !== 1 ? 's' : '') + ' saved';
+}
+
+function searchAffiliate() {
+  const q = document.getElementById('affiliateSearch').value.toLowerCase().trim();
+  const ul = document.getElementById('affiliateResults');
+  const empty = document.getElementById('emptyAffiliate');
+  const noRes = document.getElementById('noSearchResults');
+  const catalog = loadCatalog();
+  ul.innerHTML = ''; empty.style.display = 'none'; noRes.style.display = 'none';
+  const res = q ? catalog.filter(a => a.name.toLowerCase().includes(q) || (a.category||'').toLowerCase().includes(q)) : catalog;
+  if (!res.length) { noRes.style.display = 'block'; return; }
+  renderAffiliateResults(res, q);
+}
+
+function renderAffiliateResults(items) {
+  const ul = document.getElementById('affiliateResults');
+  const catalog = loadCatalog();
+  ul.innerHTML = items.map(a => {
+    const trueIdx = catalog.findIndex(c => c.link === a.link && c.name === a.name);
+    const shortLink = a.link.length > 45 ? a.link.slice(0,45)+'…' : a.link;
+    return `<li>
+      <div>
+        <div class="affiliate-name">${a.name}</div>
+        <div class="affiliate-category">${a.category||'Uncategorized'}${a.price?' · '+a.price:''}</div>
+        <div style="font-size:11px;color:var(--text-tertiary);margin-top:3px;font-family:var(--font-mono);">${shortLink}</div>
+      </div>
+      <div class="affiliate-actions">
+        <button class="affiliate-link" onclick="insertAffiliateLink('${esc(a.name)}','${esc(a.link)}')">📎 Insert</button>
+        <button class="affiliate-link affiliate-link-purple" onclick="addLinkToProducts('${esc(a.name)}','${esc(a.link)}','${esc(a.price||'')}')">🛍️ Add to Sidebar</button>
+        <button class="affiliate-link affiliate-link-danger" onclick="deleteAffiliateLink(${trueIdx})" title="Delete from catalog">🗑️</button>
+      </div>
+    </li>`;
+  }).join('');
+}
+
+function addAffiliateLink() {
+  const name     = document.getElementById('newLinkName').value.trim();
+  const url      = document.getElementById('newLinkUrl').value.trim();
+  const category = document.getElementById('newLinkCategory').value.trim();
+  const price    = document.getElementById('newLinkPrice').value.trim();
+  if (!name) { alert('⚠️ Please enter a product name'); return; }
+  if (!url)  { alert('⚠️ Please enter an affiliate URL'); return; }
+  const catalog = loadCatalog();
+  if (catalog.find(c => c.link === url)) { alert('⚠️ This URL is already in your catalog'); return; }
+  catalog.push({ name, link: url, category: category||'General', price: price||'' });
+  saveCatalog(catalog);
+  ['newLinkName','newLinkUrl','newLinkCategory','newLinkPrice'].forEach(id => { document.getElementById(id).value=''; });
+  updateCatalogCount(); searchAffiliate();
+  alert(`✅ "${name}" added to your permanent catalog`);
+}
+
+function deleteAffiliateLink(idx) {
+  const catalog = loadCatalog();
+  if (!catalog[idx]) return;
+  if (!confirm(`Delete "${catalog[idx].name}" from your catalog?`)) return;
+  catalog.splice(idx,1); saveCatalog(catalog); searchAffiliate();
+}
+
+function clearCatalog() {
+  if (!confirm('⚠️ This will permanently delete ALL links from your catalog. Are you sure?')) return;
+  localStorage.removeItem(CATALOG_KEY); updateCatalogCount();
+  document.getElementById('affiliateResults').innerHTML='';
+  document.getElementById('emptyAffiliate').style.display='block';
+  alert('✅ Catalog cleared');
+}
+
+function insertAffiliateLink(name, link) {
+  const ta = document.getElementById('content');
+  const md = `[${name}](${link})`;
+  const s=ta.selectionStart, e=ta.selectionEnd;
+  ta.value = ta.value.slice(0,s)+md+ta.value.slice(e);
+  ta.selectionStart = ta.selectionEnd = s+md.length;
+  ta.focus(); updatePreview(); openTab('editor');
+}
+
+function addLinkToProducts(name, link, price) {
+  openTab('products');
+  addProductCard({ name, link, type:'product', price: price||'' });
+}
+
+function esc(str) {
+  return String(str||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');
+}
 
 /* ══════════════════════════════════════════
    IMAGE PATH HELPERS
@@ -511,26 +661,40 @@ let affiliateCatalog = [
 function copyImagePath() {
   const val = document.getElementById('imagePath').value.trim();
   if (!val) { alert('⚠️ Enter a repo image path first'); return; }
-  navigator.clipboard.writeText(val)
-    .then(() => alert('✅ Path copied: ' + val))
-    .catch(() => alert('❌ Copy failed — copy manually'));
+  navigator.clipboard.writeText(val).then(() => alert('✅ Path copied: '+val)).catch(() => alert('❌ Copy failed — copy manually'));
 }
 
 /* ══════════════════════════════════════════
-   FEATURED PRODUCTS
+   FEATURED PRODUCTS — with labels + image prefix
 ══════════════════════════════════════════ */
+const IMG_PREFIX = '/content/images/products/';
+
 function addProductCard(prefill) {
   const list = document.getElementById('productsList');
   const existing = list.querySelectorAll('.product-card').length;
   if (existing >= 5) { alert('⚠️ Maximum 5 products per post. Remove one to add another.'); return; }
-
   productCounter++;
   const id = productCounter;
   const isProduct = !prefill || prefill.type !== 'blog';
 
+  // Determine pre-existing label values
+  const prefillLabel  = prefill?.label  || '';
+  const prefillCustom = prefill?.labelCustom || '';
+  const isCustomLabel = prefillLabel === 'CUSTOM' || (prefillLabel && !PRESET_LABELS.find(l => l.value === prefillLabel && l.value !== 'CUSTOM' && l.value !== ''));
+
+  // Build the label select options
+  const labelOptions = PRESET_LABELS.map(l =>
+    `<option value="${l.value}" ${(isCustomLabel ? 'CUSTOM' : prefillLabel) === l.value ? 'selected' : ''}>${l.text}</option>`
+  ).join('');
+
+  // Extract just the filename if prefill.image starts with the prefix
+  const prefillImageFile = prefill?.image
+    ? (prefill.image.startsWith(IMG_PREFIX) ? prefill.image.slice(IMG_PREFIX.length) : prefill.image)
+    : '';
+
   const card = document.createElement('div');
   card.className = 'product-card';
-  card.dataset.id = id;
+  card.dataset.id   = id;
   card.dataset.type = isProduct ? 'product' : 'blog';
 
   card.innerHTML = `
@@ -544,42 +708,88 @@ function addProductCard(prefill) {
         <button class="btn btn-danger btn-sm" onclick="removeProductCard(${id})">✕ Remove</button>
       </div>
     </div>
+
     <div class="product-fields">
+      <!-- Name (full width) -->
       <input type="text" class="full-width" data-field="name" placeholder="Name (e.g. Velvet Accent Chair)" value="${ea(prefill?.name)}">
+
+      <!-- Price + Label preset (side by side) -->
       <input type="text" class="price-field ${!isProduct ? 'hidden-field' : ''}" data-field="price" placeholder="Price (e.g. $299.99)" value="${ea(prefill?.price)}">
-      <input type="text" data-field="link" placeholder="URL (affiliate link or /posts/slug.html)" value="${ea(prefill?.link)}">
-      <input type="text" class="full-width" data-field="image" placeholder="Image path (e.g. /content/images/products/chair.jpg)" value="${ea(prefill?.image)}">
+
+      <!-- Label row (side by side: preset dropdown + custom text) -->
+      <div class="label-row full-width" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div>
+          <div style="font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.4px;">🏷️ Sidebar Label</div>
+          <select class="label-select" data-field="label" onchange="onLabelChange(${id}, this)">
+            ${labelOptions}
+          </select>
+        </div>
+        <div>
+          <div style="font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.4px;">Custom Label Text</div>
+          <input type="text" class="label-custom ${(isCustomLabel || prefillLabel === 'CUSTOM') ? 'visible' : ''}"
+            data-field="labelCustom"
+            placeholder="e.g. Staff Pick, Hot Deal…"
+            value="${ea(isCustomLabel && !PRESET_LABELS.find(l=>l.value===prefillLabel && l.value!=='CUSTOM') ? prefillLabel : prefillCustom)}"
+            style="margin:0;">
+        </div>
+      </div>
+
+      <!-- Affiliate URL -->
+      <input type="text" class="full-width" data-field="link" placeholder="Affiliate URL or /posts/slug.html" value="${ea(prefill?.link)}">
+
+      <!-- Image path with prefix -->
+      <div class="full-width">
+        <div style="font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.4px;">
+          Product Image <span style="font-weight:400;font-style:italic;text-transform:none;">— filename only, e.g. <code style="font-size:11px;">chair.jpg</code></span>
+        </div>
+        <div class="image-path-group">
+          <span class="image-path-prefix">${IMG_PREFIX}</span>
+          <input type="text" data-field="imageFile" placeholder="chair.jpg" value="${ea(prefillImageFile)}">
+        </div>
+      </div>
     </div>`;
 
-  card.querySelectorAll('input').forEach(inp => inp.addEventListener('input', () => { generateFrontmatter(); updateProductBadge(); }));
+  card.querySelectorAll('input, select').forEach(inp =>
+    inp.addEventListener('input', () => { generateFrontmatter(); updateProductBadge(); })
+  );
   list.appendChild(card);
-  updateAddButton();
-  updateProductBadge();
-  generateFrontmatter();
+  updateAddButton(); updateProductBadge(); generateFrontmatter();
 }
 
-function ea(str) { return str ? String(str).replace(/"/g, '&quot;') : ''; }
+function ea(str) { return str ? String(str).replace(/"/g,'&quot;') : ''; }
+
+function onLabelChange(id, selectEl) {
+  const card = document.querySelector(`.product-card[data-id="${id}"]`);
+  if (!card) return;
+  const customInput = card.querySelector('.label-custom');
+  if (selectEl.value === 'CUSTOM') {
+    customInput.classList.add('visible');
+    customInput.focus();
+  } else {
+    customInput.classList.remove('visible');
+    customInput.value = '';
+  }
+  generateFrontmatter(); updateProductBadge();
+}
 
 function setProductType(id, type, btn) {
   const card = document.querySelector(`.product-card[data-id="${id}"]`);
   if (!card) return;
   card.dataset.type = type;
   card.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active-product','active-blog'));
-  btn.classList.add(type === 'product' ? 'active-product' : 'active-blog');
+  btn.classList.add(type==='product' ? 'active-product' : 'active-blog');
   const priceField = card.querySelector('.price-field');
-  if (type === 'blog') { priceField.classList.add('hidden-field'); priceField.value = ''; }
+  if (type==='blog') { priceField.classList.add('hidden-field'); priceField.value=''; }
   else { priceField.classList.remove('hidden-field'); }
   generateFrontmatter();
 }
 
 function removeProductCard(id) {
   document.querySelector(`.product-card[data-id="${id}"]`)?.remove();
-  document.querySelectorAll('.product-card').forEach((c, i) => {
-    c.querySelector('.product-card-title').textContent = `Item ${i + 1}`;
+  document.querySelectorAll('.product-card').forEach((c,i) => {
+    c.querySelector('.product-card-title').textContent = `Item ${i+1}`;
   });
-  updateAddButton();
-  updateProductBadge();
-  generateFrontmatter();
+  updateAddButton(); updateProductBadge(); generateFrontmatter();
 }
 
 function updateAddButton() {
@@ -595,13 +805,22 @@ function updateProductBadge() {
 }
 
 function getProductsData() {
-  return Array.from(document.querySelectorAll('.product-card')).map(card => ({
-    type:  card.dataset.type,
-    name:  card.querySelector('[data-field="name"]').value.trim(),
-    price: card.querySelector('[data-field="price"]').value.trim(),
-    link:  card.querySelector('[data-field="link"]').value.trim(),
-    image: card.querySelector('[data-field="image"]').value.trim(),
-  })).filter(p => p.name || p.link);
+  return Array.from(document.querySelectorAll('.product-card')).map(card => {
+    const labelSelect = card.querySelector('[data-field="label"]');
+    const labelCustom = card.querySelector('[data-field="labelCustom"]');
+    const imageFile   = card.querySelector('[data-field="imageFile"]').value.trim();
+    let labelVal = labelSelect ? labelSelect.value : '';
+    if (labelVal === 'CUSTOM') labelVal = labelCustom?.value.trim() || '';
+
+    return {
+      type:       card.dataset.type,
+      name:       card.querySelector('[data-field="name"]').value.trim(),
+      price:      card.querySelector('[data-field="price"]').value.trim(),
+      link:       card.querySelector('[data-field="link"]').value.trim(),
+      image:      imageFile ? IMG_PREFIX + imageFile : '',
+      label:      labelVal,
+    };
+  }).filter(p => p.name || p.link);
 }
 
 function buildProductsYAML(indent) {
@@ -611,11 +830,12 @@ function buildProductsYAML(indent) {
   let yaml = `${pad}featured_products:\n`;
   products.forEach((p, i) => {
     const isP = p.type === 'product';
-    yaml += `${pad}  # ${isP ? 'Product' : 'Blog Post'} ${i + 1}\n`;
+    yaml += `${pad}  # ${isP ? 'Product' : 'Blog Post'} ${i+1}\n`;
     yaml += `${pad}  - name: "${p.name}"\n`;
-    if (isP && p.price) yaml += `${pad}    price: "${p.price}"\n`;
-    if (p.image) yaml += `${pad}    image: "${p.image}"\n`;
-    if (p.link)  yaml += `${pad}    link: "${p.link}"\n`;
+    if (isP && p.price)  yaml += `${pad}    price: "${p.price}"\n`;
+    if (p.label)         yaml += `${pad}    label: "${p.label}"\n`;
+    if (p.image)         yaml += `${pad}    image: "${p.image}"\n`;
+    if (p.link)          yaml += `${pad}    link: "${p.link}"\n`;
     yaml += '\n';
   });
   return yaml;
@@ -624,24 +844,27 @@ function buildProductsYAML(indent) {
 function generateFrontmatter() {
   const products = getProductsData();
   const panel = document.getElementById('productsOutputPanel');
-  if (!products.length) { panel.style.display = 'none'; return; }
-  panel.style.display = 'block';
+  if (!products.length) { panel.style.display='none'; return; }
+  panel.style.display='block';
 
   const raw = buildProductsYAML();
   const highlighted = raw
     .replace(/^(  # .+)$/gm, '<span class="yaml-comment">$1</span>')
     .replace(/^(featured_products:)/gm, '<span class="yaml-key">$1</span>')
-    .replace(/^(  - name:|    price:|    image:|    link:)/gm, '<span class="yaml-key">$1</span>')
+    .replace(/^(  - name:|    price:|    label:|    image:|    link:)/gm, '<span class="yaml-key">$1</span>')
     .replace(/("[^"]*")/g, '<span class="yaml-string">$1</span>');
-
   document.getElementById('frontmatterOutput').innerHTML = highlighted;
 
   document.getElementById('productsPreviewGrid').innerHTML = products.map(p => {
     const shortLink = p.link ? (p.link.length > 38 ? p.link.slice(0,38)+'…' : p.link) : '—';
+    const labelHtml = p.label
+      ? `<div class="product-preview-label" style="${getLabelStyle(p.label)}">${p.label}</div>`
+      : '';
     return `<div class="product-preview-card">
-      <div class="product-preview-name">${p.name || '—'}</div>
-      ${p.type === 'product' && p.price ? `<div class="product-preview-price">${p.price}</div>` : ''}
-      <div class="product-preview-cta">${p.type === 'product' ? '🛍️ Shop Now →' : '📝 Read More →'}</div>
+      ${labelHtml}
+      <div class="product-preview-name">${p.name||'—'}</div>
+      ${p.type==='product' && p.price ? `<div class="product-preview-price">${p.price}</div>` : ''}
+      <div class="product-preview-cta">${p.type==='product' ? '🛍️ Shop Now →' : '📝 Read More →'}</div>
       <span class="product-preview-link">${shortLink}</span>
     </div>`;
   }).join('');
@@ -652,8 +875,8 @@ function copyFrontmatter() {
   if (!raw) return;
   navigator.clipboard.writeText(raw).then(() => {
     const el = document.getElementById('copyConfirm');
-    el.style.display = 'inline-flex';
-    setTimeout(() => el.style.display = 'none', 2500);
+    el.style.display='inline-flex';
+    setTimeout(() => el.style.display='none', 2500);
   }).catch(() => alert('❌ Copy failed — select the text manually'));
 }
 
@@ -664,18 +887,12 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('imageUpload').addEventListener('change', e => {
     const file = e.target.files[0];
     if (!file || !file.type.startsWith('image/')) { if (file) alert('⚠️ Please upload an image file'); return; }
-
-    // Auto-fill path hint if slug is set and path is empty
     const pathField = document.getElementById('imagePath');
-    if (!pathField.value && slug.value) {
-      pathField.value = `/content/images/posts/${slug.value}.jpg`;
-    }
-
+    if (!pathField.value && slug.value) pathField.value = `/content/images/posts/${slug.value}.jpg`;
     const reader = new FileReader();
     reader.onload = ev => {
-      uploadedImage = {name:file.name, size:file.size, type:file.type, data:ev.target.result};
-      displayImagePreview();
-      triggerAutosave();
+      uploadedImage = { name:file.name, size:file.size, type:file.type, data:ev.target.result };
+      displayImagePreview(); triggerAutosave();
     };
     reader.readAsDataURL(file);
   });
@@ -683,11 +900,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function displayImagePreview() {
   const container = document.getElementById('imagePreviewContainer');
-  if (!uploadedImage) { container.innerHTML = ''; return; }
-  const sizeKB = (uploadedImage.size / 1024).toFixed(2);
+  if (!uploadedImage) { container.innerHTML=''; return; }
+  const sizeKB = (uploadedImage.size/1024).toFixed(2);
   container.innerHTML = `<div class="image-preview">
     <div style="font-size:12px;background:rgba(255,183,0,0.1);border:1px solid #FFB020;border-radius:6px;padding:8px 12px;margin-bottom:8px;color:#92600E;">
-      ⚠️ <strong>Preview only</strong> — this image is not saved to your repo. Upload it to GitHub separately at the path shown above.
+      ⚠️ <strong>Preview only</strong> — upload this file to GitHub at the path shown above.
     </div>
     <img src="${uploadedImage.data}" alt="Preview">
     <div style="font-size:13px;color:var(--text-secondary);margin-top:6px;">${uploadedImage.name} (${sizeKB} KB)</div>
@@ -699,20 +916,19 @@ function displayImagePreview() {
 
 function insertImageIntoContent() {
   const path = document.getElementById('imagePath').value.trim();
-  const src = path || uploadedImage.data; // prefer repo path if set
-  const md = `![${uploadedImage.name}](${src})`;
-  const ta = document.getElementById('content');
-  const s = ta.selectionStart, e = ta.selectionEnd;
-  ta.value = ta.value.slice(0,s) + md + ta.value.slice(e);
-  ta.selectionStart = ta.selectionEnd = s + md.length;
+  const src  = path || uploadedImage.data;
+  const md   = `![${uploadedImage.name}](${src})`;
+  const ta   = document.getElementById('content');
+  const s=ta.selectionStart, e=ta.selectionEnd;
+  ta.value = ta.value.slice(0,s)+md+ta.value.slice(e);
+  ta.selectionStart = ta.selectionEnd = s+md.length;
   ta.focus(); updatePreview();
-  alert(path ? `✅ Inserted with repo path: ${path}` : '✅ Image inserted (using base64 preview — set a repo path for production)');
 }
 
 function removeImage() {
   if (!confirm('Remove the local preview image?')) return;
-  uploadedImage = null; displayImagePreview();
-  document.getElementById('imageUpload').value = ''; triggerAutosave();
+  uploadedImage=null; displayImagePreview();
+  document.getElementById('imageUpload').value=''; triggerAutosave();
 }
 
 /* ══════════════════════════════════════════
@@ -737,7 +953,7 @@ function saveToAutosave() {
     tags:        document.getElementById('tags').value,
     keywords:    document.getElementById('seoKeywords').value,
     imagePath:   document.getElementById('imagePath').value,
-    categories:  Array.from(document.querySelectorAll('#categorySelect input:checked')).map(c => c.value),
+    categories:  Array.from(document.querySelectorAll('#categorySelect input:checked')).map(c=>c.value),
     publishDate: document.getElementById('publishDate').value,
     disclaimer:  document.getElementById('disclaimer').checked,
     image:       uploadedImage,
@@ -747,18 +963,13 @@ function saveToAutosave() {
   updateAutosaveStatus('saved');
 }
 
-function triggerAutosave() { updateAutosaveStatus('saving'); setTimeout(saveToAutosave, 500); }
+function triggerAutosave() { updateAutosaveStatus('saving'); setTimeout(saveToAutosave,500); }
 
 function updateAutosaveStatus(status) {
-  const icon = document.getElementById('autosaveIcon');
-  const text = document.getElementById('autosaveText');
-  const el = document.getElementById('autosaveStatus');
-  el.className = '';
-  if (status === 'saving') { icon.textContent='💾'; text.textContent='Saving...'; el.classList.add('autosave-saving'); }
-  else {
-    icon.textContent='✅'; text.textContent='Autosaved'; el.classList.add('autosave-saved');
-    setTimeout(() => { icon.textContent='💾'; text.textContent='Autosave enabled'; el.className=''; }, 2000);
-  }
+  const icon=document.getElementById('autosaveIcon'), text=document.getElementById('autosaveText'), el=document.getElementById('autosaveStatus');
+  el.className='';
+  if (status==='saving') { icon.textContent='💾'; text.textContent='Saving...'; el.classList.add('autosave-saving'); }
+  else { icon.textContent='✅'; text.textContent='Autosaved'; el.classList.add('autosave-saved'); setTimeout(()=>{ icon.textContent='💾'; text.textContent='Autosave enabled'; el.className=''; },2000); }
 }
 
 function loadDraft() {
@@ -768,10 +979,10 @@ function loadDraft() {
   const productCount = data.products ? data.products.length : 0;
   document.getElementById('autosaveDraftPreview').innerHTML = `
     <div class="draft-item">
-      <div class="draft-item-title">${data.title || 'Untitled Post'}</div>
+      <div class="draft-item-title">${data.title||'Untitled Post'}</div>
       <div class="draft-item-meta">
         Last saved: ${new Date(data.timestamp).toLocaleString()}<br>
-        ${data.content ? data.content.split(/\s+/).length + ' words · ' : ''}${productCount} featured product${productCount !== 1 ? 's' : ''}
+        ${data.content ? data.content.split(/\s+/).length+' words · ' : ''}${productCount} featured product${productCount!==1?'s':''}
         ${data.imagePath ? `<br>📷 Image path: <code>${data.imagePath}</code>` : ''}
       </div>
       <div style="margin-top:12px; display:flex; gap:8px;">
@@ -785,23 +996,23 @@ function loadDraft() {
 function closeLoadModal() { document.getElementById('loadDraftModal').classList.remove('active'); }
 
 function restoreAutosave() {
-  const data = JSON.parse(localStorage.getItem('autosave') || '{}');
-  title.value = data.title || '';
-  slug.value  = data.slug  || '';
-  document.getElementById('description').value  = data.description || '';
-  content.value                                  = data.content    || '';
-  document.getElementById('tags').value          = data.tags       || '';
-  document.getElementById('seoKeywords').value   = data.keywords   || '';
-  document.getElementById('imagePath').value     = data.imagePath  || '';
-  document.getElementById('publishDate').value   = data.publishDate || '';
-  document.getElementById('disclaimer').checked  = data.disclaimer || false;
-  if (data.image) { uploadedImage = data.image; displayImagePreview(); }
+  const data = JSON.parse(localStorage.getItem('autosave')||'{}');
+  title.value = data.title||'';
+  slug.value  = data.slug||'';
+  document.getElementById('description').value = data.description||'';
+  content.value = data.content||'';
+  document.getElementById('tags').value        = data.tags||'';
+  document.getElementById('seoKeywords').value = data.keywords||'';
+  document.getElementById('imagePath').value   = data.imagePath||'';
+  document.getElementById('publishDate').value = data.publishDate||'';
+  document.getElementById('disclaimer').checked = data.disclaimer||false;
+  if (data.image) { uploadedImage=data.image; displayImagePreview(); }
   document.querySelectorAll('#categorySelect input[type="checkbox"]').forEach(cb => {
-    cb.checked = data.categories?.includes(cb.value) || false;
+    cb.checked = data.categories?.includes(cb.value)||false;
   });
   updateSelectedCategories();
-  document.getElementById('productsList').innerHTML = '';
-  productCounter = 0;
+  document.getElementById('productsList').innerHTML='';
+  productCounter=0;
   if (data.products?.length) data.products.forEach(p => addProductCard(p));
   updatePreview(); closeLoadModal(); alert('✅ Draft restored!');
 }
@@ -818,10 +1029,11 @@ function openTab(tab) {
   document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
   document.getElementById(tab).classList.add('active');
   document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
-  document.getElementById('nav-' + tab).classList.add('active');
+  document.getElementById('nav-'+tab).classList.add('active');
   currentTab = tab;
-  if (tab === 'seo') runSEO();
-  if (tab === 'products') generateFrontmatter();
+  if (tab==='seo') runSEO();
+  if (tab==='products') generateFrontmatter();
+  if (tab==='affiliate') { updateCatalogCount(); searchAffiliate(); }
 }
 
 /* ══════════════════════════════════════════
@@ -832,85 +1044,67 @@ const slug    = document.getElementById('slug');
 const content = document.getElementById('content');
 
 function generateSlug(t) {
-  return t.toLowerCase().trim()
-    .replace(/[^\w\s-]/g,'').replace(/\s+/g,'-').replace(/--+/g,'-').replace(/^-+|-+$/g,'');
+  return t.toLowerCase().trim().replace(/[^\w\s-]/g,'').replace(/\s+/g,'-').replace(/--+/g,'-').replace(/^-+|-+$/g,'');
 }
 title.addEventListener('input', () => {
-  if (!slug.value || slug.dataset.autoGenerated === 'true') {
-    slug.value = generateSlug(title.value);
-    slug.dataset.autoGenerated = 'true';
-  }
+  if (!slug.value || slug.dataset.autoGenerated==='true') { slug.value=generateSlug(title.value); slug.dataset.autoGenerated='true'; }
 });
-slug.addEventListener('input', () => { slug.dataset.autoGenerated = 'false'; });
-
+slug.addEventListener('input', () => { slug.dataset.autoGenerated='false'; });
 content.addEventListener('input', updatePreview);
+
 function updatePreview() {
   const text = content.value;
   document.getElementById('preview').innerHTML = text.trim()
     ? marked.parse(text)
     : `<div class="empty-state"><div class="empty-state-icon">📝</div><div class="empty-state-text">Start typing to see your preview</div></div>`;
-  document.getElementById('wordCount').textContent = text.trim().split(/\s+/).filter(Boolean).length + ' words';
-  if (currentTab === 'seo') runSEO();
+  document.getElementById('wordCount').textContent = text.trim().split(/\s+/).filter(Boolean).length+' words';
+  if (currentTab==='seo') runSEO();
 }
 
 /* ══════════════════════════════════════════
    SEO
 ══════════════════════════════════════════ */
 function runSEO() {
-  const text     = content.value;
-  const words    = text.trim().split(/\s+/).filter(Boolean).length;
-  const headings = (text.match(/^#{1,6}\s/gm)||[]).length;
-  const links    = (text.match(/\[.*?\]\(.*?\)/g)||[]).length;
-  const images   = (text.match(/!\[.*?\]\(.*?\)/g)||[]).length;
-  const titleLen = title.value.length;
-  const descLen  = document.getElementById('description').value.length;
-  const kw       = document.getElementById('seoKeywords').value.split(',').filter(k=>k.trim()).length;
-  const cats     = document.querySelectorAll('#categorySelect input:checked').length;
-  const prods    = document.querySelectorAll('.product-card').length;
-  const hasImg   = !!document.getElementById('imagePath').value.trim() || !!uploadedImage;
+  const text=content.value, words=text.trim().split(/\s+/).filter(Boolean).length;
+  const headings=(text.match(/^#{1,6}\s/gm)||[]).length;
+  const links=(text.match(/\[.*?\]\(.*?\)/g)||[]).length;
+  const images=(text.match(/!\[.*?\]\(.*?\)/g)||[]).length;
+  const titleLen=title.value.length, descLen=document.getElementById('description').value.length;
+  const kw=document.getElementById('seoKeywords').value.split(',').filter(k=>k.trim()).length;
+  const cats=document.querySelectorAll('#categorySelect input:checked').length;
+  const prods=document.querySelectorAll('.product-card').length;
+  const hasImg=!!document.getElementById('imagePath').value.trim()||!!uploadedImage;
 
-  let score = 0, checks = [];
+  let score=0, checks=[];
+  if (words>=800)  { score+=15; checks.push({pass:true,  text:`Great content length (${words} words)`}); }
+  else               checks.push({pass:false, text:`Content too short (${words} words, aim for 800+)`});
+  if (headings>=3) { score+=15; checks.push({pass:true,  text:`Good use of headings (${headings} found)`}); }
+  else               checks.push({pass:false, text:`Add more headings (${headings} found, aim for 3+)`});
+  if (links>=3)    { score+=15; checks.push({pass:true,  text:`Good linking (${links} links)`}); }
+  else               checks.push({pass:false, text:`Add more links (${links} found, aim for 3+)`});
+  if (images>=2)   { score+=10; checks.push({pass:true,  text:`Images included (${images} found)`}); }
+  else               checks.push({pass:false, text:`Add images (${images} found, aim for 2+)`});
+  if (hasImg)      { score+=5;  checks.push({pass:true,  text:'Featured image path set ✓'}); }
+  else               checks.push({pass:false, text:'Set a featured image repo path'});
+  if (titleLen>=30&&titleLen<=60) { score+=10; checks.push({pass:true, text:`Title length optimal (${titleLen} chars)`}); }
+  else checks.push({pass:false, text:titleLen>0?`Title should be 30-60 chars (currently ${titleLen})`:'Add a title'});
+  if (descLen>=120&&descLen<=160) { score+=10; checks.push({pass:true, text:`Meta description perfect (${descLen} chars)`}); }
+  else checks.push({pass:false, text:descLen>0?`Meta description should be 120-160 chars (currently ${descLen})`:'Add a meta description'});
+  if (kw>=3)   { score+=10; checks.push({pass:true,  text:`Keywords defined (${kw})`}); }
+  else           checks.push({pass:false, text:`Add SEO keywords (${kw} found, aim for 3-5)`});
+  if (cats>=1) { score+=10; checks.push({pass:true,  text:`Categories selected (${cats})`}); }
+  else           checks.push({pass:false, text:'Select at least one category'});
+  if (prods>0) checks.push({pass:true, text:`✨ Featured products added (${prods}) — great for conversions!`});
 
-  if (words >= 800)  { score+=15; checks.push({pass:true,  text:`Great content length (${words} words)`}); }
-  else                             checks.push({pass:false, text:`Content too short (${words} words, aim for 800+)`});
-
-  if (headings >= 3) { score+=15; checks.push({pass:true,  text:`Good use of headings (${headings} found)`}); }
-  else                             checks.push({pass:false, text:`Add more headings (${headings} found, aim for 3+)`});
-
-  if (links >= 3)    { score+=15; checks.push({pass:true,  text:`Good linking (${links} links)`}); }
-  else                             checks.push({pass:false, text:`Add more links (${links} found, aim for 3+)`});
-
-  if (images >= 2)   { score+=10; checks.push({pass:true,  text:`Images included (${images} found)`}); }
-  else                             checks.push({pass:false, text:`Add images (${images} found, aim for 2+)`});
-
-  if (hasImg)        { score+=5;  checks.push({pass:true,  text:'Featured image path set ✓'}); }
-  else                             checks.push({pass:false, text:'Set a featured image repo path'});
-
-  if (titleLen >= 30 && titleLen <= 60) { score+=10; checks.push({pass:true,  text:`Title length optimal (${titleLen} chars)`}); }
-  else checks.push({pass:false, text:titleLen > 0 ? `Title should be 30-60 chars (currently ${titleLen})` : 'Add a title'});
-
-  if (descLen >= 120 && descLen <= 160) { score+=10; checks.push({pass:true,  text:`Meta description perfect (${descLen} chars)`}); }
-  else checks.push({pass:false, text:descLen > 0 ? `Meta description should be 120-160 chars (currently ${descLen})` : 'Add a meta description'});
-
-  if (kw >= 3)   { score+=10; checks.push({pass:true,  text:`Keywords defined (${kw})`}); }
-  else                         checks.push({pass:false, text:`Add SEO keywords (${kw} found, aim for 3-5)`});
-
-  if (cats >= 1) { score+=10; checks.push({pass:true,  text:`Categories selected (${cats})`}); }
-  else                         checks.push({pass:false, text:'Select at least one category'});
-
-  if (prods > 0) checks.push({pass:true, text:`✨ Featured products added (${prods}) — great for conversions!`});
-
-  const circle = document.getElementById('scoreCircle');
-  circle.textContent = score + '%';
-  circle.className = 'score-circle ' + (score < 50 ? 'low' : score < 80 ? 'medium' : 'high');
-  document.getElementById('scoreText').textContent =
-    score < 50 ? 'Needs significant improvement' : score < 80 ? 'Good, but could be better' : 'Excellent SEO optimization!';
-
-  document.getElementById('seoList').innerHTML = checks.map(c => `<li class="${c.pass?'pass':'fail'}">${c.text}</li>`).join('');
-  document.getElementById('statWords').textContent    = words;
-  document.getElementById('statChars').textContent    = text.length;
-  document.getElementById('statHeadings').textContent = headings;
-  document.getElementById('statLinks').textContent    = links;
+  const circle=document.getElementById('scoreCircle');
+  circle.textContent=score+'%';
+  circle.className='score-circle '+(score<50?'low':score<80?'medium':'high');
+  document.getElementById('scoreText').textContent=score<50?'Needs significant improvement':score<80?'Good, but could be better':'Excellent SEO optimization!';
+  document.getElementById('seoList').innerHTML=checks.map(c=>`<li class="${c.pass?'pass':'fail'}">${c.text}</li>`).join('');
+  document.getElementById('statWords').textContent=words;
+  document.getElementById('statChars').textContent=text.length;
+  document.getElementById('statHeadings').textContent=headings;
+  document.getElementById('statLinks').textContent=links;
 }
 
 /* ══════════════════════════════════════════
@@ -922,13 +1116,12 @@ function preparePost() {
   const scheduled = document.getElementById('publishDate').value;
   if (!scheduled)    { alert('⚠️ Please set a publication date'); return; }
 
-  const selectedCats  = Array.from(document.querySelectorAll('#categorySelect input:checked')).map(c => c.value);
-  const tags          = document.getElementById('tags').value.split(',').map(t=>t.trim()).filter(Boolean);
-  const keys          = document.getElementById('seoKeywords').value.split(',').map(k=>k.trim()).filter(Boolean);
-  const imagePath     = document.getElementById('imagePath').value.trim();
-  const productsYAML  = buildProductsYAML();
+  const selectedCats = Array.from(document.querySelectorAll('#categorySelect input:checked')).map(c=>c.value);
+  const tags    = document.getElementById('tags').value.split(',').map(t=>t.trim()).filter(Boolean);
+  const keys    = document.getElementById('seoKeywords').value.split(',').map(k=>k.trim()).filter(Boolean);
+  const imagePath = document.getElementById('imagePath').value.trim();
+  const productsYAML = buildProductsYAML();
 
-  // Use the typed repo path; fall back to uploaded filename as a reminder
   const imageEntry = imagePath
     ? `featured_image: "${imagePath}"\n`
     : uploadedImage
@@ -968,7 +1161,7 @@ function saveDraft() {
   if (!fp.textContent) { alert('⚠️ Please prepare the post first in the Schedule tab'); return; }
   if (!slug.value)     { alert('⚠️ Slug is required to save'); return; }
   const a = Object.assign(document.createElement('a'), {
-    href: URL.createObjectURL(new Blob([fp.textContent], {type:'text/markdown'})),
+    href: URL.createObjectURL(new Blob([fp.textContent],{type:'text/markdown'})),
     download: `${slug.value}.md`
   });
   a.click(); alert('✅ Draft saved!');
@@ -976,16 +1169,15 @@ function saveDraft() {
 
 function exportJSON() {
   const data = {
-    title:       title.value,
-    slug:        slug.value,
+    title: title.value, slug: slug.value,
     description: document.getElementById('description').value,
-    content:     content.value,
-    tags:        document.getElementById('tags').value.split(',').map(t=>t.trim()).filter(Boolean),
-    keywords:    document.getElementById('seoKeywords').value.split(',').map(k=>k.trim()).filter(Boolean),
-    categories:  Array.from(document.querySelectorAll('#categorySelect input:checked')).map(c=>c.value),
+    content: content.value,
+    tags: document.getElementById('tags').value.split(',').map(t=>t.trim()).filter(Boolean),
+    keywords: document.getElementById('seoKeywords').value.split(',').map(k=>k.trim()).filter(Boolean),
+    categories: Array.from(document.querySelectorAll('#categorySelect input:checked')).map(c=>c.value),
     scheduledDate: document.getElementById('publishDate').value,
-    disclaimer:    document.getElementById('disclaimer').checked,
-    imagePath:     document.getElementById('imagePath').value.trim(),
+    disclaimer: document.getElementById('disclaimer').checked,
+    imagePath: document.getElementById('imagePath').value.trim(),
     featuredImage: uploadedImage,
     featured_products: getProductsData()
   };
@@ -999,7 +1191,7 @@ function exportJSON() {
 function copyToClipboard() {
   const fp = document.getElementById('finalPost');
   if (!fp.textContent) { alert('⚠️ Please prepare the post first'); return; }
-  navigator.clipboard.writeText(fp.textContent).then(() => alert('✅ Copied!')).catch(() => alert('❌ Copy failed'));
+  navigator.clipboard.writeText(fp.textContent).then(()=>alert('✅ Copied!')).catch(()=>alert('❌ Copy failed'));
 }
 
 /* ══════════════════════════════════════════
@@ -1017,81 +1209,21 @@ function saveToDraftHistory() {
 
 function updateDraftTable() {
   const drafts = JSON.parse(localStorage.getItem('drafts')||'[]');
-  const body   = document.getElementById('draftList');
+  const body = document.getElementById('draftList');
   document.getElementById('emptyDrafts').style.display = drafts.length ? 'none' : 'block';
   body.innerHTML = drafts.map((d,i) => {
-    const sc  = d.scheduled ? new Date(d.scheduled) : null;
-    const now = new Date();
-    const [status, cls] = sc
-      ? (sc <= now ? ['✅ Ready','status-ready'] : ['⏳ Scheduled','status-scheduled'])
-      : ['📝 Draft','status-draft'];
+    const sc=d.scheduled?new Date(d.scheduled):null, now=new Date();
+    const [status,cls] = sc ? (sc<=now?['✅ Ready','status-ready']:['⏳ Scheduled','status-scheduled']) : ['📝 Draft','status-draft'];
     const disp = sc ? sc.toLocaleString('en-US',{month:'short',day:'numeric',year:'numeric',hour:'2-digit',minute:'2-digit'}) : '—';
-    return `<tr>
-      <td><code>${d.slug}</code></td>
-      <td>${d.title||'Untitled'}</td>
-      <td>${disp}</td>
-      <td><span class="status-badge ${cls}">${status}</span></td>
-      <td><button onclick="deleteDraft(${i})" class="btn btn-secondary" style="padding:6px 12px;font-size:13px;">🗑️</button></td>
-    </tr>`;
+    return `<tr><td><code>${d.slug}</code></td><td>${d.title||'Untitled'}</td><td>${disp}</td><td><span class="status-badge ${cls}">${status}</span></td>
+      <td><button onclick="deleteDraft(${i})" class="btn btn-secondary" style="padding:6px 12px;font-size:13px;">🗑️</button></td></tr>`;
   }).join('');
 }
 
 function deleteDraft(i) {
   if (!confirm('Delete this draft?')) return;
   let drafts = JSON.parse(localStorage.getItem('drafts')||'[]');
-  drafts.splice(i,1);
-  localStorage.setItem('drafts', JSON.stringify(drafts));
-  updateDraftTable();
-}
-
-/* ══════════════════════════════════════════
-   AFFILIATE LINKS
-══════════════════════════════════════════ */
-function searchAffiliate() {
-  const q    = document.getElementById('affiliateSearch').value.toLowerCase().trim();
-  const ul   = document.getElementById('affiliateResults');
-  const empty= document.getElementById('emptyAffiliate');
-  ul.innerHTML = '';
-  if (!q) { empty.style.display='block'; return; }
-  const res = affiliateCatalog.filter(a =>
-    a.name.toLowerCase().includes(q) || a.category.toLowerCase().includes(q)
-  );
-  if (!res.length) { empty.style.display='block'; ul.innerHTML='<li style="text-align:center;padding:20px;color:var(--text-secondary);">No results found</li>'; return; }
-  empty.style.display='none';
-  ul.innerHTML = res.map(a => `
-    <li>
-      <div><div class="affiliate-name">${a.name}</div><div style="font-size:13px;color:var(--text-tertiary);margin-top:3px;">${a.category}</div></div>
-      <div class="affiliate-actions">
-        <button class="affiliate-link" onclick="insertAffiliateLink('${a.name}','${a.link}')">📎 Insert</button>
-        <button class="affiliate-link affiliate-link-purple" onclick="addLinkToProducts('${a.name}','${a.link}')">🛍️ Add to Products</button>
-      </div>
-    </li>`).join('');
-}
-
-function insertAffiliateLink(name, link) {
-  const ta = document.getElementById('content');
-  const md = `[${name}](${link})`;
-  const s  = ta.selectionStart, e = ta.selectionEnd;
-  ta.value = ta.value.slice(0,s) + md + ta.value.slice(e);
-  ta.selectionStart = ta.selectionEnd = s + md.length;
-  ta.focus(); updatePreview();
-  alert(`✅ Inserted link for "${name}"`);
-}
-
-function addLinkToProducts(name, link) {
-  openTab('products');
-  addProductCard({name, link, type:'product'});
-  alert(`✅ "${name}" added to Featured Products`);
-}
-
-function addAffiliateLink() {
-  const name = document.getElementById('newLinkName').value.trim();
-  const url  = document.getElementById('newLinkUrl').value.trim();
-  if (!name || !url) { alert('⚠️ Please enter both product name and URL'); return; }
-  affiliateCatalog.push({name, link:url, category:'Custom'});
-  document.getElementById('newLinkName').value = '';
-  document.getElementById('newLinkUrl').value  = '';
-  alert(`✅ Added "${name}" to catalog`);
+  drafts.splice(i,1); localStorage.setItem('drafts',JSON.stringify(drafts)); updateDraftTable();
 }
 
 /* ══════════════════════════════════════════
@@ -1113,18 +1245,15 @@ function initializeCategories() {
   const el = document.getElementById('categorySelect');
   Object.entries(categoriesList).forEach(([group, cats]) => {
     const div = document.createElement('div');
-    div.className = 'category-group';
-    div.dataset.group = group;
-    div.innerHTML = `<div class="category-group-title">${group}</div>`;
+    div.className='category-group'; div.dataset.group=group;
+    div.innerHTML=`<div class="category-group-title">${group}</div>`;
     cats.forEach(cat => {
-      const lbl = document.createElement('label');
-      lbl.dataset.category = cat.toLowerCase();
-      lbl.dataset.group    = group.toLowerCase();
-      const cb = document.createElement('input');
-      cb.type = 'checkbox'; cb.value = cat; cb.id = 'cat_' + cat.replace(/\s+/g,'_');
+      const lbl=document.createElement('label');
+      lbl.dataset.category=cat.toLowerCase(); lbl.dataset.group=group.toLowerCase();
+      const cb=document.createElement('input');
+      cb.type='checkbox'; cb.value=cat; cb.id='cat_'+cat.replace(/\s+/g,'_');
       cb.addEventListener('change', updateSelectedCategories);
-      lbl.appendChild(cb);
-      lbl.appendChild(document.createTextNode(' ' + cat));
+      lbl.appendChild(cb); lbl.appendChild(document.createTextNode(' '+cat));
       div.appendChild(lbl);
     });
     el.appendChild(div);
@@ -1135,23 +1264,23 @@ function initializeCategories() {
 function filterCategories() {
   const q = document.getElementById('categorySearch').value.toLowerCase().trim();
   document.querySelectorAll('.category-group').forEach(group => {
-    let visible = 0;
+    let visible=0;
     group.querySelectorAll('label').forEach(lbl => {
-      const match = !q || lbl.dataset.category.includes(q) || lbl.dataset.group.includes(q);
-      lbl.classList.toggle('hidden', !match);
+      const match = !q||lbl.dataset.category.includes(q)||lbl.dataset.group.includes(q);
+      lbl.classList.toggle('hidden',!match);
       if (match) visible++;
     });
-    group.classList.toggle('hidden', !visible);
+    group.classList.toggle('hidden',!visible);
   });
 }
 
 function updateSelectedCategories() {
   const container = document.getElementById('selectedCategories');
-  container.innerHTML = '';
+  container.innerHTML='';
   document.querySelectorAll('#categorySelect input:checked').forEach(cb => {
-    const badge = document.createElement('div');
-    badge.className = 'category-badge';
-    badge.innerHTML = `<span>${cb.value}</span><button title="Remove" onclick="this.closest('.category-badge').remove(); document.getElementById('${cb.id}').checked=false;">×</button>`;
+    const badge=document.createElement('div');
+    badge.className='category-badge';
+    badge.innerHTML=`<span>${cb.value}</span><button title="Remove" onclick="this.closest('.category-badge').remove(); document.getElementById('${cb.id}').checked=false;">×</button>`;
     container.appendChild(badge);
   });
 }
@@ -1161,18 +1290,15 @@ function updateSelectedCategories() {
 ══════════════════════════════════════════ */
 function clearForm() {
   if (!confirm('Clear the entire form?')) return;
-  ['title','slug','description','content','tags','seoKeywords','publishDate','imagePath'].forEach(id => {
-    document.getElementById(id).value = '';
-  });
-  document.getElementById('disclaimer').checked = false;
-  uploadedImage = null; displayImagePreview();
-  document.getElementById('imageUpload').value = '';
-  document.querySelectorAll('#categorySelect input:checked').forEach(cb => cb.checked = false);
+  ['title','slug','description','content','tags','seoKeywords','publishDate','imagePath'].forEach(id => { document.getElementById(id).value=''; });
+  document.getElementById('disclaimer').checked=false;
+  uploadedImage=null; displayImagePreview(); document.getElementById('imageUpload').value='';
+  document.querySelectorAll('#categorySelect input:checked').forEach(cb=>cb.checked=false);
   updateSelectedCategories();
-  document.getElementById('productsList').innerHTML = '';
+  document.getElementById('productsList').innerHTML='';
   updateAddButton(); updateProductBadge();
-  document.getElementById('productsOutputPanel').style.display = 'none';
-  document.getElementById('finalPostContainer').style.display = 'none';
+  document.getElementById('productsOutputPanel').style.display='none';
+  document.getElementById('finalPostContainer').style.display='none';
   updatePreview(); runSEO();
 }
 
@@ -1180,11 +1306,11 @@ function clearForm() {
    KEYBOARD SHORTCUTS
 ══════════════════════════════════════════ */
 document.addEventListener('keydown', e => {
-  if ((e.ctrlKey||e.metaKey) && e.key==='s') {
+  if ((e.ctrlKey||e.metaKey)&&e.key==='s') {
     e.preventDefault();
     document.getElementById('finalPost').textContent ? saveDraft() : alert('⚠️ Prepare the post first in the Schedule tab');
   }
-  if ((e.ctrlKey||e.metaKey) && e.key==='Enter') { e.preventDefault(); preparePost(); }
+  if ((e.ctrlKey||e.metaKey)&&e.key==='Enter') { e.preventDefault(); preparePost(); }
 });
 
 /* ══════════════════════════════════════════
@@ -1194,16 +1320,17 @@ document.addEventListener('DOMContentLoaded', () => {
   initializeCategories();
   updateDraftTable();
   updatePreview();
-  document.getElementById('emptyAffiliate').style.display = 'block';
+  updateCatalogCount();
+  searchAffiliate();
   startAutosave();
 
   const saved = localStorage.getItem('autosave');
   if (saved) {
     const data = JSON.parse(saved);
-    const minsAgo = Math.floor((Date.now() - new Date(data.timestamp).getTime()) / 60000);
-    if (minsAgo < 1440) {
+    const minsAgo = Math.floor((Date.now()-new Date(data.timestamp).getTime())/60000);
+    if (minsAgo<1440) {
       setTimeout(() => {
-        if (confirm(`Found autosaved draft from ${minsAgo < 60 ? minsAgo+' minutes' : Math.floor(minsAgo/60)+' hours'} ago. Restore it?`))
+        if (confirm(`Found autosaved draft from ${minsAgo<60?minsAgo+' minutes':Math.floor(minsAgo/60)+' hours'} ago. Restore it?`))
           loadDraft();
       }, 800);
     }
