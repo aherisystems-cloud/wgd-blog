@@ -11,43 +11,124 @@
 <link rel="shortcut icon" href="/content/images/favicon.ico">
 <link rel="manifest" href="/site.webmanifest">
 
-<!-- SEO Meta Tags -->
+<!-- ═══════════════════════════════════════
+     SEO — all values injected from frontmatter
+═══════════════════════════════════════ -->
 <title>{{SEO_TITLE}}</title>
 <meta name="description" content="{{SEO_DESCRIPTION}}"/>
 <meta name="keywords" content="{{KEYWORDS}}"/>
 <meta name="author" content="{{AUTHOR_NAME}}"/>
 <link rel="canonical" href="https://wowglamdecor.com/posts/{{SLUG}}.html"/>
 
-<!-- Open Graph -->
+<!-- ═══════════════════════════════════════
+     OPEN GRAPH — social sharing (Facebook, Pinterest, LinkedIn)
+     All values read from frontmatter automatically
+═══════════════════════════════════════ -->
 <meta property="og:type" content="article"/>
+<meta property="og:site_name" content="Wow Glam Decor"/>
 <meta property="og:url" content="https://wowglamdecor.com/posts/{{SLUG}}.html"/>
 <meta property="og:title" content="{{SEO_TITLE}}"/>
 <meta property="og:description" content="{{SEO_DESCRIPTION}}"/>
 <meta property="og:image" content="https://wowglamdecor.com{{FEATURED_IMAGE}}"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+<meta property="og:image:alt" content="{{FEATURED_IMAGE_ALT}}"/>
+<meta property="og:locale" content="en_US"/>
 <meta property="article:published_time" content="{{PUBLISH_DATE}}"/>
+<meta property="article:modified_time" content="{{PUBLISH_DATE}}"/>
+<meta property="article:author" content="{{AUTHOR_NAME}}"/>
+<meta property="article:section" content="{{CATEGORY}}"/>
 
-<!-- Twitter -->
+<!-- ═══════════════════════════════════════
+     TWITTER / X CARD
+     Uses same frontmatter values — no extra fields needed
+═══════════════════════════════════════ -->
 <meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:site" content="@wowglamdecor"/>
 <meta name="twitter:title" content="{{SEO_TITLE}}"/>
 <meta name="twitter:description" content="{{SEO_DESCRIPTION}}"/>
 <meta name="twitter:image" content="https://wowglamdecor.com{{FEATURED_IMAGE}}"/>
+<meta name="twitter:image:alt" content="{{FEATURED_IMAGE_ALT}}"/>
 
-<!-- Schema.org -->
+<!-- ═══════════════════════════════════════
+     SCHEMA.ORG — structured data for Google rich results
+     BlogPosting schema — reads same frontmatter placeholders
+═══════════════════════════════════════ -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
   "headline": "{{TITLE}}",
-  "image": "https://wowglamdecor.com{{FEATURED_IMAGE}}",
+  "description": "{{SEO_DESCRIPTION}}",
+  "image": {
+    "@type": "ImageObject",
+    "url": "https://wowglamdecor.com{{FEATURED_IMAGE}}",
+    "width": 1200,
+    "height": 630
+  },
   "datePublished": "{{PUBLISH_DATE}}",
   "dateModified": "{{PUBLISH_DATE}}",
-  "author": {"@type": "Person", "name": "{{AUTHOR_NAME}}"},
+  "author": {
+    "@type": "Person",
+    "name": "{{AUTHOR_NAME}}",
+    "url": "https://wowglamdecor.com/about.html"
+  },
   "publisher": {
     "@type": "Organization",
     "name": "Wow Glam Decor",
-    "logo": {"@type": "ImageObject", "url": "https://wowglamdecor.com/content/images/logo.jpg"}
+    "url": "https://wowglamdecor.com",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://wowglamdecor.com/content/images/logo.jpg",
+      "width": 200,
+      "height": 60
+    }
   },
-  "description": "{{SEO_DESCRIPTION}}"
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://wowglamdecor.com/posts/{{SLUG}}.html"
+  },
+  "url": "https://wowglamdecor.com/posts/{{SLUG}}.html",
+  "keywords": "{{KEYWORDS}}",
+  "articleSection": "{{CATEGORY}}",
+  "inLanguage": "en-US"
+}
+</script>
+
+<!-- ═══════════════════════════════════════
+     BREADCRUMB SCHEMA — helps Google show
+     breadcrumb trail in search results
+═══════════════════════════════════════ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://wowglamdecor.com"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://wowglamdecor.com/blog.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "{{CATEGORY}}",
+      "item": "https://wowglamdecor.com/category/{{CATEGORY_SLUG}}.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "name": "{{TITLE}}",
+      "item": "https://wowglamdecor.com/posts/{{SLUG}}.html"
+    }
+  ]
 }
 </script>
 
