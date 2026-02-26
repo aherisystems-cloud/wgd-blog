@@ -204,27 +204,19 @@ tbody tr:hover { background: var(--bg-main); }
 .type-btn { padding: 5px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; border: 2px solid var(--border); background: var(--bg-surface); color: var(--text-secondary); transition: all 0.2s; font-family: var(--font-main); }
 .type-btn.active-product { border-color: var(--purple); background: var(--purple-pale); color: var(--purple); }
 .type-btn.active-blog { border-color: var(--primary); background: rgba(45,91,255,0.08); color: var(--primary); }
-
-/* Product fields grid — 3 col for label row */
 .product-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .product-fields input, .product-fields select { margin: 0; }
 .product-fields .full-width { grid-column: 1 / -1; }
-
-/* Image path prefix input group */
 .image-path-group { display: flex; align-items: center; border: 2px solid var(--border); border-radius: var(--radius-sm); background: var(--bg-surface); overflow: hidden; transition: all 0.2s; }
 .image-path-group:focus-within { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(45,91,255,0.1); }
 .image-path-prefix { padding: 11px 10px 11px 14px; background: var(--bg-main); color: var(--text-tertiary); font-size: 13px; font-family: var(--font-mono); white-space: nowrap; border-right: 2px solid var(--border); flex-shrink: 0; user-select: none; }
 .image-path-group input { border: none !important; box-shadow: none !important; border-radius: 0 !important; margin: 0 !important; flex: 1; min-width: 0; padding: 11px 14px; font-family: var(--font-mono); font-size: 13px; }
 .image-path-group input:focus { outline: none; border: none; box-shadow: none; }
-
-/* Label row */
 .label-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .label-select { width: 100%; padding: 11px 14px; border: 2px solid var(--border); border-radius: var(--radius-sm); font-family: var(--font-main); font-size: 14px; background: var(--bg-surface); color: var(--text-primary); cursor: pointer; transition: all 0.2s; }
 .label-select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(45,91,255,0.1); }
 .label-custom { display: none; }
 .label-custom.visible { display: block; }
-
-/* Label preview chips */
 .label-preview { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; margin-left: 6px; }
 .label-sale { background: #FEE2E2; color: #DC2626; }
 .label-new { background: #D1FAE5; color: #065F46; }
@@ -233,7 +225,6 @@ tbody tr:hover { background: var(--bg-main); }
 .label-best-value { background: #DBEAFE; color: #1D4ED8; }
 .label-limited { background: #FEE2E2; color: #DC2626; }
 .label-custom-chip { background: #F3E8FF; color: #7C3AED; }
-
 .price-field { transition: all 0.3s ease; }
 .price-field.hidden-field { opacity: 0; pointer-events: none; height: 0 !important; min-height: 0 !important; padding: 0 !important; border: none !important; margin: 0 !important; overflow: hidden; }
 .add-product-btn { width: 100%; padding: 16px; border: 2px dashed var(--border); border-radius: var(--radius-sm); background: var(--bg-surface); color: var(--text-secondary); font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; font-family: var(--font-main); }
@@ -256,6 +247,26 @@ tbody tr:hover { background: var(--bg-main); }
 .products-tip strong { color: var(--purple); }
 .products-tip code { background: rgba(126,8,130,0.1); padding: 2px 6px; border-radius: 4px; font-family: var(--font-mono); font-size: 12px; color: var(--purple); }
 
+/* ── TIMEZONE PREVIEW BOX ── ✅ NEW */
+.tz-preview {
+  margin-top: 10px;
+  padding: 12px 16px;
+  background: rgba(45,91,255,0.05);
+  border: 1px solid rgba(45,91,255,0.2);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-family: var(--font-mono);
+  display: none;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.tz-preview.visible { display: flex; }
+.tz-item { display: flex; flex-direction: column; gap: 2px; }
+.tz-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-tertiary); font-family: var(--font-main); font-weight: 700; }
+.tz-value { font-weight: 600; color: var(--text-primary); }
+.tz-value.eat { color: var(--purple); }
+.tz-value.utc { color: var(--primary); }
+
 @media (max-width: 968px) {
   .editor, .meta-grid, .product-fields, .label-row { grid-template-columns: 1fr; }
   nav button { min-width: 85px; font-size: 12px; padding: 12px 6px; }
@@ -265,8 +276,6 @@ tbody tr:hover { background: var(--bg-main); }
 ::-webkit-scrollbar-track { background: var(--bg-main); }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 5px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--text-tertiary); }
-
-/* ── FOLDER SAVE BOX ── */
 .folder-save-box { background:rgba(0,208,132,0.06); border:1px solid rgba(0,208,132,0.25); border-radius:var(--radius-sm); padding:16px 20px; margin-bottom:20px; }
 .folder-save-box code { background:rgba(0,208,132,0.12); padding:1px 5px; border-radius:3px; font-family:var(--font-mono); font-size:12px; color:#065F46; }
 </style>
@@ -417,14 +426,32 @@ tbody tr:hover { background: var(--bg-main); }
 </section>
 
 <!-- ═══ SCHEDULE ═══ -->
+<!-- ✅ FIX 1: Added live EAT/UTC timezone preview below the datetime input -->
 <section id="schedule">
   <div class="panel">
     <h3>Schedule Publication</h3>
     <label><span style="font-weight:600;">Publication Date &amp; Time</span></label>
     <p style="font-size:13px; color:var(--text-secondary); margin: 4px 0 8px;">
-      ⏰ Enter time in your local timezone — <strong>Nairobi (EAT, UTC+3)</strong>. The scheduler converts to UTC automatically.
+      ⏰ Enter time in your local timezone — <strong>Nairobi (EAT, UTC+3)</strong>. The scheduler stores both EAT and UTC in the frontmatter automatically.
     </p>
-    <input type="datetime-local" id="publishDate">
+    <input type="datetime-local" id="publishDate" oninput="updateTzPreview()">
+
+    <!-- ✅ NEW: Live timezone preview -->
+    <div class="tz-preview" id="tzPreview">
+      <div class="tz-item">
+        <span class="tz-label">🕐 You entered (EAT)</span>
+        <span class="tz-value eat" id="tzEAT">—</span>
+      </div>
+      <div class="tz-item">
+        <span class="tz-label">🌍 Stored as (UTC)</span>
+        <span class="tz-value utc" id="tzUTC">—</span>
+      </div>
+      <div class="tz-item">
+        <span class="tz-label">⏳ Time until publish</span>
+        <span class="tz-value" id="tzCountdown">—</span>
+      </div>
+    </div>
+
     <div class="action-row">
       <button onclick="preparePost()" class="btn btn-primary">🚀 Prepare Post for Publishing</button>
       <button onclick="clearForm()" class="btn btn-secondary">🗑️ Clear Form</button>
@@ -443,10 +470,10 @@ tbody tr:hover { background: var(--bg-main); }
     <div class="folder-save-box">
       <div style="font-size:14px;font-weight:700;color:#065F46;margin-bottom:6px;">📁 Save directly to your repo folder</div>
       <div style="font-size:13px;color:var(--text-secondary);margin-bottom:14px;line-height:1.6;">
-        Pick your repo's <code>posts/</code> folder once — the scheduler remembers it. After that, one click saves the <code>.md</code> file directly there. Then just open GitHub Desktop and push.
+        Pick your repo's <code>content/posts/drafts/</code> folder once — the scheduler remembers it. After that, one click saves the <code>.md</code> file directly there. Then just open GitHub Desktop and push.
       </div>
       <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-        <button onclick="pickRepoFolder()" class="btn btn-secondary btn-sm" id="pickFolderBtn">📂 Pick posts/ folder</button>
+        <button onclick="pickRepoFolder()" class="btn btn-secondary btn-sm" id="pickFolderBtn">📂 Pick drafts/ folder</button>
         <div id="folderStatus" style="font-size:13px;color:var(--text-secondary);font-family:var(--font-mono);"></div>
       </div>
       <div id="folderUnsupported" style="display:none;margin-top:10px;font-size:13px;color:var(--warning);">⚠️ Your browser does not support folder-save. Use the standard save button below (Chrome or Edge recommended).</div>
@@ -462,7 +489,7 @@ tbody tr:hover { background: var(--bg-main); }
   <div class="panel">
     <h3>Draft History</h3>
     <table>
-      <thead><tr><th>Slug</th><th>Title</th><th>Scheduled</th><th>Status</th><th>Actions</th></tr></thead>
+      <thead><tr><th>Slug</th><th>Title</th><th>Scheduled (EAT)</th><th>Status</th><th>Actions</th></tr></thead>
       <tbody id="draftList"></tbody>
     </table>
     <div id="emptyDrafts" class="empty-state" style="display:none;">
@@ -535,8 +562,6 @@ tbody tr:hover { background: var(--bg-main); }
       <button onclick="clearCatalog()" class="btn btn-danger btn-sm">🗑️ Clear Entire Catalog</button>
     </div>
   </div>
-
-  <!-- ── CATALOG BACKUP PANEL ── -->
   <div class="panel">
     <h3>Catalog Backup</h3>
     <div class="catalog-info">
@@ -575,6 +600,62 @@ let uploadedImage = null;
 let productCounter = 0;
 
 /* ══════════════════════════════════════════
+   ✅ FIX 1: TIMEZONE HELPERS (EAT = UTC+3)
+══════════════════════════════════════════ */
+const EAT_OFFSET_MS = 3 * 60 * 60 * 1000; // 3 hours in ms
+
+/**
+ * Takes the value from datetime-local input (treated as EAT)
+ * and returns the equivalent UTC Date object.
+ * datetime-local gives us "2026-03-01T09:00" with NO timezone info.
+ * We treat that as EAT, so UTC = EAT - 3h.
+ */
+function eatInputToUTC(localValue) {
+  if (!localValue) return null;
+  // Parse as if it were UTC, then subtract 3h to get true UTC
+  const assumedUTC = new Date(localValue + ':00Z');
+  return new Date(assumedUTC.getTime() - EAT_OFFSET_MS);
+}
+
+/**
+ * Format a Date as a readable EAT string for display.
+ */
+function formatEAT(utcDate) {
+  const eat = new Date(utcDate.getTime() + EAT_OFFSET_MS);
+  return eat.toISOString().replace('T', ' ').slice(0, 16) + ' EAT';
+}
+
+/**
+ * Live preview: updates the timezone display box below the date input.
+ */
+function updateTzPreview() {
+  const val = document.getElementById('publishDate').value;
+  const box = document.getElementById('tzPreview');
+  if (!val) { box.classList.remove('visible'); return; }
+
+  const utcDate = eatInputToUTC(val);
+  const now = new Date();
+  const diffMs = utcDate - now;
+
+  box.classList.add('visible');
+  document.getElementById('tzEAT').textContent = val.replace('T', ' ') + ' EAT';
+  document.getElementById('tzUTC').textContent = utcDate.toISOString().replace('T', ' ').slice(0, 16) + ' UTC';
+
+  if (diffMs < 0) {
+    document.getElementById('tzCountdown').textContent = '⚠️ This time is in the past';
+    document.getElementById('tzCountdown').style.color = 'var(--danger)';
+  } else {
+    const h = Math.floor(diffMs / 3600000);
+    const m = Math.floor((diffMs % 3600000) / 60000);
+    const days = Math.floor(h / 24);
+    const hrs  = h % 24;
+    const label = days > 0 ? `${days}d ${hrs}h ${m}m` : `${h}h ${m}m`;
+    document.getElementById('tzCountdown').textContent = label + ' from now';
+    document.getElementById('tzCountdown').style.color = 'var(--success)';
+  }
+}
+
+/* ══════════════════════════════════════════
    LABEL HELPERS
 ══════════════════════════════════════════ */
 const PRESET_LABELS = [
@@ -594,7 +675,6 @@ function getLabelChipClass(val) {
 }
 
 function getLabelStyle(val) {
-  // Returns inline style string for the preview chip based on preset
   const map = {
     'NEW':           'background:#D1FAE5;color:#065F46;',
     'SALE':          'background:#FEE2E2;color:#DC2626;',
@@ -721,18 +801,9 @@ function clearCatalog() {
 function exportCatalog() {
   const catalog = loadCatalog();
   if (!catalog.length) { alert('⚠️ Your catalog is empty — nothing to export'); return; }
-  const payload = {
-    exported:  new Date().toISOString(),
-    tool:      'Affiliate Blog Scheduler Pro',
-    version:   1,
-    count:     catalog.length,
-    catalog
-  };
+  const payload = { exported: new Date().toISOString(), tool: 'Affiliate Blog Scheduler Pro', version: 1, count: catalog.length, catalog };
   const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
-  const a = Object.assign(document.createElement('a'), {
-    href:     URL.createObjectURL(blob),
-    download: `wgd-catalog-backup-${new Date().toISOString().slice(0,10)}.json`
-  });
+  const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(blob), download: `wgd-catalog-backup-${new Date().toISOString().slice(0,10)}.json` });
   a.click();
 }
 
@@ -743,36 +814,19 @@ function importCatalog(input) {
   reader.onload = ev => {
     try {
       const parsed = JSON.parse(ev.target.result);
-      // Accept either raw array or wrapped export format
       const incoming = Array.isArray(parsed) ? parsed : (parsed.catalog || []);
       if (!incoming.length) { showImportStatus('⚠️ No links found in this file', 'warning'); return; }
-
       const catalog = loadCatalog();
       let added = 0, skipped = 0;
       incoming.forEach(item => {
         if (!item.name || !item.link) { skipped++; return; }
         if (catalog.find(c => c.link === item.link)) { skipped++; return; }
-        catalog.push({
-          name:     item.name,
-          link:     item.link,
-          category: item.category || 'General',
-          price:    item.price    || '',
-          image:    item.image    || '',
-        });
+        catalog.push({ name: item.name, link: item.link, category: item.category || 'General', price: item.price || '', image: item.image || '' });
         added++;
       });
-
-      saveCatalog(catalog);
-      updateCatalogCount();
-      searchAffiliate();
-      showImportStatus(
-        `✅ Imported ${added} link${added!==1?'s':''}${skipped?' · '+skipped+' skipped (duplicates or invalid)':''}`,
-        'success'
-      );
-    } catch(e) {
-      showImportStatus('❌ Invalid file — make sure it\'s a catalog backup JSON', 'error');
-    }
-    // Reset input so same file can be re-imported if needed
+      saveCatalog(catalog); updateCatalogCount(); searchAffiliate();
+      showImportStatus(`✅ Imported ${added} link${added!==1?'s':''}${skipped?' · '+skipped+' skipped (duplicates or invalid)':''}`, 'success');
+    } catch(e) { showImportStatus('❌ Invalid file — make sure it\'s a catalog backup JSON', 'error'); }
     input.value = '';
   };
   reader.readAsText(file);
@@ -780,14 +834,9 @@ function importCatalog(input) {
 
 function showImportStatus(msg, type) {
   const el = document.getElementById('importStatus');
-  const styles = {
-    success: 'background:#D1FAE5;color:#065F46;border:1px solid #6EE7B7;',
-    warning: 'background:#FEF3C7;color:#92400E;border:1px solid #FCD34D;',
-    error:   'background:#FEE2E2;color:#DC2626;border:1px solid #FCA5A5;',
-  };
+  const styles = { success: 'background:#D1FAE5;color:#065F46;border:1px solid #6EE7B7;', warning: 'background:#FEF3C7;color:#92400E;border:1px solid #FCD34D;', error: 'background:#FEE2E2;color:#DC2626;border:1px solid #FCA5A5;' };
   el.style.cssText = styles[type] || styles.success;
-  el.textContent = msg;
-  el.style.display = 'block';
+  el.textContent = msg; el.style.display = 'block';
   setTimeout(() => { el.style.display='none'; }, 5000);
 }
 
@@ -820,7 +869,7 @@ function copyImagePath() {
 }
 
 /* ══════════════════════════════════════════
-   FEATURED PRODUCTS — with labels + image prefix
+   FEATURED PRODUCTS
 ══════════════════════════════════════════ */
 const IMG_PREFIX = '/content/images/products/';
 
@@ -831,18 +880,12 @@ function addProductCard(prefill) {
   productCounter++;
   const id = productCounter;
   const isProduct = !prefill || prefill.type !== 'blog';
-
-  // Determine pre-existing label values
   const prefillLabel  = prefill?.label  || '';
   const prefillCustom = prefill?.labelCustom || '';
   const isCustomLabel = prefillLabel === 'CUSTOM' || (prefillLabel && !PRESET_LABELS.find(l => l.value === prefillLabel && l.value !== 'CUSTOM' && l.value !== ''));
-
-  // Build the label select options
   const labelOptions = PRESET_LABELS.map(l =>
     `<option value="${l.value}" ${(isCustomLabel ? 'CUSTOM' : prefillLabel) === l.value ? 'selected' : ''}>${l.text}</option>`
   ).join('');
-
-  // Extract just the filename if prefill.image starts with the prefix
   const prefillImageFile = prefill?.image
     ? (prefill.image.startsWith(IMG_PREFIX) ? prefill.image.slice(IMG_PREFIX.length) : prefill.image)
     : '';
@@ -863,36 +906,23 @@ function addProductCard(prefill) {
         <button class="btn btn-danger btn-sm" onclick="removeProductCard(${id})">✕ Remove</button>
       </div>
     </div>
-
     <div class="product-fields">
-      <!-- Name (full width) -->
       <input type="text" class="full-width" data-field="name" placeholder="Name (e.g. Velvet Accent Chair)" value="${ea(prefill?.name)}">
-
-      <!-- Price + Label preset (side by side) -->
       <input type="text" class="price-field ${!isProduct ? 'hidden-field' : ''}" data-field="price" placeholder="Price (e.g. $299.99)" value="${ea(prefill?.price)}">
-
-      <!-- Label row (side by side: preset dropdown + custom text) -->
       <div class="label-row full-width" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
         <div>
           <div style="font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.4px;">🏷️ Sidebar Label</div>
-          <select class="label-select" data-field="label" onchange="onLabelChange(${id}, this)">
-            ${labelOptions}
-          </select>
+          <select class="label-select" data-field="label" onchange="onLabelChange(${id}, this)">${labelOptions}</select>
         </div>
         <div>
           <div style="font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.4px;">Custom Label Text</div>
           <input type="text" class="label-custom ${(isCustomLabel || prefillLabel === 'CUSTOM') ? 'visible' : ''}"
-            data-field="labelCustom"
-            placeholder="e.g. Staff Pick, Hot Deal…"
+            data-field="labelCustom" placeholder="e.g. Staff Pick, Hot Deal…"
             value="${ea(isCustomLabel && !PRESET_LABELS.find(l=>l.value===prefillLabel && l.value!=='CUSTOM') ? prefillLabel : prefillCustom)}"
             style="margin:0;">
         </div>
       </div>
-
-      <!-- Affiliate URL -->
       <input type="text" class="full-width" data-field="link" placeholder="Affiliate URL or /posts/slug.html" value="${ea(prefill?.link)}">
-
-      <!-- Image path with prefix -->
       <div class="full-width">
         <div style="font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.4px;">
           Product Image <span style="font-weight:400;font-style:italic;text-transform:none;">— filename only, e.g. <code style="font-size:11px;">chair.jpg</code></span>
@@ -917,13 +947,8 @@ function onLabelChange(id, selectEl) {
   const card = document.querySelector(`.product-card[data-id="${id}"]`);
   if (!card) return;
   const customInput = card.querySelector('.label-custom');
-  if (selectEl.value === 'CUSTOM') {
-    customInput.classList.add('visible');
-    customInput.focus();
-  } else {
-    customInput.classList.remove('visible');
-    customInput.value = '';
-  }
+  if (selectEl.value === 'CUSTOM') { customInput.classList.add('visible'); customInput.focus(); }
+  else { customInput.classList.remove('visible'); customInput.value = ''; }
   generateFrontmatter(); updateProductBadge();
 }
 
@@ -966,14 +991,13 @@ function getProductsData() {
     const imageFile   = card.querySelector('[data-field="imageFile"]').value.trim();
     let labelVal = labelSelect ? labelSelect.value : '';
     if (labelVal === 'CUSTOM') labelVal = labelCustom?.value.trim() || '';
-
     return {
-      type:       card.dataset.type,
-      name:       card.querySelector('[data-field="name"]').value.trim(),
-      price:      card.querySelector('[data-field="price"]').value.trim(),
-      link:       card.querySelector('[data-field="link"]').value.trim(),
-      image:      imageFile ? IMG_PREFIX + imageFile : '',
-      label:      labelVal,
+      type:  card.dataset.type,
+      name:  card.querySelector('[data-field="name"]').value.trim(),
+      price: card.querySelector('[data-field="price"]').value.trim(),
+      link:  card.querySelector('[data-field="link"]').value.trim(),
+      image: imageFile ? IMG_PREFIX + imageFile : '',
+      label: labelVal,
     };
   }).filter(p => p.name || p.link);
 }
@@ -1001,7 +1025,6 @@ function generateFrontmatter() {
   const panel = document.getElementById('productsOutputPanel');
   if (!products.length) { panel.style.display='none'; return; }
   panel.style.display='block';
-
   const raw = buildProductsYAML();
   const highlighted = raw
     .replace(/^(  # .+)$/gm, '<span class="yaml-comment">$1</span>')
@@ -1009,12 +1032,9 @@ function generateFrontmatter() {
     .replace(/^(  - name:|    price:|    label:|    image:|    link:)/gm, '<span class="yaml-key">$1</span>')
     .replace(/("[^"]*")/g, '<span class="yaml-string">$1</span>');
   document.getElementById('frontmatterOutput').innerHTML = highlighted;
-
   document.getElementById('productsPreviewGrid').innerHTML = products.map(p => {
     const shortLink = p.link ? (p.link.length > 38 ? p.link.slice(0,38)+'…' : p.link) : '—';
-    const labelHtml = p.label
-      ? `<div class="product-preview-label" style="${getLabelStyle(p.label)}">${p.label}</div>`
-      : '';
+    const labelHtml = p.label ? `<div class="product-preview-label" style="${getLabelStyle(p.label)}">${p.label}</div>` : '';
     return `<div class="product-preview-card">
       ${labelHtml}
       <div class="product-preview-name">${p.name||'—'}</div>
@@ -1043,7 +1063,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const file = e.target.files[0];
     if (!file || !file.type.startsWith('image/')) { if (file) alert('⚠️ Please upload an image file'); return; }
     const pathField = document.getElementById('imagePath');
-    // Auto-suggest filename from slug if field is empty
     if (!pathField.value && slug.value) pathField.value = `${slug.value}.jpg`;
     const reader = new FileReader();
     reader.onload = ev => {
@@ -1170,7 +1189,7 @@ function restoreAutosave() {
   document.getElementById('productsList').innerHTML='';
   productCounter=0;
   if (data.products?.length) data.products.forEach(p => addProductCard(p));
-  updatePreview(); closeLoadModal(); alert('✅ Draft restored!');
+  updatePreview(); updateTzPreview(); closeLoadModal(); alert('✅ Draft restored!');
 }
 
 function clearAutosave() {
@@ -1190,6 +1209,7 @@ function openTab(tab) {
   if (tab==='seo') runSEO();
   if (tab==='products') generateFrontmatter();
   if (tab==='affiliate') { updateCatalogCount(); searchAffiliate(); }
+  if (tab==='schedule') updateTzPreview();
 }
 
 /* ══════════════════════════════════════════
@@ -1264,13 +1284,26 @@ function runSEO() {
 }
 
 /* ══════════════════════════════════════════
-   PREPARE POST
+   ✅ FIX 2: PREPARE POST — adds scheduled_date in UTC
+   The user enters time in EAT. We store:
+     date:           → UTC ISO (for post display date)
+     scheduled_date: → UTC ISO (for publish-scheduled.js to trigger on)
 ══════════════════════════════════════════ */
 function preparePost() {
   if (!title.value)  { alert('⚠️ Please add a post title'); return; }
   if (!slug.value)   { alert('⚠️ Please add a slug'); return; }
   const scheduled = document.getElementById('publishDate').value;
   if (!scheduled)    { alert('⚠️ Please set a publication date'); return; }
+
+  // ✅ Convert EAT input to true UTC
+  const utcDate = eatInputToUTC(scheduled);
+  const utcISO  = utcDate.toISOString();
+  const eatDisplay = scheduled.replace('T', ' ') + ' EAT';
+
+  // Warn if the date is in the past
+  if (utcDate < new Date()) {
+    if (!confirm(`⚠️ This publish time (${eatDisplay}) is in the past. The post will publish on the next workflow run. Continue?`)) return;
+  }
 
   const selectedCats = Array.from(document.querySelectorAll('#categorySelect input:checked')).map(c=>c.value);
   const tags    = document.getElementById('tags').value.split(',').map(t=>t.trim()).filter(Boolean);
@@ -1285,18 +1318,22 @@ function preparePost() {
       ? `featured_image: "/content/images/${slug.value}.jpg"  # ⚠️ Add this file to your repo\n`
       : '';
 
+  // ✅ Both date: and scheduled_date: are written as UTC
+  // scheduled_date: is what publish-scheduled.js looks for
   const fm = `---
 title: "${title.value}"
 description: "${document.getElementById('description').value}"
 slug: "${slug.value}"
-date: ${new Date(scheduled).toISOString()}
+date: ${utcISO}
+scheduled_date: ${utcISO}
+# Scheduled for: ${eatDisplay} (UTC+3 Nairobi)
 categories:
 ${selectedCats.map(c=>'  - '+c).join('\n')}
 tags:
 ${tags.map(t=>'  - '+t).join('\n')}
 keywords:
 ${keys.map(k=>'  - '+k).join('\n')}
-${imageEntry}${productsYAML}published: true
+${imageEntry}${productsYAML}published: false
 ---
 
 `;
@@ -1316,7 +1353,6 @@ ${imageEntry}${productsYAML}published: true
 const FOLDER_KEY = 'wgd_repo_folder';
 let repoFolderHandle = null;
 
-// Check API support on load
 document.addEventListener('DOMContentLoaded', () => {
   if (!window.showDirectoryPicker) {
     document.getElementById('folderUnsupported').style.display = 'block';
@@ -1327,58 +1363,36 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 async function restoreFolder() {
-  // Try to restore a previously granted folder handle from IndexedDB
   try {
     const db = await openFolderDB();
     const handle = await dbGet(db, 'folderHandle');
     if (handle) {
       const perm = await handle.queryPermission({ mode: 'readwrite' });
-      if (perm === 'granted') {
-        repoFolderHandle = handle;
-        showFolderStatus(handle.name, true);
-      } else {
-        // Need to re-verify permission
-        showFolderStatus(handle.name + ' (click to re-allow)', false);
-        // Store handle anyway for re-request on save
-        repoFolderHandle = handle;
-      }
+      if (perm === 'granted') { repoFolderHandle = handle; showFolderStatus(handle.name, true); }
+      else { showFolderStatus(handle.name + ' (click to re-allow)', false); repoFolderHandle = handle; }
     }
-  } catch(e) { /* IndexedDB not available */ }
+  } catch(e) {}
 }
 
 async function pickRepoFolder() {
-  if (!window.showDirectoryPicker) {
-    document.getElementById('folderUnsupported').style.display = 'block';
-    return;
-  }
+  if (!window.showDirectoryPicker) { document.getElementById('folderUnsupported').style.display = 'block'; return; }
   try {
     const handle = await window.showDirectoryPicker({ mode: 'readwrite', startIn: 'documents' });
     repoFolderHandle = handle;
-    // Save to IndexedDB for persistence
-    try {
-      const db = await openFolderDB();
-      await dbSet(db, 'folderHandle', handle);
-    } catch(e) {}
+    try { const db = await openFolderDB(); await dbSet(db, 'folderHandle', handle); } catch(e) {}
     showFolderStatus(handle.name, true);
     document.getElementById('saveFolderBtn').style.display = 'inline-flex';
     document.getElementById('saveDownloadBtn').style.display = 'none';
-  } catch(e) {
-    if (e.name !== 'AbortError') alert('❌ Could not access folder: ' + e.message);
-  }
+  } catch(e) { if (e.name !== 'AbortError') alert('❌ Could not access folder: ' + e.message); }
 }
 
 function showFolderStatus(name, ready) {
   const el = document.getElementById('folderStatus');
   const btn = document.getElementById('pickFolderBtn');
-  el.innerHTML = ready
-    ? `✅ <strong>${name}/</strong> selected — saves go here`
-    : `📁 ${name} — <em>needs permission</em>`;
+  el.innerHTML = ready ? `✅ <strong>${name}/</strong> selected — saves go here` : `📁 ${name} — <em>needs permission</em>`;
   el.style.color = ready ? '#065F46' : '#92400E';
   btn.textContent = '🔄 Change folder';
-  if (ready) {
-    document.getElementById('saveFolderBtn').style.display = 'inline-flex';
-    document.getElementById('saveDownloadBtn').style.display = 'none';
-  }
+  if (ready) { document.getElementById('saveFolderBtn').style.display = 'inline-flex'; document.getElementById('saveDownloadBtn').style.display = 'none'; }
 }
 
 async function saveDraftToFolder() {
@@ -1386,23 +1400,17 @@ async function saveDraftToFolder() {
   if (!fp.textContent) { alert('⚠️ Please prepare the post first in the Schedule tab'); return; }
   if (!slug.value)     { alert('⚠️ Slug is required'); return; }
   if (!repoFolderHandle) { alert('⚠️ Pick a folder first'); return; }
-
   try {
-    // Re-request permission if needed
     const perm = await repoFolderHandle.requestPermission({ mode: 'readwrite' });
     if (perm !== 'granted') { alert('⚠️ Permission denied — please pick the folder again'); return; }
-
     const fileName = slug.value + '.md';
     const fileHandle = await repoFolderHandle.getFileHandle(fileName, { create: true });
     const writable = await fileHandle.createWritable();
     await writable.write(fp.textContent);
     await writable.close();
-
     showSaveConfirm(`✅ Saved as ${fileName} in ${repoFolderHandle.name}/ — open GitHub Desktop and push!`);
     saveToDraftHistory();
-  } catch(e) {
-    alert('❌ Save failed: ' + e.message);
-  }
+  } catch(e) { alert('❌ Save failed: ' + e.message); }
 }
 
 function showSaveConfirm(msg) {
@@ -1411,7 +1419,6 @@ function showSaveConfirm(msg) {
   setTimeout(() => el.style.display = 'none', 6000);
 }
 
-// IndexedDB helpers for persisting folder handle across sessions
 function openFolderDB() {
   return new Promise((res, rej) => {
     const req = indexedDB.open('wgd_scheduler', 1);
@@ -1441,7 +1448,6 @@ function dbSet(db, key, val) {
    SAVE / EXPORT
 ══════════════════════════════════════════ */
 function saveDraft() {
-  // Fallback download — used when no folder is picked or browser unsupported
   const fp = document.getElementById('finalPost');
   if (!fp.textContent) { alert('⚠️ Please prepare the post first in the Schedule tab'); return; }
   if (!slug.value)     { alert('⚠️ Slug is required to save'); return; }
@@ -1450,7 +1456,7 @@ function saveDraft() {
     download: `${slug.value}.md`
   });
   a.click();
-  showSaveConfirm('✅ Downloaded — move the file to your posts/ folder, then push from GitHub Desktop.');
+  showSaveConfirm('✅ Downloaded — move the file to content/posts/drafts/ folder, then push from GitHub Desktop.');
 }
 
 function exportJSON() {
@@ -1482,6 +1488,7 @@ function copyToClipboard() {
 
 /* ══════════════════════════════════════════
    DRAFT HISTORY
+   ✅ Shows scheduled time in EAT for readability
 ══════════════════════════════════════════ */
 function saveToDraftHistory() {
   let drafts = JSON.parse(localStorage.getItem('drafts')||'[]');
@@ -1498,9 +1505,13 @@ function updateDraftTable() {
   const body = document.getElementById('draftList');
   document.getElementById('emptyDrafts').style.display = drafts.length ? 'none' : 'block';
   body.innerHTML = drafts.map((d,i) => {
-    const sc=d.scheduled?new Date(d.scheduled):null, now=new Date();
-    const [status,cls] = sc ? (sc<=now?['✅ Ready','status-ready']:['⏳ Scheduled','status-scheduled']) : ['📝 Draft','status-draft'];
-    const disp = sc ? sc.toLocaleString('en-US',{month:'short',day:'numeric',year:'numeric',hour:'2-digit',minute:'2-digit'}) : '—';
+    // d.scheduled is the raw datetime-local value (EAT, no tz info)
+    // Convert to UTC to compare against now
+    const utcDate = d.scheduled ? eatInputToUTC(d.scheduled) : null;
+    const now = new Date();
+    const [status,cls] = utcDate ? (utcDate<=now?['✅ Ready','status-ready']:['⏳ Scheduled','status-scheduled']) : ['📝 Draft','status-draft'];
+    // Display in EAT
+    const disp = d.scheduled ? d.scheduled.replace('T', ' ') + ' EAT' : '—';
     return `<tr><td><code>${d.slug}</code></td><td>${d.title||'Untitled'}</td><td>${disp}</td><td><span class="status-badge ${cls}">${status}</span></td>
       <td><button onclick="deleteDraft(${i})" class="btn btn-secondary" style="padding:6px 12px;font-size:13px;">🗑️</button></td></tr>`;
   }).join('');
@@ -1585,6 +1596,7 @@ function clearForm() {
   updateAddButton(); updateProductBadge();
   document.getElementById('productsOutputPanel').style.display='none';
   document.getElementById('finalPostContainer').style.display='none';
+  document.getElementById('tzPreview').classList.remove('visible');
   updatePreview(); runSEO();
 }
 
