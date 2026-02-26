@@ -136,7 +136,24 @@ button { font-family: var(--font-main); }
 .category-badge button { background: none; border: none; color: white; cursor: pointer; padding: 0; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: background 0.2s; }
 .category-badge button:hover { background: rgba(255,255,255,0.2); }
 
-/* Image Upload */
+/* ── IMAGE SECTION ── */
+.image-workflow-note {
+  background: rgba(45,91,255,0.05);
+  border: 1px solid rgba(45,91,255,0.18);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  margin-bottom: 14px;
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--text-secondary);
+}
+.image-workflow-note strong { color: var(--primary); }
+.image-workflow-note code { background: rgba(45,91,255,0.08); padding: 1px 5px; border-radius: 4px; font-family: var(--font-mono); font-size: 12px; color: var(--primary); }
+.image-workflow-note ol { margin: 8px 0 0 20px; }
+.image-workflow-note ol li { margin-bottom: 4px; }
+.image-path-row { display: flex; gap: 8px; align-items: center; margin: 4px 0 0; }
+.image-path-row input { margin: 0; flex: 1; }
+.image-path-hint { font-size: 12px; color: var(--text-tertiary); margin: 4px 0 12px 2px; font-family: var(--font-mono); }
 .image-upload-area { padding: 16px; border: 2px dashed var(--border); border-radius: var(--radius-sm); background: var(--bg-main); transition: all 0.2s; }
 .image-upload-area:hover { border-color: var(--primary); background: var(--bg-surface); }
 .image-preview img { max-width: 100%; max-height: 200px; border-radius: var(--radius-sm); border: 2px solid var(--border); margin-top: 12px; }
@@ -192,9 +209,7 @@ tbody tr:hover { background: var(--bg-main); }
 .autosave-saving { color: var(--warning); }
 .autosave-saved { color: var(--success); }
 
-/* ───────────────────────────────
-   FEATURED PRODUCTS TAB
-─────────────────────────────── */
+/* Featured Products */
 .product-card { background: var(--bg-main); border: 2px solid var(--border); border-radius: var(--radius-sm); padding: 20px; margin-bottom: 16px; transition: all 0.2s; }
 .product-card:hover { border-color: var(--purple); box-shadow: var(--shadow-sm); }
 .product-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
@@ -208,17 +223,13 @@ tbody tr:hover { background: var(--bg-main); }
 .product-fields .full-width { grid-column: 1 / -1; }
 .price-field { transition: all 0.3s ease; }
 .price-field.hidden-field { opacity: 0; pointer-events: none; height: 0 !important; min-height: 0 !important; padding: 0 !important; border: none !important; margin: 0 !important; overflow: hidden; }
-
 .add-product-btn { width: 100%; padding: 16px; border: 2px dashed var(--border); border-radius: var(--radius-sm); background: var(--bg-surface); color: var(--text-secondary); font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; font-family: var(--font-main); }
 .add-product-btn:hover { border-color: var(--purple); color: var(--purple); background: var(--purple-pale); }
-
 .frontmatter-output { background: #1e1e2e; color: #cdd6f4; padding: 24px; border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 13px; line-height: 1.9; max-height: 420px; overflow-y: auto; white-space: pre; border: 2px solid #313244; }
 .yaml-key { color: #89b4fa; }
 .yaml-string { color: #a6e3a1; }
 .yaml-comment { color: #585b70; font-style: italic; }
-
 .product-count-badge { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; background: var(--purple); color: white; border-radius: 50%; font-size: 11px; font-weight: 700; margin-left: 4px; vertical-align: middle; }
-
 .products-preview-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(175px, 1fr)); gap: 14px; margin-top: 16px; }
 .product-preview-card { background: var(--bg-surface); border: 2px solid var(--border); border-radius: var(--radius-sm); padding: 14px; text-align: center; transition: all 0.2s; }
 .product-preview-card:hover { border-color: var(--purple); transform: translateY(-2px); box-shadow: var(--shadow-md); }
@@ -226,9 +237,7 @@ tbody tr:hover { background: var(--bg-main); }
 .product-preview-price { font-size: 15px; font-weight: 800; color: var(--purple); margin-bottom: 6px; }
 .product-preview-cta { font-size: 12px; color: var(--text-secondary); font-weight: 600; }
 .product-preview-link { font-size: 11px; color: var(--primary); word-break: break-all; margin-top: 6px; display: block; opacity: 0.7; }
-
 .copy-confirm { display: none; align-items: center; gap: 6px; padding: 8px 16px; background: #D1FAE5; color: #065F46; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; }
-
 .products-tip { background: rgba(126,8,130,0.06); border: 1px solid rgba(126,8,130,0.2); border-radius: var(--radius-sm); padding: 14px 18px; font-size: 14px; color: var(--text-secondary); margin-bottom: 20px; line-height: 1.6; }
 .products-tip strong { color: var(--purple); }
 .products-tip code { background: rgba(126,8,130,0.1); padding: 2px 6px; border-radius: 4px; font-family: var(--font-mono); font-size: 12px; color: var(--purple); }
@@ -274,7 +283,7 @@ tbody tr:hover { background: var(--bg-main); }
 
 <div class="container">
 
-<!-- EDITOR -->
+<!-- ═══ EDITOR ═══ -->
 <section id="editor" class="active">
   <div class="panel">
     <h3>Post Metadata</h3>
@@ -283,22 +292,56 @@ tbody tr:hover { background: var(--bg-main); }
       <input id="slug" placeholder="Slug (e.g., best-accent-chairs)" type="text">
     </div>
     <textarea id="description" placeholder="Meta Description (150-160 characters recommended)" rows="3"></textarea>
+
     <h4>Categories</h4>
     <input type="text" id="categorySearch" placeholder="🔍 Search categories..." style="margin-bottom:12px;">
     <div class="selected-categories" id="selectedCategories"></div>
     <div id="categorySelect" class="multi-select"></div>
+
     <h4>Tags</h4>
     <input id="tags" placeholder="Comma separated tags (e.g., review, comparison, budget-friendly)" type="text">
+
     <h4>SEO Keywords</h4>
     <input id="seoKeywords" placeholder="Comma separated keywords" type="text">
+
+    <!-- ═══════════════════════════════════════════════════════
+         FEATURED IMAGE — clarified workflow
+    ════════════════════════════════════════════════════════ -->
     <h4>Featured Image</h4>
+
+    <div class="image-workflow-note">
+      <strong>📌 How images work with your GitHub repo:</strong><br>
+      Images <em>cannot</em> be pushed to GitHub from this scheduler — they must be added to your repo separately (drag &amp; drop on GitHub.com, via GitHub Desktop, or <code>git add</code>). Here's the two-step workflow:<br>
+      <ol>
+        <li><strong>Set the repo path below</strong> — this is where you'll put the image in your repo and what goes into your frontmatter <code>featured_image:</code> field.</li>
+        <li><strong>Upload for local preview</strong> (optional) — lets you see how it looks in the editor. The preview file stays in your browser only and is never committed.</li>
+      </ol>
+    </div>
+
+    <!-- Step 1: Repo path (the only thing that matters for publishing) -->
+    <label style="font-size:13px;font-weight:600;color:var(--text-secondary);margin-bottom:0;display:block;">
+      Step 1 — Image path in repo <span style="color:var(--text-tertiary);font-weight:400;">(written into frontmatter)</span>
+    </label>
+    <div class="image-path-row">
+      <input type="text" id="imagePath"
+        placeholder="/content/images/posts/your-image.jpg"
+        oninput="triggerAutosave()">
+      <button onclick="copyImagePath()" class="btn btn-secondary btn-sm" title="Copy path to clipboard">📋 Copy</button>
+    </div>
+    <div class="image-path-hint">Convention: /content/images/posts/<em>slug</em>.jpg — commit this file to your repo separately</div>
+
+    <!-- Step 2: Local preview upload -->
     <div class="image-upload-area">
       <input type="file" id="imageUpload" accept="image/*" style="display:none;">
-      <button onclick="document.getElementById('imageUpload').click()" class="btn btn-secondary" style="width:100%;">📸 Upload Featured Image</button>
+      <button onclick="document.getElementById('imageUpload').click()" class="btn btn-secondary" style="width:100%;">
+        🖼️ Step 2 — Upload for Local Preview Only <span style="font-weight:400;font-size:13px;">(not saved to repo)</span>
+      </button>
       <div id="imagePreviewContainer" style="margin-top:12px;"></div>
     </div>
-    <label><input type="checkbox" id="disclaimer"><span>Add FTC Affiliate Disclosure</span></label>
+
+    <label style="margin-top:12px;"><input type="checkbox" id="disclaimer"><span>Add FTC Affiliate Disclosure</span></label>
   </div>
+
   <div class="panel">
     <h3>Content Editor</h3>
     <div class="editor">
@@ -324,7 +367,7 @@ tbody tr:hover { background: var(--bg-main); }
   <div class="panel">
     <h3>Featured Products for Sidebar</h3>
     <div class="products-tip">
-      Add up to <strong>5 products or blog post links</strong>. These populate the <code>featured_products:</code> block in your post's frontmatter — copy it straight into your <code>.md</code> file. No need to edit the file manually.<br><br>
+      Add up to <strong>5 products or blog post links</strong>. These populate the <code>featured_products:</code> block in your post's frontmatter — copy it straight into your <code>.md</code> file.<br><br>
       🛍️ <strong>Product</strong> → generates "Shop Now →" with price &nbsp;|&nbsp; 📝 <strong>Blog Post</strong> → generates "Read More →" with no price
     </div>
     <div id="productsList"></div>
@@ -334,7 +377,7 @@ tbody tr:hover { background: var(--bg-main); }
   </div>
 
   <div class="panel" id="productsOutputPanel" style="display:none;">
-    <h3>Generated Frontmatter — Copy & Paste into your .md file</h3>
+    <h3>Generated Frontmatter — Copy &amp; Paste into your .md file</h3>
     <div id="frontmatterOutput" class="frontmatter-output"></div>
     <div class="action-row">
       <button onclick="copyFrontmatter()" class="btn btn-primary">📋 Copy to Clipboard</button>
@@ -346,7 +389,7 @@ tbody tr:hover { background: var(--bg-main); }
   </div>
 </section>
 
-<!-- SEO -->
+<!-- ═══ SEO ═══ -->
 <section id="seo">
   <div class="panel">
     <h3>SEO Analysis</h3>
@@ -371,11 +414,11 @@ tbody tr:hover { background: var(--bg-main); }
   </div>
 </section>
 
-<!-- SCHEDULE -->
+<!-- ═══ SCHEDULE ═══ -->
 <section id="schedule">
   <div class="panel">
     <h3>Schedule Publication</h3>
-    <label><span style="font-weight:600;">Publication Date & Time</span></label>
+    <label><span style="font-weight:600;">Publication Date &amp; Time</span></label>
     <input type="datetime-local" id="publishDate">
     <div class="action-row">
       <button onclick="preparePost()" class="btn btn-primary">🚀 Prepare Post for Publishing</button>
@@ -388,10 +431,10 @@ tbody tr:hover { background: var(--bg-main); }
   </div>
 </section>
 
-<!-- DRAFTS -->
+<!-- ═══ DRAFTS ═══ -->
 <section id="deploy">
   <div class="panel">
-    <h3>Save & Export</h3>
+    <h3>Save &amp; Export</h3>
     <p style="color:var(--text-secondary); margin-bottom:20px;">Save your prepared post as a Markdown file.</p>
     <div class="action-row">
       <button onclick="saveDraft()" class="btn btn-success">💾 Save Draft to File</button>
@@ -412,7 +455,7 @@ tbody tr:hover { background: var(--bg-main); }
   </div>
 </section>
 
-<!-- AFFILIATE LINKS -->
+<!-- ═══ AFFILIATE LINKS ═══ -->
 <section id="affiliate">
   <div class="panel">
     <h3>Affiliate Link Manager</h3>
@@ -433,7 +476,8 @@ tbody tr:hover { background: var(--bg-main); }
     <button onclick="addAffiliateLink()" class="btn btn-primary" style="margin-top:8px;">➕ Add to Catalog</button>
   </div>
 </section>
-</div>
+
+</div><!-- /.container -->
 
 <!-- Load Draft Modal -->
 <div id="loadDraftModal" class="modal">
@@ -454,15 +498,26 @@ let currentTab = 'editor';
 let uploadedImage = null;
 let productCounter = 0;
 let affiliateCatalog = [
-  {name:"Roomba 960 Robot Vacuum", link:"https://amzn.to/roomba960", category:"Smart Home"},
-  {name:"Dyson V11 Cordless Vacuum", link:"https://amzn.to/dysonv11", category:"Appliances"},
-  {name:"Ikea Kallax Shelf Unit", link:"https://ikea.com/kallax?aff=123", category:"Furniture"},
-  {name:"Philips Hue Smart Lights", link:"https://amzn.to/philipshue", category:"Smart Home"},
-  {name:"Instant Pot Duo 7-in-1", link:"https://amzn.to/instantpot", category:"Kitchen"},
+  {name:"Roomba 960 Robot Vacuum",   link:"https://amzn.to/roomba960",  category:"Smart Home"},
+  {name:"Dyson V11 Cordless Vacuum", link:"https://amzn.to/dysonv11",   category:"Appliances"},
+  {name:"Ikea Kallax Shelf Unit",    link:"https://ikea.com/kallax?aff=123", category:"Furniture"},
+  {name:"Philips Hue Smart Lights",  link:"https://amzn.to/philipshue", category:"Smart Home"},
+  {name:"Instant Pot Duo 7-in-1",   link:"https://amzn.to/instantpot", category:"Kitchen"},
 ];
 
 /* ══════════════════════════════════════════
-   FEATURED PRODUCTS TAB
+   IMAGE PATH HELPERS
+══════════════════════════════════════════ */
+function copyImagePath() {
+  const val = document.getElementById('imagePath').value.trim();
+  if (!val) { alert('⚠️ Enter a repo image path first'); return; }
+  navigator.clipboard.writeText(val)
+    .then(() => alert('✅ Path copied: ' + val))
+    .catch(() => alert('❌ Copy failed — copy manually'));
+}
+
+/* ══════════════════════════════════════════
+   FEATURED PRODUCTS
 ══════════════════════════════════════════ */
 function addProductCard(prefill) {
   const list = document.getElementById('productsList');
@@ -573,8 +628,6 @@ function generateFrontmatter() {
   panel.style.display = 'block';
 
   const raw = buildProductsYAML();
-
-  // Syntax highlight
   const highlighted = raw
     .replace(/^(  # .+)$/gm, '<span class="yaml-comment">$1</span>')
     .replace(/^(featured_products:)/gm, '<span class="yaml-key">$1</span>')
@@ -583,7 +636,6 @@ function generateFrontmatter() {
 
   document.getElementById('frontmatterOutput').innerHTML = highlighted;
 
-  // Preview cards
   document.getElementById('productsPreviewGrid').innerHTML = products.map(p => {
     const shortLink = p.link ? (p.link.length > 38 ? p.link.slice(0,38)+'…' : p.link) : '—';
     return `<div class="product-preview-card">
@@ -606,14 +658,25 @@ function copyFrontmatter() {
 }
 
 /* ══════════════════════════════════════════
-   IMAGE UPLOAD
+   IMAGE UPLOAD (local preview only)
 ══════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('imageUpload').addEventListener('change', e => {
     const file = e.target.files[0];
     if (!file || !file.type.startsWith('image/')) { if (file) alert('⚠️ Please upload an image file'); return; }
+
+    // Auto-fill path hint if slug is set and path is empty
+    const pathField = document.getElementById('imagePath');
+    if (!pathField.value && slug.value) {
+      pathField.value = `/content/images/posts/${slug.value}.jpg`;
+    }
+
     const reader = new FileReader();
-    reader.onload = ev => { uploadedImage = {name:file.name, size:file.size, type:file.type, data:ev.target.result}; displayImagePreview(); triggerAutosave(); };
+    reader.onload = ev => {
+      uploadedImage = {name:file.name, size:file.size, type:file.type, data:ev.target.result};
+      displayImagePreview();
+      triggerAutosave();
+    };
     reader.readAsDataURL(file);
   });
 });
@@ -623,6 +686,9 @@ function displayImagePreview() {
   if (!uploadedImage) { container.innerHTML = ''; return; }
   const sizeKB = (uploadedImage.size / 1024).toFixed(2);
   container.innerHTML = `<div class="image-preview">
+    <div style="font-size:12px;background:rgba(255,183,0,0.1);border:1px solid #FFB020;border-radius:6px;padding:8px 12px;margin-bottom:8px;color:#92600E;">
+      ⚠️ <strong>Preview only</strong> — this image is not saved to your repo. Upload it to GitHub separately at the path shown above.
+    </div>
     <img src="${uploadedImage.data}" alt="Preview">
     <div style="font-size:13px;color:var(--text-secondary);margin-top:6px;">${uploadedImage.name} (${sizeKB} KB)</div>
     <div class="image-preview-actions">
@@ -632,16 +698,19 @@ function displayImagePreview() {
 }
 
 function insertImageIntoContent() {
-  const md = `![${uploadedImage.name}](${uploadedImage.data})`;
+  const path = document.getElementById('imagePath').value.trim();
+  const src = path || uploadedImage.data; // prefer repo path if set
+  const md = `![${uploadedImage.name}](${src})`;
   const ta = document.getElementById('content');
   const s = ta.selectionStart, e = ta.selectionEnd;
   ta.value = ta.value.slice(0,s) + md + ta.value.slice(e);
   ta.selectionStart = ta.selectionEnd = s + md.length;
-  ta.focus(); updatePreview(); alert('✅ Image inserted');
+  ta.focus(); updatePreview();
+  alert(path ? `✅ Inserted with repo path: ${path}` : '✅ Image inserted (using base64 preview — set a repo path for production)');
 }
 
 function removeImage() {
-  if (!confirm('Remove the featured image?')) return;
+  if (!confirm('Remove the local preview image?')) return;
   uploadedImage = null; displayImagePreview();
   document.getElementById('imageUpload').value = ''; triggerAutosave();
 }
@@ -651,7 +720,7 @@ function removeImage() {
 ══════════════════════════════════════════ */
 function startAutosave() {
   setInterval(saveToAutosave, 30000);
-  ['title','slug','content','description','tags','seoKeywords'].forEach(id => {
+  ['title','slug','content','description','tags','seoKeywords','imagePath'].forEach(id => {
     document.getElementById(id)?.addEventListener('input', () => {
       clearTimeout(window.autosaveTimeout);
       window.autosaveTimeout = setTimeout(triggerAutosave, 2000);
@@ -661,17 +730,19 @@ function startAutosave() {
 
 function saveToAutosave() {
   localStorage.setItem('autosave', JSON.stringify({
-    title: title.value, slug: slug.value,
+    title:       title.value,
+    slug:        slug.value,
     description: document.getElementById('description').value,
-    content: content.value,
-    tags: document.getElementById('tags').value,
-    keywords: document.getElementById('seoKeywords').value,
-    categories: Array.from(document.querySelectorAll('#categorySelect input:checked')).map(c => c.value),
+    content:     content.value,
+    tags:        document.getElementById('tags').value,
+    keywords:    document.getElementById('seoKeywords').value,
+    imagePath:   document.getElementById('imagePath').value,
+    categories:  Array.from(document.querySelectorAll('#categorySelect input:checked')).map(c => c.value),
     publishDate: document.getElementById('publishDate').value,
-    disclaimer: document.getElementById('disclaimer').checked,
-    image: uploadedImage,
-    products: getProductsData(),
-    timestamp: new Date().toISOString()
+    disclaimer:  document.getElementById('disclaimer').checked,
+    image:       uploadedImage,
+    products:    getProductsData(),
+    timestamp:   new Date().toISOString()
   }));
   updateAutosaveStatus('saved');
 }
@@ -684,8 +755,10 @@ function updateAutosaveStatus(status) {
   const el = document.getElementById('autosaveStatus');
   el.className = '';
   if (status === 'saving') { icon.textContent='💾'; text.textContent='Saving...'; el.classList.add('autosave-saving'); }
-  else { icon.textContent='✅'; text.textContent='Autosaved'; el.classList.add('autosave-saved');
-    setTimeout(() => { icon.textContent='💾'; text.textContent='Autosave enabled'; el.className=''; }, 2000); }
+  else {
+    icon.textContent='✅'; text.textContent='Autosaved'; el.classList.add('autosave-saved');
+    setTimeout(() => { icon.textContent='💾'; text.textContent='Autosave enabled'; el.className=''; }, 2000);
+  }
 }
 
 function loadDraft() {
@@ -699,6 +772,7 @@ function loadDraft() {
       <div class="draft-item-meta">
         Last saved: ${new Date(data.timestamp).toLocaleString()}<br>
         ${data.content ? data.content.split(/\s+/).length + ' words · ' : ''}${productCount} featured product${productCount !== 1 ? 's' : ''}
+        ${data.imagePath ? `<br>📷 Image path: <code>${data.imagePath}</code>` : ''}
       </div>
       <div style="margin-top:12px; display:flex; gap:8px;">
         <button class="btn btn-primary" onclick="restoreAutosave()">📂 Restore</button>
@@ -713,17 +787,19 @@ function closeLoadModal() { document.getElementById('loadDraftModal').classList.
 function restoreAutosave() {
   const data = JSON.parse(localStorage.getItem('autosave') || '{}');
   title.value = data.title || '';
-  slug.value = data.slug || '';
-  document.getElementById('description').value = data.description || '';
-  content.value = data.content || '';
-  document.getElementById('tags').value = data.tags || '';
-  document.getElementById('seoKeywords').value = data.keywords || '';
-  document.getElementById('publishDate').value = data.publishDate || '';
-  document.getElementById('disclaimer').checked = data.disclaimer || false;
+  slug.value  = data.slug  || '';
+  document.getElementById('description').value  = data.description || '';
+  content.value                                  = data.content    || '';
+  document.getElementById('tags').value          = data.tags       || '';
+  document.getElementById('seoKeywords').value   = data.keywords   || '';
+  document.getElementById('imagePath').value     = data.imagePath  || '';
+  document.getElementById('publishDate').value   = data.publishDate || '';
+  document.getElementById('disclaimer').checked  = data.disclaimer || false;
   if (data.image) { uploadedImage = data.image; displayImagePreview(); }
-  document.querySelectorAll('#categorySelect input[type="checkbox"]').forEach(cb => { cb.checked = data.categories?.includes(cb.value) || false; });
+  document.querySelectorAll('#categorySelect input[type="checkbox"]').forEach(cb => {
+    cb.checked = data.categories?.includes(cb.value) || false;
+  });
   updateSelectedCategories();
-  // Restore products
   document.getElementById('productsList').innerHTML = '';
   productCounter = 0;
   if (data.products?.length) data.products.forEach(p => addProductCard(p));
@@ -751,18 +827,28 @@ function openTab(tab) {
 /* ══════════════════════════════════════════
    SLUG / PREVIEW / WORD COUNT
 ══════════════════════════════════════════ */
-const title = document.getElementById('title');
-const slug = document.getElementById('slug');
+const title   = document.getElementById('title');
+const slug    = document.getElementById('slug');
 const content = document.getElementById('content');
 
-function generateSlug(t) { return t.toLowerCase().trim().replace(/[^\w\s-]/g,'').replace(/\s+/g,'-').replace(/--+/g,'-').replace(/^-+|-+$/g,''); }
-title.addEventListener('input', () => { if (!slug.value || slug.dataset.autoGenerated === 'true') { slug.value = generateSlug(title.value); slug.dataset.autoGenerated = 'true'; } });
+function generateSlug(t) {
+  return t.toLowerCase().trim()
+    .replace(/[^\w\s-]/g,'').replace(/\s+/g,'-').replace(/--+/g,'-').replace(/^-+|-+$/g,'');
+}
+title.addEventListener('input', () => {
+  if (!slug.value || slug.dataset.autoGenerated === 'true') {
+    slug.value = generateSlug(title.value);
+    slug.dataset.autoGenerated = 'true';
+  }
+});
 slug.addEventListener('input', () => { slug.dataset.autoGenerated = 'false'; });
 
 content.addEventListener('input', updatePreview);
 function updatePreview() {
   const text = content.value;
-  document.getElementById('preview').innerHTML = text.trim() ? marked.parse(text) : `<div class="empty-state"><div class="empty-state-icon">📝</div><div class="empty-state-text">Start typing to see your preview</div></div>`;
+  document.getElementById('preview').innerHTML = text.trim()
+    ? marked.parse(text)
+    : `<div class="empty-state"><div class="empty-state-icon">📝</div><div class="empty-state-text">Start typing to see your preview</div></div>`;
   document.getElementById('wordCount').textContent = text.trim().split(/\s+/).filter(Boolean).length + ' words';
   if (currentTab === 'seo') runSEO();
 }
@@ -771,72 +857,83 @@ function updatePreview() {
    SEO
 ══════════════════════════════════════════ */
 function runSEO() {
-  const text = content.value;
-  const words = text.trim().split(/\s+/).filter(Boolean).length;
+  const text     = content.value;
+  const words    = text.trim().split(/\s+/).filter(Boolean).length;
   const headings = (text.match(/^#{1,6}\s/gm)||[]).length;
-  const links = (text.match(/\[.*?\]\(.*?\)/g)||[]).length;
-  const images = (text.match(/!\[.*?\]\(.*?\)/g)||[]).length;
+  const links    = (text.match(/\[.*?\]\(.*?\)/g)||[]).length;
+  const images   = (text.match(/!\[.*?\]\(.*?\)/g)||[]).length;
   const titleLen = title.value.length;
-  const descLen = document.getElementById('description').value.length;
-  const kw = document.getElementById('seoKeywords').value.split(',').filter(k=>k.trim()).length;
-  const cats = document.querySelectorAll('#categorySelect input:checked').length;
-  const prods = document.querySelectorAll('.product-card').length;
+  const descLen  = document.getElementById('description').value.length;
+  const kw       = document.getElementById('seoKeywords').value.split(',').filter(k=>k.trim()).length;
+  const cats     = document.querySelectorAll('#categorySelect input:checked').length;
+  const prods    = document.querySelectorAll('.product-card').length;
+  const hasImg   = !!document.getElementById('imagePath').value.trim() || !!uploadedImage;
 
   let score = 0, checks = [];
-  const add = (pass, text) => { if (pass) score += (checks.push({pass:true,text}) && 0) || 0; checks.push({pass,text}); };
 
-  if (words >= 800) { score+=15; checks.push({pass:true, text:`Great content length (${words} words)`}); }
-  else checks.push({pass:false, text:`Content too short (${words} words, aim for 800+)`});
+  if (words >= 800)  { score+=15; checks.push({pass:true,  text:`Great content length (${words} words)`}); }
+  else                             checks.push({pass:false, text:`Content too short (${words} words, aim for 800+)`});
 
-  if (headings >= 3) { score+=15; checks.push({pass:true, text:`Good use of headings (${headings} found)`}); }
-  else checks.push({pass:false, text:`Add more headings (${headings} found, aim for 3+)`});
+  if (headings >= 3) { score+=15; checks.push({pass:true,  text:`Good use of headings (${headings} found)`}); }
+  else                             checks.push({pass:false, text:`Add more headings (${headings} found, aim for 3+)`});
 
-  if (links >= 3) { score+=15; checks.push({pass:true, text:`Good linking (${links} links)`}); }
-  else checks.push({pass:false, text:`Add more links (${links} found, aim for 3+)`});
+  if (links >= 3)    { score+=15; checks.push({pass:true,  text:`Good linking (${links} links)`}); }
+  else                             checks.push({pass:false, text:`Add more links (${links} found, aim for 3+)`});
 
-  if (images >= 2) { score+=15; checks.push({pass:true, text:`Images included (${images} found)`}); }
-  else checks.push({pass:false, text:`Add images (${images} found, aim for 2+)`});
+  if (images >= 2)   { score+=10; checks.push({pass:true,  text:`Images included (${images} found)`}); }
+  else                             checks.push({pass:false, text:`Add images (${images} found, aim for 2+)`});
 
-  if (titleLen >= 30 && titleLen <= 60) { score+=10; checks.push({pass:true, text:`Title length optimal (${titleLen} chars)`}); }
+  if (hasImg)        { score+=5;  checks.push({pass:true,  text:'Featured image path set ✓'}); }
+  else                             checks.push({pass:false, text:'Set a featured image repo path'});
+
+  if (titleLen >= 30 && titleLen <= 60) { score+=10; checks.push({pass:true,  text:`Title length optimal (${titleLen} chars)`}); }
   else checks.push({pass:false, text:titleLen > 0 ? `Title should be 30-60 chars (currently ${titleLen})` : 'Add a title'});
 
-  if (descLen >= 120 && descLen <= 160) { score+=10; checks.push({pass:true, text:`Meta description perfect (${descLen} chars)`}); }
+  if (descLen >= 120 && descLen <= 160) { score+=10; checks.push({pass:true,  text:`Meta description perfect (${descLen} chars)`}); }
   else checks.push({pass:false, text:descLen > 0 ? `Meta description should be 120-160 chars (currently ${descLen})` : 'Add a meta description'});
 
-  if (kw >= 3) { score+=10; checks.push({pass:true, text:`Keywords defined (${kw})`}); }
-  else checks.push({pass:false, text:`Add SEO keywords (${kw} found, aim for 3-5)`});
+  if (kw >= 3)   { score+=10; checks.push({pass:true,  text:`Keywords defined (${kw})`}); }
+  else                         checks.push({pass:false, text:`Add SEO keywords (${kw} found, aim for 3-5)`});
 
-  if (cats >= 1) { score+=10; checks.push({pass:true, text:`Categories selected (${cats})`}); }
-  else checks.push({pass:false, text:'Select at least one category'});
+  if (cats >= 1) { score+=10; checks.push({pass:true,  text:`Categories selected (${cats})`}); }
+  else                         checks.push({pass:false, text:'Select at least one category'});
 
   if (prods > 0) checks.push({pass:true, text:`✨ Featured products added (${prods}) — great for conversions!`});
 
   const circle = document.getElementById('scoreCircle');
   circle.textContent = score + '%';
   circle.className = 'score-circle ' + (score < 50 ? 'low' : score < 80 ? 'medium' : 'high');
-  document.getElementById('scoreText').textContent = score < 50 ? 'Needs significant improvement' : score < 80 ? 'Good, but could be better' : 'Excellent SEO optimization!';
+  document.getElementById('scoreText').textContent =
+    score < 50 ? 'Needs significant improvement' : score < 80 ? 'Good, but could be better' : 'Excellent SEO optimization!';
 
-  const list = document.getElementById('seoList');
-  list.innerHTML = checks.map(c => `<li class="${c.pass?'pass':'fail'}">${c.text}</li>`).join('');
-  document.getElementById('statWords').textContent = words;
-  document.getElementById('statChars').textContent = text.length;
+  document.getElementById('seoList').innerHTML = checks.map(c => `<li class="${c.pass?'pass':'fail'}">${c.text}</li>`).join('');
+  document.getElementById('statWords').textContent    = words;
+  document.getElementById('statChars').textContent    = text.length;
   document.getElementById('statHeadings').textContent = headings;
-  document.getElementById('statLinks').textContent = links;
+  document.getElementById('statLinks').textContent    = links;
 }
 
 /* ══════════════════════════════════════════
-   PREPARE POST — products injected into frontmatter
+   PREPARE POST
 ══════════════════════════════════════════ */
 function preparePost() {
-  if (!title.value) { alert('⚠️ Please add a post title'); return; }
-  if (!slug.value) { alert('⚠️ Please add a slug'); return; }
+  if (!title.value)  { alert('⚠️ Please add a post title'); return; }
+  if (!slug.value)   { alert('⚠️ Please add a slug'); return; }
   const scheduled = document.getElementById('publishDate').value;
-  if (!scheduled) { alert('⚠️ Please set a publication date'); return; }
+  if (!scheduled)    { alert('⚠️ Please set a publication date'); return; }
 
-  const selectedCats = Array.from(document.querySelectorAll('#categorySelect input:checked')).map(c => c.value);
-  const tags = document.getElementById('tags').value.split(',').map(t=>t.trim()).filter(Boolean);
-  const keys = document.getElementById('seoKeywords').value.split(',').map(k=>k.trim()).filter(Boolean);
-  const productsYAML = buildProductsYAML();
+  const selectedCats  = Array.from(document.querySelectorAll('#categorySelect input:checked')).map(c => c.value);
+  const tags          = document.getElementById('tags').value.split(',').map(t=>t.trim()).filter(Boolean);
+  const keys          = document.getElementById('seoKeywords').value.split(',').map(k=>k.trim()).filter(Boolean);
+  const imagePath     = document.getElementById('imagePath').value.trim();
+  const productsYAML  = buildProductsYAML();
+
+  // Use the typed repo path; fall back to uploaded filename as a reminder
+  const imageEntry = imagePath
+    ? `featured_image: "${imagePath}"\n`
+    : uploadedImage
+      ? `featured_image: "/content/images/posts/${slug.value}.jpg"  # ⚠️ Add this file to your repo\n`
+      : '';
 
   const fm = `---
 title: "${title.value}"
@@ -849,7 +946,7 @@ tags:
 ${tags.map(t=>'  - '+t).join('\n')}
 keywords:
 ${keys.map(k=>'  - '+k).join('\n')}
-${uploadedImage ? `featured_image: "${uploadedImage.name}"\n` : ''}${productsYAML}published: false
+${imageEntry}${productsYAML}published: false
 ---
 
 `;
@@ -869,25 +966,33 @@ ${uploadedImage ? `featured_image: "${uploadedImage.name}"\n` : ''}${productsYAM
 function saveDraft() {
   const fp = document.getElementById('finalPost');
   if (!fp.textContent) { alert('⚠️ Please prepare the post first in the Schedule tab'); return; }
-  if (!slug.value) { alert('⚠️ Slug is required to save'); return; }
-  const a = Object.assign(document.createElement('a'), {href: URL.createObjectURL(new Blob([fp.textContent], {type:'text/markdown'})), download:`${slug.value}.md`});
+  if (!slug.value)     { alert('⚠️ Slug is required to save'); return; }
+  const a = Object.assign(document.createElement('a'), {
+    href: URL.createObjectURL(new Blob([fp.textContent], {type:'text/markdown'})),
+    download: `${slug.value}.md`
+  });
   a.click(); alert('✅ Draft saved!');
 }
 
 function exportJSON() {
   const data = {
-    title: title.value, slug: slug.value,
+    title:       title.value,
+    slug:        slug.value,
     description: document.getElementById('description').value,
-    content: content.value,
-    tags: document.getElementById('tags').value.split(',').map(t=>t.trim()).filter(Boolean),
-    keywords: document.getElementById('seoKeywords').value.split(',').map(k=>k.trim()).filter(Boolean),
-    categories: Array.from(document.querySelectorAll('#categorySelect input:checked')).map(c=>c.value),
+    content:     content.value,
+    tags:        document.getElementById('tags').value.split(',').map(t=>t.trim()).filter(Boolean),
+    keywords:    document.getElementById('seoKeywords').value.split(',').map(k=>k.trim()).filter(Boolean),
+    categories:  Array.from(document.querySelectorAll('#categorySelect input:checked')).map(c=>c.value),
     scheduledDate: document.getElementById('publishDate').value,
-    disclaimer: document.getElementById('disclaimer').checked,
+    disclaimer:    document.getElementById('disclaimer').checked,
+    imagePath:     document.getElementById('imagePath').value.trim(),
     featuredImage: uploadedImage,
     featured_products: getProductsData()
   };
-  const a = Object.assign(document.createElement('a'), {href:URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'})), download:`${slug.value||'post'}.json`});
+  const a = Object.assign(document.createElement('a'), {
+    href: URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'})),
+    download: `${slug.value||'post'}.json`
+  });
   a.click(); alert('✅ Exported as JSON!');
 }
 
@@ -902,24 +1007,32 @@ function copyToClipboard() {
 ══════════════════════════════════════════ */
 function saveToDraftHistory() {
   let drafts = JSON.parse(localStorage.getItem('drafts')||'[]');
-  drafts = [{slug:slug.value, title:title.value, scheduled:document.getElementById('publishDate').value, savedAt:new Date().toISOString()},
-    ...drafts.filter(d=>d.slug!==slug.value)].slice(0,20);
+  drafts = [
+    {slug:slug.value, title:title.value, scheduled:document.getElementById('publishDate').value, savedAt:new Date().toISOString()},
+    ...drafts.filter(d=>d.slug!==slug.value)
+  ].slice(0,20);
   localStorage.setItem('drafts', JSON.stringify(drafts));
   updateDraftTable();
 }
 
 function updateDraftTable() {
   const drafts = JSON.parse(localStorage.getItem('drafts')||'[]');
-  const body = document.getElementById('draftList');
+  const body   = document.getElementById('draftList');
   document.getElementById('emptyDrafts').style.display = drafts.length ? 'none' : 'block';
   body.innerHTML = drafts.map((d,i) => {
-    const sc = d.scheduled ? new Date(d.scheduled) : null;
+    const sc  = d.scheduled ? new Date(d.scheduled) : null;
     const now = new Date();
-    const [status, cls] = sc ? (sc <= now ? ['✅ Ready','status-ready'] : ['⏳ Scheduled','status-scheduled']) : ['📝 Draft','status-draft'];
+    const [status, cls] = sc
+      ? (sc <= now ? ['✅ Ready','status-ready'] : ['⏳ Scheduled','status-scheduled'])
+      : ['📝 Draft','status-draft'];
     const disp = sc ? sc.toLocaleString('en-US',{month:'short',day:'numeric',year:'numeric',hour:'2-digit',minute:'2-digit'}) : '—';
-    return `<tr><td><code>${d.slug}</code></td><td>${d.title||'Untitled'}</td><td>${disp}</td>
+    return `<tr>
+      <td><code>${d.slug}</code></td>
+      <td>${d.title||'Untitled'}</td>
+      <td>${disp}</td>
       <td><span class="status-badge ${cls}">${status}</span></td>
-      <td><button onclick="deleteDraft(${i})" class="btn btn-secondary" style="padding:6px 12px;font-size:13px;">🗑️</button></td></tr>`;
+      <td><button onclick="deleteDraft(${i})" class="btn btn-secondary" style="padding:6px 12px;font-size:13px;">🗑️</button></td>
+    </tr>`;
   }).join('');
 }
 
@@ -935,12 +1048,14 @@ function deleteDraft(i) {
    AFFILIATE LINKS
 ══════════════════════════════════════════ */
 function searchAffiliate() {
-  const q = document.getElementById('affiliateSearch').value.toLowerCase().trim();
-  const ul = document.getElementById('affiliateResults');
-  const empty = document.getElementById('emptyAffiliate');
+  const q    = document.getElementById('affiliateSearch').value.toLowerCase().trim();
+  const ul   = document.getElementById('affiliateResults');
+  const empty= document.getElementById('emptyAffiliate');
   ul.innerHTML = '';
   if (!q) { empty.style.display='block'; return; }
-  const res = affiliateCatalog.filter(a => a.name.toLowerCase().includes(q) || a.category.toLowerCase().includes(q));
+  const res = affiliateCatalog.filter(a =>
+    a.name.toLowerCase().includes(q) || a.category.toLowerCase().includes(q)
+  );
   if (!res.length) { empty.style.display='block'; ul.innerHTML='<li style="text-align:center;padding:20px;color:var(--text-secondary);">No results found</li>'; return; }
   empty.style.display='none';
   ul.innerHTML = res.map(a => `
@@ -956,7 +1071,7 @@ function searchAffiliate() {
 function insertAffiliateLink(name, link) {
   const ta = document.getElementById('content');
   const md = `[${name}](${link})`;
-  const s = ta.selectionStart, e = ta.selectionEnd;
+  const s  = ta.selectionStart, e = ta.selectionEnd;
   ta.value = ta.value.slice(0,s) + md + ta.value.slice(e);
   ta.selectionStart = ta.selectionEnd = s + md.length;
   ta.focus(); updatePreview();
@@ -975,7 +1090,7 @@ function addAffiliateLink() {
   if (!name || !url) { alert('⚠️ Please enter both product name and URL'); return; }
   affiliateCatalog.push({name, link:url, category:'Custom'});
   document.getElementById('newLinkName').value = '';
-  document.getElementById('newLinkUrl').value = '';
+  document.getElementById('newLinkUrl').value  = '';
   alert(`✅ Added "${name}" to catalog`);
 }
 
@@ -1004,7 +1119,7 @@ function initializeCategories() {
     cats.forEach(cat => {
       const lbl = document.createElement('label');
       lbl.dataset.category = cat.toLowerCase();
-      lbl.dataset.group = group.toLowerCase();
+      lbl.dataset.group    = group.toLowerCase();
       const cb = document.createElement('input');
       cb.type = 'checkbox'; cb.value = cat; cb.id = 'cat_' + cat.replace(/\s+/g,'_');
       cb.addEventListener('change', updateSelectedCategories);
@@ -1046,7 +1161,9 @@ function updateSelectedCategories() {
 ══════════════════════════════════════════ */
 function clearForm() {
   if (!confirm('Clear the entire form?')) return;
-  ['title','slug','description','content','tags','seoKeywords','publishDate'].forEach(id => { document.getElementById(id).value = ''; });
+  ['title','slug','description','content','tags','seoKeywords','publishDate','imagePath'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
   document.getElementById('disclaimer').checked = false;
   uploadedImage = null; displayImagePreview();
   document.getElementById('imageUpload').value = '';
@@ -1063,7 +1180,10 @@ function clearForm() {
    KEYBOARD SHORTCUTS
 ══════════════════════════════════════════ */
 document.addEventListener('keydown', e => {
-  if ((e.ctrlKey||e.metaKey) && e.key==='s') { e.preventDefault(); document.getElementById('finalPost').textContent ? saveDraft() : alert('⚠️ Prepare the post first'); }
+  if ((e.ctrlKey||e.metaKey) && e.key==='s') {
+    e.preventDefault();
+    document.getElementById('finalPost').textContent ? saveDraft() : alert('⚠️ Prepare the post first in the Schedule tab');
+  }
   if ((e.ctrlKey||e.metaKey) && e.key==='Enter') { e.preventDefault(); preparePost(); }
 });
 
@@ -1083,7 +1203,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const minsAgo = Math.floor((Date.now() - new Date(data.timestamp).getTime()) / 60000);
     if (minsAgo < 1440) {
       setTimeout(() => {
-        if (confirm(`Found autosaved draft from ${minsAgo < 60 ? minsAgo+' minutes' : Math.floor(minsAgo/60)+' hours'} ago. Restore it?`)) loadDraft();
+        if (confirm(`Found autosaved draft from ${minsAgo < 60 ? minsAgo+' minutes' : Math.floor(minsAgo/60)+' hours'} ago. Restore it?`))
+          loadDraft();
       }, 800);
     }
   }
