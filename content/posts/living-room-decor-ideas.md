@@ -45,8 +45,6 @@ published: true
 date: '2026-02-12T10:00:00.000Z'
 ---
 
-![Stunning modern living room decor with cozy furniture and stylish accessories](/content/images/modern-living-room-decor-transformation.jpg)
-
 
 ## Key Takeaways
 
@@ -75,6 +73,8 @@ date: '2026-02-12T10:00:00.000Z'
 12. [Seasonal Decor Updates](#seasonal-decor-updates)
 13. [Common Living Room Decor Mistakes (And How to Avoid Them)](#common-living-room-decor-mistakes-and-how-to-avoid-them)
 14. [Frequently Asked Questions](#frequently-asked-questions)
+
+![Stunning modern living room decor with cozy furniture and stylish accessories](/content/images/modern-living-room-decor-transformation.jpg)
 
 ## Introduction
 
