@@ -41,6 +41,7 @@ keywords:
   - living room furniture arrangement
   - living room color schemes
   - affordable living room makeover
+featured_image: /content/images/modern-living-room-decor-transformation.jpg
 published: true
 date: '2026-02-12T10:00:00.000Z'
 ---
