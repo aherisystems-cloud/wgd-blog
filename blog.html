@@ -4,7 +4,6 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-<!-- Favicon -->
 <link rel="icon" type="image/svg+xml" href="/content/images/favicon.svg">
 <link rel="icon" type="image/png" sizes="96x96" href="/content/images/favicon-96x96.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/content/images/apple-touch-icon.png">
@@ -23,29 +22,193 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
 <style>
+/* ═══ BASE ═══ */
 :root{--brand:#7e0882;--brand-dark:#5a0660;--brand-light:#a020a8;--brand-pale:rgba(126,8,130,0.07);--off-white:#fafafa;--gray-100:#f5f5f5;--gray-200:#eee;--gray-600:#757575;--gray-800:#424242;--gray-900:#212121;--shadow-sm:0 2px 12px rgba(126,8,130,0.08);--shadow-md:0 8px 32px rgba(126,8,130,0.13);--shadow-lg:0 20px 60px rgba(126,8,130,0.18);--radius:16px;--ease:cubic-bezier(0.4,0,0.2,1)}
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Nunito',sans-serif;background:var(--off-white);color:var(--gray-900);line-height:1.6}
 a{text-decoration:none}
+
+/* ═══ NAVBAR ═══ */
 .navbar{background:rgba(255,255,255,0.96);backdrop-filter:blur(16px);box-shadow:var(--shadow-sm);position:sticky;top:0;z-index:100}
-.nav-container{max-width:1400px;margin:0 auto;padding:13px 24px;display:flex;align-items:center;justify-content:space-between;gap:24px}
-.logo{height:48px}
-.nav-menu{display:flex;gap:2px}
-.nav-link{color:var(--gray-800);font-weight:700;font-size:14px;padding:8px 14px;border-radius:8px;transition:all 0.2s}
+.nav-container{max-width:1400px;margin:0 auto;padding:13px 24px;display:flex;align-items:center;gap:16px}
+.logo{height:48px;flex-shrink:0}
+
+/* FIX 1: Search box — constrained width, no layout overflow on focus */
+.search-box{
+  position:relative;
+  display:flex;
+  align-items:center;
+  /* push it away from the logo a bit */
+  margin-left:8px;
+  /* allow it to shrink if space is tight */
+  flex-shrink:1;
+  min-width:0;
+}
+.search-input{
+  width:240px;
+  max-width:100%;
+  padding:10px 40px 10px 16px;
+  border:2px solid var(--gray-200);
+  border-radius:24px;
+  font-family:'Nunito',sans-serif;
+  font-size:14px;
+  font-weight:600;
+  transition:border-color 0.3s,box-shadow 0.3s,border-radius 0.3s;
+  background:var(--gray-100);
+  /* prevent the input from ever growing past its container */
+  box-sizing:border-box;
+}
+.search-input:focus{
+  outline:none;
+  border-color:var(--brand);
+  background:#fff;
+  /* No width change on focus — this was the main layout-breaking culprit */
+  box-shadow:0 4px 16px rgba(126,8,130,0.15);
+  border-radius:24px 24px 0 0;
+}
+.search-input.has-results:focus{border-radius:24px 24px 0 0}
+.search-input::placeholder{color:var(--gray-600);font-weight:500}
+.search-btn{
+  position:absolute;
+  right:12px;
+  background:none;
+  border:none;
+  cursor:pointer;
+  font-size:18px;
+  color:var(--gray-600);
+  padding:6px;
+  transition:all 0.2s;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:10;
+  flex-shrink:0;
+}
+.search-btn:hover{color:var(--brand);transform:scale(1.1)}
+.search-suggestions{
+  position:absolute;
+  top:100%;
+  left:0;
+  /* match input width exactly */
+  width:100%;
+  min-width:280px;
+  background:#fff;
+  border:2px solid var(--brand);
+  border-top:none;
+  border-radius:0 0 16px 16px;
+  box-shadow:0 12px 32px rgba(126,8,130,0.18);
+  max-height:420px;
+  overflow-y:auto;
+  z-index:999;
+  display:none;
+}
+.search-suggestions.active{display:block}
+.suggestion-item{display:flex;align-items:center;gap:12px;padding:12px 16px;cursor:pointer;transition:all 0.2s;border-bottom:1px solid var(--gray-100)}
+.suggestion-item:last-child{border-bottom:none}
+.suggestion-item:hover,.suggestion-item.selected{background:var(--brand-pale)}
+.suggestion-thumb{width:48px;height:48px;border-radius:8px;object-fit:cover;flex-shrink:0;background:var(--gray-100)}
+.suggestion-content{flex:1;min-width:0}
+.suggestion-title{font-size:14px;font-weight:700;color:var(--gray-900);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.suggestion-meta{font-size:12px;color:var(--gray-600);display:flex;align-items:center;gap:8px}
+.suggestion-category{background:var(--brand-pale);color:var(--brand);padding:2px 8px;border-radius:10px;font-weight:700;font-size:11px}
+.search-footer{padding:12px 16px;background:var(--gray-100);text-align:center;border-radius:0 0 14px 14px}
+.search-footer a{color:var(--brand);font-weight:700;font-size:13px;display:inline-flex;align-items:center;gap:6px;transition:gap 0.2s}
+.search-footer a:hover{gap:10px}
+.no-results{padding:32px 16px;text-align:center;color:var(--gray-600)}
+.no-results-icon{font-size:2.5rem;margin-bottom:8px;opacity:0.3}
+.no-results p{font-size:14px;margin-bottom:12px}
+.popular-searches{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:12px}
+.popular-tag{background:var(--brand-pale);color:var(--brand);padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;cursor:pointer;transition:all 0.2s}
+.popular-tag:hover{background:var(--brand);color:#fff}
+.highlight{background:rgba(126,8,130,0.15);font-weight:800;color:var(--brand);padding:0 2px;border-radius:2px}
+.search-loading{padding:24px;text-align:center;color:var(--gray-600);font-size:14px}
+.loading-dots{display:inline-flex;gap:4px;margin-left:8px}
+.loading-dots span{width:6px;height:6px;background:var(--brand);border-radius:50%;animation:bounce 1.2s infinite}
+.loading-dots span:nth-child(2){animation-delay:0.2s}
+.loading-dots span:nth-child(3){animation-delay:0.4s}
+@keyframes bounce{0%,80%,100%{transform:scale(0.6);opacity:0.4}40%{transform:scale(1);opacity:1}}
+
+/* ═══ NAV MENU — push to right side ═══ */
+.nav-menu{
+  display:flex;
+  gap:2px;
+  align-items:center;
+  margin-left:auto; /* pushes menu + CTA to the far right */
+  flex-shrink:0;
+}
+.nav-link{color:var(--gray-800);font-weight:700;font-size:14px;padding:8px 14px;border-radius:8px;transition:all 0.2s;white-space:nowrap}
 .nav-link:hover,.nav-link.active{background:var(--brand-pale);color:var(--brand)}
 .nav-cta{background:var(--brand);color:#fff!important;padding:10px 20px!important;border-radius:8px;font-weight:800}
 .nav-cta:hover{background:var(--brand-dark)!important}
+.mobile-menu-btn{display:none;background:none;border:none;font-size:24px;cursor:pointer;color:var(--gray-800);padding:8px;margin-left:auto;flex-shrink:0}
 
-/* SEARCH BOX */
-.search-box{position:relative;display:flex;align-items:center}
-.search-input{width:240px;padding:8px 36px 8px 14px;border:2px solid var(--gray-200);border-radius:8px;font-family:'Nunito',sans-serif;font-size:14px;transition:all 0.2s}
-.search-input:focus{outline:none;border-color:var(--brand);width:280px}
-.search-btn{position:absolute;right:8px;background:none;border:none;cursor:pointer;font-size:18px;color:var(--gray-600);padding:4px}
-.search-btn:hover{color:var(--brand)}
+/* ═══ FIX 2 & 3: MEGA MENU — visible on hover + left-anchored, no right overflow ═══ */
+.mega-menu-wrapper{
+  position:relative;
+  /* ensure the dropdown can escape the nav-menu flex container */
+}
+.mega-menu-trigger{
+  position:relative;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  gap:4px;
+  /* make it a block-level flex item so hover area is correct */
+  user-select:none;
+}
+.mega-menu-trigger::after{content:'▾';font-size:10px;transition:transform 0.25s}
+.mega-menu-wrapper:hover .mega-menu-trigger::after{transform:rotate(180deg)}
 
-.mobile-menu-btn{display:none;background:none;border:none;font-size:24px;cursor:pointer;color:var(--gray-800);padding:8px}
+.mega-menu{
+  position:fixed; /* FIX: fixed instead of absolute so it escapes any overflow:hidden parents */
+  top:auto; /* will be set by JS */
+  /* FIX 3: Anchor from left edge of navbar, not centered on the trigger */
+  left:0;
+  right:0;
+  /* constrain to the same max-width as the page content */
+  max-width:1400px;
+  margin:0 auto; /* center within the viewport width */
+  width:calc(100vw - 48px); /* full width minus some breathing room */
+  /* clamp at page edges */
+  background:#fff;
+  box-shadow:0 12px 48px rgba(126,8,130,0.18);
+  border-top:3px solid var(--brand);
+  border-radius:0 0 16px 16px;
+  padding:32px;
+  /* FIX 2: was opacity:0;visibility:hidden which sometimes doesn't trigger reliably */
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transition:opacity 0.25s var(--ease), visibility 0.25s var(--ease), transform 0.25s var(--ease);
+  transform:translateY(-8px);
+  z-index:998;
+}
 
+/* FIX 2: Reliable hover — show the menu */
+.mega-menu-wrapper:hover .mega-menu{
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto;
+  transform:translateY(0);
+}
+
+/* Keep open while cursor moves from trigger into menu */
+.mega-menu:hover{
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto;
+}
+
+.mega-menu-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px}
+.mega-menu-section h4{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--brand);margin-bottom:16px;padding-bottom:8px;border-bottom:2px solid var(--brand-pale)}
+.mega-menu-links{list-style:none;display:flex;flex-direction:column;gap:8px}
+.mega-menu-links li a{color:var(--gray-800);font-size:14px;font-weight:600;padding:6px 0;display:flex;align-items:center;gap:8px;transition:all 0.2s}
+.mega-menu-links li a:hover{color:var(--brand);padding-left:8px}
+.mega-menu-links .icon{font-size:16px;width:20px;text-align:center}
+
+/* ═══ DISCLOSURE / HERO / FILTER ═══ */
 .disclosure-bar{background:var(--gray-900);color:rgba(255,255,255,0.85);padding:10px 24px;text-align:center;font-size:13px;font-weight:600}
 .disclosure-bar a{color:rgba(255,255,255,0.6);text-decoration:underline}
 .blog-hero{background:linear-gradient(140deg,var(--brand-dark) 0%,var(--brand) 55%,var(--brand-light) 100%);color:#fff;padding:72px 24px;text-align:center;position:relative;overflow:hidden}
@@ -62,14 +225,21 @@ a{text-decoration:none}
 .filter-btn{flex-shrink:0;padding:8px 18px;border-radius:20px;background:var(--gray-100);color:var(--gray-800);font-size:13px;font-weight:700;transition:all 0.2s;white-space:nowrap}
 .filter-btn:hover{background:var(--brand);color:#fff;transform:translateY(-1px)}
 
-/* VIEW TOGGLE */
+/* ═══ VIEW TOGGLE ═══ */
 .view-toggle{display:flex;gap:8px;margin-left:auto;flex-shrink:0}
 .view-btn{width:36px;height:36px;border-radius:8px;background:var(--gray-100);border:2px solid transparent;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:all 0.2s}
 .view-btn.active{background:var(--brand);color:#fff;border-color:var(--brand)}
 .view-btn:hover{background:var(--brand-pale);border-color:var(--brand)}
 
+/* ═══ LAYOUT ═══ */
 .container{max-width:1400px;margin:0 auto;padding:56px 24px}
-/* FEATURED */
+.section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px}
+.section-title{font-size:1.8rem;font-weight:900}
+.section-title span{color:var(--brand)}
+.view-all{color:var(--brand);font-weight:800;font-size:14px;display:flex;align-items:center;gap:6px}
+.view-all:hover{gap:10px}
+
+/* ═══ FEATURED POST ═══ */
 .featured-post{display:grid;grid-template-columns:1fr 1fr;background:#fff;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-md);margin-bottom:64px;transition:all 0.3s var(--ease);color:inherit}
 .featured-post:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg)}
 .featured-image-wrap{position:relative;overflow:hidden}
@@ -85,7 +255,7 @@ a{text-decoration:none}
 .read-more-btn{display:inline-flex;align-items:center;gap:8px;background:var(--brand);color:#fff;padding:15px 28px;border-radius:10px;font-weight:800;font-size:15px;transition:all 0.25s;width:fit-content}
 .read-more-btn:hover{background:var(--brand-dark);gap:12px}
 
-/* GRID VIEW */
+/* ═══ POST GRID ═══ */
 .posts-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:28px;margin-bottom:72px}
 .post-card{background:#fff;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;transition:all 0.3s var(--ease);color:inherit}
 .post-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-md)}
@@ -100,8 +270,8 @@ a{text-decoration:none}
 .card-link{color:var(--brand);font-weight:800;font-size:14px;display:flex;align-items:center;gap:6px}
 .post-card:hover .card-link{gap:10px}
 
-/* LIST VIEW */
-.posts-list{display:flex;flex-direction:column;gap:24px;margin-bottom:72px}
+/* ═══ LIST VIEW ═══ */
+.posts-list{display:none;flex-direction:column;gap:24px;margin-bottom:72px}
 .posts-list .post-card{flex-direction:row;height:auto}
 .posts-list .card-image-wrap{width:320px;flex-shrink:0}
 .posts-list .card-image{height:100%;min-height:200px}
@@ -109,23 +279,15 @@ a{text-decoration:none}
 .posts-list .card-title{font-size:1.4rem;margin-bottom:12px}
 .posts-list .card-excerpt{font-size:15px;margin-bottom:20px}
 
-/* Hide list view by default */
-.posts-list{display:none}
-
-/* NEWSLETTER */
+/* ═══ NEWSLETTER ═══ */
 .newsletter{background:linear-gradient(135deg,var(--brand-dark),var(--brand-light));color:#fff;border-radius:var(--radius);padding:56px;text-align:center;margin-bottom:48px;position:relative;overflow:hidden}
 .newsletter::before{content:'';position:absolute;top:-30%;right:-10%;width:400px;height:400px;background:radial-gradient(circle,rgba(255,255,255,0.08) 0%,transparent 70%);border-radius:50%}
 .newsletter-inner{position:relative;z-index:2}
 .newsletter h2{font-size:2rem;font-weight:900;margin-bottom:12px}
 .newsletter p{font-size:1.1rem;opacity:0.93;margin-bottom:28px}
 .newsletter iframe{border-radius:12px;max-width:100%;margin:0 auto}
-.section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px}
-.section-title{font-size:1.8rem;font-weight:900}
-.section-title span{color:var(--brand)}
-.view-all{color:var(--brand);font-weight:800;font-size:14px;display:flex;align-items:center;gap:6px}
-.view-all:hover{gap:10px}
 
-/* FOOTER */
+/* ═══ FOOTER ═══ */
 footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0}
 .footer-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:40px}
 .footer-logo{height:42px;margin-bottom:14px}
@@ -142,326 +304,42 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
 .footer-bottom a{color:rgba(255,255,255,0.55)}
 .footer-bottom a:hover{color:#fff;opacity:1}
 .footer-legal{display:flex;gap:20px}
-@media(max-width:1024px){.featured-post{grid-template-columns:1fr}.featured-image{min-height:280px}.footer-grid{grid-template-columns:1fr 1fr}.posts-list .post-card{flex-direction:column}.posts-list .card-image-wrap{width:100%}}
-@media(max-width:768px){.nav-menu{display:none}.mobile-menu-btn{display:block}.search-input{width:180px}.search-input:focus{width:220px}.posts-grid{grid-template-columns:1fr}.featured-content{padding:28px}.footer-grid{grid-template-columns:1fr}.footer-bottom{flex-direction:column;text-align:center}.newsletter{padding:32px 20px}}
 
-</style>
-/* ═══ SEARCH WITH AUTO-SUGGEST ═══ */
-.search-box {
-  position: relative;
-  display: flex;
-  align-items: center;
-  margin-right: 20px;
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:1024px){
+  .featured-post{grid-template-columns:1fr}
+  .featured-image{min-height:280px}
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .posts-list .post-card{flex-direction:column}
+  .posts-list .card-image-wrap{width:100%}
+  /* On tablet, hide mega menus but keep the plain links visible */
+  .mega-menu{display:none}
 }
-.search-input {
-  width: 280px;
-  padding: 10px 40px 10px 16px;
-  border: 2px solid var(--gray-200);
-  border-radius: 24px;
-  font-family: 'Nunito', sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
-  background: var(--gray-100);
+@media(max-width:768px){
+  .nav-menu{display:none}
+  .mobile-menu-btn{display:block}
+  /* Mobile menu open state is handled by JS class toggle (see script) */
+  .nav-menu.mobile-open{
+    display:flex;
+    flex-direction:column;
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    background:#fff;
+    padding:20px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.1);
+    z-index:200;
+  }
+  .posts-grid{grid-template-columns:1fr}
+  .featured-content{padding:28px}
+  .footer-grid{grid-template-columns:1fr}
+  .footer-bottom{flex-direction:column;text-align:center}
+  .newsletter{padding:32px 20px}
+  /* On mobile hide mega menus entirely */
+  .mega-menu-wrapper{width:100%}
+  .mega-menu{display:none!important}
 }
-.search-input:focus {
-  outline: none;
-  border-color: var(--brand);
-  background: #fff;
-  width: 360px;
-  box-shadow: 0 4px 16px rgba(126,8,130,0.15);
-  border-radius: 24px 24px 0 0;
-}
-.search-input.has-results:focus {
-  border-radius: 24px 24px 0 0;
-}
-.search-input::placeholder {
-  color: var(--gray-600);
-  font-weight: 500;
-}
-.search-btn {
-  position: absolute;
-  right: 12px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 18px;
-  color: var(--gray-600);
-  padding: 6px;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
-}
-.search-btn:hover {
-  color: var(--brand);
-  transform: scale(1.1);
-}
-
-/* Auto-suggest dropdown */
-.search-suggestions {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background: #fff;
-  border: 2px solid var(--brand);
-  border-top: none;
-  border-radius: 0 0 16px 16px;
-  box-shadow: 0 12px 32px rgba(126,8,130,0.18);
-  max-height: 420px;
-  overflow-y: auto;
-  z-index: 999;
-  display: none;
-}
-.search-suggestions.active {
-  display: block;
-}
-
-.suggestion-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
-  cursor: pointer;
-  transition: all 0.2s;
-  border-bottom: 1px solid var(--gray-100);
-}
-.suggestion-item:last-child {
-  border-bottom: none;
-}
-.suggestion-item:hover,
-.suggestion-item.selected {
-  background: var(--brand-pale);
-}
-.suggestion-thumb {
-  width: 48px;
-  height: 48px;
-  border-radius: 8px;
-  object-fit: cover;
-  flex-shrink: 0;
-  background: var(--gray-100);
-}
-.suggestion-content {
-  flex: 1;
-  min-width: 0;
-}
-.suggestion-title {
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--gray-900);
-  margin-bottom: 3px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.suggestion-meta {
-  font-size: 12px;
-  color: var(--gray-600);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.suggestion-category {
-  background: var(--brand-pale);
-  color: var(--brand);
-  padding: 2px 8px;
-  border-radius: 10px;
-  font-weight: 700;
-  font-size: 11px;
-}
-
-.search-footer {
-  padding: 12px 16px;
-  background: var(--gray-100);
-  text-align: center;
-  border-radius: 0 0 14px 14px;
-}
-.search-footer a {
-  color: var(--brand);
-  font-weight: 700;
-  font-size: 13px;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  transition: gap 0.2s;
-}
-.search-footer a:hover {
-  gap: 10px;
-}
-
-.no-results {
-  padding: 32px 16px;
-  text-align: center;
-  color: var(--gray-600);
-}
-.no-results-icon {
-  font-size: 2.5rem;
-  margin-bottom: 8px;
-  opacity: 0.3;
-}
-.no-results p {
-  font-size: 14px;
-  margin-bottom: 12px;
-}
-.popular-searches {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  justify-content: center;
-  margin-top: 12px;
-}
-.popular-tag {
-  background: var(--brand-pale);
-  color: var(--brand);
-  padding: 4px 12px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.popular-tag:hover {
-  background: var(--brand);
-  color: #fff;
-}
-
-/* Highlight matched text */
-.highlight {
-  background: rgba(126,8,130,0.15);
-  font-weight: 800;
-  color: var(--brand);
-  padding: 0 2px;
-  border-radius: 2px;
-}
-
-/* Loading state */
-.search-loading {
-  padding: 24px;
-  text-align: center;
-  color: var(--gray-600);
-  font-size: 14px;
-}
-.loading-dots {
-  display: inline-flex;
-  gap: 4px;
-  margin-left: 8px;
-}
-.loading-dots span {
-  width: 6px;
-  height: 6px;
-  background: var(--brand);
-  border-radius: 50%;
-  animation: bounce 1.2s infinite;
-}
-.loading-dots span:nth-child(2) { animation-delay: 0.2s; }
-.loading-dots span:nth-child(3) { animation-delay: 0.4s; }
-@keyframes bounce {
-  0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
-  40% { transform: scale(1); opacity: 1; }
-}
-
-/* ═══ MEGA MENU STYLES ═══ */
-/* ═══ MEGA MENU FIX - Replace your mega menu CSS with this ═══ */
-
-.mega-menu-wrapper { 
-  position: relative; 
-}
-
-.mega-menu-trigger {
-  position: relative;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.mega-menu-trigger::after {
-  content: '▾';
-  font-size: 10px;
-  transition: transform 0.2s;
-}
-
-.mega-menu-trigger:hover::after { 
-  transform: rotate(180deg); 
-}
-
-/* FIXED: Menu stays within viewport */
-.mega-menu {
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%) translateY(-10px);
-  width: 1200px;
-  max-width: calc(100vw - 48px); /* Stay within viewport with padding */
-  background: #fff;
-  box-shadow: 0 12px 48px rgba(126,8,130,0.18);
-  border-radius: 0 0 16px 16px;
-  padding: 32px;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
-  z-index: 999;
-}
-
-.mega-menu-wrapper:hover .mega-menu {
-  opacity: 1;
-  visibility: visible;
-  transform: translateX(-50%) translateY(0);
-}
-
-.mega-menu-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 32px;
-}
-
-.mega-menu-section h4 {
-  font-size: 12px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--brand);
-  margin-bottom: 16px;
-  padding-bottom: 8px;
-  border-bottom: 2px solid var(--brand-pale);
-}
-
-.mega-menu-links {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.mega-menu-links li a {
-  color: var(--gray-800);
-  font-size: 14px;
-  font-weight: 600;
-  padding: 6px 0;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  transition: all 0.2s;
-}
-
-.mega-menu-links li a:hover {
-  color: var(--brand);
-  padding-left: 8px;
-}
-
-.mega-menu-links .icon {
-  font-size: 16px;
-  width: 20px;
-  text-align: center;
-}
-
-/* Mobile responsive */
-@media (max-width: 1024px) {
-  .mega-menu-wrapper { display: none; }
-}
-
 </style>
 </head>
 <body>
@@ -469,27 +347,19 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
 <nav class="navbar">
   <div class="nav-container">
     <a href="/"><img src="/content/images/logo.jpg" alt="Wow Glam Decor" class="logo"></a>
-    
-    <!-- AUTO-SUGGEST SEARCH -->
+
+    <!-- FIX 1: Search box keeps its width; no longer expands on focus -->
     <div class="search-box">
-      <input 
-        type="text" 
-        id="searchInput" 
-        class="search-input" 
-        placeholder="Search articles, rooms, styles..."
-        autocomplete="off"
-      >
+      <input type="text" id="searchInput" class="search-input" placeholder="Search articles, rooms, styles..." autocomplete="off">
       <button class="search-btn" onclick="performSearch()" aria-label="Search">🔍</button>
-      
-      <!-- Suggestions dropdown -->
       <div class="search-suggestions" id="searchSuggestions"></div>
     </div>
-    
-    <div class="nav-menu">
+
+    <div class="nav-menu" id="navMenu">
       <a href="/" class="nav-link">Home</a>
-      <a href="/blog.html" class="nav-link">Blog</a>
-      
-      <!-- MEGA MENU: Rooms -->
+      <a href="/blog.html" class="nav-link active">Blog</a>
+
+      <!-- Rooms — FIX 2 & 3: mega menu anchored left, no overflow -->
       <div class="mega-menu-wrapper">
         <span class="nav-link mega-menu-trigger">Rooms</span>
         <div class="mega-menu">
@@ -531,8 +401,8 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
           </div>
         </div>
       </div>
-      
-      <!-- MEGA MENU: Styles -->
+
+      <!-- Styles -->
       <div class="mega-menu-wrapper">
         <span class="nav-link mega-menu-trigger">Styles</span>
         <div class="mega-menu">
@@ -573,8 +443,8 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
           </div>
         </div>
       </div>
-      
-      <!-- MEGA MENU: Buying Guides -->
+
+      <!-- Buying Guides -->
       <div class="mega-menu-wrapper">
         <span class="nav-link mega-menu-trigger">Buying Guides</span>
         <div class="mega-menu">
@@ -614,14 +484,16 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
           </div>
         </div>
       </div>
-      
+
       <a href="/about.html" class="nav-link">About</a>
     </div>
-    
-    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+
+    <button class="mobile-menu-btn" id="mobileMenuBtn" onclick="toggleMobileMenu()" aria-label="Toggle menu">☰</button>
   </div>
 </nav>
+
 <div class="disclosure-bar">💡 <strong>Disclosure:</strong> This site contains affiliate links. We may earn a small commission at no extra cost to you. <a href="/affiliate-disclosure.html">Learn more</a></div>
+
 <header class="blog-hero">
   <div class="blog-hero-content">
     <h1>Home Decor Ideas & Buying Guides</h1>
@@ -633,6 +505,7 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
     </div>
   </div>
 </header>
+
 <div class="filter-bar">
   <div class="filter-inner">
     <a href="/blog.html" class="filter-btn">🏠 All Posts</a>
@@ -645,14 +518,13 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
 <a href="/category/space-saving-furniture.html" class="filter-btn">Space-Saving Furniture</a>
 <a href="/category/multifunctional-furniture.html" class="filter-btn">Multifunctional Furniture</a>
 <a href="/category/furniture-buying-guides.html" class="filter-btn">Furniture Buying Guides</a>
-    
-    <!-- View Toggle Buttons -->
     <div class="view-toggle">
       <button class="view-btn active" id="gridViewBtn" onclick="switchView('grid')" title="Grid View">⊞</button>
       <button class="view-btn" id="listViewBtn" onclick="switchView('list')" title="List View">☰</button>
     </div>
   </div>
 </div>
+
 <div class="container">
   
 <a href="/posts/best-bedroom-decor-ideas.html" class="featured-post">
@@ -671,12 +543,12 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
     <span class="read-more-btn">Read Full Guide + Shop Products →</span>
   </div>
 </a>
+
   <div class="section-header">
     <h2 class="section-title">Latest <span>Articles</span></h2>
     <a href="#" class="view-all">All 2 posts →</a>
   </div>
-  
-  <!-- Grid View (Default) -->
+
   <div class="posts-grid" id="postsGrid">
     
 <a href="/posts/living-room-decor-ideas.html" class="post-card">
@@ -695,12 +567,26 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
   </div>
 </a>
   </div>
-  
-  <!-- List View (Hidden by default) -->
+
   <div class="posts-list" id="postsList">
     
+<a href="/posts/living-room-decor-ideas.html" class="post-card">
+  <div class="card-image-wrap">
+    <img src="/content/images/default-post.jpg" alt="Living Room Decor Ideas: Transform Your Space with These Stunning Design Tips & Ideas" class="card-image" loading="lazy">
+    <span class="card-cat">Living Room</span>
   </div>
-  
+  <div class="card-content">
+    <div class="card-meta">
+      <span>Feb 12, 2026</span>
+      <span>⏱️ 35 min</span>
+    </div>
+    <h3 class="card-title">Living Room Decor Ideas: Transform Your Space with These Stunning Design Tips & Ideas</h3>
+    <p class="card-excerpt">Discover 25+ living room decor ideas to refresh your space. From budget-friendly updates to luxe touches, create a stylish home you love.</p>
+    <span class="card-link">Read + Shop →</span>
+  </div>
+</a>
+  </div>
+
   <div class="newsletter">
     <div class="newsletter-inner">
       <h2>Get Decor Ideas Straight to Your Inbox 📬</h2>
@@ -709,14 +595,17 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
     </div>
   </div>
 </div>
+
 <footer>
   <div class="footer-grid">
     <div class="footer-brand">
       <img src="/content/images/logo.jpg" alt="Wow Glam Decor" class="footer-logo">
       <p>Your trusted source for home decor inspiration, honest product reviews, and curated recommendations for every style and budget. We earn commissions through affiliate links at no extra cost to you.</p>
       <div class="social-row">
-        <a href="#" class="social-btn">📘</a><a href="#" class="social-btn">📷</a>
-        <a href="#" class="social-btn">🐦</a><a href="#" class="social-btn">📌</a>
+        <a href="#" class="social-btn">📘</a>
+        <a href="#" class="social-btn">📷</a>
+        <a href="#" class="social-btn">🐦</a>
+        <a href="#" class="social-btn">📌</a>
       </div>
     </div>
     <div class="footer-col">
@@ -764,112 +653,91 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
 </footer>
 
 <script>
-// Search function
-function performSearch() {
-  const query = document.getElementById('searchInput').value.trim();
-  if (query) {
-    window.location.href = `/search.html?q=${encodeURIComponent(query)}`;
-  }
-}
-
-// Enter key for search
-document.getElementById('searchInput').addEventListener('keypress', (e) => {
-  if (e.key === 'Enter') {
-    performSearch();
-  }
-});
-
-// Mobile menu toggle
-function toggleMobileMenu() {
-  const menu = document.querySelector('.nav-menu');
-  if (menu.style.display === 'flex') {
-    menu.style.display = 'none';
-  } else {
-    menu.style.display = 'flex';
-    menu.style.flexDirection = 'column';
-    menu.style.position = 'absolute';
-    menu.style.top = '100%';
-    menu.style.left = '0';
-    menu.style.right = '0';
-    menu.style.background = '#fff';
-    menu.style.padding = '20px';
-    menu.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
-  }
-}
-
-// View toggle functionality
+/* ═══ VIEW TOGGLE (no localStorage — not supported in this environment) ═══ */
 function switchView(viewType) {
   const gridView = document.getElementById('postsGrid');
   const listView = document.getElementById('postsList');
-  const gridBtn = document.getElementById('gridViewBtn');
-  const listBtn = document.getElementById('listViewBtn');
-  
+  const gridBtn  = document.getElementById('gridViewBtn');
+  const listBtn  = document.getElementById('listViewBtn');
   if (viewType === 'grid') {
     gridView.style.display = 'grid';
     listView.style.display = 'none';
     gridBtn.classList.add('active');
     listBtn.classList.remove('active');
-    localStorage.setItem('preferredView', 'grid');
   } else {
     gridView.style.display = 'none';
     listView.style.display = 'flex';
     gridBtn.classList.remove('active');
     listBtn.classList.add('active');
-    localStorage.setItem('preferredView', 'list');
   }
 }
+window.addEventListener('DOMContentLoaded', () => switchView('grid'));
 
-// Load preferred view on page load
-window.addEventListener('DOMContentLoaded', () => {
-  const preferredView = localStorage.getItem('preferredView') || 'grid';
-  switchView(preferredView);
+/* ═══ MOBILE MENU — FIX: use class toggle, not inline styles ═══ */
+function toggleMobileMenu() {
+  const menu = document.getElementById('navMenu');
+  const btn  = document.getElementById('mobileMenuBtn');
+  if (!menu) return;
+  const isOpen = menu.classList.toggle('mobile-open');
+  btn.textContent = isOpen ? '✕' : '☰';
+}
+// Close mobile menu when clicking outside
+document.addEventListener('click', (e) => {
+  const menu = document.getElementById('navMenu');
+  const btn  = document.getElementById('mobileMenuBtn');
+  if (menu && menu.classList.contains('mobile-open') &&
+      !menu.contains(e.target) && !btn.contains(e.target)) {
+    menu.classList.remove('mobile-open');
+    btn.textContent = '☰';
+  }
 });
-</script>
 
+/* ═══ MEGA MENU — position below navbar using JS for pixel-perfect placement ═══ */
+(function () {
+  const navbar = document.querySelector('.navbar');
+  function positionMegaMenus() {
+    if (!navbar) return;
+    const navBottom = navbar.getBoundingClientRect().bottom + window.scrollY;
+    document.querySelectorAll('.mega-menu').forEach(menu => {
+      menu.style.top = navBottom + 'px';
+    });
+  }
+  // Position on load and on scroll (since navbar is sticky)
+  positionMegaMenus();
+  window.addEventListener('scroll', positionMegaMenus, { passive: true });
+  window.addEventListener('resize', positionMegaMenus, { passive: true });
+})();
 
-<script>
-(function() {
-  const searchInput = document.getElementById('searchInput');
+/* ═══ SEARCH ═══ */
+(function () {
+  const searchInput    = document.getElementById('searchInput');
   const suggestionsBox = document.getElementById('searchSuggestions');
-  
-  if (!searchInput || !suggestionsBox) return; // Exit if elements don't exist
-  
+  if (!searchInput || !suggestionsBox) return;
+
   let searchTimeout;
   let selectedIndex = -1;
-  let cachedPosts = null;
-
-  // Popular searches for no results state
+  let cachedPosts   = null;
   const popularSearches = ['Living Room', 'Bedroom Decor', 'Budget Furniture', 'Minimalist', 'Best Of Lists'];
 
-  // Load posts data
   async function loadPosts() {
     if (cachedPosts) return cachedPosts;
     try {
       const res = await fetch('/posts.json');
-      if (res.ok) {
-        cachedPosts = await res.json();
-        return cachedPosts;
-      }
-    } catch (e) {
-      console.log('Posts data not available yet');
-    }
+      if (res.ok) { cachedPosts = await res.json(); return cachedPosts; }
+    } catch (e) {}
     return [];
   }
 
-  // Highlight matching text
   function highlightText(text, query) {
     if (!query || !text) return text;
     const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
     return text.replace(regex, '<span class="highlight">$1</span>');
   }
 
-  // Perform search
   async function searchPosts(query) {
     const posts = await loadPosts();
     if (!posts.length) return [];
-
     const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
-    
     return posts
       .map(post => {
         const searchable = `${post.title} ${post.description || post.excerpt || ''} ${(post.tags||[]).join(' ')} ${(post.categories||[]).join(' ')}`.toLowerCase();
@@ -878,10 +746,9 @@ window.addEventListener('DOMContentLoaded', () => {
       })
       .filter(p => p.score > 0)
       .sort((a, b) => b.score - a.score)
-      .slice(0, 5); // Show top 5 results
+      .slice(0, 5);
   }
 
-  // Render suggestions
   function renderSuggestions(results, query) {
     if (!results.length) {
       suggestionsBox.innerHTML = `
@@ -889,21 +756,19 @@ window.addEventListener('DOMContentLoaded', () => {
           <div class="no-results-icon">🔍</div>
           <p>No results for "<strong>${query}</strong>"</p>
           <div class="popular-searches">
-            ${popularSearches.map(term => 
-              `<span class="popular-tag" onclick="document.getElementById('searchInput').value='${term}'; document.getElementById('searchInput').dispatchEvent(new Event('input'));">${term}</span>`
+            ${popularSearches.map(t =>
+              `<span class="popular-tag" onclick="document.getElementById('searchInput').value='${t}';document.getElementById('searchInput').dispatchEvent(new Event('input'));">${t}</span>`
             ).join('')}
           </div>
         </div>`;
       suggestionsBox.classList.add('active');
       return;
     }
-
-    const html = results.map((post, idx) => {
-      const img = post.featured_image || post.image || '/content/images/default-post.jpg';
-      const cat = (post.categories && post.categories[0]) || post.category || 'Decor';
-      const readTime = post.readTime || Math.ceil((post.content || '').split(/\s+/).length / 200) || '5';
-      const url = post.url || `/posts/${post.slug}.html`;
-      
+    suggestionsBox.innerHTML = results.map((post, idx) => {
+      const img      = post.featured_image || '/content/images/default-post.jpg';
+      const cat      = (post.categories && post.categories[0]) || 'Decor';
+      const readTime = post.readTime || '5';
+      const url      = post.url || `/posts/${post.slug}.html`;
       return `
         <a href="${url}" class="suggestion-item" data-index="${idx}">
           <img src="${img}" alt="${post.title}" class="suggestion-thumb" loading="lazy">
@@ -915,116 +780,53 @@ window.addEventListener('DOMContentLoaded', () => {
             </div>
           </div>
         </a>`;
-    }).join('');
-
-    suggestionsBox.innerHTML = html + `
+    }).join('') + `
       <div class="search-footer">
         <a href="/search.html?q=${encodeURIComponent(query)}">View all results for "${query}" →</a>
       </div>`;
-    
     suggestionsBox.classList.add('active');
     selectedIndex = -1;
   }
 
-  // Handle input
-  searchInput.addEventListener('input', (e) => {
+  searchInput.addEventListener('input', e => {
     const query = e.target.value.trim();
-    
     clearTimeout(searchTimeout);
-    
-    if (!query) {
-      suggestionsBox.classList.remove('active');
-      searchInput.classList.remove('has-results');
-      return;
-    }
-
+    if (!query) { suggestionsBox.classList.remove('active'); return; }
     if (query.length < 2) return;
-
     suggestionsBox.innerHTML = '<div class="search-loading">Searching<div class="loading-dots"><span></span><span></span><span></span></div></div>';
     suggestionsBox.classList.add('active');
-    searchInput.classList.add('has-results');
-
     searchTimeout = setTimeout(async () => {
-      const results = await searchPosts(query);
-      renderSuggestions(results, query);
+      renderSuggestions(await searchPosts(query), query);
     }, 300);
   });
 
-  // Handle keyboard navigation
-  searchInput.addEventListener('keydown', (e) => {
+  searchInput.addEventListener('keydown', e => {
     const items = suggestionsBox.querySelectorAll('.suggestion-item');
-    
-    if (e.key === 'ArrowDown') {
-      e.preventDefault();
-      selectedIndex = Math.min(selectedIndex + 1, items.length - 1);
-      updateSelection(items);
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault();
-      selectedIndex = Math.max(selectedIndex - 1, -1);
-      updateSelection(items);
-    } else if (e.key === 'Enter') {
-      e.preventDefault();
-      if (selectedIndex >= 0 && items[selectedIndex]) {
-        items[selectedIndex].click();
-      } else {
-        performSearch();
-      }
-    } else if (e.key === 'Escape') {
-      suggestionsBox.classList.remove('active');
-      searchInput.blur();
-    }
+    if (e.key === 'ArrowDown')  { e.preventDefault(); selectedIndex = Math.min(selectedIndex + 1, items.length - 1); updateSelection(items); }
+    else if (e.key === 'ArrowUp')  { e.preventDefault(); selectedIndex = Math.max(selectedIndex - 1, -1); updateSelection(items); }
+    else if (e.key === 'Enter')    { e.preventDefault(); selectedIndex >= 0 && items[selectedIndex] ? items[selectedIndex].click() : performSearch(); }
+    else if (e.key === 'Escape')   { suggestionsBox.classList.remove('active'); searchInput.blur(); }
   });
 
   function updateSelection(items) {
-    items.forEach((item, idx) => {
-      item.classList.toggle('selected', idx === selectedIndex);
-    });
-    if (selectedIndex >= 0 && items[selectedIndex]) {
-      items[selectedIndex].scrollIntoView({ block: 'nearest' });
-    }
+    items.forEach((item, idx) => item.classList.toggle('selected', idx === selectedIndex));
+    if (selectedIndex >= 0 && items[selectedIndex]) items[selectedIndex].scrollIntoView({ block: 'nearest' });
   }
 
-  // Close suggestions when clicking outside
-  document.addEventListener('click', (e) => {
-    if (!searchInput.contains(e.target) && !suggestionsBox.contains(e.target)) {
+  document.addEventListener('click', e => {
+    if (!searchInput.contains(e.target) && !suggestionsBox.contains(e.target))
       suggestionsBox.classList.remove('active');
-      searchInput.classList.remove('has-results');
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === '/' && !['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) {
+      e.preventDefault(); searchInput.focus();
     }
   });
 
-  // Focus on "/" key
-  document.addEventListener('keydown', (e) => {
-    if (e.key === '/' && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
-      e.preventDefault();
-      searchInput.focus();
-    }
-  });
-
-  // Regular search function
-  window.performSearch = function() {
+  window.performSearch = function () {
     const query = searchInput.value.trim();
-    if (query) {
-      window.location.href = `/search.html?q=${encodeURIComponent(query)}`;
-    }
-  };
-  
-  // Mobile menu toggle
-  window.toggleMobileMenu = function() {
-    const menu = document.querySelector('.nav-menu');
-    if (!menu) return;
-    if (menu.style.display === 'flex') {
-      menu.style.display = 'none';
-    } else {
-      menu.style.display = 'flex';
-      menu.style.flexDirection = 'column';
-      menu.style.position = 'absolute';
-      menu.style.top = '100%';
-      menu.style.left = '0';
-      menu.style.right = '0';
-      menu.style.background = '#fff';
-      menu.style.padding = '20px';
-      menu.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
-    }
+    if (query) window.location.href = `/search.html?q=${encodeURIComponent(query)}`;
   };
 })();
 </script>
