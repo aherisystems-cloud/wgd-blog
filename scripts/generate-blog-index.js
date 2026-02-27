@@ -38,7 +38,7 @@ mdFiles.forEach(file => {
       readTime: Math.ceil(content.split(/\s+/).length / 200)
     });
   } catch (e) {
-    console.error(`Error processing ${file}:`, e.message); // ← fixed: was missing opening paren
+    console.error(`Error processing ${file}:`, e.message);
   }
 });
 
@@ -82,20 +82,31 @@ const gridHTML = remainingPosts.map(post => `
   </div>
 </a>`).join('\n');
 
+const noPostsHTML = '<p class="no-posts">No posts yet. Check back soon!</p>';
+
+// ✅ FIX: Category slug — strip & and collapse multiple spaces/dashes before slugifying
 const allCategories = [...new Set(posts.flatMap(p => p.categories))].slice(0, 14);
 
 const filterHTML = allCategories.map(cat => {
-  const slug = cat.toLowerCase().replace(/\s+/g, '-').replace(/[&]/g, '');
+  const slug = cat
+    .toLowerCase()
+    .replace(/[&]/g, '')       // remove ampersands
+    .replace(/\s+/g, '-')      // spaces to dashes
+    .replace(/-+/g, '-')       // ✅ collapse multiple dashes into one
+    .replace(/^-+|-+$/g, '');  // trim leading/trailing dashes
   return `<a href="/category/${slug}.html" class="filter-btn">${cat}</a>`;
 }).join('\n');
 
+// ✅ FIX: Only replace {{POSTS_GRID}} — remove {{POSTS_LIST}} from your template,
+// or if your template still has it this script now replaces it with empty string
+// so posts don't appear twice.
 let html = template
   .replace(/\{\{FEATURED_POST\}\}/g, featuredHTML)
-  .replace(/\{\{POSTS_GRID\}\}/g, gridHTML || '<p class="no-posts">No posts yet. Check back soon!</p>')
-  .replace(/\{\{POSTS_LIST\}\}/g, gridHTML || '<p class="no-posts">No posts yet. Check back soon!</p>')
+  .replace(/\{\{POSTS_GRID\}\}/g, gridHTML || noPostsHTML)
+  .replace(/\{\{POSTS_LIST\}\}/g, '')   // ✅ blank out the duplicate section
   .replace(/\{\{CATEGORY_FILTERS\}\}/g, filterHTML)
   .replace(/\{\{TOTAL_POSTS\}\}/g, posts.length);
 
 fs.writeFileSync(OUTPUT_PATH, html, 'utf8');
 
-console.log(`✅ Blog index → /blog.html (${posts.length} posts)`); // ← fixed: was missing opening paren
+console.log(`✅ Blog index → /blog.html (${posts.length} posts)`);
