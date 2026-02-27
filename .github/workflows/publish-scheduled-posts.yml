@@ -11,58 +11,58 @@ permissions:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-      
+
       - name: Install dependencies
         run: npm install js-yaml gray-matter marked
-      
+
       - name: Create necessary directories
         run: |
           mkdir -p content/posts/drafts
           mkdir -p posts
           mkdir -p category
           mkdir -p tag
-      
+
       - name: List drafts before publishing
         run: |
           echo "=== BEFORE PUBLISHING ==="
           ls -la content/posts/drafts/ 2>/dev/null || echo "No drafts"
           ls -la content/posts/ 2>/dev/null || echo "No posts"
-      
+
       - name: Publish scheduled posts
         run: node scripts/publish-scheduled.js
-      
+
       - name: Build HTML from Markdown
         run: node scripts/build-posts.js
-      
+
       - name: Generate category pages
         run: node scripts/generate-categories.js
-      
+
       - name: Generate blog index
         run: node scripts/generate-blog-index.js
-      
+
       - name: Generate tag pages
         run: node scripts/generate-tags.js
-      
+
       - name: Generate sitemap
         run: node scripts/generate-sitemap.js
-      
+
       - name: Generate RSS feed
         run: node scripts/generate-rss.js
-      
+
       - name: Show what changed
         run: |
           echo "=== FILES CHANGED ==="
           git status --short
-      
+
       - name: Commit and push ALL changes
         run: |
           git config --local user.name 'GitHub Actions Bot'
@@ -75,3 +75,11 @@ jobs:
             git push
             echo "✅ Changes pushed successfully!"
           fi
+
+      - name: Purge Cloudflare Cache
+        run: |
+          curl -X POST "https://api.cloudflare.com/client/v4/zones/${{ secrets.CF_ZONE_ID }}/purge_cache" \
+            -H "Authorization: Bearer ${{ secrets.CF_API_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            --data '{"purge_everything":true}'
+          echo "✅ Cloudflare cache purged"
