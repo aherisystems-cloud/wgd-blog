@@ -11,17 +11,69 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{--brand:#7e0882;--brand-dark:#5a0660;--brand-light:#a020a8;--brand-pale:rgba(126,8,130,0.07);--off-white:#fafafa;--gray-100:#f5f5f5;--gray-200:#eee;--gray-600:#757575;--gray-800:#424242;--gray-900:#212121;--shadow-sm:0 2px 12px rgba(126,8,130,0.08);--shadow-md:0 8px 32px rgba(126,8,130,0.13);--radius:16px}
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Nunito',sans-serif;background:var(--off-white);color:var(--gray-900);line-height:1.6}
-a{text-decoration:none}
-.navbar{background:rgba(255,255,255,0.96);backdrop-filter:blur(16px);box-shadow:var(--shadow-sm);position:sticky;top:0;z-index:100}
-.nav-container{max-width:1400px;margin:0 auto;padding:13px 24px;display:flex;align-items:center;justify-content:space-between}
-.logo{height:48px}
-.nav-menu{display:flex;gap:2px}
-.nav-link{color:var(--gray-800);font-weight:700;font-size:14px;padding:8px 14px;border-radius:8px;transition:all 0.2s}
+:root{--brand:#7e0882;--brand-dark:#5a0660;--brand-light:#a020a8;--brand-pale:rgba(126,8,130,0.07);--off-white:#fafafa;--gray-100:#f5f5f5;--gray-200:#eee;--gray-600:#757575;--gray-800:#424242;--gray-900:#212121;--shadow-sm:0 2px 12px rgba(126,8,130,0.08);--shadow-md:0 8px 32px rgba(126,8,130,0.13);--radius:16px;--ease:cubic-bezier(0.4,0,0.2,1)}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+/* FIX: prevent horizontal scroll */
+html{overflow-x:hidden}
+body{font-family:'Nunito',sans-serif;background:var(--off-white);color:var(--gray-900);line-height:1.6;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+img{max-width:100%;height:auto;display:block}
+
+/* ═══ NAVBAR ═══ */
+.navbar{background:rgba(255,255,255,0.96);backdrop-filter:blur(16px);box-shadow:var(--shadow-sm);position:sticky;top:0;z-index:200}
+.nav-container{max-width:1400px;margin:0 auto;padding:13px 24px;display:flex;align-items:center;gap:16px}
+.logo{height:48px;width:auto;flex-shrink:0}
+.search-box{position:relative;display:flex;align-items:center;flex-shrink:1;min-width:0}
+.search-input{width:220px;max-width:100%;padding:10px 40px 10px 16px;border:2px solid var(--gray-200);border-radius:24px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:600;transition:border-color 0.3s,box-shadow 0.3s,border-radius 0.3s;background:var(--gray-100);box-sizing:border-box}
+.search-input:focus{outline:none;border-color:var(--brand);background:#fff;box-shadow:0 4px 16px rgba(126,8,130,0.15);border-radius:24px 24px 0 0}
+.search-input::placeholder{color:var(--gray-600);font-weight:500}
+.search-btn{position:absolute;right:12px;background:none;border:none;cursor:pointer;font-size:18px;color:var(--gray-600);padding:6px;transition:all 0.2s;display:flex;align-items:center;z-index:10}
+.search-btn:hover{color:var(--brand);transform:scale(1.1)}
+.search-suggestions{position:absolute;top:100%;left:0;width:100%;min-width:260px;background:#fff;border:2px solid var(--brand);border-top:none;border-radius:0 0 16px 16px;box-shadow:0 12px 32px rgba(126,8,130,0.18);max-height:420px;overflow-y:auto;z-index:999;display:none}
+.search-suggestions.active{display:block}
+.suggestion-item{display:flex;align-items:center;gap:12px;padding:12px 16px;cursor:pointer;transition:all 0.2s;border-bottom:1px solid var(--gray-100)}
+.suggestion-item:last-child{border-bottom:none}
+.suggestion-item:hover,.suggestion-item.selected{background:var(--brand-pale)}
+.suggestion-thumb{width:48px;height:48px;border-radius:8px;object-fit:cover;flex-shrink:0;background:var(--gray-100)}
+.suggestion-content{flex:1;min-width:0}
+.suggestion-title{font-size:14px;font-weight:700;color:var(--gray-900);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.suggestion-meta{font-size:12px;color:var(--gray-600);display:flex;align-items:center;gap:8px}
+.suggestion-category{background:var(--brand-pale);color:var(--brand);padding:2px 8px;border-radius:10px;font-weight:700;font-size:11px}
+.search-footer{padding:12px 16px;background:var(--gray-100);text-align:center;border-radius:0 0 14px 14px}
+.search-footer a{color:var(--brand);font-weight:700;font-size:13px;display:inline-flex;align-items:center;gap:6px}
+.no-results{padding:32px 16px;text-align:center;color:var(--gray-600)}
+.no-results-icon{font-size:2.5rem;margin-bottom:8px;opacity:0.3}
+.popular-searches{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:12px}
+.popular-tag{background:var(--brand-pale);color:var(--brand);padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;cursor:pointer;transition:all 0.2s}
+.popular-tag:hover{background:var(--brand);color:#fff}
+.highlight{background:rgba(126,8,130,0.15);font-weight:800;color:var(--brand);padding:0 2px;border-radius:2px}
+.search-loading{padding:24px;text-align:center;color:var(--gray-600);font-size:14px}
+.loading-dots{display:inline-flex;gap:4px;margin-left:8px}
+.loading-dots span{width:6px;height:6px;background:var(--brand);border-radius:50%;animation:bounce 1.2s infinite}
+.loading-dots span:nth-child(2){animation-delay:0.2s}
+.loading-dots span:nth-child(3){animation-delay:0.4s}
+@keyframes bounce{0%,80%,100%{transform:scale(0.6);opacity:0.4}40%{transform:scale(1);opacity:1}}
+.nav-menu{display:flex;gap:2px;align-items:center;margin-left:auto;flex-shrink:0}
+.nav-link{color:var(--gray-800);font-weight:700;font-size:14px;padding:8px 14px;border-radius:8px;transition:all 0.2s var(--ease);white-space:nowrap}
 .nav-link:hover{background:var(--brand-pale);color:var(--brand)}
-.nav-cta{background:var(--brand);color:#fff!important;padding:10px 20px!important;border-radius:8px;font-weight:800}
+.mobile-menu-btn{display:none;background:none;border:none;font-size:24px;cursor:pointer;color:var(--gray-800);padding:8px;margin-left:auto;flex-shrink:0}
+
+/* ═══ MEGA MENU ═══ */
+.mega-menu-wrapper{position:static}
+.mega-menu-trigger{cursor:pointer;display:flex;align-items:center;gap:4px;user-select:none}
+.mega-menu-trigger::after{content:'▾';font-size:10px;transition:transform 0.25s}
+.mega-menu-wrapper:hover .mega-menu-trigger::after{transform:rotate(180deg)}
+.mega-menu{position:fixed;top:auto;left:0;right:0;width:calc(100vw - 48px);max-width:1400px;margin:0 auto;background:#fff;box-shadow:0 12px 48px rgba(126,8,130,0.18);border-top:3px solid var(--brand);border-radius:0 0 16px 16px;padding:32px;opacity:0;visibility:hidden;pointer-events:none;transition:opacity 0.25s,visibility 0.25s,transform 0.25s;transform:translateY(-8px);z-index:198}
+.mega-menu-wrapper:hover .mega-menu{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0)}
+.mega-menu:hover{opacity:1;visibility:visible;pointer-events:auto}
+.mega-menu-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px}
+.mega-menu-section h4{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--brand);margin-bottom:16px;padding-bottom:8px;border-bottom:2px solid var(--brand-pale)}
+.mega-menu-links{list-style:none;display:flex;flex-direction:column;gap:8px}
+.mega-menu-links li a{color:var(--gray-800);font-size:14px;font-weight:600;padding:6px 0;display:flex;align-items:center;gap:8px;transition:all 0.2s}
+.mega-menu-links li a:hover{color:var(--brand);padding-left:8px}
+.mega-menu-links .icon{font-size:16px;width:20px;text-align:center}
+
+/* ═══ HERO ═══ */
 .tag-hero{background:linear-gradient(140deg,var(--brand-dark),var(--brand-light));color:#fff;padding:72px 24px;text-align:center;position:relative;overflow:hidden}
 .tag-hero::before{content:'';position:absolute;top:-30%;right:-10%;width:400px;height:400px;background:radial-gradient(circle,rgba(255,255,255,0.08) 0%,transparent 70%);border-radius:50%}
 .tag-hero-content{position:relative;z-index:2}
@@ -29,524 +81,111 @@ a{text-decoration:none}
 .tag-hero h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:900;margin-bottom:14px}
 .tag-hero p{font-size:1.1rem;opacity:0.9;max-width:560px;margin:0 auto 24px;line-height:1.7}
 .tag-count-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.15);padding:10px 22px;border-radius:20px;font-size:14px;font-weight:700}
-.container{max-width:1400px;margin:0 auto;padding:56px 24px}
+
+/* ═══ CONTENT ═══ */
+.container{max-width:1400px;margin:0 auto;padding:56px 24px 80px}
 .disclosure-note{background:rgba(126,8,130,0.06);border-left:4px solid var(--brand);border-radius:8px;padding:14px 20px;margin-bottom:40px;font-size:14px;color:var(--gray-800)}
 .disclosure-note a{color:var(--brand);font-weight:700}
-.posts-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:28px;margin-bottom:64px}
-.post-card{background:#fff;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;transition:all 0.3s;color:inherit}
-.post-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-md)}
+.posts-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:28px;margin-bottom:64px}
+.post-card{background:#fff;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;transition:all 0.3s var(--ease);border:2px solid transparent}
+.post-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-md);border-color:rgba(126,8,130,0.1)}
 .card-image-wrap{position:relative;overflow:hidden}
-.card-image{width:100%;height:224px;object-fit:cover;transition:transform 0.45s}
+.card-image{width:100%;height:224px;object-fit:cover;transition:transform 0.45s var(--ease)}
 .post-card:hover .card-image{transform:scale(1.06)}
 .card-cat{position:absolute;bottom:12px;left:12px;background:var(--brand);color:#fff;padding:5px 12px;border-radius:16px;font-size:11px;font-weight:800;text-transform:uppercase}
 .card-content{padding:24px;flex:1;display:flex;flex-direction:column}
 .card-meta{display:flex;gap:12px;font-size:12px;color:var(--gray-600);margin-bottom:10px}
 .card-title{font-size:1.15rem;font-weight:800;line-height:1.3;margin-bottom:10px;color:var(--gray-900)}
-.card-excerpt{font-size:14px;color:var(--gray-600);line-height:1.65;flex:1;margin-bottom:16px}
-.card-link{color:var(--brand);font-weight:800;font-size:14px;display:flex;align-items:center;gap:6px}
+.card-excerpt{font-size:14px;color:var(--gray-600);line-height:1.65;flex:1;margin-bottom:16px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.card-link{color:var(--brand);font-weight:800;font-size:14px;display:flex;align-items:center;gap:6px;transition:gap 0.2s}
 .post-card:hover .card-link{gap:10px}
 .empty-state{text-align:center;padding:80px 24px;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-sm)}
 .empty-state h2{font-size:1.5rem;font-weight:800;margin-bottom:12px}
 .empty-state p{color:var(--gray-600);margin-bottom:24px}
 .empty-state a{background:var(--brand);color:#fff;padding:14px 28px;border-radius:10px;font-weight:800;display:inline-block;transition:all 0.2s}
 .empty-state a:hover{background:var(--brand-dark);transform:translateY(-2px)}
+
+/* ═══ FOOTER ═══ */
 footer{background:var(--gray-900);color:#fff;padding:32px 24px;text-align:center}
 .footer-links-row{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
 .footer-links-row a{color:rgba(255,255,255,0.6);font-size:14px;transition:color 0.2s}
 .footer-links-row a:hover{color:#fff}
 footer p{opacity:0.55;font-size:13px}
-@media(max-width:768px){.nav-menu{display:none}.posts-grid{grid-template-columns:1fr}}
 
-<style>
-/* ═══ SEARCH WITH AUTO-SUGGEST ═══ */
-.search-box {
-  position: relative;
-  display: flex;
-  align-items: center;
-  margin-right: 20px;
-}
-.search-input {
-  width: 280px;
-  padding: 10px 40px 10px 16px;
-  border: 2px solid var(--gray-200);
-  border-radius: 24px;
-  font-family: 'Nunito', sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
-  background: var(--gray-100);
-}
-.search-input:focus {
-  outline: none;
-  border-color: var(--brand);
-  background: #fff;
-  width: 360px;
-  box-shadow: 0 4px 16px rgba(126,8,130,0.15);
-  border-radius: 24px 24px 0 0;
-}
-.search-input.has-results:focus {
-  border-radius: 24px 24px 0 0;
-}
-.search-input::placeholder {
-  color: var(--gray-600);
-  font-weight: 500;
-}
-.search-btn {
-  position: absolute;
-  right: 12px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 18px;
-  color: var(--gray-600);
-  padding: 6px;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
-}
-.search-btn:hover {
-  color: var(--brand);
-  transform: scale(1.1);
-}
-
-/* Auto-suggest dropdown */
-.search-suggestions {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background: #fff;
-  border: 2px solid var(--brand);
-  border-top: none;
-  border-radius: 0 0 16px 16px;
-  box-shadow: 0 12px 32px rgba(126,8,130,0.18);
-  max-height: 420px;
-  overflow-y: auto;
-  z-index: 999;
-  display: none;
-}
-.search-suggestions.active {
-  display: block;
-}
-
-.suggestion-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
-  cursor: pointer;
-  transition: all 0.2s;
-  border-bottom: 1px solid var(--gray-100);
-}
-.suggestion-item:last-child {
-  border-bottom: none;
-}
-.suggestion-item:hover,
-.suggestion-item.selected {
-  background: var(--brand-pale);
-}
-.suggestion-thumb {
-  width: 48px;
-  height: 48px;
-  border-radius: 8px;
-  object-fit: cover;
-  flex-shrink: 0;
-  background: var(--gray-100);
-}
-.suggestion-content {
-  flex: 1;
-  min-width: 0;
-}
-.suggestion-title {
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--gray-900);
-  margin-bottom: 3px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.suggestion-meta {
-  font-size: 12px;
-  color: var(--gray-600);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.suggestion-category {
-  background: var(--brand-pale);
-  color: var(--brand);
-  padding: 2px 8px;
-  border-radius: 10px;
-  font-weight: 700;
-  font-size: 11px;
-}
-
-.search-footer {
-  padding: 12px 16px;
-  background: var(--gray-100);
-  text-align: center;
-  border-radius: 0 0 14px 14px;
-}
-.search-footer a {
-  color: var(--brand);
-  font-weight: 700;
-  font-size: 13px;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  transition: gap 0.2s;
-}
-.search-footer a:hover {
-  gap: 10px;
-}
-
-.no-results {
-  padding: 32px 16px;
-  text-align: center;
-  color: var(--gray-600);
-}
-.no-results-icon {
-  font-size: 2.5rem;
-  margin-bottom: 8px;
-  opacity: 0.3;
-}
-.no-results p {
-  font-size: 14px;
-  margin-bottom: 12px;
-}
-.popular-searches {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  justify-content: center;
-  margin-top: 12px;
-}
-.popular-tag {
-  background: var(--brand-pale);
-  color: var(--brand);
-  padding: 4px 12px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.popular-tag:hover {
-  background: var(--brand);
-  color: #fff;
-}
-
-/* Highlight matched text */
-.highlight {
-  background: rgba(126,8,130,0.15);
-  font-weight: 800;
-  color: var(--brand);
-  padding: 0 2px;
-  border-radius: 2px;
-}
-
-/* Loading state */
-.search-loading {
-  padding: 24px;
-  text-align: center;
-  color: var(--gray-600);
-  font-size: 14px;
-}
-.loading-dots {
-  display: inline-flex;
-  gap: 4px;
-  margin-left: 8px;
-}
-.loading-dots span {
-  width: 6px;
-  height: 6px;
-  background: var(--brand);
-  border-radius: 50%;
-  animation: bounce 1.2s infinite;
-}
-.loading-dots span:nth-child(2) { animation-delay: 0.2s; }
-.loading-dots span:nth-child(3) { animation-delay: 0.4s; }
-@keyframes bounce {
-  0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
-  40% { transform: scale(1); opacity: 1; }
-}
-
-/* ═══ MEGA MENU STYLES ═══ */
-/* ═══ MEGA MENU FIX - Replace your mega menu CSS with this ═══ */
-
-.mega-menu-wrapper { 
-  position: relative; 
-}
-
-.mega-menu-trigger {
-  position: relative;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.mega-menu-trigger::after {
-  content: '▾';
-  font-size: 10px;
-  transition: transform 0.2s;
-}
-
-.mega-menu-trigger:hover::after { 
-  transform: rotate(180deg); 
-}
-
-/* FIXED: Menu stays within viewport */
-.mega-menu {
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%) translateY(-10px);
-  width: 1200px;
-  max-width: calc(100vw - 48px); /* Stay within viewport with padding */
-  background: #fff;
-  box-shadow: 0 12px 48px rgba(126,8,130,0.18);
-  border-radius: 0 0 16px 16px;
-  padding: 32px;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
-  z-index: 999;
-}
-
-.mega-menu-wrapper:hover .mega-menu {
-  opacity: 1;
-  visibility: visible;
-  transform: translateX(-50%) translateY(0);
-}
-
-.mega-menu-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 32px;
-}
-
-.mega-menu-section h4 {
-  font-size: 12px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--brand);
-  margin-bottom: 16px;
-  padding-bottom: 8px;
-  border-bottom: 2px solid var(--brand-pale);
-}
-
-.mega-menu-links {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.mega-menu-links li a {
-  color: var(--gray-800);
-  font-size: 14px;
-  font-weight: 600;
-  padding: 6px 0;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  transition: all 0.2s;
-}
-
-.mega-menu-links li a:hover {
-  color: var(--brand);
-  padding-left: 8px;
-}
-
-.mega-menu-links .icon {
-  font-size: 16px;
-  width: 20px;
-  text-align: center;
-}
-
-/* Mobile responsive */
-@media (max-width: 1024px) {
-  .mega-menu-wrapper { display: none; }
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:1024px){.mega-menu{display:none!important}}
+@media(max-width:768px){
+  .nav-menu{display:none}
+  .nav-menu.mobile-open{display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:#fff;padding:20px;box-shadow:0 4px 12px rgba(0,0,0,0.1);z-index:200}
+  .mobile-menu-btn{display:block}
+  .posts-grid{grid-template-columns:1fr}
+  .tag-hero{padding:48px 24px}
 }
 </style>
 </head>
 <body>
 
-
-
 <nav class="navbar">
   <div class="nav-container">
     <a href="/"><img src="/content/images/logo.jpg" alt="Wow Glam Decor" class="logo"></a>
-    
-    <!-- AUTO-SUGGEST SEARCH -->
     <div class="search-box">
-      <input 
-        type="text" 
-        id="searchInput" 
-        class="search-input" 
-        placeholder="Search articles, rooms, styles..."
-        autocomplete="off"
-      >
+      <input type="text" id="searchInput" class="search-input" placeholder="Search articles, rooms, styles..." autocomplete="off">
       <button class="search-btn" onclick="performSearch()" aria-label="Search">🔍</button>
-      
-      <!-- Suggestions dropdown -->
       <div class="search-suggestions" id="searchSuggestions"></div>
     </div>
-    
-    <div class="nav-menu">
+    <div class="nav-menu" id="navMenu">
       <a href="/" class="nav-link">Home</a>
       <a href="/blog.html" class="nav-link">Blog</a>
-      
-      <!-- MEGA MENU: Rooms -->
       <div class="mega-menu-wrapper">
         <span class="nav-link mega-menu-trigger">Rooms</span>
         <div class="mega-menu">
           <div class="mega-menu-grid">
-            <div class="mega-menu-section">
-              <h4>Living Spaces</h4>
-              <ul class="mega-menu-links">
-                <li><a href="/category/living-room.html"><span class="icon">🛋️</span>Living Room</a></li>
-                <li><a href="/category/bedroom.html"><span class="icon">🛏️</span>Bedroom</a></li>
-                <li><a href="/category/dining-room.html"><span class="icon">🍽️</span>Dining Room</a></li>
-                <li><a href="/category/home-office.html"><span class="icon">💻</span>Home Office</a></li>
-              </ul>
-            </div>
-            <div class="mega-menu-section">
-              <h4>Functional Rooms</h4>
-              <ul class="mega-menu-links">
-                <li><a href="/category/kitchen.html"><span class="icon">🍳</span>Kitchen</a></li>
-                <li><a href="/category/bathroom.html"><span class="icon">🚿</span>Bathroom</a></li>
-                <li><a href="/category/laundry-room.html"><span class="icon">🧺</span>Laundry Room</a></li>
-                <li><a href="/category/entryway-hallway.html"><span class="icon">🚪</span>Entryway & Hallway</a></li>
-              </ul>
-            </div>
-            <div class="mega-menu-section">
-              <h4>Special Spaces</h4>
-              <ul class="mega-menu-links">
-                <li><a href="/category/kids-room-nursery.html"><span class="icon">🧸</span>Kids Room & Nursery</a></li>
-                <li><a href="/category/outdoor-patio.html"><span class="icon">🌿</span>Outdoor & Patio</a></li>
-                <li><a href="/category/balcony-small-spaces.html"><span class="icon">🪴</span>Balcony & Small Spaces</a></li>
-              </ul>
-            </div>
-            <div class="mega-menu-section">
-              <h4>Popular Guides</h4>
-              <ul class="mega-menu-links">
-                <li><a href="/category/small-space-storage.html"><span class="icon">📦</span>Small Space Storage</a></li>
-                <li><a href="/category/rental-friendly-decor.html"><span class="icon">🔑</span>Rental-Friendly</a></li>
-                <li><a href="/category/home-makeovers.html"><span class="icon">✨</span>Home Makeovers</a></li>
-              </ul>
-            </div>
+            <div class="mega-menu-section"><h4>Living Spaces</h4><ul class="mega-menu-links"><li><a href="/category/living-room.html"><span class="icon">🛋️</span>Living Room</a></li><li><a href="/category/bedroom.html"><span class="icon">🛏️</span>Bedroom</a></li><li><a href="/category/dining-room.html"><span class="icon">🍽️</span>Dining Room</a></li><li><a href="/category/home-office.html"><span class="icon">💻</span>Home Office</a></li></ul></div>
+            <div class="mega-menu-section"><h4>Functional Rooms</h4><ul class="mega-menu-links"><li><a href="/category/kitchen.html"><span class="icon">🍳</span>Kitchen</a></li><li><a href="/category/bathroom.html"><span class="icon">🚿</span>Bathroom</a></li><li><a href="/category/laundry-room.html"><span class="icon">🧺</span>Laundry Room</a></li><li><a href="/category/entryway-hallway.html"><span class="icon">🚪</span>Entryway & Hallway</a></li></ul></div>
+            <div class="mega-menu-section"><h4>Special Spaces</h4><ul class="mega-menu-links"><li><a href="/category/kids-room-nursery.html"><span class="icon">🧸</span>Kids Room & Nursery</a></li><li><a href="/category/outdoor-patio.html"><span class="icon">🌿</span>Outdoor & Patio</a></li><li><a href="/category/balcony-small-spaces.html"><span class="icon">🪴</span>Balcony & Small Spaces</a></li></ul></div>
+            <div class="mega-menu-section"><h4>Popular Guides</h4><ul class="mega-menu-links"><li><a href="/category/small-space-storage.html"><span class="icon">📦</span>Small Space Storage</a></li><li><a href="/category/rental-friendly-decor.html"><span class="icon">🔑</span>Rental-Friendly</a></li><li><a href="/category/home-makeovers.html"><span class="icon">✨</span>Home Makeovers</a></li></ul></div>
           </div>
         </div>
       </div>
-      
-      <!-- MEGA MENU: Styles -->
       <div class="mega-menu-wrapper">
         <span class="nav-link mega-menu-trigger">Styles</span>
         <div class="mega-menu">
           <div class="mega-menu-grid">
-            <div class="mega-menu-section">
-              <h4>Modern Styles</h4>
-              <ul class="mega-menu-links">
-                <li><a href="/category/modern-style.html"><span class="icon">🏙️</span>Modern</a></li>
-                <li><a href="/category/minimalist-style.html"><span class="icon">◻️</span>Minimalist</a></li>
-                <li><a href="/category/scandinavian-style.html"><span class="icon">🌿</span>Scandinavian</a></li>
-                <li><a href="/category/industrial-style.html"><span class="icon">🏭</span>Industrial</a></li>
-              </ul>
-            </div>
-            <div class="mega-menu-section">
-              <h4>Classic Styles</h4>
-              <ul class="mega-menu-links">
-                <li><a href="/category/traditional-classic.html"><span class="icon">🏛️</span>Traditional & Classic</a></li>
-                <li><a href="/category/luxury-glam-decor.html"><span class="icon">👑</span>Luxury & Glam</a></li>
-                <li><a href="/category/boho-rustic-decor.html"><span class="icon">🌻</span>Boho & Rustic</a></li>
-              </ul>
-            </div>
-            <div class="mega-menu-section">
-              <h4>Decor Elements</h4>
-              <ul class="mega-menu-links">
-                <li><a href="/category/wall-decor.html"><span class="icon">🖼️</span>Wall Decor</a></li>
-                <li><a href="/category/lighting-lamps.html"><span class="icon">💡</span>Lighting & Lamps</a></li>
-                <li><a href="/category/rugs-carpets.html"><span class="icon">🟫</span>Rugs & Carpets</a></li>
-                <li><a href="/category/plants-planters.html"><span class="icon">🪴</span>Plants & Planters</a></li>
-              </ul>
-            </div>
-            <div class="mega-menu-section">
-              <h4>Seasonal</h4>
-              <ul class="mega-menu-links">
-                <li><a href="/category/seasonal-decor.html"><span class="icon">🍂</span>Seasonal Decor</a></li>
-                <li><a href="/category/holiday-decor.html"><span class="icon">🎄</span>Holiday Decor</a></li>
-              </ul>
-            </div>
+            <div class="mega-menu-section"><h4>Modern Styles</h4><ul class="mega-menu-links"><li><a href="/category/modern-style.html"><span class="icon">🏙️</span>Modern</a></li><li><a href="/category/minimalist-style.html"><span class="icon">◻️</span>Minimalist</a></li><li><a href="/category/scandinavian-style.html"><span class="icon">🌿</span>Scandinavian</a></li><li><a href="/category/industrial-style.html"><span class="icon">🏭</span>Industrial</a></li></ul></div>
+            <div class="mega-menu-section"><h4>Classic Styles</h4><ul class="mega-menu-links"><li><a href="/category/traditional-classic.html"><span class="icon">🏛️</span>Traditional & Classic</a></li><li><a href="/category/luxury-glam-decor.html"><span class="icon">👑</span>Luxury & Glam</a></li><li><a href="/category/boho-rustic-decor.html"><span class="icon">🌻</span>Boho & Rustic</a></li></ul></div>
+            <div class="mega-menu-section"><h4>Decor Elements</h4><ul class="mega-menu-links"><li><a href="/category/wall-decor.html"><span class="icon">🖼️</span>Wall Decor</a></li><li><a href="/category/lighting-lamps.html"><span class="icon">💡</span>Lighting & Lamps</a></li><li><a href="/category/rugs-carpets.html"><span class="icon">🟫</span>Rugs & Carpets</a></li><li><a href="/category/plants-planters.html"><span class="icon">🪴</span>Plants & Planters</a></li></ul></div>
+            <div class="mega-menu-section"><h4>Seasonal</h4><ul class="mega-menu-links"><li><a href="/category/seasonal-decor.html"><span class="icon">🍂</span>Seasonal Decor</a></li><li><a href="/category/holiday-decor.html"><span class="icon">🎄</span>Holiday Decor</a></li></ul></div>
           </div>
         </div>
       </div>
-      
-      <!-- MEGA MENU: Buying Guides -->
       <div class="mega-menu-wrapper">
         <span class="nav-link mega-menu-trigger">Buying Guides</span>
         <div class="mega-menu">
           <div class="mega-menu-grid">
-            <div class="mega-menu-section">
-              <h4>By Budget</h4>
-              <ul class="mega-menu-links">
-                <li><a href="/category/budget-furniture.html"><span class="icon">💰</span>Budget Furniture</a></li>
-                <li><a href="/category/luxury-furniture.html"><span class="icon">💎</span>Luxury Furniture</a></li>
-                <li><a href="/category/budget-gift-ideas.html"><span class="icon">🎁</span>Budget Gifts</a></li>
-                <li><a href="/category/luxury-home-gifts.html"><span class="icon">✨</span>Luxury Gifts</a></li>
-              </ul>
-            </div>
-            <div class="mega-menu-section">
-              <h4>By Type</h4>
-              <ul class="mega-menu-links">
-                <li><a href="/category/space-saving-furniture.html"><span class="icon">📐</span>Space-Saving</a></li>
-                <li><a href="/category/multifunctional-furniture.html"><span class="icon">🔄</span>Multifunctional</a></li>
-                <li><a href="/category/furniture-buying-guides.html"><span class="icon">📖</span>Buying Guides</a></li>
-              </ul>
-            </div>
-            <div class="mega-menu-section">
-              <h4>Reviews & Lists</h4>
-              <ul class="mega-menu-links">
-                <li><a href="/category/best-of-lists.html"><span class="icon">🏆</span>Best Of Lists</a></li>
-                <li><a href="/category/product-reviews.html"><span class="icon">⭐</span>Product Reviews</a></li>
-                <li><a href="/category/comparisons.html"><span class="icon">⚖️</span>Comparisons</a></li>
-              </ul>
-            </div>
-            <div class="mega-menu-section">
-              <h4>Gift Ideas</h4>
-              <ul class="mega-menu-links">
-                <li><a href="/category/home-gift-ideas.html"><span class="icon">🎁</span>Home Gift Ideas</a></li>
-                <li><a href="/category/housewarming-gifts.html"><span class="icon">🏡</span>Housewarming</a></li>
-              </ul>
-            </div>
+            <div class="mega-menu-section"><h4>By Budget</h4><ul class="mega-menu-links"><li><a href="/category/budget-furniture.html"><span class="icon">💰</span>Budget Furniture</a></li><li><a href="/category/luxury-furniture.html"><span class="icon">💎</span>Luxury Furniture</a></li><li><a href="/category/budget-gift-ideas.html"><span class="icon">🎁</span>Budget Gifts</a></li><li><a href="/category/luxury-home-gifts.html"><span class="icon">✨</span>Luxury Gifts</a></li></ul></div>
+            <div class="mega-menu-section"><h4>By Type</h4><ul class="mega-menu-links"><li><a href="/category/space-saving-furniture.html"><span class="icon">📐</span>Space-Saving</a></li><li><a href="/category/multifunctional-furniture.html"><span class="icon">🔄</span>Multifunctional</a></li><li><a href="/category/furniture-buying-guides.html"><span class="icon">📖</span>Buying Guides</a></li></ul></div>
+            <div class="mega-menu-section"><h4>Reviews & Lists</h4><ul class="mega-menu-links"><li><a href="/category/best-of-lists.html"><span class="icon">🏆</span>Best Of Lists</a></li><li><a href="/category/product-reviews.html"><span class="icon">⭐</span>Product Reviews</a></li><li><a href="/category/comparisons.html"><span class="icon">⚖️</span>Comparisons</a></li></ul></div>
+            <div class="mega-menu-section"><h4>Gift Ideas</h4><ul class="mega-menu-links"><li><a href="/category/home-gift-ideas.html"><span class="icon">🎁</span>Home Gift Ideas</a></li><li><a href="/category/housewarming-gifts.html"><span class="icon">🏡</span>Housewarming</a></li></ul></div>
           </div>
         </div>
       </div>
-      
       <a href="/about.html" class="nav-link">About</a>
     </div>
-    
-    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+    <button class="mobile-menu-btn" id="mobileMenuBtn" onclick="toggleMobileMenu()" aria-label="Toggle menu">☰</button>
   </div>
 </nav>
+
 <header class="tag-hero">
   <div class="tag-hero-content">
     <span class="tag-pill">🏷️ Tag</span>
     <h1>#modern bedroom</h1>
-    <p>Browse articles, buying guides, and honest product reviews - <strong>modern bedroom</strong></p>
+    <p>Browse articles, buying guides, and honest product reviews — <strong>modern bedroom</strong></p>
     <span class="tag-count-badge">📄 1 Articles Found</span>
   </div>
 </header>
 
 <div class="container">
-  <div class="disclosure-note">
-    💡 <strong>Affiliate Disclosure:</strong> Some links in our articles are affiliate links. We may earn a small commission at no extra cost to you. <a href="/affiliate-disclosure.html">Read our full disclosure →</a>
-  </div>
+  <div class="disclosure-note">💡 <strong>Affiliate Disclosure:</strong> Some links in our articles are affiliate links. We may earn a small commission at no extra cost to you. <a href="/affiliate-disclosure.html">Read our full disclosure →</a></div>
   <div class="posts-grid">
 
   <a href="/posts/best-bedroom-decor-ideas.html" class="post-card">
@@ -556,7 +195,7 @@ footer p{opacity:0.55;font-size:13px}
     </div>
     <div class="card-content">
       <div class="card-meta">
-        <span>Feb 27, 2026</span>
+        <span>Feb 26, 2026</span>
         <span>⏱️ 31 min</span>
       </div>
       <h3 class="card-title">Best Bedroom Decor Ideas: How to Make Your Bedroom Elegant and Luxurious</h3>
@@ -579,204 +218,43 @@ footer p{opacity:0.55;font-size:13px}
 </footer>
 
 <script>
-(function() {
-  const searchInput = document.getElementById('searchInput');
-  const suggestionsBox = document.getElementById('searchSuggestions');
-  
-  if (!searchInput || !suggestionsBox) return; // Exit if elements don't exist
-  
-  let searchTimeout;
-  let selectedIndex = -1;
-  let cachedPosts = null;
+/* ═══ MEGA MENU POSITIONING ═══ */
+(function(){
+  const navbar=document.querySelector('.navbar');
+  function pos(){if(!navbar)return;const b=navbar.getBoundingClientRect().bottom+window.scrollY;document.querySelectorAll('.mega-menu').forEach(m=>m.style.top=b+'px');}
+  pos();window.addEventListener('scroll',pos,{passive:true});window.addEventListener('resize',pos,{passive:true});
+})();
 
-  // Popular searches for no results state
-  const popularSearches = ['Living Room', 'Bedroom Decor', 'Budget Furniture', 'Minimalist', 'Best Of Lists'];
+/* ═══ MOBILE MENU ═══ */
+function toggleMobileMenu(){
+  const menu=document.getElementById('navMenu'),btn=document.getElementById('mobileMenuBtn');
+  if(!menu)return;const open=menu.classList.toggle('mobile-open');btn.textContent=open?'✕':'☰';
+}
+document.addEventListener('click',e=>{
+  const menu=document.getElementById('navMenu'),btn=document.getElementById('mobileMenuBtn');
+  if(menu&&menu.classList.contains('mobile-open')&&!menu.contains(e.target)&&!btn.contains(e.target)){menu.classList.remove('mobile-open');btn.textContent='☰';}
+});
 
-  // Load posts data
-  async function loadPosts() {
-    if (cachedPosts) return cachedPosts;
-    try {
-      const res = await fetch('/posts.json');
-      if (res.ok) {
-        cachedPosts = await res.json();
-        return cachedPosts;
-      }
-    } catch (e) {
-      console.log('Posts data not available yet');
-    }
-    return [];
+/* ═══ SEARCH ═══ */
+(function(){
+  const inp=document.getElementById('searchInput'),box=document.getElementById('searchSuggestions');
+  if(!inp||!box)return;
+  let timeout,idx=-1,cache=null;
+  const popular=['Living Room','Bedroom Decor','Budget Furniture','Minimalist','Best Of Lists'];
+  async function load(){if(cache)return cache;try{const r=await fetch('/posts.json');if(r.ok){cache=await r.json();return cache;}}catch(e){}return[];}
+  function hl(t,q){if(!q||!t)return t;return t.replace(new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`,'gi'),'<span class="highlight">$1</span>');}
+  async function search(q){const posts=await load();if(!posts.length)return[];const terms=q.toLowerCase().split(/\s+/).filter(Boolean);return posts.map(p=>({...p,score:terms.reduce((s,t)=>s+((`${p.title} ${p.description||''} ${(p.tags||[]).join(' ')} ${(p.categories||[]).join(' ')}`).toLowerCase().split(t).length-1),0)})).filter(p=>p.score>0).sort((a,b)=>b.score-a.score).slice(0,5);}
+  function render(r,q){
+    if(!r.length){box.innerHTML=`<div class="no-results"><div class="no-results-icon">🔍</div><p>No results for "<strong>${q}</strong>"</p><div class="popular-searches">${popular.map(t=>`<span class="popular-tag" onclick="document.getElementById('searchInput').value='${t}';document.getElementById('searchInput').dispatchEvent(new Event('input'));">${t}</span>`).join('')}</div></div>`;box.classList.add('active');return;}
+    box.innerHTML=r.map((p,i)=>`<a href="/posts/${p.slug}.html" class="suggestion-item" data-index="${i}"><img src="${p.featured_image||'/content/images/default-post.jpg'}" alt="${p.title}" class="suggestion-thumb" loading="lazy"><div class="suggestion-content"><div class="suggestion-title">${hl(p.title,q)}</div><div class="suggestion-meta"><span class="suggestion-category">${(p.categories&&p.categories[0])||'Decor'}</span><span>⏱️ ${p.readTime||5} min</span></div></div></a>`).join('')+`<div class="search-footer"><a href="/search.html?q=${encodeURIComponent(q)}">View all results →</a></div>`;
+    box.classList.add('active');idx=-1;
   }
-
-  // Highlight matching text
-  function highlightText(text, query) {
-    if (!query || !text) return text;
-    const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
-    return text.replace(regex, '<span class="highlight">$1</span>');
-  }
-
-  // Perform search
-  async function searchPosts(query) {
-    const posts = await loadPosts();
-    if (!posts.length) return [];
-
-    const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
-    
-    return posts
-      .map(post => {
-        const searchable = `${post.title} ${post.description || post.excerpt || ''} ${(post.tags||[]).join(' ')} ${(post.categories||[]).join(' ')}`.toLowerCase();
-        const score = terms.reduce((s, t) => s + (searchable.split(t).length - 1), 0);
-        return { ...post, score };
-      })
-      .filter(p => p.score > 0)
-      .sort((a, b) => b.score - a.score)
-      .slice(0, 5); // Show top 5 results
-  }
-
-  // Render suggestions
-  function renderSuggestions(results, query) {
-    if (!results.length) {
-      suggestionsBox.innerHTML = `
-        <div class="no-results">
-          <div class="no-results-icon">🔍</div>
-          <p>No results for "<strong>${query}</strong>"</p>
-          <div class="popular-searches">
-            ${popularSearches.map(term => 
-              `<span class="popular-tag" onclick="document.getElementById('searchInput').value='${term}'; document.getElementById('searchInput').dispatchEvent(new Event('input'));">${term}</span>`
-            ).join('')}
-          </div>
-        </div>`;
-      suggestionsBox.classList.add('active');
-      return;
-    }
-
-    const html = results.map((post, idx) => {
-      const img = post.featured_image || post.image || '/content/images/default-post.jpg';
-      const cat = (post.categories && post.categories[0]) || post.category || 'Decor';
-      const readTime = post.readTime || Math.ceil((post.content || '').split(/\s+/).length / 200) || '5';
-      const url = post.url || `/posts/${post.slug}.html`;
-      
-      return `
-        <a href="${url}" class="suggestion-item" data-index="${idx}">
-          <img src="${img}" alt="${post.title}" class="suggestion-thumb" loading="lazy">
-          <div class="suggestion-content">
-            <div class="suggestion-title">${highlightText(post.title, query)}</div>
-            <div class="suggestion-meta">
-              <span class="suggestion-category">${cat}</span>
-              <span>⏱️ ${readTime} min read</span>
-            </div>
-          </div>
-        </a>`;
-    }).join('');
-
-    suggestionsBox.innerHTML = html + `
-      <div class="search-footer">
-        <a href="/search.html?q=${encodeURIComponent(query)}">View all results for "${query}" →</a>
-      </div>`;
-    
-    suggestionsBox.classList.add('active');
-    selectedIndex = -1;
-  }
-
-  // Handle input
-  searchInput.addEventListener('input', (e) => {
-    const query = e.target.value.trim();
-    
-    clearTimeout(searchTimeout);
-    
-    if (!query) {
-      suggestionsBox.classList.remove('active');
-      searchInput.classList.remove('has-results');
-      return;
-    }
-
-    if (query.length < 2) return;
-
-    suggestionsBox.innerHTML = '<div class="search-loading">Searching<div class="loading-dots"><span></span><span></span><span></span></div></div>';
-    suggestionsBox.classList.add('active');
-    searchInput.classList.add('has-results');
-
-    searchTimeout = setTimeout(async () => {
-      const results = await searchPosts(query);
-      renderSuggestions(results, query);
-    }, 300);
-  });
-
-  // Handle keyboard navigation
-  searchInput.addEventListener('keydown', (e) => {
-    const items = suggestionsBox.querySelectorAll('.suggestion-item');
-    
-    if (e.key === 'ArrowDown') {
-      e.preventDefault();
-      selectedIndex = Math.min(selectedIndex + 1, items.length - 1);
-      updateSelection(items);
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault();
-      selectedIndex = Math.max(selectedIndex - 1, -1);
-      updateSelection(items);
-    } else if (e.key === 'Enter') {
-      e.preventDefault();
-      if (selectedIndex >= 0 && items[selectedIndex]) {
-        items[selectedIndex].click();
-      } else {
-        performSearch();
-      }
-    } else if (e.key === 'Escape') {
-      suggestionsBox.classList.remove('active');
-      searchInput.blur();
-    }
-  });
-
-  function updateSelection(items) {
-    items.forEach((item, idx) => {
-      item.classList.toggle('selected', idx === selectedIndex);
-    });
-    if (selectedIndex >= 0 && items[selectedIndex]) {
-      items[selectedIndex].scrollIntoView({ block: 'nearest' });
-    }
-  }
-
-  // Close suggestions when clicking outside
-  document.addEventListener('click', (e) => {
-    if (!searchInput.contains(e.target) && !suggestionsBox.contains(e.target)) {
-      suggestionsBox.classList.remove('active');
-      searchInput.classList.remove('has-results');
-    }
-  });
-
-  // Focus on "/" key
-  document.addEventListener('keydown', (e) => {
-    if (e.key === '/' && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
-      e.preventDefault();
-      searchInput.focus();
-    }
-  });
-
-  // Regular search function
-  window.performSearch = function() {
-    const query = searchInput.value.trim();
-    if (query) {
-      window.location.href = `/search.html?q=${encodeURIComponent(query)}`;
-    }
-  };
-  
-  // Mobile menu toggle
-  window.toggleMobileMenu = function() {
-    const menu = document.querySelector('.nav-menu');
-    if (!menu) return;
-    if (menu.style.display === 'flex') {
-      menu.style.display = 'none';
-    } else {
-      menu.style.display = 'flex';
-      menu.style.flexDirection = 'column';
-      menu.style.position = 'absolute';
-      menu.style.top = '100%';
-      menu.style.left = '0';
-      menu.style.right = '0';
-      menu.style.background = '#fff';
-      menu.style.padding = '20px';
-      menu.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
-    }
-  };
+  inp.addEventListener('input',e=>{const q=e.target.value.trim();clearTimeout(timeout);if(!q){box.classList.remove('active');return;}if(q.length<2)return;box.innerHTML='<div class="search-loading">Searching<div class="loading-dots"><span></span><span></span><span></span></div></div>';box.classList.add('active');timeout=setTimeout(async()=>render(await search(q),q),300);});
+  inp.addEventListener('keydown',e=>{const items=box.querySelectorAll('.suggestion-item');if(e.key==='ArrowDown'){e.preventDefault();idx=Math.min(idx+1,items.length-1);upd(items);}else if(e.key==='ArrowUp'){e.preventDefault();idx=Math.max(idx-1,-1);upd(items);}else if(e.key==='Enter'){e.preventDefault();idx>=0&&items[idx]?items[idx].click():performSearch();}else if(e.key==='Escape'){box.classList.remove('active');inp.blur();}});
+  function upd(items){items.forEach((it,i)=>it.classList.toggle('selected',i===idx));if(idx>=0&&items[idx])items[idx].scrollIntoView({block:'nearest'});}
+  document.addEventListener('click',e=>{if(!inp.contains(e.target)&&!box.contains(e.target))box.classList.remove('active');});
+  document.addEventListener('keydown',e=>{if(e.key==='/'&&!['INPUT','TEXTAREA'].includes(document.activeElement.tagName)){e.preventDefault();inp.focus();}});
+  window.performSearch=()=>{const q=inp.value.trim();if(q)window.location.href=`/search.html?q=${encodeURIComponent(q)}`;};
 })();
 </script>
 </body>
