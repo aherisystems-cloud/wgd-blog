@@ -300,6 +300,20 @@ tbody tr:hover { background: var(--bg-main); }
 .filename-pill { display: inline-block; background: rgba(45,91,255,0.1); color: var(--primary); padding: 2px 8px; border-radius: 4px; font-family: var(--font-mono); font-size: 11px; }
 .prompt-text { color: var(--text-secondary); font-size: 12px; line-height: 1.5; max-width: 400px; }
 
+
+/* ── TIMEZONE PREVIEW ── */
+.tz-preview {
+  margin-top: 10px; padding: 12px 16px;
+  background: rgba(45,91,255,0.05); border: 1px solid rgba(45,91,255,0.2);
+  border-radius: var(--radius-sm); font-size: 13px; font-family: var(--font-mono);
+  display: none; gap: 24px; flex-wrap: wrap;
+}
+.tz-preview.visible { display: flex; }
+.tz-item { display: flex; flex-direction: column; gap: 2px; }
+.tz-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-tertiary); font-family: var(--font-main); font-weight: 700; }
+.tz-value { font-weight: 600; color: var(--text-primary); }
+.tz-value.eat { color: var(--purple); }
+.tz-value.utc { color: var(--primary); }
 </style>
 </head>
 <body>
@@ -454,9 +468,23 @@ tbody tr:hover { background: var(--bg-main); }
     <h3>Schedule Publication</h3>
     <label><span style="font-weight:600;">Publication Date &amp; Time</span></label>
     <p style="font-size:13px; color:var(--text-secondary); margin: 4px 0 8px;">
-      ⏰ Enter time in your local timezone — <strong>Nairobi (EAT, UTC+3)</strong>. The scheduler converts to UTC automatically.
+      ⏰ Enter your Nairobi time <strong>(EAT, UTC+3)</strong> — the scheduler stores UTC in the frontmatter automatically.
     </p>
-    <input type="datetime-local" id="publishDate">
+    <input type="datetime-local" id="publishDate" oninput="updateTzPreview()">
+    <div class="tz-preview" id="tzPreview">
+      <div class="tz-item">
+        <span class="tz-label">🕐 You entered (EAT)</span>
+        <span class="tz-value eat" id="tzEAT">—</span>
+      </div>
+      <div class="tz-item">
+        <span class="tz-label">🌍 Stored as (UTC)</span>
+        <span class="tz-value utc" id="tzUTC">—</span>
+      </div>
+      <div class="tz-item">
+        <span class="tz-label">⏳ Time until publish</span>
+        <span class="tz-value" id="tzCountdown">—</span>
+      </div>
+    </div>
     <div class="action-row">
       <button onclick="preparePost()" class="btn btn-primary">🚀 Prepare Post for Publishing</button>
       <button onclick="clearForm()" class="btn btn-secondary">🗑️ Clear Form</button>
@@ -1300,6 +1328,8 @@ function openTab(tab) {
   if (tab==='seo') runSEO();
   if (tab==='products') generateFrontmatter();
   if (tab==='affiliate') { updateCatalogCount(); searchAffiliate(); }
+  if (tab==='schedule') updateTzPreview();
+  if (tab==='import') { document.getElementById('parseResult').style.display = 'none'; }
 }
 
 /* ══════════════════════════════════════════
@@ -1382,6 +1412,12 @@ function preparePost() {
   const scheduled = document.getElementById('publishDate').value;
   if (!scheduled)    { alert('⚠️ Please set a publication date'); return; }
 
+  var utcDate = eatInputToUTC(scheduled);
+  var eatDisplay = scheduled.replace('T', ' ') + ' EAT';
+  if (utcDate < new Date()) {
+    if (!confirm('⚠️ This publish time (' + eatDisplay + ') is in the past. Continue?')) return;
+  }
+
   const selectedCats = Array.from(document.querySelectorAll('#categorySelect input:checked')).map(c=>c.value);
   const tags    = document.getElementById('tags').value.split(',').map(t=>t.trim()).filter(Boolean);
   const keys    = document.getElementById('seoKeywords').value.split(',').map(k=>k.trim()).filter(Boolean);
@@ -1399,7 +1435,9 @@ function preparePost() {
 title: "${title.value}"
 description: "${document.getElementById('description').value}"
 slug: "${slug.value}"
-date: ${new Date(scheduled).toISOString()}
+date: ${utcDate.toISOString()}
+scheduled_date: ${utcDate.toISOString()}
+# Scheduled for: ${eatDisplay} (EAT, UTC+3)
 categories:
 ${selectedCats.map(c=>'  - '+c).join('\n')}
 tags:
@@ -1695,6 +1733,7 @@ function clearForm() {
   updateAddButton(); updateProductBadge();
   document.getElementById('productsOutputPanel').style.display='none';
   document.getElementById('finalPostContainer').style.display='none';
+  document.getElementById('tzPreview').classList.remove('visible');
   updatePreview(); runSEO();
 }
 
@@ -1904,6 +1943,43 @@ function copyImagePrompts() {
 /* ══════════════════════════════════════════
    Update openTab to include import
 ══════════════════════════════════════════ */
+
+/* ══════════════════════════════════════════
+   TIMEZONE HELPERS — EAT = UTC+3
+══════════════════════════════════════════ */
+var EAT_OFFSET_MS = 3 * 60 * 60 * 1000;
+
+function eatInputToUTC(localValue) {
+  if (!localValue) return null;
+  var assumedUTC = new Date(localValue + ':00Z');
+  return new Date(assumedUTC.getTime() - EAT_OFFSET_MS);
+}
+
+function updateTzPreview() {
+  var val = document.getElementById('publishDate').value;
+  var box = document.getElementById('tzPreview');
+  if (!val) { box.classList.remove('visible'); return; }
+  var utcDate = eatInputToUTC(val);
+  var now = new Date();
+  var diffMs = utcDate - now;
+  box.classList.add('visible');
+  document.getElementById('tzEAT').textContent = val.replace('T', ' ') + ' EAT';
+  document.getElementById('tzUTC').textContent = utcDate.toISOString().replace('T', ' ').slice(0, 16) + ' UTC';
+  var countdown = document.getElementById('tzCountdown');
+  if (diffMs < 0) {
+    countdown.textContent = '⚠️ This time is in the past';
+    countdown.style.color = 'var(--danger)';
+  } else {
+    var h = Math.floor(diffMs / 3600000);
+    var m = Math.floor((diffMs % 3600000) / 60000);
+    var days = Math.floor(h / 24);
+    var hrs = h % 24;
+    var label = days > 0 ? (days + 'd ' + hrs + 'h ' + m + 'm') : (h + 'h ' + m + 'm');
+    countdown.textContent = label + ' from now';
+    countdown.style.color = 'var(--success)';
+  }
+}
+
 /* ══════════════════════════════════════════
    INIT
 ══════════════════════════════════════════ */
