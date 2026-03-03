@@ -79,22 +79,16 @@
   --radius:16px; --ease:cubic-bezier(0.4,0,0.2,1);
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-
-/* FIX 1: overflow-x hidden on html+body stops horizontal scroll */
 html{overflow-x:hidden}
 body{font-family:'Nunito',sans-serif;background:var(--off-white);color:var(--gray-900);line-height:1.75;overflow-x:hidden}
 a{text-decoration:none;color:inherit}
 img{max-width:100%;height:auto;display:block}
-
-/* FIX 1: tables must not overflow */
 table{width:100%;display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
 
 /* ═══ NAVBAR ═══ */
 .navbar{background:rgba(255,255,255,0.96);backdrop-filter:blur(16px);box-shadow:var(--shadow-sm);position:sticky;top:0;z-index:200}
 .nav-container{max-width:1400px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:16px}
 .logo{height:44px;width:auto;flex-shrink:0}
-
-/* Search — no width expansion on focus */
 .search-box{position:relative;display:flex;align-items:center;flex-shrink:1;min-width:0}
 .search-input{width:220px;max-width:100%;padding:10px 40px 10px 16px;border:2px solid var(--gray-200);border-radius:24px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:600;transition:border-color 0.3s,box-shadow 0.3s,border-radius 0.3s;background:var(--gray-100);box-sizing:border-box}
 .search-input:focus{outline:none;border-color:var(--brand);background:#fff;box-shadow:0 4px 16px rgba(126,8,130,0.15);border-radius:24px 24px 0 0}
@@ -127,27 +121,15 @@ table{width:100%;display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
 .loading-dots span:nth-child(2){animation-delay:0.2s}
 .loading-dots span:nth-child(3){animation-delay:0.4s}
 @keyframes bounce{0%,80%,100%{transform:scale(0.6);opacity:0.4}40%{transform:scale(1);opacity:1}}
-
-/* Nav menu */
 .nav-menu{display:flex;gap:2px;align-items:center;margin-left:auto;flex-shrink:0}
 .nav-link{color:var(--gray-800);font-weight:700;font-size:14px;padding:8px 14px;border-radius:8px;transition:all 0.2s var(--ease);white-space:nowrap}
 .nav-link:hover{background:var(--brand-pale);color:var(--brand)}
 .mobile-menu-btn{display:none;background:none;border:none;font-size:24px;cursor:pointer;color:var(--gray-800);padding:8px;margin-left:auto;flex-shrink:0}
-
-/* ═══ MEGA MENU — fixed positioning, left-anchored ═══ */
 .mega-menu-wrapper{position:static}
 .mega-menu-trigger{cursor:pointer;display:flex;align-items:center;gap:4px;user-select:none}
 .mega-menu-trigger::after{content:'▾';font-size:10px;transition:transform 0.25s}
 .mega-menu-wrapper:hover .mega-menu-trigger::after{transform:rotate(180deg)}
-.mega-menu{
-  position:fixed;top:auto;left:0;right:0;
-  width:calc(100vw - 48px);max-width:1400px;margin:0 auto;
-  background:#fff;box-shadow:0 12px 48px rgba(126,8,130,0.18);
-  border-top:3px solid var(--brand);border-radius:0 0 16px 16px;
-  padding:32px;opacity:0;visibility:hidden;pointer-events:none;
-  transition:opacity 0.25s var(--ease),visibility 0.25s var(--ease),transform 0.25s var(--ease);
-  transform:translateY(-8px);z-index:198
-}
+.mega-menu{position:fixed;top:auto;left:0;right:0;width:calc(100vw - 48px);max-width:1400px;margin:0 auto;background:#fff;box-shadow:0 12px 48px rgba(126,8,130,0.18);border-top:3px solid var(--brand);border-radius:0 0 16px 16px;padding:32px;opacity:0;visibility:hidden;pointer-events:none;transition:opacity 0.25s var(--ease),visibility 0.25s var(--ease),transform 0.25s var(--ease);transform:translateY(-8px);z-index:198}
 .mega-menu-wrapper:hover .mega-menu{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0)}
 .mega-menu:hover{opacity:1;visibility:visible;pointer-events:auto}
 .mega-menu-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px}
@@ -182,8 +164,6 @@ table{width:100%;display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
 /* ═══ ARTICLE CONTENT ═══ */
 .article-content{background:#fff;border-radius:var(--radius);padding:40px;box-shadow:var(--shadow-sm);min-width:0;overflow:hidden}
 .featured-image{width:100%;height:auto;border-radius:12px;margin-bottom:32px;box-shadow:var(--shadow-md)}
-
-/* FIX 1: content-body must never overflow its container */
 .content-body{font-size:1.05rem;line-height:1.8;color:var(--gray-800);overflow-wrap:break-word;word-break:break-word}
 .content-body h2{font-size:1.65rem;font-weight:900;color:var(--gray-900);margin:40px 0 16px;padding-bottom:12px;border-bottom:3px solid var(--brand-pale)}
 .content-body h3{font-size:1.35rem;font-weight:800;color:var(--gray-900);margin:32px 0 12px}
@@ -195,39 +175,19 @@ table{width:100%;display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
 .content-body a{color:var(--brand);font-weight:700;border-bottom:2px solid transparent;transition:border-color 0.2s}
 .content-body a:hover{border-bottom-color:var(--brand)}
 .content-body strong{font-weight:800;color:var(--gray-900)}
-
-/* FIX 1: Table wrapper to prevent horizontal page overflow */
 .content-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:0.92rem;display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap}
 .content-body th{background:var(--brand);color:#fff;padding:12px;text-align:left;font-weight:800;white-space:nowrap}
 .content-body td{padding:12px;border-bottom:1px solid var(--gray-200)}
 .content-body tr:hover{background:var(--gray-100)}
 
-/* ═══ FIX 2: FLOATING TABLE OF CONTENTS (fast scroll) ═══ */
-.toc-float{
-  position:fixed;
-  left:max(8px, calc(50vw - 760px));
-  top:90px;
-  width:200px;
-  background:#fff;
-  border-radius:12px;
-  box-shadow:var(--shadow-sm);
-  border:2px solid var(--gray-100);
-  padding:16px;
-  max-height:calc(100vh - 120px);
-  overflow-y:auto;
-  z-index:100;
-  transition:opacity 0.3s;
-  display:none; /* shown by JS when headings exist */
-}
+/* ═══ FLOATING TOC ═══ */
+.toc-float{position:fixed;left:max(8px, calc(50vw - 760px));top:90px;width:200px;background:#fff;border-radius:12px;box-shadow:var(--shadow-sm);border:2px solid var(--gray-100);padding:16px;max-height:calc(100vh - 120px);overflow-y:auto;z-index:100;transition:opacity 0.3s;display:none}
 .toc-float h5{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--gray-600);margin-bottom:12px}
 .toc-float ul{list-style:none}
 .toc-float ul li{margin-bottom:6px}
 .toc-float ul li a{font-size:12px;font-weight:600;color:var(--gray-600);display:block;padding:4px 8px;border-radius:6px;transition:all 0.2s;line-height:1.4;border-left:2px solid transparent}
 .toc-float ul li a:hover,.toc-float ul li a.active{background:var(--brand-pale);color:var(--brand);border-left-color:var(--brand)}
-/* hide on smaller screens where it would overlap */
 @media(max-width:1300px){.toc-float{display:none!important}}
-
-/* In-article TOC (inside content, for mobile) */
 .toc-inline{background:var(--brand-pale);border-radius:12px;padding:20px 24px;margin:0 0 32px;border-left:4px solid var(--brand)}
 .toc-inline h4{font-size:14px;font-weight:800;color:var(--brand);margin-bottom:12px}
 .toc-inline ol{margin:0 0 0 20px}
@@ -248,7 +208,47 @@ table{width:100%;display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
 .author-role{color:var(--gray-600);font-size:14px;font-weight:600;margin-bottom:16px}
 .author-box p{color:var(--gray-800);line-height:1.7;margin-bottom:0}
 
-/* ═══ FIX 4: SHARE BUTTONS + WHATSAPP ═══ */
+/* ═══ MAILERLITE NEWSLETTER BOXES ═══ */
+.newsletter-box {
+  background: var(--brand-pale);
+  border-left: 4px solid var(--brand);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  margin: 40px 0;
+  text-align: center;
+}
+.newsletter-box p {
+  font-weight: 800;
+  color: var(--brand);
+  font-size: 1.1rem;
+  margin-bottom: 16px !important;
+}
+.newsletter-box .nl-sub {
+  font-size: 0.9rem !important;
+  font-weight: 600 !important;
+  color: var(--gray-600) !important;
+  margin-bottom: 20px !important;
+}
+.ml-onclick-form {
+  background: var(--brand);
+  color: #fff;
+  border: none;
+  padding: 14px 32px;
+  border-radius: 8px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+  display: inline-block;
+}
+.ml-onclick-form:hover {
+  background: var(--brand-dark);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* ═══ SHARE BUTTONS ═══ */
 .share-section{margin:32px 0;padding:24px;background:var(--gray-100);border-radius:var(--radius);text-align:center}
 .share-section h4{font-size:1rem;font-weight:800;margin-bottom:16px;color:var(--gray-900)}
 .share-buttons{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
@@ -260,47 +260,17 @@ table{width:100%;display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
 .share-btn.pinterest{background:#e60023;color:#fff}
 .share-btn.email{background:var(--gray-800);color:#fff}
 
-/* ═══ FIX 3: SIDEBAR ═══ */
+/* ═══ SIDEBAR ═══ */
 .sidebar{position:sticky;top:80px;min-width:0}
 .sidebar-title{font-size:1.1rem;font-weight:900;color:var(--gray-900);margin-bottom:16px}
-
-/* Each product card — proper spacing, full visible CTA */
-.sidebar-product{
-  background:#fff;
-  border-radius:var(--radius);
-  padding:16px;
-  margin-bottom:20px; /* FIX 3: was 16px, increased gap between cards */
-  box-shadow:var(--shadow-sm);
-  transition:all 0.3s var(--ease);
-  border:2px solid transparent;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
+.sidebar-product{background:#fff;border-radius:var(--radius);padding:16px;margin-bottom:20px;box-shadow:var(--shadow-sm);transition:all 0.3s var(--ease);border:2px solid transparent;display:flex;flex-direction:column;gap:10px}
 .sidebar-product:hover{transform:translateY(-4px);box-shadow:var(--shadow-md);border-color:var(--brand)}
 .sidebar-product-image{width:100%;height:160px;object-fit:contain;border-radius:10px;display:block}
 .sidebar-product-info{display:flex;flex-direction:column;gap:6px}
 .sidebar-product-info h4{font-size:13px;font-weight:800;line-height:1.4;color:var(--gray-900)}
 .sidebar-product-price{font-size:17px;font-weight:900;color:var(--brand)}
 .sidebar-product-desc{font-size:12px;color:var(--gray-600);line-height:1.5}
-
-/* FIX 3: CTA — full button, always visible, never clipped */
-.sidebar-cta{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:6px;
-  background:var(--brand);
-  color:#fff !important;
-  font-weight:800;
-  font-size:13px;
-  padding:10px 14px;
-  border-radius:8px;
-  transition:all 0.2s;
-  width:100%;
-  text-align:center;
-  margin-top:4px;
-}
+.sidebar-cta{display:flex;align-items:center;justify-content:center;gap:6px;background:var(--brand);color:#fff !important;font-weight:800;font-size:13px;padding:10px 14px;border-radius:8px;transition:all 0.2s;width:100%;text-align:center;margin-top:4px}
 .sidebar-cta:hover{background:var(--brand-dark);gap:10px}
 
 /* ═══ FOOTER ═══ */
@@ -331,7 +301,6 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
 @media(max-width:1100px){
   .content-wrapper{grid-template-columns:1fr}
   .sidebar{position:static}
-  /* sidebar products go horizontal on tablet */
   .sidebar-product{flex-direction:row;align-items:flex-start}
   .sidebar-product-image{width:100px;height:100px;flex-shrink:0}
   .sidebar-product-info{flex:1}
@@ -347,11 +316,11 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
   .content-body{font-size:1rem}
   .content-wrapper{padding:0 16px 60px}
   .share-btn{padding:10px 12px;font-size:12px}
-  /* sidebar stacks fully on mobile */
   .sidebar-product{flex-direction:column}
   .sidebar-product-image{width:100%;height:160px}
   .footer-grid{grid-template-columns:1fr}
   .footer-bottom{flex-direction:column;text-align:center}
+  .newsletter-box{padding:24px 20px}
 }
 
 ::-webkit-scrollbar{width:8px}
@@ -364,7 +333,7 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
 
 <div class="progress-bar" id="progressBar"></div>
 
-<!-- FLOATING TOC (desktop only, populated by JS) -->
+<!-- FLOATING TOC -->
 <nav class="toc-float" id="tocFloat" aria-label="Table of contents">
   <h5>📋 On This Page</h5>
   <ul id="tocList"></ul>
@@ -551,7 +520,18 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
       {{ARTICLE_CONTENT}}
     </div>
 
-    <!-- SHARE SECTION — FIX 4: WhatsApp added -->
+    <!-- ═══ NEWSLETTER BOX 1: MID-ARTICLE ═══ -->
+    <!-- This appears right after the article body, before the share buttons -->
+    <!-- Move this block inside {{ARTICLE_CONTENT}} if you want it truly mid-article -->
+    <div class="newsletter-box">
+      <p>✉️ Love these decor ideas?</p>
+      <p class="nl-sub">Join thousands of readers getting weekly inspiration straight to their inbox.</p>
+      <button class="ml-onclick-form" onclick="ml('show', 'ygWEME', true)">
+        🎁 Get Free Weekly Decor Tips →
+      </button>
+    </div>
+
+    <!-- SHARE SECTION -->
     <div class="share-section">
       <h4>📤 Share This Article</h4>
       <div class="share-buttons">
@@ -575,6 +555,16 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
       <div class="author-role">{{AUTHOR_ROLE}}</div>
       <p>{{AUTHOR_BIO}}</p>
     </div>
+
+    <!-- ═══ NEWSLETTER BOX 2: AFTER AUTHOR BOX ═══ -->
+    <div class="newsletter-box">
+      <p>💌 Enjoyed this article?</p>
+      <p class="nl-sub">Subscribe for more styling tips, budget finds, and room transformations every week.</p>
+      <button class="ml-onclick-form" onclick="ml('show', 'ygWEME', true)">
+        🏡 Join the Wow Glam Community →
+      </button>
+    </div>
+
   </article>
 
   <!-- SIDEBAR -->
@@ -639,6 +629,16 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
 
 <button class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
 
+<!-- ═══ MAILERLITE UNIVERSAL ═══ -->
+<script>
+    (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
+    .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
+    n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})
+    (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
+    ml('account', '2154421');
+</script>
+<!-- End MailerLite Universal -->
+
 <script>
 /* ═══ PROGRESS BAR ═══ */
 window.addEventListener('scroll', () => {
@@ -651,17 +651,14 @@ const btt = document.getElementById('backToTop');
 window.addEventListener('scroll', () => btt.classList.toggle('visible', window.pageYOffset > 400), {passive:true});
 btt.addEventListener('click', () => window.scrollTo({top:0,behavior:'smooth'}));
 
-/* ═══ FIX 2: AUTO-BUILD FLOATING TOC FROM H2 HEADINGS ═══ */
+/* ═══ AUTO-BUILD FLOATING TOC ═══ */
 (function(){
   const tocFloat = document.getElementById('tocFloat');
   const tocList  = document.getElementById('tocList');
   const headings = document.querySelectorAll('.content-body h2');
   if (!headings.length || !tocFloat || !tocList) return;
-
-  // Only show TOC if there are 3+ headings
   if (headings.length < 3) return;
   tocFloat.style.display = 'block';
-
   headings.forEach((h, i) => {
     if (!h.id) h.id = 'section-' + i;
     const li = document.createElement('li');
@@ -675,8 +672,6 @@ btt.addEventListener('click', () => window.scrollTo({top:0,behavior:'smooth'}));
     li.appendChild(a);
     tocList.appendChild(li);
   });
-
-  // Highlight active section on scroll
   const links = tocList.querySelectorAll('a');
   const obs = new IntersectionObserver(entries => {
     entries.forEach(entry => {
@@ -687,8 +682,6 @@ btt.addEventListener('click', () => window.scrollTo({top:0,behavior:'smooth'}));
     });
   }, {rootMargin:'-10% 0px -80% 0px'});
   headings.forEach(h => obs.observe(h));
-
-  /* Position TOC just below sticky navbar */
   const navbar = document.querySelector('.navbar');
   function positionToc() {
     if (!navbar) return;
@@ -729,7 +722,7 @@ document.addEventListener('click', e => {
   }
 });
 
-/* ═══ FIX 4: SHARE — WhatsApp included ═══ */
+/* ═══ SHARE ═══ */
 function shareOn(platform) {
   const url   = encodeURIComponent(window.location.href);
   const title = encodeURIComponent(document.title);
@@ -744,7 +737,7 @@ function shareOn(platform) {
   window.open(links[platform], '_blank', 'width=600,height=500,noopener');
 }
 
-/* ═══ SMOOTH SCROLL FOR IN-PAGE LINKS ═══ */
+/* ═══ SMOOTH SCROLL ═══ */
 document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', e => {
     const t = document.querySelector(a.getAttribute('href'));
@@ -809,15 +802,6 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
   document.addEventListener('keydown', e=>{if(e.key==='/'&&!['INPUT','TEXTAREA'].includes(document.activeElement.tagName)){e.preventDefault();searchInput.focus();}});
   window.performSearch = ()=>{ const q=searchInput.value.trim(); if(q) window.location.href=`/search.html?q=${encodeURIComponent(q)}`; };
 })();
-  <!-- MailerLite Universal -->
-<script>
-    (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
-    .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
-    n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})
-    (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
-    ml('account', '2154421');
 </script>
-<!-- End MailerLite Universal -->
-
 </body>
 </html>
