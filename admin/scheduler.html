@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Affiliate Blog Scheduler Pro</title>
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script data-cfasync="false" src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -31,6 +31,10 @@
   --font-mono: 'DM Mono', 'Courier New', monospace;
   --purple: #7e0882;
   --purple-pale: rgba(126,8,130,0.07);
+  --pin: #bd123c;
+  --pin-pale: rgba(189,18,60,0.06);
+  --factory: #B45309;
+  --factory-pale: rgba(180,83,9,0.06);
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: var(--font-main); background: var(--bg-main); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; }
@@ -40,9 +44,10 @@ header h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; margin: 0
 header .subtitle { font-size: 14px; opacity: 0.9; margin-top: 4px; }
 
 nav { display: flex; background: var(--bg-surface); border-bottom: 1px solid var(--border); overflow-x: auto; position: sticky; top: 81px; z-index: 99; box-shadow: var(--shadow-sm); }
-nav button { flex: 1; min-width: 110px; padding: 16px 10px; color: var(--text-secondary); background: none; border: none; cursor: pointer; font-family: var(--font-main); font-size: 14px; font-weight: 600; transition: all 0.2s; border-bottom: 3px solid transparent; }
+nav button { flex: 1; min-width: 100px; padding: 16px 8px; color: var(--text-secondary); background: none; border: none; cursor: pointer; font-family: var(--font-main); font-size: 13px; font-weight: 600; transition: all 0.2s; border-bottom: 3px solid transparent; }
 nav button:hover { background: var(--bg-main); color: var(--text-primary); }
 nav button.active { color: var(--primary); border-bottom-color: var(--primary); }
+nav button#nav-pinterest.active { color: var(--pin); border-bottom-color: var(--pin); }
 
 .container { max-width: 1400px; margin: 0 auto; padding: 32px; }
 section { display: none; animation: fadeIn 0.3s ease; }
@@ -247,19 +252,42 @@ tbody tr:hover { background: var(--bg-main); }
 .products-tip strong { color: var(--purple); }
 .products-tip code { background: rgba(126,8,130,0.1); padding: 2px 6px; border-radius: 4px; font-family: var(--font-mono); font-size: 12px; color: var(--purple); }
 
-/* ── TIMEZONE PREVIEW BOX ── ✅ NEW */
-.tz-preview {
-  margin-top: 10px;
-  padding: 12px 16px;
-  background: rgba(45,91,255,0.05);
-  border: 1px solid rgba(45,91,255,0.2);
-  border-radius: var(--radius-sm);
-  font-size: 13px;
-  font-family: var(--font-mono);
-  display: none;
-  gap: 24px;
-  flex-wrap: wrap;
-}
+/* ── FOLDER SAVE BOX ── */
+.folder-save-box { background:rgba(0,208,132,0.06); border:1px solid rgba(0,208,132,0.25); border-radius:var(--radius-sm); padding:16px 20px; margin-bottom:20px; }
+.folder-save-box code { background:rgba(0,208,132,0.12); padding:1px 5px; border-radius:3px; font-family:var(--font-mono); font-size:12px; color:#065F46; }
+
+/* ── IMPORT TAB ── */
+.import-hero { background: linear-gradient(135deg, rgba(45,91,255,0.08), rgba(126,8,130,0.08)); border: 2px dashed rgba(45,91,255,0.3); border-radius: var(--radius); padding: 32px; text-align: center; margin-bottom: 24px; }
+.import-hero h2 { font-size: 22px; font-weight: 800; margin-bottom: 8px; background: linear-gradient(135deg, var(--primary), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.import-hero p { color: var(--text-secondary); font-size: 14px; line-height: 1.7; max-width: 600px; margin: 0 auto 20px; }
+.import-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin: 20px 0; }
+.import-step { background: var(--bg-surface); border: 2px solid var(--border); border-radius: var(--radius-sm); padding: 16px; text-align: center; }
+.import-step-num { width: 32px; height: 32px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; margin: 0 auto 10px; }
+.import-step p { font-size: 13px; color: var(--text-secondary); margin: 0; }
+.import-step strong { color: var(--text-primary); display: block; margin-bottom: 4px; }
+.parse-result { background: #D1FAE5; border: 1px solid #6EE7B7; border-radius: var(--radius-sm); padding: 16px 20px; margin-top: 16px; display: none; }
+.parse-result.error { background: #FEE2E2; border-color: #FCA5A5; }
+.parse-result-title { font-weight: 800; margin-bottom: 8px; color: #065F46; }
+.parse-result.error .parse-result-title { color: #DC2626; }
+.parse-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; font-size: 13px; }
+.parse-field { display: flex; gap: 6px; align-items: flex-start; }
+.parse-field-icon { flex-shrink: 0; }
+.parse-field-label { color: var(--text-secondary); }
+.parse-field-val { color: var(--text-primary); font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 200px; }
+.import-paste-area { position: relative; }
+.import-paste-area textarea { height: 280px; font-size: 13px; background: #1e1e2e; color: #cdd6f4; border-color: #313244; font-family: var(--font-mono); }
+.import-paste-area textarea:focus { border-color: var(--primary); }
+.import-paste-area textarea::placeholder { color: #585b70; }
+.parsed-images-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 12px; }
+.parsed-images-table th { background: var(--bg-main); padding: 8px 12px; text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-secondary); border-bottom: 2px solid var(--border); }
+.parsed-images-table td { padding: 8px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.parsed-images-table tr:hover td { background: var(--bg-main); }
+.filename-pill { display: inline-block; background: rgba(45,91,255,0.1); color: var(--primary); padding: 2px 8px; border-radius: 4px; font-family: var(--font-mono); font-size: 11px; }
+.prompt-text { color: var(--text-secondary); font-size: 12px; line-height: 1.5; max-width: 400px; }
+.image-list-output { background: #1e1e2e; color: #cdd6f4; padding: 20px; border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 12px; line-height: 1.8; max-height: 300px; overflow-y: auto; margin-top: 16px; white-space: pre-wrap; border: 2px solid #313244; }
+
+/* ── TIMEZONE PREVIEW ── */
+.tz-preview { margin-top: 10px; padding: 12px 16px; background: rgba(45,91,255,0.05); border: 1px solid rgba(45,91,255,0.2); border-radius: var(--radius-sm); font-size: 13px; font-family: var(--font-mono); display: none; gap: 24px; flex-wrap: wrap; }
 .tz-preview.visible { display: flex; }
 .tz-item { display: flex; flex-direction: column; gap: 2px; }
 .tz-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-tertiary); font-family: var(--font-main); font-weight: 700; }
@@ -267,17 +295,113 @@ tbody tr:hover { background: var(--bg-main); }
 .tz-value.eat { color: var(--purple); }
 .tz-value.utc { color: var(--primary); }
 
+/* ══════════════════════════════════════════
+   📌 PINTEREST TAB
+══════════════════════════════════════════ */
+.pinterest-intro { background: var(--pin-pale); border: 1px solid rgba(189,18,60,0.2); border-radius: var(--radius-sm); padding: 14px 18px; font-size: 14px; color: var(--text-secondary); margin-bottom: 20px; line-height: 1.65; }
+.pinterest-intro strong { color: var(--pin); }
+#section-pinterest .panel h3::before { background: var(--pin); }
+.pin-generate-row { display: flex; align-items: center; gap: 16px; }
+.btn-pin { background: var(--pin); color: white; }
+.btn-pin:hover { background: #9e0f31; transform: translateY(-1px); box-shadow: var(--shadow-md); }
+.pin-desc-card { background: var(--bg-main); border: 2px solid var(--border); border-radius: var(--radius-sm); padding: 18px; margin-bottom: 14px; transition: all 0.2s; position: relative; }
+.pin-desc-card:hover { border-color: var(--pin); }
+.pin-desc-label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.6px; color: var(--pin); margin-bottom: 8px; }
+.pin-desc-text { font-size: 15px; line-height: 1.7; color: var(--text-primary); margin-bottom: 10px; }
+.pin-char-count { font-size: 12px; font-family: var(--font-mono); color: var(--text-tertiary); }
+.pin-char-count.good { color: var(--success); font-weight: 700; }
+.pin-char-count.over { color: var(--danger); font-weight: 700; }
+.pin-copy-btn { position: absolute; top: 12px; right: 12px; background: rgba(189,18,60,0.1); color: var(--pin); border: none; padding: 5px 12px; border-radius: var(--radius-sm); font-size: 12px; font-weight: 600; cursor: pointer; font-family: var(--font-main); transition: all 0.2s; }
+.pin-copy-btn:hover { background: var(--pin); color: white; }
+.pin-titles-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+.pin-title-card { background: var(--bg-main); border: 2px solid var(--border); border-radius: var(--radius-sm); padding: 16px; transition: all 0.2s; cursor: pointer; }
+.pin-title-card:hover { border-color: var(--pin); background: var(--pin-pale); }
+.pin-title-num { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.6px; color: var(--pin); margin-bottom: 6px; }
+.pin-title-text { font-size: 14px; font-weight: 700; line-height: 1.4; color: var(--text-primary); margin-bottom: 8px; }
+.pin-title-len { font-size: 11px; font-family: var(--font-mono); color: var(--text-tertiary); }
+.pin-hashtags-box { display: flex; flex-wrap: wrap; gap: 8px; padding: 16px; background: var(--bg-main); border-radius: var(--radius-sm); }
+.pin-tag { display: inline-block; padding: 5px 12px; background: rgba(189,18,60,0.08); color: var(--pin); border-radius: 14px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; border: 1px solid rgba(189,18,60,0.2); }
+.pin-tag:hover { background: var(--pin); color: white; }
+.pin-board { padding: 10px 16px; margin: 6px 0; background: var(--bg-main); border-radius: var(--radius-sm); display: flex; align-items: center; gap: 10px; font-size: 14px; border: 1px solid var(--border); }
+.pin-board-icon { font-size: 18px; }
+.pin-full-block { background: #1e0a10; color: #f4c6d0; padding: 24px; border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 13px; line-height: 1.9; max-height: 420px; overflow-y: auto; white-space: pre-wrap; border: 2px solid #3d1020; }
+.pin-tip { background: var(--pin-pale); border: 1px solid rgba(189,18,60,0.2); border-radius: var(--radius-sm); padding: 12px 16px; font-size: 13px; color: var(--text-secondary); margin-bottom: 16px; }
+.pin-tip strong { color: var(--pin); }
+
+/* ══════════════════════════════════════════
+   🏭 PIN FACTORY
+══════════════════════════════════════════ */
+nav button#nav-pinfactory.active { color: var(--factory); border-bottom-color: var(--factory); }
+.factory-hero { background: linear-gradient(135deg, var(--factory-pale), rgba(180,83,9,0.12)); border: 2px solid rgba(180,83,9,0.2); border-radius: var(--radius); padding: 28px 32px; margin-bottom: 24px; }
+.factory-hero h2 { font-size: 22px; font-weight: 800; color: var(--factory); margin-bottom: 8px; }
+.factory-hero p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; max-width: 680px; }
+.factory-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 20px; }
+.factory-stat { background: white; border-radius: var(--radius-sm); padding: 14px 16px; text-align: center; border: 2px solid rgba(180,83,9,0.15); }
+.factory-stat-val { font-size: 28px; font-weight: 800; color: var(--factory); }
+.factory-stat-label { font-size: 12px; color: var(--text-secondary); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
+.canva-setup { background: var(--bg-surface); border: 2px solid var(--border); border-radius: var(--radius); padding: 24px; margin-bottom: 24px; }
+.canva-setup summary { font-size: 16px; font-weight: 700; cursor: pointer; color: var(--factory); list-style: none; display: flex; align-items: center; gap: 10px; }
+.canva-setup summary::before { content: '▶'; font-size: 12px; transition: transform 0.2s; }
+details[open] .canva-setup summary::before { transform: rotate(90deg); }
+.canva-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-top: 18px; }
+.canva-step { background: var(--bg-main); border-radius: var(--radius-sm); padding: 16px; border-left: 4px solid var(--factory); }
+.canva-step-num { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.6px; color: var(--factory); margin-bottom: 6px; }
+.canva-step-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+.canva-step-body { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+.canva-spec { display: inline-block; background: rgba(180,83,9,0.1); color: var(--factory); padding: 2px 8px; border-radius: 4px; font-family: var(--font-mono); font-size: 11px; font-weight: 700; }
+.layer-list { list-style: none; padding: 0; margin-top: 10px; }
+.layer-list li { padding: 6px 10px; margin: 4px 0; background: white; border-radius: 4px; font-size: 13px; display: flex; align-items: center; gap: 8px; border: 1px solid var(--border); }
+.layer-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.pin-type-selector { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
+.pin-type-btn { padding: 8px 16px; border: 2px solid var(--border); border-radius: 20px; font-size: 13px; font-weight: 600; cursor: pointer; background: var(--bg-surface); color: var(--text-secondary); transition: all 0.2s; font-family: var(--font-main); }
+.pin-type-btn:hover { border-color: var(--factory); color: var(--factory); }
+.pin-type-btn.selected { border-color: var(--factory); background: var(--factory-pale); color: var(--factory); }
+.pin-cards-grid { display: grid; gap: 20px; }
+.pin-card { background: var(--bg-surface); border: 2px solid var(--border); border-radius: var(--radius); overflow: hidden; transition: all 0.2s; }
+.pin-card:hover { box-shadow: var(--shadow-md); border-color: var(--factory); }
+.pin-card-header { display: flex; justify-content: space-between; align-items: center; padding: 14px 18px; background: var(--factory-pale); border-bottom: 2px solid rgba(180,83,9,0.15); }
+.pin-card-type { font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.6px; color: var(--factory); display: flex; align-items: center; gap: 8px; }
+.pin-card-actions { display: flex; gap: 8px; }
+.pin-card-body { display: grid; grid-template-columns: 180px 1fr; gap: 0; }
+.pin-visual { background: #1a0a00; width: 180px; min-height: 270px; position: relative; display: flex; flex-direction: column; justify-content: flex-end; padding: 14px; cursor: pointer; flex-shrink: 0; }
+.pin-visual-bg { position: absolute; inset: 0; background: linear-gradient(160deg, #3d2000 0%, #1a0a00 100%); opacity: 0.85; }
+.pin-visual-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 50%); }
+.pin-visual-content { position: relative; z-index: 2; }
+.pin-visual-title { font-size: 11px; font-weight: 800; color: white; line-height: 1.3; margin-bottom: 6px; text-shadow: 0 1px 3px rgba(0,0,0,0.6); }
+.pin-visual-url { font-size: 9px; color: rgba(255,255,255,0.7); font-family: var(--font-mono); }
+.pin-visual-badge { position: absolute; top: 10px; left: 10px; z-index: 3; background: var(--factory); color: white; font-size: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; padding: 3px 7px; border-radius: 3px; }
+.pin-visual-ratio { position: absolute; top: 10px; right: 10px; z-index: 3; background: rgba(255,255,255,0.15); color: white; font-size: 8px; font-family: var(--font-mono); padding: 2px 6px; border-radius: 3px; }
+.pin-layers { padding: 18px 20px; display: flex; flex-direction: column; gap: 12px; }
+.pin-layer { background: var(--bg-main); border-radius: var(--radius-sm); padding: 12px 14px; border: 1px solid var(--border); }
+.pin-layer-name { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-tertiary); margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+.pin-layer-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.pin-layer-text { font-size: 14px; font-weight: 600; color: var(--text-primary); line-height: 1.4; margin-bottom: 8px; }
+.pin-layer-copy-btn { background: none; border: 1px solid var(--border); padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: 600; cursor: pointer; color: var(--text-secondary); font-family: var(--font-main); transition: all 0.2s; }
+.pin-layer-copy-btn:hover { border-color: var(--factory); color: var(--factory); }
+.pin-desc-layer { background: rgba(180,83,9,0.04); border-color: rgba(180,83,9,0.2); }
+.pin-img-prompt { background: #1e1e2e; color: #cdd6f4; padding: 12px 14px; border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 12px; line-height: 1.6; border: 1px solid #313244; margin-top: 4px; }
+.queue-table { width: 100%; border-collapse: collapse; }
+.queue-table th { padding: 10px 14px; text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-secondary); background: var(--bg-main); border-bottom: 2px solid var(--border); font-weight: 600; }
+.queue-table td { padding: 12px 14px; border-bottom: 1px solid var(--border); font-size: 13px; vertical-align: top; }
+.queue-table tr:hover td { background: var(--bg-main); }
+.queue-pin-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; background: var(--factory-pale); color: var(--factory); border: 1px solid rgba(180,83,9,0.2); }
+.queue-day { font-weight: 700; color: var(--text-secondary); }
+.export-block { background: #100800; color: #f5d5a0; padding: 24px; border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 12px; line-height: 2; max-height: 500px; overflow-y: auto; white-space: pre-wrap; border: 2px solid #3d2000; margin-top: 16px; }
+.btn-factory { background: var(--factory); color: white; }
+.btn-factory:hover { background: #92400E; transform: translateY(-1px); box-shadow: var(--shadow-md); }
+
 @media (max-width: 968px) {
-  .editor, .meta-grid, .product-fields, .label-row { grid-template-columns: 1fr; }
-  nav button { min-width: 85px; font-size: 12px; padding: 12px 6px; }
+  .pin-card-body { grid-template-columns: 1fr; }
+  .pin-visual { width: 100%; min-height: 180px; }
+  .factory-stats { grid-template-columns: 1fr 1fr; }
+  .editor, .meta-grid, .product-fields, .label-row, .pin-titles-grid { grid-template-columns: 1fr; }
+  nav button { min-width: 72px; font-size: 10px; padding: 12px 3px; }
   .container { padding: 16px; }
 }
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-track { background: var(--bg-main); }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 5px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--text-tertiary); }
-.folder-save-box { background:rgba(0,208,132,0.06); border:1px solid rgba(0,208,132,0.25); border-radius:var(--radius-sm); padding:16px 20px; margin-bottom:20px; }
-.folder-save-box code { background:rgba(0,208,132,0.12); padding:1px 5px; border-radius:3px; font-family:var(--font-mono); font-size:12px; color:#065F46; }
 </style>
 </head>
 <body>
@@ -286,7 +410,7 @@ tbody tr:hover { background: var(--bg-main); }
   <div style="display:flex; justify-content:space-between; align-items:center;">
     <div>
       <h2>Affiliate Blog Scheduler Pro</h2>
-      <div class="subtitle">Create, optimize, and schedule your affiliate content</div>
+      <div class="subtitle">Create, optimize, schedule, and share your affiliate content</div>
     </div>
     <div style="display:flex; align-items:center; gap:16px;">
       <div id="autosaveStatus" style="font-size:13px; opacity:0.8; display:flex; align-items:center; gap:8px;">
@@ -300,11 +424,14 @@ tbody tr:hover { background: var(--bg-main); }
 
 <nav>
   <button onclick="openTab('editor')" class="active" id="nav-editor">✏️ Editor</button>
+  <button onclick="openTab('import')" id="nav-import">⚡ Import AI</button>
   <button onclick="openTab('products')" id="nav-products">🛍️ Products <span id="productCountBadge" class="product-count-badge" style="display:none;">0</span></button>
   <button onclick="openTab('seo')" id="nav-seo">📊 SEO</button>
   <button onclick="openTab('schedule')" id="nav-schedule">📅 Schedule</button>
   <button onclick="openTab('deploy')" id="nav-deploy">💾 Drafts</button>
   <button onclick="openTab('affiliate')" id="nav-affiliate">🔗 Links</button>
+  <button onclick="openTab('pinterest')" id="nav-pinterest">📌 Pinterest</button>
+  <button onclick="openTab('pinfactory')" id="nav-pinfactory">🏭 Pin Factory</button>
 </nav>
 
 <div class="container">
@@ -341,11 +468,11 @@ tbody tr:hover { background: var(--bg-main); }
     <div style="display:flex;gap:8px;align-items:center;margin-top:6px;">
       <div class="image-path-group" style="flex:1;">
         <span class="image-path-prefix">/content/images/</span>
-        <input type="text" id="imagePath" placeholder="your-post-hero.jpg" oninput="triggerAutosave()" style="margin:0;">
+        <input type="text" id="imagePath" placeholder="hero-image.png" oninput="triggerAutosave()" style="margin:0;">
       </div>
       <button onclick="copyImagePath()" class="btn btn-secondary btn-sm" title="Copy full path to clipboard">📋 Copy</button>
     </div>
-    <div class="image-path-hint">Commit this file to your repo at <code>/content/images/</code> separately</div>
+    <div class="image-path-hint">Include the extension — e.g. <code>hero.png</code> or <code>hero.jpg</code>. Commit this file to your repo at <code>/content/images/</code> separately.</div>
     <div class="image-upload-area">
       <input type="file" id="imageUpload" accept="image/*" style="display:none;">
       <button onclick="document.getElementById('imageUpload').click()" class="btn btn-secondary" style="width:100%;">
@@ -426,17 +553,14 @@ tbody tr:hover { background: var(--bg-main); }
 </section>
 
 <!-- ═══ SCHEDULE ═══ -->
-<!-- ✅ FIX 1: Added live EAT/UTC timezone preview below the datetime input -->
 <section id="schedule">
   <div class="panel">
     <h3>Schedule Publication</h3>
     <label><span style="font-weight:600;">Publication Date &amp; Time</span></label>
     <p style="font-size:13px; color:var(--text-secondary); margin: 4px 0 8px;">
-      ⏰ Enter time in your local timezone — <strong>Nairobi (EAT, UTC+3)</strong>. The scheduler stores both EAT and UTC in the frontmatter automatically.
+      ⏰ Enter your Nairobi time <strong>(EAT, UTC+3)</strong> — the scheduler stores UTC in the frontmatter automatically.
     </p>
     <input type="datetime-local" id="publishDate" oninput="updateTzPreview()">
-
-    <!-- ✅ NEW: Live timezone preview -->
     <div class="tz-preview" id="tzPreview">
       <div class="tz-item">
         <span class="tz-label">🕐 You entered (EAT)</span>
@@ -451,7 +575,6 @@ tbody tr:hover { background: var(--bg-main); }
         <span class="tz-value" id="tzCountdown">—</span>
       </div>
     </div>
-
     <div class="action-row">
       <button onclick="preparePost()" class="btn btn-primary">🚀 Prepare Post for Publishing</button>
       <button onclick="clearForm()" class="btn btn-secondary">🗑️ Clear Form</button>
@@ -470,10 +593,10 @@ tbody tr:hover { background: var(--bg-main); }
     <div class="folder-save-box">
       <div style="font-size:14px;font-weight:700;color:#065F46;margin-bottom:6px;">📁 Save directly to your repo folder</div>
       <div style="font-size:13px;color:var(--text-secondary);margin-bottom:14px;line-height:1.6;">
-        Pick your repo's <code>content/posts/drafts/</code> folder once — the scheduler remembers it. After that, one click saves the <code>.md</code> file directly there. Then just open GitHub Desktop and push.
+        Pick your repo's <code>posts/</code> folder once — the scheduler remembers it. After that, one click saves the <code>.md</code> file directly there. Then just open GitHub Desktop and push.
       </div>
       <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-        <button onclick="pickRepoFolder()" class="btn btn-secondary btn-sm" id="pickFolderBtn">📂 Pick drafts/ folder</button>
+        <button onclick="pickRepoFolder()" class="btn btn-secondary btn-sm" id="pickFolderBtn">📂 Pick posts/ folder</button>
         <div id="folderStatus" style="font-size:13px;color:var(--text-secondary);font-family:var(--font-mono);"></div>
       </div>
       <div id="folderUnsupported" style="display:none;margin-top:10px;font-size:13px;color:var(--warning);">⚠️ Your browser does not support folder-save. Use the standard save button below (Chrome or Edge recommended).</div>
@@ -489,7 +612,7 @@ tbody tr:hover { background: var(--bg-main); }
   <div class="panel">
     <h3>Draft History</h3>
     <table>
-      <thead><tr><th>Slug</th><th>Title</th><th>Scheduled (EAT)</th><th>Status</th><th>Actions</th></tr></thead>
+      <thead><tr><th>Slug</th><th>Title</th><th>Scheduled</th><th>Status</th><th>Actions</th></tr></thead>
       <tbody id="draftList"></tbody>
     </table>
     <div id="emptyDrafts" class="empty-state" style="display:none;">
@@ -539,7 +662,6 @@ tbody tr:hover { background: var(--bg-main); }
         <span class="image-path-prefix">/content/images/products/</span>
         <input type="text" id="newLinkImage" placeholder="chair.jpg" style="margin:0;">
       </div>
-      <div style="font-size:11px;color:var(--text-tertiary);margin-top:3px;font-family:var(--font-mono);">Leave blank if no image yet — you can add it later when editing the product card</div>
     </div>
     <div style="margin-top:10px;">
       <div style="font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.4px;">🏷️ Sidebar Label <span style="font-weight:400;font-style:italic;text-transform:none;">(optional)</span></div>
@@ -578,7 +700,225 @@ tbody tr:hover { background: var(--bg-main); }
   </div>
 </section>
 
-</div>
+<!-- ═══ IMPORT AI POST ═══ -->
+<section id="import">
+  <div class="import-hero">
+    <h2>⚡ Paste AI Post → Auto-Fill Everything</h2>
+    <p>Copy the full output from your writing prompt (Claude/ChatGPT) and paste it below. The scheduler will automatically extract the title, slug, meta description, keywords, categories, tags, featured image, products, and the full markdown content — then fill in every field for you. One paste. Done.</p>
+    <div class="import-steps">
+      <div class="import-step"><div class="import-step-num">1</div><strong>Run your prompt</strong><p>Use your AI writing prompt to generate the post</p></div>
+      <div class="import-step"><div class="import-step-num">2</div><strong>Copy all output</strong><p>Select everything from the AI response</p></div>
+      <div class="import-step"><div class="import-step-num">3</div><strong>Paste below</strong><p>Hit "Parse & Fill" — all fields auto-populated</p></div>
+      <div class="import-step"><div class="import-step-num">4</div><strong>Schedule & save</strong><p>Go to Schedule tab, set your date, prepare &amp; save</p></div>
+    </div>
+  </div>
+  <div class="panel">
+    <h3>Paste AI Post Output</h3>
+    <p style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;">
+      Paste the <strong>complete output</strong> from your writing prompt — including the metadata lines at the top and the Image Generation List at the bottom.
+    </p>
+    <div class="import-paste-area">
+      <textarea id="importPasteArea" placeholder="# Best Bedroom Decor Ideas 2026...&#10;&#10;**Meta Description:** Transform your bedroom...&#10;**URL Slug:** /best-bedroom-decor-ideas&#10;..."></textarea>
+    </div>
+    <div class="action-row" style="margin-top:16px;">
+      <button onclick="parseAndFill()" class="btn btn-primary" style="font-size:16px;padding:14px 28px;">⚡ Parse &amp; Fill All Fields</button>
+      <button onclick="document.getElementById('importPasteArea').value=''" class="btn btn-secondary">🗑️ Clear</button>
+    </div>
+    <div id="parseResult" class="parse-result"></div>
+  </div>
+  <div class="panel" id="imageListPanel" style="display:none;">
+    <h3>🖼️ Image Generation List</h3>
+    <p style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;">Generate each image using the prompt provided, save to <code>/content/images/</code> using the exact filename shown.</p>
+    <div id="imageListTable"></div>
+    <div class="action-row" style="margin-top:16px;">
+      <button onclick="copyImageFilenames()" class="btn btn-secondary btn-sm">📋 Copy All Filenames</button>
+      <button onclick="copyImagePrompts()" class="btn btn-secondary btn-sm">📋 Copy All AI Prompts</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PINTEREST ═══ -->
+<section id="pinterest" id="section-pinterest">
+  <div class="panel">
+    <h3>📌 Pinterest Output Generator</h3>
+    <div class="pinterest-intro">
+      <strong>Auto-generated from your post metadata.</strong> Fill in your title, description, keywords, and categories in the Editor tab first — then come here to get Pinterest copy ready to paste into Tailwind. Takes 10 seconds instead of 20 minutes.
+    </div>
+    <div class="pin-tip">
+      💡 <strong>Tip:</strong> Run the <strong>Import AI</strong> tab first to auto-fill all metadata from your writing prompt, then come here — everything will be ready to generate in one click.
+    </div>
+    <div class="pin-generate-row">
+      <button onclick="generatePinterest()" class="btn btn-pin" style="font-size:16px;padding:14px 28px;">📌 Generate Pinterest Copy</button>
+      <span id="pinGenStatus" style="font-size:13px;color:var(--text-secondary);"></span>
+    </div>
+  </div>
+
+  <div id="pinterestOutput" style="display:none;">
+
+    <div class="panel">
+      <h3>Pin Descriptions <span style="font-size:13px;font-weight:400;color:var(--text-secondary);">220–232 characters, keyword-first</span></h3>
+      <p style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;">Two variations — pick the one that feels most natural. Click 📋 to copy. Both are optimised for Pinterest's algorithm: keyword-first, benefit-clear, within the ideal character range.</p>
+      <div id="pinDescOptions"></div>
+    </div>
+
+    <div class="panel">
+      <h3>Pin Title Variations <span style="font-size:13px;font-weight:400;color:var(--text-secondary);">Ready to paste into Tailwind</span></h3>
+      <p style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;">Click any title card to copy it. Test all three in Tailwind — A/B differences in click-through are common even between similar titles.</p>
+      <div class="pin-titles-grid" id="pinTitlesGrid"></div>
+    </div>
+
+    <div class="panel">
+      <h3>Pinterest Hashtags <span style="font-size:13px;font-weight:400;color:var(--text-secondary);">10–15 niche tags</span></h3>
+      <p style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;">Click any tag to copy individually, or copy all at once. Use 5–10 of these per pin.</p>
+      <div class="pin-hashtags-box" id="pinHashtags"></div>
+      <div class="action-row" style="margin-top:16px;">
+        <button onclick="copyPinHashtags()" class="btn btn-secondary btn-sm">📋 Copy All Hashtags</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>Suggested Boards to Pin To</h3>
+      <p style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;">Based on your post categories and tags. Pin to 3–5 of these for maximum reach.</p>
+      <div id="pinBoards"></div>
+    </div>
+
+    <div class="panel" style="background:rgba(189,18,60,0.03);border-color:rgba(189,18,60,0.15);">
+      <h3>📋 Full Tailwind Copy-Paste Block</h3>
+      <p style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;">Everything in one block — paste into your Tailwind draft note or a doc for easy reference when scheduling pins.</p>
+      <div id="pinFullBlock" class="pin-full-block"></div>
+      <div class="action-row" style="margin-top:16px;">
+        <button onclick="copyPinFull()" class="btn btn-pin">📋 Copy Full Block</button>
+        <span id="pinCopyConfirm" class="copy-confirm" style="background:#FFE4EC;color:#bd123c;">✅ Copied!</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</div><!-- /.container -->
+
+<!-- ═══ PIN FACTORY ═══ -->
+<section id="pinfactory">
+
+  <div class="factory-hero">
+    <h2>🏭 Pin Factory — 10 Pins Per Post, Automatically</h2>
+    <p>Every blog post generates 10 Pinterest pin variants across 5 core types and 5 engagement types. Each pin has Canva-ready layer text, a portrait AI image prompt (1000×1500px), Pinterest description, and scheduled day + time. Design your Canva template once — then Bulk Create all 10 in under 3 minutes per post.</p>
+    <div class="factory-stats">
+      <div class="factory-stat"><div class="factory-stat-val" id="fsPostCount">0</div><div class="factory-stat-label">Posts this week</div></div>
+      <div class="factory-stat"><div class="factory-stat-val" id="fsPinCount">0</div><div class="factory-stat-label">Pins generated</div></div>
+      <div class="factory-stat"><div class="factory-stat-val">10</div><div class="factory-stat-label">Pins per post</div></div>
+      <div class="factory-stat"><div class="factory-stat-val">1000×1500</div><div class="factory-stat-label">Pin dimensions</div></div>
+    </div>
+  </div>
+
+  <!-- CANVA SETUP GUIDE -->
+  <details style="margin-bottom:24px;">
+    <div class="canva-setup">
+      <summary>📐 One-Time Canva Template Setup Guide <span style="font-size:12px;font-weight:400;color:var(--text-secondary);margin-left:8px;">(read once, skip forever after)</span></summary>
+      <div style="margin-top:18px;">
+        <p style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;line-height:1.7;">Create <strong>one Canva template at 1000×1500px</strong> with named text layers. Every pin you make is just: open template → paste text into layers → swap background image → download. Under 2 minutes per pin once set up.</p>
+        <div class="canva-steps">
+          <div class="canva-step">
+            <div class="canva-step-num">Step 1</div>
+            <div class="canva-step-title">Create the canvas</div>
+            <div class="canva-step-body">New design → Custom size → <span class="canva-spec">1000 × 1500 px</span>. Save as "WGD Pinterest Template". This is your master — never edit the master directly, always duplicate first.</div>
+          </div>
+          <div class="canva-step">
+            <div class="canva-step-num">Step 2</div>
+            <div class="canva-step-title">Add background image layer</div>
+            <div class="canva-step-body">Add a full-canvas image placeholder. Set it as the bottom layer. You'll swap this with your AI-generated portrait image each time. Use a dark overlay (60–70% opacity black rectangle) on top so text is always readable.</div>
+          </div>
+          <div class="canva-step">
+            <div class="canva-step-num">Step 3</div>
+            <div class="canva-step-title">Create exactly 3 text layers</div>
+            <div class="canva-step-body">
+              <ul class="layer-list">
+                <li><span class="layer-dot" style="background:#FFB020;"></span><strong>HEADLINE</strong> — bold, large (48–64pt). Top 60% of canvas. This is the pin title.</li>
+                <li><span class="layer-dot" style="background:#00D084;"></span><strong>SUBLINE</strong> — medium weight (24–30pt). Below headline. The benefit line.</li>
+                <li><span class="layer-dot" style="background:#2D5BFF;"></span><strong>URL WATERMARK</strong> — small (16pt), bottom of canvas. Your blog URL, e.g. wowglamdecor.com</li>
+              </ul>
+            </div>
+          </div>
+          <div class="canva-step">
+            <div class="canva-step-num">Step 4</div>
+            <div class="canva-step-title">Lock the URL watermark</div>
+            <div class="canva-step-body">Right-click the URL layer → Lock. It will never move or get deleted accidentally. Your URL stays on every single pin automatically.</div>
+          </div>
+          <div class="canva-step">
+            <div class="canva-step-num">Step 5</div>
+            <div class="canva-step-title">Per-pin workflow</div>
+            <div class="canva-step-body">Duplicate template → swap background image → paste HEADLINE text → paste SUBLINE text → download as <span class="canva-spec">JPG, quality 80%</span> → upload to Pinterest. Done. Under 2 min.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <!-- GENERATE PANEL -->
+  <div class="panel">
+    <h3>Generate Pins for Current Post</h3>
+    <p style="font-size:14px;color:var(--text-secondary);margin-bottom:20px;">Loads from your Editor metadata. Fill in your post title, keywords, categories, and at least one product in the Products tab first for best results.</p>
+
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+      <button onclick="generatePinFactory()" class="btn btn-factory" style="font-size:16px;padding:14px 28px;">🏭 Generate All 5 Pins</button>
+      <span id="factoryStatus" style="font-size:13px;color:var(--text-secondary);"></span>
+    </div>
+  </div>
+
+  <!-- PIN CARDS -->
+  <div id="pinFactoryOutput" style="display:none;">
+
+    <div class="panel">
+      <h3>Pin Cards — Canva Layer Text + Image Prompts</h3>
+      <p style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;">Each card shows exactly what text goes in each Canva layer, plus the AI image prompt for a 1000×1500px portrait pin. Click any text block to copy it.</p>
+
+      <div class="pin-type-selector" id="pinTypeFilter">
+        <button class="pin-type-btn selected" onclick="filterPinCards('all', this)">All 10 Pins</button>
+        <button class="pin-type-btn" onclick="filterPinCards('hero', this)">🌟 Hero</button>
+        <button class="pin-type-btn" onclick="filterPinCards('benefit', this)">💡 Benefit</button>
+        <button class="pin-type-btn" onclick="filterPinCards('product', this)">🛍️ Product</button>
+        <button class="pin-type-btn" onclick="filterPinCards('list', this)">📋 List</button>
+        <button class="pin-type-btn" onclick="filterPinCards('question', this)">❓ Question</button>
+        <button class="pin-type-btn" onclick="filterPinCards('mistake', this)">⚠️ Mistake</button>
+        <button class="pin-type-btn" onclick="filterPinCards('budget', this)">💰 Budget</button>
+        <button class="pin-type-btn" onclick="filterPinCards('seasonal', this)">🗓️ Seasonal</button>
+        <button class="pin-type-btn" onclick="filterPinCards('comparison', this)">⚖️ Comparison</button>
+        <button class="pin-type-btn" onclick="filterPinCards('stat', this)">📈 Stat</button>
+      </div>
+
+      <div class="pin-cards-grid" id="pinCardsGrid"></div>
+    </div>
+
+    <!-- WEEKLY QUEUE -->
+    <div class="panel">
+      <h3>📅 Weekly Pinterest Queue</h3>
+      <p style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;">10 pins distributed across the week. Mon/Wed/Fri get 2 pins each at different times — Pinterest rewards accounts that pin at spread intervals, not in bursts. At 6 posts/week this stacks to <strong>60 pins/week</strong>.</p>
+      <div style="overflow-x:auto;">
+        <table class="queue-table" id="pinQueueTable">
+          <thead><tr><th>Day</th><th>Pin Type</th><th>Best Time (EAT)</th><th>Board</th><th>Title (copy →)</th></tr></thead>
+          <tbody id="pinQueueBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- EXPORT BLOCK -->
+    <div class="panel" style="background:rgba(180,83,9,0.03);border-color:rgba(180,83,9,0.15);">
+      <h3>📋 Full Export Block — Paste into Tailwind / Pinterest Notes Doc</h3>
+      <p style="font-size:14px;color:var(--text-secondary);margin-bottom:4px;">Everything for all 5 pins in one copyable block. One paste, all pins queued.</p>
+      <div id="pinFactoryExport" class="export-block"></div>
+      <div class="action-row" style="margin-top:16px;">
+        <button onclick="copyFactoryExport()" class="btn btn-factory">📋 Copy Full Export</button>
+        <button onclick="exportPinCSV()" class="btn btn-secondary">⬇️ Download Pin CSV <span style="font-size:11px;opacity:0.7;">(Canva Bulk Create)</span></button>
+        <button onclick="exportBlogImagesCSV()" class="btn btn-secondary">⬇️ Download Blog Images CSV <span style="font-size:11px;opacity:0.7;">(Canva Bulk Create)</span></button>
+        <span id="factoryCopyConfirm" class="copy-confirm" style="background:#FEF3C7;color:#92400E;">✅ Copied!</span>
+      </div>
+      <div style="margin-top:12px;padding:12px 16px;background:rgba(180,83,9,0.06);border:1px solid rgba(180,83,9,0.2);border-radius:var(--radius-sm);font-size:13px;color:var(--text-secondary);line-height:1.7;">
+        <strong style="color:var(--factory);">How to use the CSVs in Canva:</strong> Open your pin template → Apps → Bulk Create → Upload CSV → Map columns to text layers (HEADLINE → your headline element, SUBLINE → your subline element) → Generate all designs → Select all → Download as ZIP. Rename files using the <code>filename</code> column before committing to GitHub.
+      </div>
+    </div>
+
+  </div>
+</section>
 
 <!-- Load Draft Modal -->
 <div id="loadDraftModal" class="modal">
@@ -591,69 +931,13 @@ tbody tr:hover { background: var(--bg-main); }
   </div>
 </div>
 
-<script>
+<script data-cfasync="false">
 /* ══════════════════════════════════════════
    STATE
 ══════════════════════════════════════════ */
 let currentTab = 'editor';
 let uploadedImage = null;
 let productCounter = 0;
-
-/* ══════════════════════════════════════════
-   ✅ FIX 1: TIMEZONE HELPERS (EAT = UTC+3)
-══════════════════════════════════════════ */
-const EAT_OFFSET_MS = 3 * 60 * 60 * 1000; // 3 hours in ms
-
-/**
- * Takes the value from datetime-local input (treated as EAT)
- * and returns the equivalent UTC Date object.
- * datetime-local gives us "2026-03-01T09:00" with NO timezone info.
- * We treat that as EAT, so UTC = EAT - 3h.
- */
-function eatInputToUTC(localValue) {
-  if (!localValue) return null;
-  // Parse as if it were UTC, then subtract 3h to get true UTC
-  const assumedUTC = new Date(localValue + ':00Z');
-  return new Date(assumedUTC.getTime() - EAT_OFFSET_MS);
-}
-
-/**
- * Format a Date as a readable EAT string for display.
- */
-function formatEAT(utcDate) {
-  const eat = new Date(utcDate.getTime() + EAT_OFFSET_MS);
-  return eat.toISOString().replace('T', ' ').slice(0, 16) + ' EAT';
-}
-
-/**
- * Live preview: updates the timezone display box below the date input.
- */
-function updateTzPreview() {
-  const val = document.getElementById('publishDate').value;
-  const box = document.getElementById('tzPreview');
-  if (!val) { box.classList.remove('visible'); return; }
-
-  const utcDate = eatInputToUTC(val);
-  const now = new Date();
-  const diffMs = utcDate - now;
-
-  box.classList.add('visible');
-  document.getElementById('tzEAT').textContent = val.replace('T', ' ') + ' EAT';
-  document.getElementById('tzUTC').textContent = utcDate.toISOString().replace('T', ' ').slice(0, 16) + ' UTC';
-
-  if (diffMs < 0) {
-    document.getElementById('tzCountdown').textContent = '⚠️ This time is in the past';
-    document.getElementById('tzCountdown').style.color = 'var(--danger)';
-  } else {
-    const h = Math.floor(diffMs / 3600000);
-    const m = Math.floor((diffMs % 3600000) / 60000);
-    const days = Math.floor(h / 24);
-    const hrs  = h % 24;
-    const label = days > 0 ? `${days}d ${hrs}h ${m}m` : `${h}h ${m}m`;
-    document.getElementById('tzCountdown').textContent = label + ' from now';
-    document.getElementById('tzCountdown').style.color = 'var(--success)';
-  }
-}
 
 /* ══════════════════════════════════════════
    LABEL HELPERS
@@ -669,11 +953,6 @@ const PRESET_LABELS = [
   { value: 'CUSTOM',      text: '✏️ Custom label…', chip: 'label-custom-chip' },
 ];
 
-function getLabelChipClass(val) {
-  const p = PRESET_LABELS.find(l => l.value === val);
-  return p ? p.chip : 'label-custom-chip';
-}
-
 function getLabelStyle(val) {
   const map = {
     'NEW':           'background:#D1FAE5;color:#065F46;',
@@ -687,7 +966,7 @@ function getLabelStyle(val) {
 }
 
 /* ══════════════════════════════════════════
-   AFFILIATE CATALOG — PERSISTENT localStorage
+   AFFILIATE CATALOG
 ══════════════════════════════════════════ */
 const CATALOG_KEY = 'wgd_affiliate_catalog';
 const DEFAULT_CATALOG = [
@@ -704,10 +983,7 @@ function loadCatalog() {
   saveCatalog(DEFAULT_CATALOG);
   return DEFAULT_CATALOG;
 }
-function saveCatalog(catalog) {
-  localStorage.setItem(CATALOG_KEY, JSON.stringify(catalog));
-  updateCatalogCount();
-}
+function saveCatalog(catalog) { localStorage.setItem(CATALOG_KEY, JSON.stringify(catalog)); updateCatalogCount(); }
 function updateCatalogCount() {
   const catalog = loadCatalog();
   const el = document.getElementById('catalogCountDisplay');
@@ -723,7 +999,7 @@ function searchAffiliate() {
   ul.innerHTML = ''; empty.style.display = 'none'; noRes.style.display = 'none';
   const res = q ? catalog.filter(a => a.name.toLowerCase().includes(q) || (a.category||'').toLowerCase().includes(q)) : catalog;
   if (!res.length) { noRes.style.display = 'block'; return; }
-  renderAffiliateResults(res, q);
+  renderAffiliateResults(res);
 }
 
 function renderAffiliateResults(items) {
@@ -732,14 +1008,10 @@ function renderAffiliateResults(items) {
   ul.innerHTML = items.map(a => {
     const trueIdx = catalog.findIndex(c => c.link === a.link && c.name === a.name);
     const shortLink = a.link.length > 45 ? a.link.slice(0,45)+'…' : a.link;
-    const imgFile    = a.image || '';
-    const labelVal   = a.label || '';
-    const imgDisplay = imgFile
-      ? `<span style="color:var(--success);font-size:11px;">🖼️ ${imgFile}</span>`
-      : `<span style="color:var(--text-tertiary);font-size:11px;font-style:italic;">no image saved</span>`;
-    const labelDisplay = labelVal
-      ? `<span style="margin-left:8px;padding:1px 7px;border-radius:8px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.4px;${getLabelStyle(labelVal)}">${labelVal}</span>`
-      : '';
+    const imgFile = a.image || '';
+    const labelVal = a.label || '';
+    const imgDisplay = imgFile ? `<span style="color:var(--success);font-size:11px;">🖼️ ${imgFile}</span>` : `<span style="color:var(--text-tertiary);font-size:11px;font-style:italic;">no image saved</span>`;
+    const labelDisplay = labelVal ? `<span style="margin-left:8px;padding:1px 7px;border-radius:8px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.4px;${getLabelStyle(labelVal)}">${labelVal}</span>` : '';
     return `<li>
       <div style="flex:1;min-width:0;">
         <div class="affiliate-name">${a.name}${labelDisplay}</div>
@@ -750,22 +1022,22 @@ function renderAffiliateResults(items) {
       <div class="affiliate-actions">
         <button class="affiliate-link" onclick="insertAffiliateLink('${esc(a.name)}','${esc(a.link)}')">📎 Insert</button>
         <button class="affiliate-link affiliate-link-purple" onclick="addLinkToProducts('${esc(a.name)}','${esc(a.link)}','${esc(a.price||'')}','${esc(imgFile)}','${esc(labelVal)}')">🛍️ Add to Sidebar</button>
-        <button class="affiliate-link affiliate-link-danger" onclick="deleteAffiliateLink(${trueIdx})" title="Delete from catalog">🗑️</button>
+        <button class="affiliate-link affiliate-link-danger" onclick="deleteAffiliateLink(${trueIdx})">🗑️</button>
       </div>
     </li>`;
   }).join('');
 }
 
 function addAffiliateLink() {
-  const name     = document.getElementById('newLinkName').value.trim();
-  const url      = document.getElementById('newLinkUrl').value.trim();
+  const name = document.getElementById('newLinkName').value.trim();
+  const url = document.getElementById('newLinkUrl').value.trim();
   const category = document.getElementById('newLinkCategory').value.trim();
-  const price    = document.getElementById('newLinkPrice').value.trim();
-  const image    = document.getElementById('newLinkImage').value.trim();
-  let   label    = document.getElementById('newLinkLabelSelect').value;
+  const price = document.getElementById('newLinkPrice').value.trim();
+  const image = document.getElementById('newLinkImage').value.trim();
+  let label = document.getElementById('newLinkLabelSelect').value;
   if (label === 'CUSTOM') label = document.getElementById('newLinkLabelCustom').value.trim();
   if (!name) { alert('⚠️ Please enter a product name'); return; }
-  if (!url)  { alert('⚠️ Please enter an affiliate URL'); return; }
+  if (!url) { alert('⚠️ Please enter an affiliate URL'); return; }
   const catalog = loadCatalog();
   if (catalog.find(c => c.link === url)) { alert('⚠️ This URL is already in your catalog'); return; }
   catalog.push({ name, link: url, category: category||'General', price: price||'', image: image||'', label: label||'' });
@@ -800,11 +1072,9 @@ function clearCatalog() {
 
 function exportCatalog() {
   const catalog = loadCatalog();
-  if (!catalog.length) { alert('⚠️ Your catalog is empty — nothing to export'); return; }
-  const payload = { exported: new Date().toISOString(), tool: 'Affiliate Blog Scheduler Pro', version: 1, count: catalog.length, catalog };
-  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
-  const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(blob), download: `wgd-catalog-backup-${new Date().toISOString().slice(0,10)}.json` });
-  a.click();
+  if (!catalog.length) { alert('⚠️ Your catalog is empty'); return; }
+  const blob = new Blob([JSON.stringify({ exported: new Date().toISOString(), tool: 'Affiliate Blog Scheduler Pro', version: 1, count: catalog.length, catalog }, null, 2)], { type: 'application/json' });
+  Object.assign(document.createElement('a'), { href: URL.createObjectURL(blob), download: `wgd-catalog-backup-${new Date().toISOString().slice(0,10)}.json` }).click();
 }
 
 function importCatalog(input) {
@@ -821,12 +1091,12 @@ function importCatalog(input) {
       incoming.forEach(item => {
         if (!item.name || !item.link) { skipped++; return; }
         if (catalog.find(c => c.link === item.link)) { skipped++; return; }
-        catalog.push({ name: item.name, link: item.link, category: item.category || 'General', price: item.price || '', image: item.image || '' });
+        catalog.push({ name: item.name, link: item.link, category: item.category||'General', price: item.price||'', image: item.image||'' });
         added++;
       });
       saveCatalog(catalog); updateCatalogCount(); searchAffiliate();
-      showImportStatus(`✅ Imported ${added} link${added!==1?'s':''}${skipped?' · '+skipped+' skipped (duplicates or invalid)':''}`, 'success');
-    } catch(e) { showImportStatus('❌ Invalid file — make sure it\'s a catalog backup JSON', 'error'); }
+      showImportStatus(`✅ Imported ${added} link${added!==1?'s':''}${skipped?' · '+skipped+' skipped':''}`, 'success');
+    } catch(e) { showImportStatus('❌ Invalid file', 'error'); }
     input.value = '';
   };
   reader.readAsText(file);
@@ -837,7 +1107,7 @@ function showImportStatus(msg, type) {
   const styles = { success: 'background:#D1FAE5;color:#065F46;border:1px solid #6EE7B7;', warning: 'background:#FEF3C7;color:#92400E;border:1px solid #FCD34D;', error: 'background:#FEE2E2;color:#DC2626;border:1px solid #FCA5A5;' };
   el.style.cssText = styles[type] || styles.success;
   el.textContent = msg; el.style.display = 'block';
-  setTimeout(() => { el.style.display='none'; }, 5000);
+  setTimeout(() => el.style.display='none', 5000);
 }
 
 function insertAffiliateLink(name, link) {
@@ -854,9 +1124,7 @@ function addLinkToProducts(name, link, price, imageFile, label) {
   addProductCard({ name, link, type:'product', price: price||'', image: imageFile ? '/content/images/products/'+imageFile : '', label: label||'' });
 }
 
-function esc(str) {
-  return String(str||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');
-}
+function esc(str) { return String(str||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;'); }
 
 /* ══════════════════════════════════════════
    IMAGE PATH HELPERS
@@ -865,7 +1133,7 @@ function copyImagePath() {
   const file = document.getElementById('imagePath').value.trim();
   if (!file) { alert('⚠️ Enter an image filename first'); return; }
   const full = '/content/images/' + file;
-  navigator.clipboard.writeText(full).then(() => alert('✅ Path copied: '+full)).catch(() => alert('❌ Copy failed — copy manually'));
+  navigator.clipboard.writeText(full).then(() => alert('✅ Path copied: '+full)).catch(() => alert('❌ Copy failed'));
 }
 
 /* ══════════════════════════════════════════
@@ -876,25 +1144,18 @@ const IMG_PREFIX = '/content/images/products/';
 function addProductCard(prefill) {
   const list = document.getElementById('productsList');
   const existing = list.querySelectorAll('.product-card').length;
-  if (existing >= 5) { alert('⚠️ Maximum 5 products per post. Remove one to add another.'); return; }
+  if (existing >= 5) { alert('⚠️ Maximum 5 products per post.'); return; }
   productCounter++;
   const id = productCounter;
   const isProduct = !prefill || prefill.type !== 'blog';
-  const prefillLabel  = prefill?.label  || '';
+  const prefillLabel = prefill?.label || '';
   const prefillCustom = prefill?.labelCustom || '';
   const isCustomLabel = prefillLabel === 'CUSTOM' || (prefillLabel && !PRESET_LABELS.find(l => l.value === prefillLabel && l.value !== 'CUSTOM' && l.value !== ''));
-  const labelOptions = PRESET_LABELS.map(l =>
-    `<option value="${l.value}" ${(isCustomLabel ? 'CUSTOM' : prefillLabel) === l.value ? 'selected' : ''}>${l.text}</option>`
-  ).join('');
-  const prefillImageFile = prefill?.image
-    ? (prefill.image.startsWith(IMG_PREFIX) ? prefill.image.slice(IMG_PREFIX.length) : prefill.image)
-    : '';
+  const labelOptions = PRESET_LABELS.map(l => `<option value="${l.value}" ${(isCustomLabel ? 'CUSTOM' : prefillLabel) === l.value ? 'selected' : ''}>${l.text}</option>`).join('');
+  const prefillImageFile = prefill?.image ? (prefill.image.startsWith(IMG_PREFIX) ? prefill.image.slice(IMG_PREFIX.length) : prefill.image) : '';
 
   const card = document.createElement('div');
-  card.className = 'product-card';
-  card.dataset.id   = id;
-  card.dataset.type = isProduct ? 'product' : 'blog';
-
+  card.className = 'product-card'; card.dataset.id = id; card.dataset.type = isProduct ? 'product' : 'blog';
   card.innerHTML = `
     <div class="product-card-header">
       <span class="product-card-title">Item ${existing + 1}</span>
@@ -916,27 +1177,19 @@ function addProductCard(prefill) {
         </div>
         <div>
           <div style="font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.4px;">Custom Label Text</div>
-          <input type="text" class="label-custom ${(isCustomLabel || prefillLabel === 'CUSTOM') ? 'visible' : ''}"
-            data-field="labelCustom" placeholder="e.g. Staff Pick, Hot Deal…"
-            value="${ea(isCustomLabel && !PRESET_LABELS.find(l=>l.value===prefillLabel && l.value!=='CUSTOM') ? prefillLabel : prefillCustom)}"
-            style="margin:0;">
+          <input type="text" class="label-custom ${(isCustomLabel || prefillLabel === 'CUSTOM') ? 'visible' : ''}" data-field="labelCustom" placeholder="e.g. Staff Pick, Hot Deal…" value="${ea(isCustomLabel && !PRESET_LABELS.find(l=>l.value===prefillLabel && l.value!=='CUSTOM') ? prefillLabel : prefillCustom)}" style="margin:0;">
         </div>
       </div>
       <input type="text" class="full-width" data-field="link" placeholder="Affiliate URL or /posts/slug.html" value="${ea(prefill?.link)}">
       <div class="full-width">
-        <div style="font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.4px;">
-          Product Image <span style="font-weight:400;font-style:italic;text-transform:none;">— filename only, e.g. <code style="font-size:11px;">chair.jpg</code></span>
-        </div>
+        <div style="font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.4px;">Product Image — filename only</div>
         <div class="image-path-group">
           <span class="image-path-prefix">${IMG_PREFIX}</span>
           <input type="text" data-field="imageFile" placeholder="chair.jpg" value="${ea(prefillImageFile)}">
         </div>
       </div>
     </div>`;
-
-  card.querySelectorAll('input, select').forEach(inp =>
-    inp.addEventListener('input', () => { generateFrontmatter(); updateProductBadge(); })
-  );
+  card.querySelectorAll('input, select').forEach(inp => inp.addEventListener('input', () => { generateFrontmatter(); updateProductBadge(); }));
   list.appendChild(card);
   updateAddButton(); updateProductBadge(); generateFrontmatter();
 }
@@ -966,9 +1219,7 @@ function setProductType(id, type, btn) {
 
 function removeProductCard(id) {
   document.querySelector(`.product-card[data-id="${id}"]`)?.remove();
-  document.querySelectorAll('.product-card').forEach((c,i) => {
-    c.querySelector('.product-card-title').textContent = `Item ${i+1}`;
-  });
+  document.querySelectorAll('.product-card').forEach((c,i) => { c.querySelector('.product-card-title').textContent = `Item ${i+1}`; });
   updateAddButton(); updateProductBadge(); generateFrontmatter();
 }
 
@@ -980,25 +1231,17 @@ function updateAddButton() {
 function updateProductBadge() {
   const count = document.querySelectorAll('.product-card').length;
   const badge = document.getElementById('productCountBadge');
-  badge.textContent = count;
-  badge.style.display = count > 0 ? 'inline-flex' : 'none';
+  badge.textContent = count; badge.style.display = count > 0 ? 'inline-flex' : 'none';
 }
 
 function getProductsData() {
   return Array.from(document.querySelectorAll('.product-card')).map(card => {
     const labelSelect = card.querySelector('[data-field="label"]');
     const labelCustom = card.querySelector('[data-field="labelCustom"]');
-    const imageFile   = card.querySelector('[data-field="imageFile"]').value.trim();
+    const imageFile = card.querySelector('[data-field="imageFile"]').value.trim();
     let labelVal = labelSelect ? labelSelect.value : '';
     if (labelVal === 'CUSTOM') labelVal = labelCustom?.value.trim() || '';
-    return {
-      type:  card.dataset.type,
-      name:  card.querySelector('[data-field="name"]').value.trim(),
-      price: card.querySelector('[data-field="price"]').value.trim(),
-      link:  card.querySelector('[data-field="link"]').value.trim(),
-      image: imageFile ? IMG_PREFIX + imageFile : '',
-      label: labelVal,
-    };
+    return { type: card.dataset.type, name: card.querySelector('[data-field="name"]').value.trim(), price: card.querySelector('[data-field="price"]').value.trim(), link: card.querySelector('[data-field="link"]').value.trim(), image: imageFile ? IMG_PREFIX + imageFile : '', label: labelVal };
   }).filter(p => p.name || p.link);
 }
 
@@ -1008,13 +1251,12 @@ function buildProductsYAML(indent) {
   const pad = indent || '';
   let yaml = `${pad}featured_products:\n`;
   products.forEach((p, i) => {
-    const isP = p.type === 'product';
-    yaml += `${pad}  # ${isP ? 'Product' : 'Blog Post'} ${i+1}\n`;
+    yaml += `${pad}  # ${p.type === 'product' ? 'Product' : 'Blog Post'} ${i+1}\n`;
     yaml += `${pad}  - name: "${p.name}"\n`;
-    if (isP && p.price)  yaml += `${pad}    price: "${p.price}"\n`;
-    if (p.label)         yaml += `${pad}    label: "${p.label}"\n`;
-    if (p.image)         yaml += `${pad}    image: "${p.image}"\n`;
-    if (p.link)          yaml += `${pad}    link: "${p.link}"\n`;
+    if (p.type==='product' && p.price) yaml += `${pad}    price: "${p.price}"\n`;
+    if (p.label) yaml += `${pad}    label: "${p.label}"\n`;
+    if (p.image) yaml += `${pad}    image: "${p.image}"\n`;
+    if (p.link) yaml += `${pad}    link: "${p.link}"\n`;
     yaml += '\n';
   });
   return yaml;
@@ -1035,13 +1277,7 @@ function generateFrontmatter() {
   document.getElementById('productsPreviewGrid').innerHTML = products.map(p => {
     const shortLink = p.link ? (p.link.length > 38 ? p.link.slice(0,38)+'…' : p.link) : '—';
     const labelHtml = p.label ? `<div class="product-preview-label" style="${getLabelStyle(p.label)}">${p.label}</div>` : '';
-    return `<div class="product-preview-card">
-      ${labelHtml}
-      <div class="product-preview-name">${p.name||'—'}</div>
-      ${p.type==='product' && p.price ? `<div class="product-preview-price">${p.price}</div>` : ''}
-      <div class="product-preview-cta">${p.type==='product' ? '🛍️ Shop Now →' : '📝 Read More →'}</div>
-      <span class="product-preview-link">${shortLink}</span>
-    </div>`;
+    return `<div class="product-preview-card">${labelHtml}<div class="product-preview-name">${p.name||'—'}</div>${p.type==='product' && p.price ? `<div class="product-preview-price">${p.price}</div>` : ''}<div class="product-preview-cta">${p.type==='product' ? '🛍️ Shop Now →' : '📝 Read More →'}</div><span class="product-preview-link">${shortLink}</span></div>`;
   }).join('');
 }
 
@@ -1052,11 +1288,11 @@ function copyFrontmatter() {
     const el = document.getElementById('copyConfirm');
     el.style.display='inline-flex';
     setTimeout(() => el.style.display='none', 2500);
-  }).catch(() => alert('❌ Copy failed — select the text manually'));
+  }).catch(() => alert('❌ Copy failed'));
 }
 
 /* ══════════════════════════════════════════
-   IMAGE UPLOAD (local preview only)
+   IMAGE UPLOAD
 ══════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('imageUpload').addEventListener('change', e => {
@@ -1065,10 +1301,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const pathField = document.getElementById('imagePath');
     if (!pathField.value && slug.value) pathField.value = `${slug.value}.jpg`;
     const reader = new FileReader();
-    reader.onload = ev => {
-      uploadedImage = { name:file.name, size:file.size, type:file.type, data:ev.target.result };
-      displayImagePreview(); triggerAutosave();
-    };
+    reader.onload = ev => { uploadedImage = { name:file.name, size:file.size, type:file.type, data:ev.target.result }; displayImagePreview(); triggerAutosave(); };
     reader.readAsDataURL(file);
   });
 });
@@ -1077,23 +1310,14 @@ function displayImagePreview() {
   const container = document.getElementById('imagePreviewContainer');
   if (!uploadedImage) { container.innerHTML=''; return; }
   const sizeKB = (uploadedImage.size/1024).toFixed(2);
-  container.innerHTML = `<div class="image-preview">
-    <div style="font-size:12px;background:rgba(255,183,0,0.1);border:1px solid #FFB020;border-radius:6px;padding:8px 12px;margin-bottom:8px;color:#92600E;">
-      ⚠️ <strong>Preview only</strong> — upload this file to GitHub at the path shown above.
-    </div>
-    <img src="${uploadedImage.data}" alt="Preview">
-    <div style="font-size:13px;color:var(--text-secondary);margin-top:6px;">${uploadedImage.name} (${sizeKB} KB)</div>
-    <div class="image-preview-actions">
-      <button onclick="insertImageIntoContent()" class="insert-image">📝 Insert into Content</button>
-      <button onclick="removeImage()" class="remove-image">🗑️ Remove</button>
-    </div></div>`;
+  container.innerHTML = `<div class="image-preview"><div style="font-size:12px;background:rgba(255,183,0,0.1);border:1px solid #FFB020;border-radius:6px;padding:8px 12px;margin-bottom:8px;color:#92600E;">⚠️ <strong>Preview only</strong> — upload this file to GitHub at the path shown above.</div><img src="${uploadedImage.data}" alt="Preview"><div style="font-size:13px;color:var(--text-secondary);margin-top:6px;">${uploadedImage.name} (${sizeKB} KB)</div><div class="image-preview-actions"><button onclick="insertImageIntoContent()" class="insert-image">📝 Insert into Content</button><button onclick="removeImage()" class="remove-image">🗑️ Remove</button></div></div>`;
 }
 
 function insertImageIntoContent() {
   const file = document.getElementById('imagePath').value.trim();
-  const src  = file ? '/content/images/' + file : uploadedImage.data;
-  const md   = `![${uploadedImage.name}](${src})`;
-  const ta   = document.getElementById('content');
+  const src = file ? '/content/images/' + file : uploadedImage.data;
+  const md = `![${uploadedImage.name}](${src})`;
+  const ta = document.getElementById('content');
   const s=ta.selectionStart, e=ta.selectionEnd;
   ta.value = ta.value.slice(0,s)+md+ta.value.slice(e);
   ta.selectionStart = ta.selectionEnd = s+md.length;
@@ -1102,8 +1326,7 @@ function insertImageIntoContent() {
 
 function removeImage() {
   if (!confirm('Remove the local preview image?')) return;
-  uploadedImage=null; displayImagePreview();
-  document.getElementById('imageUpload').value=''; triggerAutosave();
+  uploadedImage=null; displayImagePreview(); document.getElementById('imageUpload').value=''; triggerAutosave();
 }
 
 /* ══════════════════════════════════════════
@@ -1112,28 +1335,18 @@ function removeImage() {
 function startAutosave() {
   setInterval(saveToAutosave, 30000);
   ['title','slug','content','description','tags','seoKeywords','imagePath'].forEach(id => {
-    document.getElementById(id)?.addEventListener('input', () => {
-      clearTimeout(window.autosaveTimeout);
-      window.autosaveTimeout = setTimeout(triggerAutosave, 2000);
-    });
+    document.getElementById(id)?.addEventListener('input', () => { clearTimeout(window.autosaveTimeout); window.autosaveTimeout = setTimeout(triggerAutosave, 2000); });
   });
 }
 
 function saveToAutosave() {
   localStorage.setItem('autosave', JSON.stringify({
-    title:       title.value,
-    slug:        slug.value,
-    description: document.getElementById('description').value,
-    content:     content.value,
-    tags:        document.getElementById('tags').value,
-    keywords:    document.getElementById('seoKeywords').value,
-    imagePath:   document.getElementById('imagePath').value,
-    categories:  Array.from(document.querySelectorAll('#categorySelect input:checked')).map(c=>c.value),
-    publishDate: document.getElementById('publishDate').value,
-    disclaimer:  document.getElementById('disclaimer').checked,
-    image:       uploadedImage,
-    products:    getProductsData(),
-    timestamp:   new Date().toISOString()
+    title: title.value, slug: slug.value, description: document.getElementById('description').value,
+    content: content.value, tags: document.getElementById('tags').value, keywords: document.getElementById('seoKeywords').value,
+    imagePath: document.getElementById('imagePath').value,
+    categories: Array.from(document.querySelectorAll('#categorySelect input:checked')).map(c=>c.value),
+    publishDate: document.getElementById('publishDate').value, disclaimer: document.getElementById('disclaimer').checked,
+    image: uploadedImage, products: getProductsData(), timestamp: new Date().toISOString()
   }));
   updateAutosaveStatus('saved');
 }
@@ -1152,19 +1365,7 @@ function loadDraft() {
   if (!raw) { alert('ℹ️ No autosaved draft found'); return; }
   const data = JSON.parse(raw);
   const productCount = data.products ? data.products.length : 0;
-  document.getElementById('autosaveDraftPreview').innerHTML = `
-    <div class="draft-item">
-      <div class="draft-item-title">${data.title||'Untitled Post'}</div>
-      <div class="draft-item-meta">
-        Last saved: ${new Date(data.timestamp).toLocaleString()}<br>
-        ${data.content ? data.content.split(/\s+/).length+' words · ' : ''}${productCount} featured product${productCount!==1?'s':''}
-        ${data.imagePath ? `<br>📷 Image path: <code>${data.imagePath}</code>` : ''}
-      </div>
-      <div style="margin-top:12px; display:flex; gap:8px;">
-        <button class="btn btn-primary" onclick="restoreAutosave()">📂 Restore</button>
-        <button class="btn btn-secondary" onclick="clearAutosave()">🗑️ Delete</button>
-      </div>
-    </div>`;
+  document.getElementById('autosaveDraftPreview').innerHTML = `<div class="draft-item"><div class="draft-item-title">${data.title||'Untitled Post'}</div><div class="draft-item-meta">Last saved: ${new Date(data.timestamp).toLocaleString()}<br>${data.content ? data.content.split(/\s+/).length+' words · ' : ''}${productCount} featured product${productCount!==1?'s':''}${data.imagePath ? `<br>📷 Image path: <code>${data.imagePath}</code>` : ''}</div><div style="margin-top:12px; display:flex; gap:8px;"><button class="btn btn-primary" onclick="restoreAutosave()">📂 Restore</button><button class="btn btn-secondary" onclick="clearAutosave()">🗑️ Delete</button></div></div>`;
   document.getElementById('loadDraftModal').classList.add('active');
 }
 
@@ -1172,24 +1373,21 @@ function closeLoadModal() { document.getElementById('loadDraftModal').classList.
 
 function restoreAutosave() {
   const data = JSON.parse(localStorage.getItem('autosave')||'{}');
-  title.value = data.title||'';
-  slug.value  = data.slug||'';
+  title.value = data.title||''; slug.value = data.slug||'';
   document.getElementById('description').value = data.description||'';
   content.value = data.content||'';
-  document.getElementById('tags').value        = data.tags||'';
+  document.getElementById('tags').value = data.tags||'';
   document.getElementById('seoKeywords').value = data.keywords||'';
-  document.getElementById('imagePath').value   = data.imagePath||'';
+  document.getElementById('imagePath').value = data.imagePath||'';
   document.getElementById('publishDate').value = data.publishDate||'';
   document.getElementById('disclaimer').checked = data.disclaimer||false;
   if (data.image) { uploadedImage=data.image; displayImagePreview(); }
-  document.querySelectorAll('#categorySelect input[type="checkbox"]').forEach(cb => {
-    cb.checked = data.categories?.includes(cb.value)||false;
-  });
+  document.querySelectorAll('#categorySelect input[type="checkbox"]').forEach(cb => { cb.checked = data.categories?.includes(cb.value)||false; });
   updateSelectedCategories();
   document.getElementById('productsList').innerHTML='';
   productCounter=0;
   if (data.products?.length) data.products.forEach(p => addProductCard(p));
-  updatePreview(); updateTzPreview(); closeLoadModal(); alert('✅ Draft restored!');
+  updatePreview(); closeLoadModal(); alert('✅ Draft restored!');
 }
 
 function clearAutosave() {
@@ -1210,6 +1408,9 @@ function openTab(tab) {
   if (tab==='products') generateFrontmatter();
   if (tab==='affiliate') { updateCatalogCount(); searchAffiliate(); }
   if (tab==='schedule') updateTzPreview();
+  if (tab==='import') { document.getElementById('parseResult').style.display = 'none'; }
+  if (tab==='pinterest') generatePinterest();
+  if (tab==='pinfactory') generatePinFactory();
 }
 
 /* ══════════════════════════════════════════
@@ -1219,20 +1420,14 @@ const title   = document.getElementById('title');
 const slug    = document.getElementById('slug');
 const content = document.getElementById('content');
 
-function generateSlug(t) {
-  return t.toLowerCase().trim().replace(/[^\w\s-]/g,'').replace(/\s+/g,'-').replace(/--+/g,'-').replace(/^-+|-+$/g,'');
-}
-title.addEventListener('input', () => {
-  if (!slug.value || slug.dataset.autoGenerated==='true') { slug.value=generateSlug(title.value); slug.dataset.autoGenerated='true'; }
-});
+function generateSlug(t) { return t.toLowerCase().trim().replace(/[^\w\s-]/g,'').replace(/\s+/g,'-').replace(/--+/g,'-').replace(/^-+|-+$/g,''); }
+title.addEventListener('input', () => { if (!slug.value || slug.dataset.autoGenerated==='true') { slug.value=generateSlug(title.value); slug.dataset.autoGenerated='true'; } });
 slug.addEventListener('input', () => { slug.dataset.autoGenerated='false'; });
 content.addEventListener('input', updatePreview);
 
 function updatePreview() {
   const text = content.value;
-  document.getElementById('preview').innerHTML = text.trim()
-    ? marked.parse(text)
-    : `<div class="empty-state"><div class="empty-state-icon">📝</div><div class="empty-state-text">Start typing to see your preview</div></div>`;
+  document.getElementById('preview').innerHTML = text.trim() ? marked.parse(text) : `<div class="empty-state"><div class="empty-state-icon">📝</div><div class="empty-state-text">Start typing to see your preview</div></div>`;
   document.getElementById('wordCount').textContent = text.trim().split(/\s+/).filter(Boolean).length+' words';
   if (currentTab==='seo') runSEO();
 }
@@ -1250,116 +1445,59 @@ function runSEO() {
   const cats=document.querySelectorAll('#categorySelect input:checked').length;
   const prods=document.querySelectorAll('.product-card').length;
   const hasImg=!!document.getElementById('imagePath').value.trim()||!!uploadedImage;
-
   let score=0, checks=[];
-  if (words>=800)  { score+=15; checks.push({pass:true,  text:`Great content length (${words} words)`}); }
-  else               checks.push({pass:false, text:`Content too short (${words} words, aim for 800+)`});
-  if (headings>=3) { score+=15; checks.push({pass:true,  text:`Good use of headings (${headings} found)`}); }
-  else               checks.push({pass:false, text:`Add more headings (${headings} found, aim for 3+)`});
-  if (links>=3)    { score+=15; checks.push({pass:true,  text:`Good linking (${links} links)`}); }
-  else               checks.push({pass:false, text:`Add more links (${links} found, aim for 3+)`});
-  if (images>=2)   { score+=10; checks.push({pass:true,  text:`Images included (${images} found)`}); }
-  else               checks.push({pass:false, text:`Add images (${images} found, aim for 2+)`});
-  if (hasImg)      { score+=5;  checks.push({pass:true,  text:'Featured image path set ✓'}); }
-  else               checks.push({pass:false, text:'Set a featured image repo path'});
-  if (titleLen>=30&&titleLen<=60) { score+=10; checks.push({pass:true, text:`Title length optimal (${titleLen} chars)`}); }
-  else checks.push({pass:false, text:titleLen>0?`Title should be 30-60 chars (currently ${titleLen})`:'Add a title'});
-  if (descLen>=120&&descLen<=160) { score+=10; checks.push({pass:true, text:`Meta description perfect (${descLen} chars)`}); }
-  else checks.push({pass:false, text:descLen>0?`Meta description should be 120-160 chars (currently ${descLen})`:'Add a meta description'});
-  if (kw>=3)   { score+=10; checks.push({pass:true,  text:`Keywords defined (${kw})`}); }
-  else           checks.push({pass:false, text:`Add SEO keywords (${kw} found, aim for 3-5)`});
-  if (cats>=1) { score+=10; checks.push({pass:true,  text:`Categories selected (${cats})`}); }
-  else           checks.push({pass:false, text:'Select at least one category'});
+  if (words>=800)  { score+=15; checks.push({pass:true,  text:`Great content length (${words} words)`}); } else checks.push({pass:false, text:`Content too short (${words} words, aim for 800+)`});
+  if (headings>=3) { score+=15; checks.push({pass:true,  text:`Good use of headings (${headings} found)`}); } else checks.push({pass:false, text:`Add more headings (${headings} found, aim for 3+)`});
+  if (links>=3)    { score+=15; checks.push({pass:true,  text:`Good linking (${links} links)`}); } else checks.push({pass:false, text:`Add more links (${links} found, aim for 3+)`});
+  if (images>=2)   { score+=10; checks.push({pass:true,  text:`Images included (${images} found)`}); } else checks.push({pass:false, text:`Add images (${images} found, aim for 2+)`});
+  if (hasImg)      { score+=5;  checks.push({pass:true,  text:'Featured image path set ✓'}); } else checks.push({pass:false, text:'Set a featured image repo path'});
+  if (titleLen>=30&&titleLen<=60) { score+=10; checks.push({pass:true, text:`Title length optimal (${titleLen} chars)`}); } else checks.push({pass:false, text:titleLen>0?`Title should be 30-60 chars (currently ${titleLen})`:'Add a title'});
+  if (descLen>=120&&descLen<=160) { score+=10; checks.push({pass:true, text:`Meta description perfect (${descLen} chars)`}); } else checks.push({pass:false, text:descLen>0?`Meta description should be 120-160 chars (currently ${descLen})`:'Add a meta description'});
+  if (kw>=3)   { score+=10; checks.push({pass:true,  text:`Keywords defined (${kw})`}); } else checks.push({pass:false, text:`Add SEO keywords (${kw} found, aim for 3-5)`});
+  if (cats>=1) { score+=10; checks.push({pass:true,  text:`Categories selected (${cats})`}); } else checks.push({pass:false, text:'Select at least one category'});
   if (prods>0) checks.push({pass:true, text:`✨ Featured products added (${prods}) — great for conversions!`});
-
   const circle=document.getElementById('scoreCircle');
-  circle.textContent=score+'%';
-  circle.className='score-circle '+(score<50?'low':score<80?'medium':'high');
+  circle.textContent=score+'%'; circle.className='score-circle '+(score<50?'low':score<80?'medium':'high');
   document.getElementById('scoreText').textContent=score<50?'Needs significant improvement':score<80?'Good, but could be better':'Excellent SEO optimization!';
   document.getElementById('seoList').innerHTML=checks.map(c=>`<li class="${c.pass?'pass':'fail'}">${c.text}</li>`).join('');
-  document.getElementById('statWords').textContent=words;
-  document.getElementById('statChars').textContent=text.length;
-  document.getElementById('statHeadings').textContent=headings;
-  document.getElementById('statLinks').textContent=links;
+  document.getElementById('statWords').textContent=words; document.getElementById('statChars').textContent=text.length;
+  document.getElementById('statHeadings').textContent=headings; document.getElementById('statLinks').textContent=links;
 }
 
 /* ══════════════════════════════════════════
-   ✅ FIX 2: PREPARE POST — adds scheduled_date in UTC
-   The user enters time in EAT. We store:
-     date:           → UTC ISO (for post display date)
-     scheduled_date: → UTC ISO (for publish-scheduled.js to trigger on)
+   PREPARE POST
 ══════════════════════════════════════════ */
 function preparePost() {
-  if (!title.value)  { alert('⚠️ Please add a post title'); return; }
-  if (!slug.value)   { alert('⚠️ Please add a slug'); return; }
+  if (!title.value) { alert('⚠️ Please add a post title'); return; }
+  if (!slug.value) { alert('⚠️ Please add a slug'); return; }
   const scheduled = document.getElementById('publishDate').value;
-  if (!scheduled)    { alert('⚠️ Please set a publication date'); return; }
-
-  // ✅ Convert EAT input to true UTC
-  const utcDate = eatInputToUTC(scheduled);
-  const utcISO  = utcDate.toISOString();
-  const eatDisplay = scheduled.replace('T', ' ') + ' EAT';
-
-  // Warn if the date is in the past
-  if (utcDate < new Date()) {
-    if (!confirm(`⚠️ This publish time (${eatDisplay}) is in the past. The post will publish on the next workflow run. Continue?`)) return;
-  }
-
+  if (!scheduled) { alert('⚠️ Please set a publication date'); return; }
+  var utcDate = eatInputToUTC(scheduled);
+  var eatDisplay = scheduled.replace('T', ' ') + ' EAT';
+  if (utcDate < new Date()) { if (!confirm('⚠️ This publish time (' + eatDisplay + ') is in the past. Continue?')) return; }
   const selectedCats = Array.from(document.querySelectorAll('#categorySelect input:checked')).map(c=>c.value);
-  const tags    = document.getElementById('tags').value.split(',').map(t=>t.trim()).filter(Boolean);
-  const keys    = document.getElementById('seoKeywords').value.split(',').map(k=>k.trim()).filter(Boolean);
-  const imageFile     = document.getElementById('imagePath').value.trim();
+  const tags = document.getElementById('tags').value.split(',').map(t=>t.trim()).filter(Boolean);
+  const keys = document.getElementById('seoKeywords').value.split(',').map(k=>k.trim()).filter(Boolean);
+  const imageFile = document.getElementById('imagePath').value.trim();
   const fullImagePath = imageFile ? '/content/images/' + imageFile : '';
-  const productsYAML  = buildProductsYAML();
-
-  const imageEntry = fullImagePath
-    ? `featured_image: "${fullImagePath}"\n`
-    : uploadedImage
-      ? `featured_image: "/content/images/${slug.value}.jpg"  # ⚠️ Add this file to your repo\n`
-      : '';
-
-  // ✅ Both date: and scheduled_date: are written as UTC
-  // scheduled_date: is what publish-scheduled.js looks for
-  const fm = `---
-title: "${title.value}"
-description: "${document.getElementById('description').value}"
-slug: "${slug.value}"
-date: ${utcISO}
-scheduled_date: ${utcISO}
-# Scheduled for: ${eatDisplay} (UTC+3 Nairobi)
-categories:
-${selectedCats.map(c=>'  - '+c).join('\n')}
-tags:
-${tags.map(t=>'  - '+t).join('\n')}
-keywords:
-${keys.map(k=>'  - '+k).join('\n')}
-${imageEntry}${productsYAML}published: false
----
-
-`;
-
-  const disclosure = document.getElementById('disclaimer').checked
-    ? `> ⚠️ **FTC Disclosure**: This post contains affiliate links. We may earn a commission if you make a purchase through these links at no additional cost to you.\n\n`
-    : '';
-
+  const productsYAML = buildProductsYAML();
+  const imageEntry = fullImagePath ? `featured_image: "${fullImagePath}"\n` : uploadedImage ? `featured_image: "/content/images/${slug.value}.jpg"  # ⚠️ Add this file to your repo\n` : '';
+  const fm = `---\ntitle: "${title.value}"\ndescription: "${document.getElementById('description').value}"\nslug: "${slug.value}"\ndate: ${utcDate.toISOString()}\nscheduled_date: ${utcDate.toISOString()}\n# Scheduled for: ${eatDisplay} (EAT, UTC+3)\ncategories:\n${selectedCats.map(c=>'  - '+c).join('\n')}\ntags:\n${tags.map(t=>'  - '+t).join('\n')}\nkeywords:\n${keys.map(k=>'  - '+k).join('\n')}\n${imageEntry}${productsYAML}published: true\n---\n\n`;
+  const disclosure = document.getElementById('disclaimer').checked ? `> ⚠️ **FTC Disclosure**: This post contains affiliate links. We may earn a commission if you make a purchase through these links at no additional cost to you.\n\n` : '';
   document.getElementById('finalPost').textContent = fm + disclosure + content.value;
   document.getElementById('finalPostContainer').style.display = 'block';
   saveToDraftHistory();
 }
 
 /* ══════════════════════════════════════════
-   FOLDER SAVE — File System Access API
+   FOLDER SAVE
 ══════════════════════════════════════════ */
 const FOLDER_KEY = 'wgd_repo_folder';
 let repoFolderHandle = null;
 
 document.addEventListener('DOMContentLoaded', () => {
-  if (!window.showDirectoryPicker) {
-    document.getElementById('folderUnsupported').style.display = 'block';
-    document.getElementById('pickFolderBtn').style.display = 'none';
-  } else {
-    restoreFolder();
-  }
+  if (!window.showDirectoryPicker) { document.getElementById('folderUnsupported').style.display = 'block'; document.getElementById('pickFolderBtn').style.display = 'none'; }
+  else { restoreFolder(); }
 });
 
 async function restoreFolder() {
@@ -1388,17 +1526,16 @@ async function pickRepoFolder() {
 
 function showFolderStatus(name, ready) {
   const el = document.getElementById('folderStatus');
-  const btn = document.getElementById('pickFolderBtn');
   el.innerHTML = ready ? `✅ <strong>${name}/</strong> selected — saves go here` : `📁 ${name} — <em>needs permission</em>`;
   el.style.color = ready ? '#065F46' : '#92400E';
-  btn.textContent = '🔄 Change folder';
+  document.getElementById('pickFolderBtn').textContent = '🔄 Change folder';
   if (ready) { document.getElementById('saveFolderBtn').style.display = 'inline-flex'; document.getElementById('saveDownloadBtn').style.display = 'none'; }
 }
 
 async function saveDraftToFolder() {
   const fp = document.getElementById('finalPost');
   if (!fp.textContent) { alert('⚠️ Please prepare the post first in the Schedule tab'); return; }
-  if (!slug.value)     { alert('⚠️ Slug is required'); return; }
+  if (!slug.value) { alert('⚠️ Slug is required'); return; }
   if (!repoFolderHandle) { alert('⚠️ Pick a folder first'); return; }
   try {
     const perm = await repoFolderHandle.requestPermission({ mode: 'readwrite' });
@@ -1423,26 +1560,11 @@ function openFolderDB() {
   return new Promise((res, rej) => {
     const req = indexedDB.open('wgd_scheduler', 1);
     req.onupgradeneeded = e => e.target.result.createObjectStore('meta');
-    req.onsuccess = e => res(e.target.result);
-    req.onerror = () => rej(req.error);
+    req.onsuccess = e => res(e.target.result); req.onerror = () => rej(req.error);
   });
 }
-function dbGet(db, key) {
-  return new Promise((res, rej) => {
-    const tx = db.transaction('meta', 'readonly');
-    const req = tx.objectStore('meta').get(key);
-    req.onsuccess = () => res(req.result);
-    req.onerror = () => rej(req.error);
-  });
-}
-function dbSet(db, key, val) {
-  return new Promise((res, rej) => {
-    const tx = db.transaction('meta', 'readwrite');
-    const req = tx.objectStore('meta').put(val, key);
-    req.onsuccess = () => res();
-    req.onerror = () => rej(req.error);
-  });
-}
+function dbGet(db, key) { return new Promise((res, rej) => { const tx = db.transaction('meta', 'readonly'); const req = tx.objectStore('meta').get(key); req.onsuccess = () => res(req.result); req.onerror = () => rej(req.error); }); }
+function dbSet(db, key, val) { return new Promise((res, rej) => { const tx = db.transaction('meta', 'readwrite'); const req = tx.objectStore('meta').put(val, key); req.onsuccess = () => res(); req.onerror = () => rej(req.error); }); }
 
 /* ══════════════════════════════════════════
    SAVE / EXPORT
@@ -1450,34 +1572,15 @@ function dbSet(db, key, val) {
 function saveDraft() {
   const fp = document.getElementById('finalPost');
   if (!fp.textContent) { alert('⚠️ Please prepare the post first in the Schedule tab'); return; }
-  if (!slug.value)     { alert('⚠️ Slug is required to save'); return; }
-  const a = Object.assign(document.createElement('a'), {
-    href: URL.createObjectURL(new Blob([fp.textContent],{type:'text/markdown'})),
-    download: `${slug.value}.md`
-  });
-  a.click();
-  showSaveConfirm('✅ Downloaded — move the file to content/posts/drafts/ folder, then push from GitHub Desktop.');
+  if (!slug.value) { alert('⚠️ Slug is required to save'); return; }
+  Object.assign(document.createElement('a'), { href: URL.createObjectURL(new Blob([fp.textContent],{type:'text/markdown'})), download: `${slug.value}.md` }).click();
+  showSaveConfirm('✅ Downloaded — move the file to your posts/ folder, then push from GitHub Desktop.');
 }
 
 function exportJSON() {
-  const data = {
-    title: title.value, slug: slug.value,
-    description: document.getElementById('description').value,
-    content: content.value,
-    tags: document.getElementById('tags').value.split(',').map(t=>t.trim()).filter(Boolean),
-    keywords: document.getElementById('seoKeywords').value.split(',').map(k=>k.trim()).filter(Boolean),
-    categories: Array.from(document.querySelectorAll('#categorySelect input:checked')).map(c=>c.value),
-    scheduledDate: document.getElementById('publishDate').value,
-    disclaimer: document.getElementById('disclaimer').checked,
-    imagePath: document.getElementById('imagePath').value.trim(),
-    featuredImage: uploadedImage,
-    featured_products: getProductsData()
-  };
-  const a = Object.assign(document.createElement('a'), {
-    href: URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'})),
-    download: `${slug.value||'post'}.json`
-  });
-  a.click(); alert('✅ Exported as JSON!');
+  const data = { title: title.value, slug: slug.value, description: document.getElementById('description').value, content: content.value, tags: document.getElementById('tags').value.split(',').map(t=>t.trim()).filter(Boolean), keywords: document.getElementById('seoKeywords').value.split(',').map(k=>k.trim()).filter(Boolean), categories: Array.from(document.querySelectorAll('#categorySelect input:checked')).map(c=>c.value), scheduledDate: document.getElementById('publishDate').value, disclaimer: document.getElementById('disclaimer').checked, imagePath: document.getElementById('imagePath').value.trim(), featuredImage: uploadedImage, featured_products: getProductsData() };
+  Object.assign(document.createElement('a'), { href: URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'})), download: `${slug.value||'post'}.json` }).click();
+  alert('✅ Exported as JSON!');
 }
 
 function copyToClipboard() {
@@ -1488,16 +1591,11 @@ function copyToClipboard() {
 
 /* ══════════════════════════════════════════
    DRAFT HISTORY
-   ✅ Shows scheduled time in EAT for readability
 ══════════════════════════════════════════ */
 function saveToDraftHistory() {
   let drafts = JSON.parse(localStorage.getItem('drafts')||'[]');
-  drafts = [
-    {slug:slug.value, title:title.value, scheduled:document.getElementById('publishDate').value, savedAt:new Date().toISOString()},
-    ...drafts.filter(d=>d.slug!==slug.value)
-  ].slice(0,20);
-  localStorage.setItem('drafts', JSON.stringify(drafts));
-  updateDraftTable();
+  drafts = [{ slug:slug.value, title:title.value, scheduled:document.getElementById('publishDate').value, savedAt:new Date().toISOString() }, ...drafts.filter(d=>d.slug!==slug.value)].slice(0,20);
+  localStorage.setItem('drafts', JSON.stringify(drafts)); updateDraftTable();
 }
 
 function updateDraftTable() {
@@ -1505,15 +1603,10 @@ function updateDraftTable() {
   const body = document.getElementById('draftList');
   document.getElementById('emptyDrafts').style.display = drafts.length ? 'none' : 'block';
   body.innerHTML = drafts.map((d,i) => {
-    // d.scheduled is the raw datetime-local value (EAT, no tz info)
-    // Convert to UTC to compare against now
-    const utcDate = d.scheduled ? eatInputToUTC(d.scheduled) : null;
-    const now = new Date();
-    const [status,cls] = utcDate ? (utcDate<=now?['✅ Ready','status-ready']:['⏳ Scheduled','status-scheduled']) : ['📝 Draft','status-draft'];
-    // Display in EAT
-    const disp = d.scheduled ? d.scheduled.replace('T', ' ') + ' EAT' : '—';
-    return `<tr><td><code>${d.slug}</code></td><td>${d.title||'Untitled'}</td><td>${disp}</td><td><span class="status-badge ${cls}">${status}</span></td>
-      <td><button onclick="deleteDraft(${i})" class="btn btn-secondary" style="padding:6px 12px;font-size:13px;">🗑️</button></td></tr>`;
+    const sc=d.scheduled?new Date(d.scheduled):null, now=new Date();
+    const [status,cls] = sc ? (sc<=now?['✅ Ready','status-ready']:['⏳ Scheduled','status-scheduled']) : ['📝 Draft','status-draft'];
+    const disp = sc ? sc.toLocaleString('en-US',{month:'short',day:'numeric',year:'numeric',hour:'2-digit',minute:'2-digit'}) : '—';
+    return `<tr><td><code>${d.slug}</code></td><td>${d.title||'Untitled'}</td><td>${disp}</td><td><span class="status-badge ${cls}">${status}</span></td><td><button onclick="deleteDraft(${i})" class="btn btn-secondary" style="padding:6px 12px;font-size:13px;">🗑️</button></td></tr>`;
   }).join('');
 }
 
@@ -1562,11 +1655,7 @@ function filterCategories() {
   const q = document.getElementById('categorySearch').value.toLowerCase().trim();
   document.querySelectorAll('.category-group').forEach(group => {
     let visible=0;
-    group.querySelectorAll('label').forEach(lbl => {
-      const match = !q||lbl.dataset.category.includes(q)||lbl.dataset.group.includes(q);
-      lbl.classList.toggle('hidden',!match);
-      if (match) visible++;
-    });
+    group.querySelectorAll('label').forEach(lbl => { const match = !q||lbl.dataset.category.includes(q)||lbl.dataset.group.includes(q); lbl.classList.toggle('hidden',!match); if (match) visible++; });
     group.classList.toggle('hidden',!visible);
   });
 }
@@ -1575,8 +1664,7 @@ function updateSelectedCategories() {
   const container = document.getElementById('selectedCategories');
   container.innerHTML='';
   document.querySelectorAll('#categorySelect input:checked').forEach(cb => {
-    const badge=document.createElement('div');
-    badge.className='category-badge';
+    const badge=document.createElement('div'); badge.className='category-badge';
     badge.innerHTML=`<span>${cb.value}</span><button title="Remove" onclick="this.closest('.category-badge').remove(); document.getElementById('${cb.id}').checked=false;">×</button>`;
     container.appendChild(badge);
   });
@@ -1597,6 +1685,7 @@ function clearForm() {
   document.getElementById('productsOutputPanel').style.display='none';
   document.getElementById('finalPostContainer').style.display='none';
   document.getElementById('tzPreview').classList.remove('visible');
+  document.getElementById('pinterestOutput').style.display='none';
   updatePreview(); runSEO();
 }
 
@@ -1604,16 +1693,869 @@ function clearForm() {
    KEYBOARD SHORTCUTS
 ══════════════════════════════════════════ */
 document.addEventListener('keydown', e => {
-  if ((e.ctrlKey||e.metaKey)&&e.key==='s') {
-    e.preventDefault();
-    document.getElementById('finalPost').textContent ? saveDraft() : alert('⚠️ Prepare the post first in the Schedule tab');
-  }
+  if ((e.ctrlKey||e.metaKey)&&e.key==='s') { e.preventDefault(); document.getElementById('finalPost').textContent ? saveDraft() : alert('⚠️ Prepare the post first in the Schedule tab'); }
   if ((e.ctrlKey||e.metaKey)&&e.key==='Enter') { e.preventDefault(); preparePost(); }
 });
 
 /* ══════════════════════════════════════════
-   INIT
+   ⚡ IMPORT & PARSE
 ══════════════════════════════════════════ */
+function parseAndFill() {
+  var raw = document.getElementById('importPasteArea').value.trim();
+  if (!raw) { showParseResult('error', 'Nothing to parse — paste your AI post output first', []); return; }
+  var filled = [], warnings = [];
+
+  var titleMatch = raw.match(/^#\s+(.+)$/m);
+  if (titleMatch) { var t = titleMatch[1].trim(); document.getElementById('title').value = t; document.getElementById('slug').dataset.autoGenerated = 'true'; filled.push({ icon: '📝', label: 'Title', val: t }); } else { warnings.push('Title (# heading) not found'); }
+
+  var descMatch = raw.match(/\*\*Meta Description:\*\*\s*(.+?)(\n|$)/i);
+  if (descMatch) { var d = descMatch[1].trim().replace(/^["']|["']$/g, ''); document.getElementById('description').value = d; filled.push({ icon: '📋', label: 'Meta Description', val: d.slice(0,60)+'...' }); } else { warnings.push('Meta Description not found'); }
+
+  var slugMatch = raw.match(/\*\*URL Slug:\*\*\s*\/?(\S+)/i);
+  if (slugMatch) { var s = slugMatch[1].replace(/^\//, '').trim(); document.getElementById('slug').value = s; document.getElementById('slug').dataset.autoGenerated = 'false'; filled.push({ icon: '🔗', label: 'Slug', val: s }); }
+
+  var pkMatch = raw.match(/\*\*Primary Keyword:\*\*\s*(.+?)(\(|~|\n|$)/i);
+  if (pkMatch) {
+    var pk = pkMatch[1].trim().replace(/["']/g,''); filled.push({ icon: '🎯', label: 'Primary Keyword', val: pk });
+    var skMatch = raw.match(/\*\*Secondary Keywords:\*\*\s*([\s\S]+?)(\n\*\*|\n##|---)/i);
+    if (skMatch) { var sk = skMatch[1].replace(/\n/g,' ').trim(); document.getElementById('seoKeywords').value = pk + ', ' + sk; filled.push({ icon: '🔑', label: 'Keywords', val: (pk+', '+sk).slice(0,60)+'...' }); }
+    else { document.getElementById('seoKeywords').value = pk; }
+  }
+
+  var tagsMatch = raw.match(/\*\*Tags:\*\*\s*([\s\S]+?)(\n\*\*|\n##|---)/i);
+  if (tagsMatch) { var tags = tagsMatch[1].replace(/\n/g,' ').trim().replace(/^["']|["']$/g,''); document.getElementById('tags').value = tags; filled.push({ icon: '🏷️', label: 'Tags', val: tags.slice(0,60)+'...' }); }
+
+  var catsMatch = raw.match(/\*\*Categories?:\*\*\s*(.+?)(\n|$)/i);
+  if (catsMatch) {
+    var catStr = catsMatch[1].trim();
+    var catList = catStr.split(/,\s*/).map(function(c){ return c.trim().replace(/[*_]/g,''); });
+    document.querySelectorAll('#categorySelect input[type="checkbox"]').forEach(function(cb){ cb.checked = false; });
+    var matched = 0;
+    catList.forEach(function(cat) { document.querySelectorAll('#categorySelect input[type="checkbox"]').forEach(function(cb) { if (cb.value.toLowerCase() === cat.toLowerCase()) { cb.checked = true; matched++; } }); });
+    updateSelectedCategories();
+    if (matched > 0) filled.push({ icon: '📂', label: 'Categories', val: catStr.slice(0,60) }); else warnings.push('Categories not matched: ' + catStr);
+  }
+
+  var heroMatch = raw.match(/!\[.*?hero.*?\]\(\/(?:content\/)?images\/([^)]+)\)/i) || raw.match(/!\[.*?\]\(\/(?:content\/)?images\/(hero[^)]+)\)/i) || raw.match(/!\[.*?\]\(\/(?:content\/)?images\/([^)]+)\)/i);
+  if (heroMatch) { var imgFile = heroMatch[1].trim().replace(/^content\/images\//, '').replace(/^images\//, ''); document.getElementById('imagePath').value = imgFile; filled.push({ icon: '🖼️', label: 'Featured Image', val: imgFile }); }
+
+  var articleContent = raw;
+  var contentStart = raw.search(/^!\[|^##\s/m);
+  if (contentStart > 0) { articleContent = raw.slice(contentStart); }
+  articleContent = articleContent.replace(/^---\s*\n## Internal Links Used[\s\S]*$/m, '').replace(/^---\s*\n## 🖼[\s\S]*$/m, '').replace(/^## 🖼[\s\S]*$/m, '').trim();
+  document.getElementById('content').value = articleContent;
+  var wc = articleContent.trim().split(/\s+/).filter(Boolean).length;
+  filled.push({ icon: '📄', label: 'Content', val: wc + ' words' });
+  updatePreview();
+
+  var productMatches = [...raw.matchAll(/###\s+(.+?)\s+(?:—|–)\s+(.+?)\n[\s\S]*?\*\*Price:\*\*\s*(\$[\d\-–$,]+)[\s\S]*?\[.*?👉.*?\]\(([^)]+)\)/g)];
+  if (productMatches.length > 0) {
+    document.getElementById('productsList').innerHTML = ''; productCounter = 0;
+    var added = 0;
+    productMatches.forEach(function(m) { if (added >= 5) return; addProductCard({ name: m[1].trim(), label: m[2].trim(), price: m[3].trim(), link: m[4].trim(), type: 'product' }); added++; });
+    if (added > 0) filled.push({ icon: '🛍️', label: 'Products', val: added + ' product cards added' });
+    updateProductBadge();
+  }
+
+  var imgListMatch = raw.match(/##\s*[🖼\uD83D\uDDBC][^\n]*\n([\s\S]+?)(?:Total Images:|Total Word Count:|$)/i);
+  var parsedImages = [];
+  if (imgListMatch) {
+    var tableStr = imgListMatch[1];
+    var rows = tableStr.split('\n').filter(function(r){ return r.includes('|') && !/^[\s|:-]+$/.test(r); });
+    rows.forEach(function(row) {
+      var cells = row.split('|').map(function(c){ return c.trim(); }).filter(Boolean);
+      if (cells.length >= 4 && /^\d+$/.test(cells[0])) { parsedImages.push({ num: cells[0], placement: cells[1], filename: cells[2], prompt: cells[3] }); }
+    });
+    if (parsedImages.length > 0) filled.push({ icon: '📸', label: 'Images', val: parsedImages.length + ' images parsed' });
+  }
+
+  if (filled.length === 0) { showParseResult('error', 'Could not parse — paste the full AI response including metadata header', []); return; }
+  var warnHtml = warnings.length ? '<div style="margin-top:8px;font-size:12px;color:#92400E;">Not found: ' + warnings.join(', ') + '</div>' : '';
+  showParseResult('success', 'Parsed — ' + filled.length + ' fields filled', filled, warnHtml);
+  if (parsedImages.length > 0) renderImageList(parsedImages);
+  setTimeout(function(){ openTab('editor'); }, 1200);
+}
+
+function showParseResult(type, title, fields, extra='') {
+  const el = document.getElementById('parseResult');
+  el.className = 'parse-result' + (type==='error' ? ' error' : '');
+  el.style.display = 'block';
+  const fieldsHtml = fields.length ? `<div class="parse-fields">${fields.map(f => `<div class="parse-field"><span class="parse-field-icon">${f.icon}</span><span class="parse-field-label">${f.label}:</span><span class="parse-field-val" title="${f.val}">${f.val}</span></div>`).join('')}</div>` : '';
+  el.innerHTML = `<div class="parse-result-title">${title}</div>${fieldsHtml}${extra}`;
+}
+
+let _parsedImages = [];
+function renderImageList(images) {
+  _parsedImages = images;
+  const panel = document.getElementById('imageListPanel');
+  panel.style.display = 'block';
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  document.getElementById('imageListTable').innerHTML = `<table class="parsed-images-table"><thead><tr><th>#</th><th>Placement</th><th>Filename</th><th>AI Prompt</th></tr></thead><tbody>${images.map(img => `<tr><td style="font-weight:700;color:var(--text-secondary);">${img.num}</td><td style="font-size:13px;color:var(--text-secondary);">${img.placement}</td><td><span class="filename-pill">${img.filename}</span></td><td><div class="prompt-text">${img.prompt}</div></td></tr>`).join('')}</tbody></table>`;
+}
+
+function copyImageFilenames() { const names = _parsedImages.map(i => i.filename).join('\n'); navigator.clipboard.writeText(names).then(() => alert('✅ Filenames copied!')); }
+function copyImagePrompts() { const prompts = _parsedImages.map(i => `${i.num}. ${i.filename}\n${i.prompt}`).join('\n\n'); navigator.clipboard.writeText(prompts).then(() => alert('✅ Prompts copied!')); }
+
+/* ══════════════════════════════════════════
+   TIMEZONE
+══════════════════════════════════════════ */
+var EAT_OFFSET_MS = 3 * 60 * 60 * 1000;
+function eatInputToUTC(localValue) { if (!localValue) return null; var assumedUTC = new Date(localValue + ':00Z'); return new Date(assumedUTC.getTime() - EAT_OFFSET_MS); }
+function updateTzPreview() {
+  var val = document.getElementById('publishDate').value;
+  var box = document.getElementById('tzPreview');
+  if (!val) { box.classList.remove('visible'); return; }
+  var utcDate = eatInputToUTC(val);
+  var now = new Date();
+  var diffMs = utcDate - now;
+  box.classList.add('visible');
+  document.getElementById('tzEAT').textContent = val.replace('T', ' ') + ' EAT';
+  document.getElementById('tzUTC').textContent = utcDate.toISOString().replace('T', ' ').slice(0, 16) + ' UTC';
+  var countdown = document.getElementById('tzCountdown');
+  if (diffMs < 0) { countdown.textContent = '⚠️ This time is in the past'; countdown.style.color = 'var(--danger)'; }
+  else { var h = Math.floor(diffMs / 3600000); var m = Math.floor((diffMs % 3600000) / 60000); var days = Math.floor(h / 24); var hrs = h % 24; var label = days > 0 ? (days + 'd ' + hrs + 'h ' + m + 'm') : (h + 'h ' + m + 'm'); countdown.textContent = label + ' from now'; countdown.style.color = 'var(--success)'; }
+}
+
+/* ══════════════════════════════════════════
+   📌 PINTEREST GENERATOR
+══════════════════════════════════════════ */
+function generatePinterest() {
+  const postTitle = document.getElementById('title').value.trim();
+  const metaDesc  = document.getElementById('description').value.trim();
+  const keywords  = document.getElementById('seoKeywords').value.trim();
+  const tagsRaw   = document.getElementById('tags').value.trim();
+  const cats      = Array.from(document.querySelectorAll('#categorySelect input:checked')).map(c => c.value);
+
+  if (!postTitle) {
+    document.getElementById('pinGenStatus').textContent = '⚠️ Add a post title in the Editor tab first';
+    return;
+  }
+  document.getElementById('pinGenStatus').textContent = '';
+  document.getElementById('pinterestOutput').style.display = 'block';
+
+  const kwList = keywords ? keywords.split(',').map(k => k.trim()).filter(Boolean) : [];
+  const tagList = tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(Boolean) : [];
+  const primaryKw = kwList[0] || postTitle;
+
+  const descs = buildPinDescriptions(postTitle, metaDesc, primaryKw, kwList, cats);
+  renderPinDescriptions(descs);
+
+  const titles = buildPinTitles(postTitle, primaryKw, kwList);
+  renderPinTitles(titles);
+
+  const hashtags = buildHashtags(kwList, tagList, cats, postTitle);
+  renderHashtags(hashtags);
+
+  const boards = buildBoards(cats, tagList, postTitle);
+  renderBoards(boards);
+
+  buildFullBlock(descs, titles, hashtags, boards);
+  document.getElementById('pinterestOutput').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function buildPinDescriptions(postTitle, metaDesc, primaryKw, kwList, cats) {
+  const kw2 = kwList[1] || '';
+  const kw3 = kwList[2] || '';
+  const catStr = cats.slice(0,2).join(' & ');
+
+  let v1 = `${capitalise(primaryKw)} – ${metaDesc || ('Discover the best ' + primaryKw + ' ideas to transform your home. ' + (kw2 ? 'From ' + kw2 + ' to ' + (kw3 || 'luxury picks') + ', ' : '') + 'find everything to elevate your space on any budget.')}`;
+  v1 = trimToRange(v1, 220, 232);
+
+  let v2Base = `Looking for ${primaryKw}? We've rounded up the best${catStr ? ' ' + catStr.toLowerCase() : ''} ideas${kw2 ? ', ' + kw2 + ',' : ''} and top picks${kw3 ? ' including ' + kw3 : ''} — budget and luxury options included. Save this for your next home project!`;
+  let v2 = trimToRange(v2Base, 220, 232);
+
+  return [
+    { label: 'Variation 1 — Keyword-First', text: v1 },
+    { label: 'Variation 2 — Action-Led', text: v2 },
+  ];
+}
+
+function buildPinTitles(postTitle, primaryKw, kwList) {
+  const year = new Date().getFullYear();
+  const kw2 = kwList[1] || '';
+  const t1 = trimTitle(postTitle, 100);
+  const t2 = trimTitle(`Best ${capitalise(primaryKw)} ${year}${kw2 ? ' + ' + capitalise(kw2) : ''}`, 100);
+  const t3 = trimTitle(`${capitalise(primaryKw)} Ideas You'll Love (Budget & Luxury)`, 100);
+  return [
+    { num: 'Title 1', text: t1 },
+    { num: 'Title 2', text: t2 },
+    { num: 'Title 3', text: t3 },
+  ];
+}
+
+function buildHashtags(kwList, tagList, cats, postTitle) {
+  const all = new Set();
+  kwList.slice(0,5).forEach(kw => all.add('#' + slugifyTag(kw)));
+  tagList.slice(0,8).forEach(t => all.add('#' + slugifyTag(t)));
+  cats.forEach(c => all.add('#' + slugifyTag(c)));
+  ['#homedesign','#homedecor','#interiordesign','#homeinspiration','#decorideas'].forEach(h => all.add(h));
+  return Array.from(all).slice(0,15);
+}
+
+function buildBoards(cats, tagList, postTitle) {
+  const boards = [];
+  const boardMap = {
+    'bedroom':       { icon: '🛏️', name: 'Bedroom Decor Ideas' },
+    'living room':   { icon: '🛋️', name: 'Living Room Inspiration' },
+    'dining room':   { icon: '🍽️', name: 'Dining Room Decor' },
+    'home office':   { icon: '💻', name: 'Home Office Setup' },
+    'kitchen':       { icon: '🍳', name: 'Kitchen Decor & Design' },
+    'bathroom':      { icon: '🚿', name: 'Bathroom Refresh Ideas' },
+    'outdoor':       { icon: '🌿', name: 'Outdoor & Patio Decor' },
+    'lighting':      { icon: '💡', name: 'Home Lighting Ideas' },
+    'rugs':          { icon: '🪨', name: 'Area Rugs & Flooring' },
+    'budget':        { icon: '💰', name: 'Budget Home Decor' },
+    'luxury':        { icon: '✨', name: 'Luxury Home Decor' },
+    'minimalist':    { icon: '◻️', name: 'Minimalist Home Design' },
+    'boho':          { icon: '🌙', name: 'Boho & Eclectic Decor' },
+    'modern':        { icon: '🏢', name: 'Modern Home Design' },
+    'small space':   { icon: '📦', name: 'Small Space Solutions' },
+    'wall decor':    { icon: '🖼️', name: 'Wall Decor & Art' },
+    'wall art':      { icon: '🖼️', name: 'Wall Decor & Art' },
+    'entryway':      { icon: '🚪', name: 'Entryway & Hallway Decor' },
+    'storage':       { icon: '📦', name: 'Storage & Organization' },
+    'furniture':     { icon: '🪑', name: 'Home Furniture Ideas' },
+  };
+  const seen = new Set();
+  const combined = [...cats.map(c => c.toLowerCase()), ...tagList.map(t => t.toLowerCase()), postTitle.toLowerCase()];
+  combined.forEach(str => {
+    Object.entries(boardMap).forEach(([key, board]) => {
+      if (str.includes(key) && !seen.has(board.name)) { seen.add(board.name); boards.push(board); }
+    });
+  });
+  if (!seen.has('Home Decor Ideas')) boards.push({ icon: '🏠', name: 'Home Decor Ideas' });
+  if (!seen.has('Interior Design Inspiration')) boards.push({ icon: '🎨', name: 'Interior Design Inspiration' });
+  return boards.slice(0, 6);
+}
+
+function buildFullBlock(descs, titles, hashtags, boards) {
+  const text = [
+    '=== PIN DESCRIPTIONS (choose one) ===', '',
+    descs.map(d => `[${d.label}]\n${d.text}\n(${d.text.length} chars)`).join('\n\n'),
+    '', '=== PIN TITLES (test all 3 in Tailwind) ===', '',
+    titles.map(t => `[${t.num}] ${t.text}`).join('\n'),
+    '', '=== HASHTAGS (use 5–10 per pin) ===', '',
+    hashtags.join(' '),
+    '', '=== BOARDS TO PIN TO (pin to 3–5) ===', '',
+    boards.map(b => b.icon + ' ' + b.name).join('\n'),
+  ].join('\n');
+  document.getElementById('pinFullBlock').textContent = text;
+}
+
+/* Render helpers */
+function renderPinDescriptions(descs) {
+  document.getElementById('pinDescOptions').innerHTML = descs.map((d, i) => {
+    const len = d.text.length;
+    const countClass = (len >= 220 && len <= 232) ? 'good' : (len > 232 ? 'over' : '');
+    const countLabel = (len >= 220 && len <= 232) ? '✅ ' + len + ' chars — perfect' : (len > 232 ? '⚠️ ' + len + ' chars — slightly over' : len + ' chars — may be short');
+    return `<div class="pin-desc-card"><button class="pin-copy-btn" onclick="copyPinDesc(${i})">📋 Copy</button><div class="pin-desc-label">${d.label}</div><div class="pin-desc-text" id="pinDescText${i}">${d.text}</div><span class="pin-char-count ${countClass}">${countLabel}</span></div>`;
+  }).join('');
+}
+
+function renderPinTitles(titles) {
+  document.getElementById('pinTitlesGrid').innerHTML = titles.map((t, i) => {
+    return `<div class="pin-title-card" onclick="copyPinTitle('${t.text.replace(/'/g,"\\'").replace(/"/g,'&quot;')}', this)"><div class="pin-title-num">${t.num} <span style="font-weight:400;font-size:10px;">(click to copy)</span></div><div class="pin-title-text">${t.text}</div><div class="pin-title-len">${t.text.length} chars</div></div>`;
+  }).join('');
+}
+
+function renderHashtags(tags) {
+  document.getElementById('pinHashtags').innerHTML = tags.map(t =>
+    `<span class="pin-tag" onclick="copyPinTag('${t}', this)">${t}</span>`
+  ).join('');
+}
+
+function renderBoards(boards) {
+  document.getElementById('pinBoards').innerHTML = boards.map(b =>
+    `<div class="pin-board"><span class="pin-board-icon">${b.icon}</span><strong>${b.name}</strong></div>`
+  ).join('');
+}
+
+/* Copy helpers */
+function copyPinDesc(idx) {
+  const el = document.getElementById('pinDescText' + idx);
+  if (el) navigator.clipboard.writeText(el.textContent).then(() => {
+    const btn = el.closest('.pin-desc-card').querySelector('.pin-copy-btn');
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => btn.textContent = '📋 Copy', 1800);
+  });
+}
+
+function copyPinTitle(text, el) {
+  navigator.clipboard.writeText(text).then(() => {
+    el.style.background = 'rgba(0,208,132,0.1)'; el.style.borderColor = 'var(--success)';
+    const num = el.querySelector('.pin-title-num');
+    const orig = num.innerHTML;
+    num.innerHTML = '✅ Copied!';
+    setTimeout(() => { el.style.background=''; el.style.borderColor=''; num.innerHTML=orig; }, 1800);
+  });
+}
+
+function copyPinTag(tag, el) {
+  navigator.clipboard.writeText(tag).then(() => {
+    el.style.background = 'var(--pin)'; el.style.color = 'white';
+    setTimeout(() => { el.style.background=''; el.style.color=''; }, 900);
+  });
+}
+
+function copyPinHashtags() {
+  const tags = Array.from(document.querySelectorAll('#pinHashtags .pin-tag')).map(t => t.textContent);
+  navigator.clipboard.writeText(tags.join(' ')).then(() => alert('✅ Hashtags copied!'));
+}
+
+function copyPinFull() {
+  const text = document.getElementById('pinFullBlock').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const el = document.getElementById('pinCopyConfirm');
+    el.style.display = 'inline-flex';
+    setTimeout(() => el.style.display = 'none', 2500);
+  }).catch(() => alert('❌ Copy failed'));
+}
+
+/* String utils */
+function slugifyTag(str) { return str.toLowerCase().trim().replace(/[^\w\s]/g,'').replace(/\s+/g,''); }
+function capitalise(str) { if (!str) return ''; return str.charAt(0).toUpperCase() + str.slice(1); }
+function trimToRange(str, min, max) {
+  if (str.length <= max) {
+    if (str.length < min) {
+      const extras = [' Save this pin!', ' Pin for later.', ' Click to read more.', ' Great home inspo.'];
+      for (const e of extras) { if ((str + e).length <= max) { str = str + e; } if (str.length >= min) break; }
+    }
+    return str;
+  }
+  let trimmed = str.slice(0, max);
+  const lastSpace = trimmed.lastIndexOf(' ');
+  if (lastSpace > max - 20) trimmed = trimmed.slice(0, lastSpace);
+  return trimmed;
+}
+function trimTitle(str, max) { if (str.length <= max) return str; return str.slice(0, max - 1).trim() + '…'; }
+
+/* ══════════════════════════════════════════
+   🏭 PIN FACTORY ENGINE
+══════════════════════════════════════════ */
+
+const PIN_TYPES = [
+  { id: 'hero',       icon: '🌟', label: 'Hero Pin',        dot: '#FFB020', desc: 'Primary traffic driver. Post title + hero image. Gets the most impressions of all 10.' },
+  { id: 'benefit',    icon: '💡', label: 'Benefit Pin',     dot: '#00D084', desc: 'Leads with a key takeaway. Highest save rate — people bookmark insight pins.' },
+  { id: 'product',    icon: '🛍️', label: 'Product Pin',    dot: '#bd123c', desc: 'Top product with price. Highest click-to-affiliate rate of all pin types.' },
+  { id: 'list',       icon: '📋', label: 'List Pin',        dot: '#2D5BFF', desc: '"X ideas" format. Excellent reach — people share list pins to their own boards.' },
+  { id: 'question',   icon: '❓', label: 'Question Pin',    dot: '#7e0882', desc: 'FAQ question as headline. Pulls in awareness-stage searchers.' },
+  { id: 'mistake',    icon: '⚠️', label: 'Mistake Pin',    dot: '#FF4757', desc: '"X mistakes to avoid" format. High engagement — contrarian framing stops the scroll.' },
+  { id: 'budget',     icon: '💰', label: 'Budget Pin',      dot: '#059669', desc: 'Budget-focused angle. Reaches high-volume "cheap / affordable" searchers.' },
+  { id: 'seasonal',   icon: '🗓️', label: 'Seasonal Pin',  dot: '#0EA5E9', desc: 'Ties the topic to a season or trend. Pinterest surfaces timely content heavily.' },
+  { id: 'comparison', icon: '⚖️', label: 'Comparison Pin', dot: '#8B5CF6', desc: '"A vs B" format. Decision-stage searchers click through at very high rates.' },
+  { id: 'stat',       icon: '📈', label: 'Stat Pin',        dot: '#EC4899', desc: 'Opens with a surprising number or stat. Strong share rate — feels authoritative.' },
+];
+
+// 10 pins: spread Mon–Sun with 3 days getting 2 posts
+const BEST_TIMES_EAT = ['8:00 AM', '12:00 PM', '3:00 PM', '7:00 PM', '9:00 PM', '8:30 AM', '1:00 PM', '4:00 PM', '7:30 PM', '9:30 PM'];
+const SCHEDULE_DAYS  = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Monday', 'Wednesday', 'Friday', 'Saturday', 'Sunday'];
+const DAYS_OF_WEEK   = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
+let _generatedPins = [];
+
+function generatePinFactory() {
+  const postTitle  = document.getElementById('title').value.trim();
+  const metaDesc   = document.getElementById('description').value.trim();
+  const keywords   = document.getElementById('seoKeywords').value.trim();
+  const tagsRaw    = document.getElementById('tags').value.trim();
+  const cats       = Array.from(document.querySelectorAll('#categorySelect input:checked')).map(c => c.value);
+  const contentRaw = document.getElementById('content').value;
+  const slugVal    = document.getElementById('slug').value.trim();
+  const siteUrl    = 'wowglamdecor.com';
+
+  if (!postTitle) {
+    document.getElementById('factoryStatus').textContent = '⚠️ Add a post title in the Editor tab first';
+    return;
+  }
+  document.getElementById('factoryStatus').textContent = '';
+
+  const kwList  = keywords ? keywords.split(',').map(k => k.trim()).filter(Boolean) : [];
+  const tagList = tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(Boolean) : [];
+  const primaryKw = kwList[0] || postTitle;
+  const kw2 = kwList[1] || cats[0] || '';
+  const postUrl = slugVal ? `${siteUrl}/posts/${slugVal}` : siteUrl;
+
+  // Extract H2 headings from content
+  const h2Headings = (contentRaw.match(/^##\s+(.+)$/gm) || [])
+    .map(h => h.replace(/^##\s+/, '').trim())
+    .filter(h => !h.toLowerCase().includes('faq') && !h.toLowerCase().includes('source') && !h.toLowerCase().includes('conclusion'))
+    .slice(0, 5);
+
+  // Extract key takeaways
+  const takeawayMatch = contentRaw.match(/##\s+Key Takeaways[\s\S]*?(?=\n##|\n---)/i);
+  const firstTakeaway = takeawayMatch
+    ? (takeawayMatch[0].match(/[-*]\s+(.+)/)?.[1] || '').trim().slice(0, 100)
+    : `${capitalise(primaryKw)} can transform your space without breaking the budget`;
+
+  // Extract FAQ question
+  const faqMatch = contentRaw.match(/##\s+FAQ[\s\S]*?(?=\n##|\n---)/i);
+  const firstFaq = faqMatch
+    ? (faqMatch[0].match(/\*\*(.+?)\*\*|\n###\s+(.+)/)?.[1] || faqMatch[0].match(/\*\*(.+?)\*\*|\n###\s+(.+)/)?.[2] || '').trim().slice(0, 90)
+    : `What is the best ${primaryKw} for a small space?`;
+
+  // Top product from products tab
+  const products = getProductsData();
+  const topProduct = products[0];
+
+  // Build board suggestion
+  const boardName = cats.length > 0
+    ? cats[0] + ' Decor Ideas'
+    : capitalise(primaryKw) + ' Ideas';
+
+  // Generate all 10 pins
+  _generatedPins = [
+
+    // 1. HERO
+    {
+      type: 'hero',
+      headline: shortTitle(postTitle, 55),
+      subline: kw2 ? `${capitalise(kw2)} ideas for every budget` : `Curated picks for your home`,
+      description: buildDesc(primaryKw, metaDesc, kw2),
+      imagePrompt: `Pinterest portrait 1000x1500px. ${capitalise(primaryKw)} in a beautifully styled ${cats[0] || 'living'} interior. Warm ambient lighting, layered textures, editorial photography. Dark gradient overlay bottom 40% for text. No text in image. Vertical.`,
+      board: boardName,
+      postUrl,
+    },
+
+    // 2. BENEFIT
+    {
+      type: 'benefit',
+      headline: firstTakeaway.length > 10 ? truncate(firstTakeaway, 70) : `The ${primaryKw} trick designers use`,
+      subline: `Full guide → ${siteUrl}`,
+      description: buildDesc(`${capitalise(primaryKw)} secret`, firstTakeaway.slice(0,130) + '. Save this — you\'ll want it when decorating.', kw2),
+      imagePrompt: `Pinterest portrait 1000x1500px. Close-up styled vignette: ${primaryKw} detail — textured fabrics, layered decor, warm morning light. Minimal editorial feel. Dark overlay bottom 35%. No text. Vertical.`,
+      board: 'Interior Design Inspiration',
+      postUrl,
+    },
+
+    // 3. PRODUCT
+    {
+      type: 'product',
+      headline: topProduct ? truncate(topProduct.name, 55) : `Top ${capitalise(primaryKw)} Picks`,
+      subline: topProduct?.price ? `From ${topProduct.price} — editor's pick` : `Curated for style + value`,
+      description: buildDesc(
+        topProduct ? topProduct.name : `Top ${primaryKw} picks`,
+        topProduct ? `Our #1 pick for ${primaryKw}${topProduct.price ? ' from ' + topProduct.price : ''}. Full review + today's price in the guide.` : `Top-rated ${primaryKw} picks from budget to luxury — full comparison included.`,
+        kw2
+      ),
+      imagePrompt: topProduct
+        ? `Pinterest portrait 1000x1500px. ${topProduct.name} styled in a ${cats[0] || 'home'} setting. Clean, aspirational, soft natural light. Dark vignette bottom 40%. No text. Vertical.`
+        : `Pinterest portrait 1000x1500px. Flat lay product collection for ${primaryKw}. Clean neutral background, warm props, editorial. No text. Vertical.`,
+      board: 'Budget Home Decor',
+      postUrl,
+    },
+
+    // 4. LIST
+    {
+      type: 'list',
+      headline: h2Headings.length >= 3 ? `${h2Headings.length} ${capitalise(primaryKw)} Ideas` : `Best ${capitalise(primaryKw)} Ideas (Ranked)`,
+      subline: h2Headings.slice(0,3).map((h,i) => `${i+1}. ${truncate(h,28)}`).join('  ') || 'Budget to luxury — all in one guide',
+      description: buildDesc(
+        `${h2Headings.length || 'Top'} ${primaryKw} ideas`,
+        `Ranked: ${h2Headings.slice(0,3).join(', ')}${h2Headings.length > 3 ? ' + more' : ''}. Full guide with affiliate picks inside.`,
+        kw2
+      ),
+      imagePrompt: `Pinterest portrait 1000x1500px. Mood board collage for ${primaryKw}. Multiple decor elements in flat lay or room vignette. Warm tones, editorial. Dark overlay bottom 40%. No text. Vertical.`,
+      board: 'Home Decor Ideas',
+      postUrl,
+    },
+
+    // 5. QUESTION
+    {
+      type: 'question',
+      headline: firstFaq.endsWith('?') ? truncate(firstFaq, 65) : truncate(firstFaq, 63) + '?',
+      subline: `Answer inside → ${siteUrl}`,
+      description: buildDesc(
+        firstFaq.endsWith('?') ? firstFaq : firstFaq + '?',
+        `We break it down with real examples and budget-friendly picks. Full answer in the guide.`,
+        kw2
+      ),
+      imagePrompt: `Pinterest portrait 1000x1500px. Aspirational ${cats[0] || 'home'} interior, ${primaryKw} focus. Cozy, inviting, soft natural light. Styled accessories. Dark overlay bottom half. No text. Vertical.`,
+      board: cats[0] ? cats[0] + ' Ideas' : 'Home Decor Ideas',
+      postUrl,
+    },
+
+    // 6. MISTAKE
+    {
+      type: 'mistake',
+      headline: `${h2Headings.length > 0 ? h2Headings.length : '5'} ${capitalise(primaryKw)} Mistakes to Avoid`,
+      subline: `Are you making #1? → ${siteUrl}`,
+      description: buildDesc(
+        `${capitalise(primaryKw)} mistakes`,
+        `Most people get ${primaryKw} wrong. Here are the top mistakes — and exactly what to do instead. Save this before you shop.`,
+        kw2
+      ),
+      imagePrompt: `Pinterest portrait 1000x1500px. Before/after split composition for ${primaryKw}. Left side: cluttered or poorly styled space. Right side: beautifully curated ${primaryKw} setup. Warm editorial lighting. No text. Vertical.`,
+      board: 'Home Decor Ideas',
+      postUrl,
+    },
+
+    // 7. BUDGET
+    {
+      type: 'budget',
+      headline: `${capitalise(primaryKw)} on a Budget`,
+      subline: topProduct?.price ? `Starts from ${topProduct.price}` : `Beautiful doesn't mean expensive`,
+      description: buildDesc(
+        `Affordable ${primaryKw}`,
+        `You don't need a huge budget to get stunning ${primaryKw}. Our budget picks start from ${topProduct?.price || 'under $50'} — and they look like they cost triple.`,
+        kw2
+      ),
+      imagePrompt: `Pinterest portrait 1000x1500px. Beautiful budget-friendly ${primaryKw} setup. Stylish but accessible — warm lighting, cozy textures, lived-in feel. No text. Vertical.`,
+      board: 'Budget Home Decor',
+      postUrl,
+    },
+
+    // 8. SEASONAL
+    {
+      type: 'seasonal',
+      headline: `${new Date().toLocaleDateString('en-US',{month:'long'})} ${capitalise(primaryKw)} Ideas`,
+      subline: `What's trending right now`,
+      description: buildDesc(
+        `${new Date().getFullYear()} ${primaryKw} trends`,
+        `The ${primaryKw} ideas everyone is loving this ${new Date().toLocaleDateString('en-US',{month:'long'})}. Curated picks from budget to luxury — updated for ${new Date().getFullYear()}.`,
+        kw2
+      ),
+      imagePrompt: `Pinterest portrait 1000x1500px. Seasonally styled ${primaryKw} interior — current season tones, textures, and lighting. Fresh, editorial, aspirational. No text. Vertical.`,
+      board: 'Seasonal Decor',
+      postUrl,
+    },
+
+    // 9. COMPARISON
+    {
+      type: 'comparison',
+      headline: products.length >= 2
+        ? `${truncate(products[0].name, 25)} vs ${truncate(products[1].name, 25)}`
+        : `${capitalise(primaryKw)}: Budget vs Luxury`,
+      subline: `Which is worth it? We compared both`,
+      description: buildDesc(
+        products.length >= 2 ? `${products[0].name} vs ${products[1].name}` : `${capitalise(primaryKw)} budget vs luxury`,
+        `We compared both so you don't have to. Full breakdown — price, quality, and who each one is right for — in the guide.`,
+        kw2
+      ),
+      imagePrompt: `Pinterest portrait 1000x1500px. Clean side-by-side comparison: two ${primaryKw} products or styles shown in split composition. Neutral background, equal lighting, editorial. No text. Vertical.`,
+      board: boardName,
+      postUrl,
+    },
+
+    // 10. STAT
+    {
+      type: 'stat',
+      headline: `Did you know? ${capitalise(primaryKw)} affects your mood`,
+      subline: `The research-backed guide → ${siteUrl}`,
+      description: buildDesc(
+        `${capitalise(primaryKw)} and your wellbeing`,
+        `Research shows your home environment directly affects stress and productivity. Here's how the right ${primaryKw} makes a measurable difference — with picks at every price point.`,
+        kw2
+      ),
+      imagePrompt: `Pinterest portrait 1000x1500px. Calm, serene ${primaryKw} styled space — emphasising atmosphere and mood. Soft diffused light, clean composition, minimal props. No text. Vertical.`,
+      board: 'Interior Design Inspiration',
+      postUrl,
+    },
+  ];
+
+  renderPinCards(_generatedPins);
+  renderPinQueue(_generatedPins);
+  buildFactoryExport(_generatedPins);
+
+  document.getElementById('pinFactoryOutput').style.display = 'block';
+  document.getElementById('pinFactoryOutput').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  // Update stats
+  document.getElementById('fsPinCount').textContent = _generatedPins.length;
+}
+
+/* ── RENDER PIN CARDS ── */
+function renderPinCards(pins) {
+  const grid = document.getElementById('pinCardsGrid');
+  grid.innerHTML = pins.map((pin, i) => {
+    const typeInfo = PIN_TYPES.find(t => t.id === pin.type);
+    const descLen = pin.description.length;
+    const descOk = descLen >= 220 && descLen <= 232;
+
+    return `<div class="pin-card" data-type="${pin.type}">
+      <div class="pin-card-header">
+        <div class="pin-card-type">
+          <span style="width:10px;height:10px;border-radius:50%;background:${typeInfo.dot};display:inline-block;"></span>
+          ${typeInfo.icon} ${typeInfo.label}
+        </div>
+        <div class="pin-card-actions">
+          <button class="btn btn-secondary btn-sm" onclick="copyAllLayers(${i})">📋 Copy All Layers</button>
+        </div>
+      </div>
+      <div class="pin-card-body">
+
+        <!-- VISUAL MOCKUP -->
+        <div class="pin-visual" onclick="copyAllLayers(${i})" title="Click to copy all layer text">
+          <div class="pin-visual-bg"></div>
+          <div class="pin-visual-overlay"></div>
+          <div class="pin-visual-badge">${typeInfo.icon} ${pin.type.toUpperCase()}</div>
+          <div class="pin-visual-ratio">1000×1500</div>
+          <div class="pin-visual-content">
+            <div class="pin-visual-title">${pin.headline}</div>
+            <div class="pin-visual-url">📍 ${pin.postUrl}</div>
+          </div>
+        </div>
+
+        <!-- LAYER TEXT -->
+        <div class="pin-layers">
+
+          <div class="pin-layer">
+            <div class="pin-layer-name"><span class="pin-layer-dot" style="background:#FFB020;"></span> HEADLINE Layer — paste into Canva headline box</div>
+            <div class="pin-layer-text" id="layer-headline-${i}">${pin.headline}</div>
+            <button class="pin-layer-copy-btn" onclick="copyLayer('layer-headline-${i}', this)">📋 Copy</button>
+          </div>
+
+          <div class="pin-layer">
+            <div class="pin-layer-name"><span class="pin-layer-dot" style="background:#00D084;"></span> SUBLINE Layer — paste into Canva subline box</div>
+            <div class="pin-layer-text" id="layer-subline-${i}">${pin.subline}</div>
+            <button class="pin-layer-copy-btn" onclick="copyLayer('layer-subline-${i}', this)">📋 Copy</button>
+          </div>
+
+          <div class="pin-layer pin-desc-layer">
+            <div class="pin-layer-name"><span class="pin-layer-dot" style="background:#bd123c;"></span> PINTEREST DESCRIPTION — paste into Pinterest / Tailwind</div>
+            <div class="pin-layer-text" id="layer-desc-${i}" style="font-size:13px;">${pin.description}</div>
+            <div style="display:flex;align-items:center;gap:10px;margin-top:8px;">
+              <button class="pin-layer-copy-btn" onclick="copyLayer('layer-desc-${i}', this)">📋 Copy</button>
+              <span style="font-size:11px;font-family:var(--font-mono);color:${descOk ? 'var(--success)' : 'var(--warning)'};">${descLen} chars ${descOk ? '✅' : '⚠️ tweak to hit 220–232'}</span>
+            </div>
+          </div>
+
+          <div class="pin-layer" style="background:#1e1e2e;">
+            <div class="pin-layer-name" style="color:#89b4fa;"><span class="pin-layer-dot" style="background:#89b4fa;"></span> AI IMAGE PROMPT — for 1000×1500px portrait pin background</div>
+            <div class="pin-img-prompt" id="layer-img-${i}">${pin.imagePrompt}</div>
+            <button class="pin-layer-copy-btn" style="margin-top:8px;border-color:#313244;color:#cdd6f4;" onclick="copyLayer('layer-img-${i}', this)">📋 Copy Prompt</button>
+          </div>
+
+          <div style="font-size:12px;color:var(--text-tertiary);padding:4px 0;font-style:italic;">${typeInfo.desc}</div>
+
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ── RENDER QUEUE TABLE ── */
+function renderPinQueue(pins) {
+  const tbody = document.getElementById('pinQueueBody');
+  tbody.innerHTML = pins.map((pin, i) => {
+    const typeInfo = PIN_TYPES.find(t => t.id === pin.type);
+    return `<tr>
+      <td class="queue-day">${SCHEDULE_DAYS[i] || 'Day ' + (i+1)}</td>
+      <td><span class="queue-pin-type">${typeInfo.icon} ${typeInfo.label}</span></td>
+      <td style="font-family:var(--font-mono);font-size:12px;">${BEST_TIMES_EAT[i]}</td>
+      <td style="font-size:13px;">${pin.board}</td>
+      <td>
+        <div style="font-size:13px;font-weight:600;max-width:280px;">${pin.headline}</div>
+        <button onclick="copyQueueRow(${i})" style="margin-top:4px;background:none;border:1px solid var(--border);padding:3px 10px;border-radius:4px;font-size:11px;cursor:pointer;font-family:var(--font-main);color:var(--text-secondary);">📋 Copy row</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+/* ── BUILD EXPORT BLOCK ── */
+function buildFactoryExport(pins) {
+  const postTitle = document.getElementById('title').value.trim();
+  const lines = [
+    `POST: ${postTitle}`,
+    `Generated: ${new Date().toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'})}`,
+    `10 pins across the week — stacks with other posts for 20–60 pins/week`,
+    `─────────────────────────────────────────────`,
+    '',
+  ];
+  pins.forEach((pin, i) => {
+    const typeInfo = PIN_TYPES.find(t => t.id === pin.type);
+    lines.push(
+      `PIN ${i+1}/10 — ${typeInfo.icon} ${typeInfo.label.toUpperCase()}`,
+      `Day: ${SCHEDULE_DAYS[i]}  |  Time: ${BEST_TIMES_EAT[i]} EAT  |  Board: ${pin.board}`,
+      ``,
+      `HEADLINE:  ${pin.headline}`,
+      `SUBLINE:   ${pin.subline}`,
+      ``,
+      `DESCRIPTION (${pin.description.length} chars):`,
+      pin.description,
+      ``,
+      `IMAGE PROMPT (1000×1500px portrait):`,
+      pin.imagePrompt,
+      ``,
+      `─────────────────────────────────────────────`,
+      '',
+    );
+  });
+  document.getElementById('pinFactoryExport').textContent = lines.join('\n');
+}
+
+/* ── EXPORT PIN CSV FOR CANVA BULK CREATE ── */
+function exportPinCSV() {
+  const pins = _generatedPins;
+  if (!pins.length) { alert('⚠️ Generate pins first'); return; }
+  const postTitle = document.getElementById('title').value.trim();
+  const slugVal   = document.getElementById('slug').value.trim();
+
+  // Canva Bulk Create expects: each row = one design
+  // Column names must match your Canva template text element names exactly
+  const rows = [
+    ['pin_number', 'pin_type', 'headline', 'subline', 'url_watermark', 'board', 'day', 'time_eat', 'description', 'image_prompt', 'filename'],
+  ];
+  pins.forEach((pin, i) => {
+    const typeInfo = PIN_TYPES.find(t => t.id === pin.type);
+    const filename = `${slugVal || 'post'}-pin-${i+1}-${pin.type}`;
+    rows.push([
+      String(i + 1),
+      typeInfo.label,
+      pin.headline,
+      pin.subline,
+      'wowglamdecor.com',
+      pin.board,
+      SCHEDULE_DAYS[i],
+      BEST_TIMES_EAT[i],
+      pin.description,
+      pin.imagePrompt,
+      filename,
+    ]);
+  });
+
+  downloadCSV(rows, `${slugVal || 'post'}-pins-canva.csv`);
+}
+
+/* ── EXPORT BLOG IMAGES CSV FOR CANVA BULK CREATE ── */
+function exportBlogImagesCSV() {
+  // Pull from parsed image list if available, otherwise from content
+  const slugVal    = document.getElementById('slug').value.trim();
+  const postTitle  = document.getElementById('title').value.trim();
+  const contentRaw = document.getElementById('content').value;
+  const primaryKw  = (document.getElementById('seoKeywords').value.split(',')[0] || postTitle).trim();
+  const cats       = Array.from(document.querySelectorAll('#categorySelect input:checked')).map(c => c.value);
+
+  // Try to use parsed images from Import tab first
+  let images = [];
+  if (window._parsedImages && window._parsedImages.length) {
+    images = window._parsedImages.map((img, i) => ({
+      number:    img.num,
+      placement: img.placement,
+      filename:  img.filename,
+      altText:   `${primaryKw} — ${img.placement}`,
+      prompt:    img.prompt,
+    }));
+  } else {
+    // Fall back to extracting image tags from content
+    const imgMatches = [...contentRaw.matchAll(/!\[([^\]]*)\]\(\/content\/images\/([^)]+)\)/g)];
+    if (!imgMatches.length) {
+      alert('⚠️ No images found. Run Import AI first to parse your image list, or add images to your content.');
+      return;
+    }
+    images = imgMatches.map((m, i) => ({
+      number:    String(i + 1),
+      placement: m[1] || `Image ${i+1}`,
+      filename:  m[2].replace(/\.[^.]+$/, ''),
+      altText:   m[1] || `${primaryKw} image ${i+1}`,
+      prompt:    `${primaryKw} lifestyle photo for blog. ${cats[0] || 'home decor'} setting. 1200×630px landscape. Warm editorial lighting. No text.`,
+    }));
+  }
+
+  if (!images.length) { alert('⚠️ No images to export'); return; }
+
+  const rows = [
+    ['image_number', 'placement', 'filename', 'alt_text', 'canva_headline', 'canva_subline', 'image_prompt', 'blog_path'],
+  ];
+  images.forEach(img => {
+    rows.push([
+      img.number,
+      img.placement,
+      img.filename,
+      img.altText,
+      postTitle,                                    // blog images don't need text overlay — leave for reference
+      'wowglamdecor.com',
+      img.prompt,
+      `/content/images/${img.filename}.jpg`,
+    ]);
+  });
+
+  downloadCSV(rows, `${slugVal || 'post'}-blog-images-canva.csv`);
+}
+
+/* ── CSV DOWNLOAD HELPER ── */
+function downloadCSV(rows, filename) {
+  const escape = val => {
+    const s = String(val || '').replace(/"/g, '""');
+    return s.includes(',') || s.includes('"') || s.includes('\n') ? `"${s}"` : s;
+  };
+  const csv = rows.map(row => row.map(escape).join(',')).join('\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  Object.assign(document.createElement('a'), {
+    href: URL.createObjectURL(blob),
+    download: filename,
+  }).click();
+}
+
+/* ── FILTER CARDS ── */
+function filterPinCards(type, btn) {
+  document.querySelectorAll('.pin-type-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  document.querySelectorAll('.pin-card').forEach(card => {
+    card.style.display = (type === 'all' || card.dataset.type === type) ? 'block' : 'none';
+  });
+}
+
+/* ── COPY HELPERS ── */
+function copyLayer(id, btn) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  navigator.clipboard.writeText(el.textContent.trim()).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = '✅ Copied!';
+    btn.style.color = 'var(--success)';
+    setTimeout(() => { btn.textContent = orig; btn.style.color = ''; }, 1600);
+  });
+}
+
+function copyAllLayers(idx) {
+  const pin = _generatedPins[idx];
+  if (!pin) return;
+  const typeInfo = PIN_TYPES.find(t => t.id === pin.type);
+  const text = [
+    `=== ${typeInfo.icon} ${typeInfo.label.toUpperCase()} ===`,
+    ``,
+    `HEADLINE: ${pin.headline}`,
+    `SUBLINE:  ${pin.subline}`,
+    ``,
+    `DESCRIPTION: ${pin.description}`,
+    ``,
+    `IMAGE PROMPT: ${pin.imagePrompt}`,
+    ``,
+    `BOARD: ${pin.board}`,
+  ].join('\n');
+  navigator.clipboard.writeText(text).then(() => alert(`✅ All layers for "${typeInfo.label}" copied!`));
+}
+
+function copyQueueRow(idx) {
+  const pin = _generatedPins[idx];
+  if (!pin) return;
+  const typeInfo = PIN_TYPES.find(t => t.id === pin.type);
+  const text = `${DAYS_OF_WEEK[idx]} | ${BEST_TIMES_EAT[idx]} EAT | ${typeInfo.label} | Board: ${pin.board} | Title: ${pin.headline}`;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = event.target;
+    btn.textContent = '✅'; setTimeout(() => btn.textContent = '📋 Copy row', 1200);
+  });
+}
+
+function copyFactoryExport() {
+  const text = document.getElementById('pinFactoryExport').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const el = document.getElementById('factoryCopyConfirm');
+    el.style.display = 'inline-flex';
+    setTimeout(() => el.style.display='none', 2500);
+  }).catch(() => alert('❌ Copy failed'));
+}
+
+/* ── STRING UTILS (shared with Pinterest tab) ── */
+function truncate(str, max) {
+  if (!str || str.length <= max) return str || '';
+  return str.slice(0, max - 1).trim() + '…';
+}
+function shortTitle(str, max) { return truncate(str, max); }
+function buildDesc(primaryKw, metaDesc, kw2) {
+  let base = `${capitalise(primaryKw)} – ${metaDesc || 'Discover the best ' + primaryKw + ' ideas for your home. From budget-friendly to luxury picks — everything curated in one guide.'}`;
+  return trimToRange(base, 220, 232);
+}
 document.addEventListener('DOMContentLoaded', () => {
   initializeCategories();
   updateDraftTable();
