@@ -44,6 +44,12 @@
 
   <!-- BLOG POSTS (priority 0.8 = high value content) -->
   <url>
+    <loc>https://wowglamdecor.com/posts/bedroom-look-like-5-star-hotel.html</loc>
+    <lastmod>2026-03-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://wowglamdecor.com/posts/best-bedroom-decor-ideas.html</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>weekly</changefreq>
@@ -426,13 +432,97 @@
 
   <!-- TAG PAGES -->
   <url>
-    <loc>https://wowglamdecor.com/tag/bedroom-decor.html</loc>
+    <loc>https://wowglamdecor.com/tag/luxury-bedroom.html</loc>
+    <lastmod>2026-03-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://wowglamdecor.com/tag/glam-bedroom-decor.html</loc>
     <lastmod>2026-03-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://wowglamdecor.com/tag/bedroom-ideas.html</loc>
+    <lastmod>2026-03-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://wowglamdecor.com/tag/velvet-headboard.html</loc>
+    <lastmod>2026-03-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://wowglamdecor.com/tag/upholstered-bed.html</loc>
+    <lastmod>2026-03-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://wowglamdecor.com/tag/layered-lighting.html</loc>
+    <lastmod>2026-03-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://wowglamdecor.com/tag/bedroom-styling.html</loc>
+    <lastmod>2026-03-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://wowglamdecor.com/tag/statement-headboard.html</loc>
+    <lastmod>2026-03-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://wowglamdecor.com/tag/velvet-throw-pillows.html</loc>
+    <lastmod>2026-03-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://wowglamdecor.com/tag/luxury-bedding.html</loc>
+    <lastmod>2026-03-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://wowglamdecor.com/tag/bedroom-color-palette.html</loc>
+    <lastmod>2026-03-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://wowglamdecor.com/tag/boutique-hotel-bedroom.html</loc>
+    <lastmod>2026-03-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://wowglamdecor.com/tag/bedroom-wall-decor.html</loc>
+    <lastmod>2026-03-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://wowglamdecor.com/tag/elegant-bedroom-design.html</loc>
+    <lastmod>2026-03-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://wowglamdecor.com/tag/satin-pillowcase.html</loc>
+    <lastmod>2026-03-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://wowglamdecor.com/tag/bedroom-decor.html</loc>
     <lastmod>2026-03-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -457,18 +547,6 @@
   </url>
   <url>
     <loc>https://wowglamdecor.com/tag/minimalist-bedroom.html</loc>
-    <lastmod>2026-03-04</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://wowglamdecor.com/tag/luxury-bedroom.html</loc>
-    <lastmod>2026-03-04</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://wowglamdecor.com/tag/bedroom-wall-decor.html</loc>
     <lastmod>2026-03-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
