@@ -158,19 +158,22 @@ img{max-width:100%;height:auto;display:block}
 .disclosure-box a{color:#B8860B;text-decoration:underline}
 
 /* ═══ CONTENT GRID ═══ */
-.content-wrapper{max-width:1400px;margin:0 auto;padding:0 24px 80px;display:grid;grid-template-columns:1fr 300px;gap:40px;align-items:start}
+.content-wrapper{max-width:1400px;margin:0 auto;padding:0 24px 80px;display:grid;grid-template-columns:1fr 320px;gap:40px;align-items:start}
 
 /* ═══ ARTICLE CONTENT ═══ */
 .article-content{background:#fff;border-radius:var(--radius);padding:40px;box-shadow:var(--shadow-sm);min-width:0;overflow:hidden}
-.featured-image{width:100%;height:auto;border-radius:12px;margin-bottom:32px;box-shadow:var(--shadow-md)}
+.featured-image{width:100%;height:auto;border-radius:12px;margin-bottom:24px;box-shadow:var(--shadow-md)}
 
-/* ═══ SCROLLBAR — visible but styled ═══ */
+/* ═══ TOP NEWSLETTER (before article body) ═══ */
+.newsletter-top{background:linear-gradient(135deg,var(--brand-pale),rgba(126,8,130,0.12));border:2px solid rgba(126,8,130,0.18);border-radius:12px;padding:20px 24px;margin-bottom:32px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.newsletter-top-text{flex:1;min-width:180px}
+.newsletter-top-text p{font-weight:800;color:var(--brand);font-size:1rem;margin-bottom:4px}
+.newsletter-top-text span{font-size:13px;color:var(--gray-600);font-weight:600}
+.newsletter-top .nl-btn{background:var(--brand);color:#fff;border:none;padding:12px 22px;border-radius:8px;font-family:'Nunito',sans-serif;font-weight:800;font-size:14px;cursor:pointer;transition:all 0.2s;white-space:nowrap;flex-shrink:0}
+.newsletter-top .nl-btn:hover{background:var(--brand-dark);transform:translateY(-2px);box-shadow:var(--shadow-md)}
+
+/* ═══ SCROLLBAR ═══ */
 .content-body{font-size:1.05rem;line-height:1.8;color:var(--gray-800);overflow-wrap:break-word;word-break:break-word}
-.content-body ::-webkit-scrollbar{height:6px}
-.content-body ::-webkit-scrollbar-track{background:var(--gray-100);border-radius:3px}
-.content-body ::-webkit-scrollbar-thumb{background:var(--brand);border-radius:3px}
-.content-body ::-webkit-scrollbar-thumb:hover{background:var(--brand-dark)}
-
 .content-body h2{font-size:1.65rem;font-weight:900;color:var(--gray-900);margin:40px 0 16px;padding-bottom:12px;border-bottom:3px solid var(--brand-pale)}
 .content-body h3{font-size:1.35rem;font-weight:800;color:var(--gray-900);margin:32px 0 12px}
 .content-body p{margin-bottom:20px}
@@ -178,59 +181,34 @@ img{max-width:100%;height:auto;display:block}
 .content-body li{margin-bottom:10px;line-height:1.75}
 .content-body img{width:100%;height:auto;border-radius:12px;margin:28px 0;box-shadow:var(--shadow-sm)}
 .content-body blockquote{border-left:4px solid var(--brand);background:var(--brand-pale);padding:20px 24px;margin:24px 0;border-radius:8px;font-style:italic}
-
-/* FIX: Links underlined in article body */
 .content-body a{color:var(--brand);font-weight:700;text-decoration:underline;text-underline-offset:3px;transition:color 0.2s}
 .content-body a:hover{color:var(--brand-dark)}
-
 .content-body strong{font-weight:800;color:var(--gray-900)}
 
-/* ═══ TABLE — FIX: no horizontal scroll, responsive, no price column ═══ */
-.content-body table{
-  width:100%;
-  border-collapse:collapse;
-  margin:24px 0;
-  font-size:0.9rem;
-  /* FIX: block display removed — use normal table layout so it fits */
-  display:table;
-  table-layout:fixed;
-  word-break:break-word;
-}
-/* Wrap table in a scrollable div only on small screens */
-.table-scroll-wrap{
-  width:100%;
-  overflow-x:auto;
-  -webkit-overflow-scrolling:touch;
-  border-radius:8px;
-  /* visible purple scrollbar */
-  scrollbar-width:thin;
-  scrollbar-color:var(--brand) var(--gray-100);
-}
+/* ═══ TABLE ═══ */
+.content-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:0.9rem;display:table;table-layout:fixed;word-break:break-word}
+.table-scroll-wrap{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:8px;scrollbar-width:thin;scrollbar-color:var(--brand) var(--gray-100)}
 .table-scroll-wrap::-webkit-scrollbar{height:6px}
 .table-scroll-wrap::-webkit-scrollbar-track{background:var(--gray-100);border-radius:3px}
 .table-scroll-wrap::-webkit-scrollbar-thumb{background:var(--brand);border-radius:3px}
 .table-scroll-wrap table{min-width:500px}
-
 .content-body th{background:var(--brand);color:#fff;padding:10px 12px;text-align:left;font-weight:800;font-size:0.85rem}
 .content-body td{padding:10px 12px;border-bottom:1px solid var(--gray-200);vertical-align:top;font-size:0.88rem}
 .content-body tr:hover{background:var(--gray-100)}
 .content-body tr:last-child td{border-bottom:none}
 
-/* ═══ FLOATING TOC — FIX: no brackets on anchors ═══ */
+/* ═══ FLOATING TOC ═══ */
 .toc-float{position:fixed;left:max(8px, calc(50vw - 760px));top:90px;width:200px;background:#fff;border-radius:12px;box-shadow:var(--shadow-sm);border:2px solid var(--gray-100);padding:16px;max-height:calc(100vh - 120px);overflow-y:auto;z-index:100;transition:opacity 0.3s;display:none}
 .toc-float h5{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--gray-600);margin-bottom:12px}
 .toc-float ul{list-style:none}
 .toc-float ul li{margin-bottom:6px}
-/* FIX: remove underline & brackets from TOC links */
 .toc-float ul li a{font-size:12px;font-weight:600;color:var(--gray-600);display:block;padding:4px 8px;border-radius:6px;transition:all 0.2s;line-height:1.4;border-left:2px solid transparent;text-decoration:none}
 .toc-float ul li a:hover,.toc-float ul li a.active{background:var(--brand-pale);color:var(--brand);border-left-color:var(--brand)}
 @media(max-width:1300px){.toc-float{display:none!important}}
-
 .toc-inline{background:var(--brand-pale);border-radius:12px;padding:20px 24px;margin:0 0 32px;border-left:4px solid var(--brand)}
 .toc-inline h4{font-size:14px;font-weight:800;color:var(--brand);margin-bottom:12px}
 .toc-inline ol{margin:0 0 0 20px}
 .toc-inline ol li{margin-bottom:6px}
-/* FIX: TOC inline links — underline removed, clean look */
 .toc-inline ol li a{color:var(--brand-dark);font-size:14px;font-weight:600;text-decoration:none;transition:color 0.2s}
 .toc-inline ol li a:hover{color:var(--brand);text-decoration:underline}
 
@@ -247,7 +225,7 @@ img{max-width:100%;height:auto;display:block}
 .author-role{color:var(--gray-600);font-size:14px;font-weight:600;margin-bottom:16px}
 .author-box p{color:var(--gray-800);line-height:1.7;margin-bottom:0}
 
-/* ═══ NEWSLETTER BOXES ═══ */
+/* ═══ NEWSLETTER BOX (bottom, after author) ═══ */
 .newsletter-box{background:var(--brand-pale);border-left:4px solid var(--brand);border-radius:var(--radius);padding:28px 32px;margin:40px 0;text-align:center}
 .newsletter-box p{font-weight:800;color:var(--brand);font-size:1.1rem;margin-bottom:16px !important}
 .newsletter-box .nl-sub{font-size:0.9rem !important;font-weight:600 !important;color:var(--gray-600) !important;margin-bottom:20px !important}
@@ -266,7 +244,7 @@ img{max-width:100%;height:auto;display:block}
 .share-btn.pinterest{background:#e60023;color:#fff}
 .share-btn.email{background:var(--gray-800);color:#fff}
 
-/* ═══ YOU MAY ALSO LOVE ═══ */
+/* ═══ RELATED POSTS ═══ */
 .related-posts{margin:48px 0 32px;padding-top:32px;border-top:3px solid var(--brand-pale)}
 .related-posts h3{font-size:1.35rem;font-weight:900;color:var(--gray-900);margin-bottom:24px;display:flex;align-items:center;gap:8px}
 .related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:20px}
@@ -279,18 +257,104 @@ img{max-width:100%;height:auto;display:block}
 .related-card-link{display:inline-flex;align-items:center;gap:4px;margin-top:8px;font-size:12px;font-weight:700;color:var(--brand);text-decoration:none}
 .related-card:hover .related-card-link{gap:8px}
 
-/* ═══ SIDEBAR ═══ */
-.sidebar{position:sticky;top:80px;min-width:0}
+/* ═══════════════════════════════════════════
+   SIDEBAR — expanded, flexible item system
+═══════════════════════════════════════════ */
+.sidebar{position:sticky;top:80px;min-width:0;display:flex;flex-direction:column;gap:0}
 .sidebar-title{font-size:1.1rem;font-weight:900;color:var(--gray-900);margin-bottom:16px}
-.sidebar-product{background:#fff;border-radius:var(--radius);padding:16px;margin-bottom:20px;box-shadow:var(--shadow-sm);transition:all 0.3s var(--ease);border:2px solid transparent;display:flex;flex-direction:column;gap:10px}
+
+/* ── PRODUCT CARD (affiliate link, no price, budget tier + benefit) ── */
+.sidebar-product{
+  background:#fff;border-radius:var(--radius);margin-bottom:20px;
+  box-shadow:var(--shadow-sm);border:2px solid transparent;
+  transition:all 0.3s var(--ease);display:block;
+  text-decoration:none;color:inherit;overflow:hidden;
+}
 .sidebar-product:hover{transform:translateY(-4px);box-shadow:var(--shadow-md);border-color:var(--brand)}
-.sidebar-product-image{width:100%;height:160px;object-fit:contain;border-radius:10px;display:block}
+
+/* Optional label badge (NEW, SALE, TOP PICK, etc.) */
+.sidebar-product-label{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:6px 14px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.6px;
+}
+.sidebar-product-label.label-new{background:#D1FAE5;color:#065F46}
+.sidebar-product-label.label-sale{background:#FEE2E2;color:#DC2626}
+.sidebar-product-label.label-top-pick{background:#FEF3C7;color:#92400E}
+.sidebar-product-label.label-editors-pick{background:var(--brand-pale);color:var(--brand)}
+.sidebar-product-label.label-best-value{background:#DBEAFE;color:#1D4ED8}
+.sidebar-product-label.label-limited{background:#FEE2E2;color:#DC2626}
+.sidebar-product-label.label-custom{background:#F3E8FF;color:#7C3AED}
+.sidebar-product-label.label-none{display:none}
+
+.sidebar-product-inner{padding:14px}
+.sidebar-product-image{
+  width:100%;height:160px;object-fit:contain;border-radius:10px;
+  display:block;background:var(--gray-100);margin-bottom:12px
+}
 .sidebar-product-info{display:flex;flex-direction:column;gap:6px}
 .sidebar-product-info h4{font-size:13px;font-weight:800;line-height:1.4;color:var(--gray-900)}
-.sidebar-product-price{font-size:17px;font-weight:900;color:var(--brand)}
-.sidebar-product-desc{font-size:12px;color:var(--gray-600);line-height:1.5}
-.sidebar-cta{display:flex;align-items:center;justify-content:center;gap:6px;background:var(--brand);color:#fff !important;font-weight:800;font-size:13px;padding:10px 14px;border-radius:8px;transition:all 0.2s;width:100%;text-align:center;margin-top:4px;text-decoration:none}
-.sidebar-cta:hover{background:var(--brand-dark);gap:10px}
+
+/* Budget tier badge */
+.sidebar-budget-tier{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:3px 10px;border-radius:20px;font-size:11px;font-weight:800;
+  width:fit-content;margin-bottom:2px;
+}
+.tier-budget{background:#D1FAE5;color:#065F46}
+.tier-mid{background:#FEF3C7;color:#92400E}
+.tier-luxury{background:var(--brand-pale);color:var(--brand)}
+
+/* Benefit line */
+.sidebar-benefit{font-size:12px;color:var(--gray-600);line-height:1.5;font-style:italic}
+
+/* CTA button inside card */
+.sidebar-cta{
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  background:var(--brand);color:#fff !important;font-weight:800;font-size:13px;
+  padding:10px 14px;border-radius:8px;transition:all 0.2s;
+  width:100%;text-align:center;margin-top:10px;text-decoration:none;
+  border:none;cursor:pointer;font-family:'Nunito',sans-serif;
+}
+.sidebar-product:hover .sidebar-cta{background:var(--brand-dark)}
+
+/* ── AD SLOT ── */
+.sidebar-ad{
+  background:#fff;border-radius:var(--radius);margin-bottom:20px;
+  box-shadow:var(--shadow-sm);border:2px solid var(--gray-200);overflow:hidden;
+}
+.sidebar-ad-inner{padding:14px;text-align:center}
+.sidebar-ad-label{font-size:10px;color:var(--gray-600);text-transform:uppercase;letter-spacing:0.8px;font-weight:700;margin-bottom:8px}
+/* Ad image fills width naturally */
+.sidebar-ad img{width:100%;height:auto;border-radius:8px;display:block}
+/* Plain text ad fallback */
+.sidebar-ad-text{font-size:13px;color:var(--gray-800);line-height:1.5}
+
+/* ── RELATED POST CARD (sidebar) ── */
+.sidebar-related{
+  background:#fff;border-radius:var(--radius);margin-bottom:20px;
+  box-shadow:var(--shadow-sm);border:2px solid transparent;
+  transition:all 0.3s var(--ease);display:block;text-decoration:none;color:inherit;overflow:hidden;
+}
+.sidebar-related:hover{transform:translateY(-4px);box-shadow:var(--shadow-md);border-color:var(--brand)}
+.sidebar-related img{width:100%;height:120px;object-fit:cover;display:block}
+.sidebar-related-body{padding:14px}
+.sidebar-related-cat{font-size:10px;font-weight:800;text-transform:uppercase;color:var(--brand);letter-spacing:0.5px;margin-bottom:5px}
+.sidebar-related-title{font-size:13px;font-weight:800;line-height:1.4;color:var(--gray-900)}
+.sidebar-related-link{display:inline-flex;align-items:center;gap:4px;margin-top:8px;font-size:12px;font-weight:700;color:var(--brand)}
+.sidebar-related:hover .sidebar-related-link{gap:8px}
+
+/* ── CUSTOM HTML BLOCK (sidebar) ── */
+.sidebar-custom{
+  background:#fff;border-radius:var(--radius);margin-bottom:20px;
+  box-shadow:var(--shadow-sm);padding:16px;border:2px solid var(--gray-200);overflow:hidden;
+}
+
+/* ── STICKY SECTION TITLE (groups in long sidebars) ── */
+.sidebar-section-title{
+  font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;
+  color:var(--gray-600);margin:8px 0 14px;padding-bottom:8px;
+  border-bottom:2px solid var(--gray-100);
+}
 
 /* ═══ FOOTER ═══ */
 footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0}
@@ -320,9 +384,15 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
 @media(max-width:1100px){
   .content-wrapper{grid-template-columns:1fr}
   .sidebar{position:static}
-  .sidebar-product{flex-direction:row;align-items:flex-start}
-  .sidebar-product-image{width:100px;height:100px;flex-shrink:0}
+  /* Stack sidebar products side-by-side on tablet */
+  .sidebar-product,.sidebar-related,.sidebar-ad,.sidebar-custom{
+    display:flex;flex-direction:row;align-items:flex-start;
+  }
+  .sidebar-product-image{width:100px;height:100px;flex-shrink:0;margin-bottom:0;margin-right:12px}
+  .sidebar-product-inner{display:flex;flex-direction:row;gap:12px;align-items:flex-start;flex:1}
   .sidebar-product-info{flex:1}
+  .sidebar-related img{width:100px;height:80px;flex-shrink:0;object-fit:cover}
+  .sidebar-related-body{flex:1}
   .footer-grid{grid-template-columns:1fr 1fr}
   .related-grid{grid-template-columns:repeat(2,1fr)}
 }
@@ -336,10 +406,12 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
   .content-body{font-size:1rem}
   .content-wrapper{padding:0 16px 60px}
   .share-btn{padding:10px 12px;font-size:12px}
-  .sidebar-product{flex-direction:column}
-  .sidebar-product-image{width:100%;height:160px}
+  .sidebar-product,.sidebar-related,.sidebar-ad,.sidebar-custom{flex-direction:column}
+  .sidebar-product-image{width:100%;height:160px;margin-right:0;margin-bottom:12px}
+  .sidebar-related img{width:100%;height:120px}
   .footer-grid{grid-template-columns:1fr}
   .footer-bottom{flex-direction:column;text-align:center}
+  .newsletter-top{flex-direction:column;text-align:center}
   .newsletter-box{padding:24px 20px}
   .related-grid{grid-template-columns:1fr 1fr}
 }
@@ -520,7 +592,6 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
   <a href="/category/{{CATEGORY_SLUG}}.html" class="category-badge">{{CATEGORY}}</a>
   <h1 class="article-title">{{TITLE}}</h1>
   <div class="article-meta">
-    <!-- FIX: calendar icon replaced with pen/author style, date formatted nicely -->
     <span class="meta-item">👤 {{AUTHOR_NAME}}</span>
     <span class="meta-item">🗓 {{PUBLISH_DATE_FORMATTED}}</span>
     <span class="meta-item">⏱️ {{READ_TIME}} min read</span>
@@ -540,24 +611,25 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
   <article class="article-content">
     <img src="{{FEATURED_IMAGE}}" alt="{{FEATURED_IMAGE_ALT}}" class="featured-image">
 
-    <div class="content-body">
-      {{ARTICLE_CONTENT}}
-    </div>
-
     <!--
     ══════════════════════════════════════════════
-    NEWSLETTER BOX 1 — Mid-article
-    Place this block inside {{ARTICLE_CONTENT}}
-    at whichever point you want it mid-article,
-    e.g. after Upgrade 6 section.
+    NEWSLETTER BOX 1 — TOP (before article body)
+    Sits between the featured image and the content.
+    Compact horizontal layout: text left, button right.
     ══════════════════════════════════════════════
     -->
-    <div class="newsletter-box">
-      <p>✉️ Love these decor ideas?</p>
-      <p class="nl-sub">Join thousands of readers getting weekly inspiration straight to their inbox.</p>
-      <button class="ml-onclick-form" onclick="ml('show', 'ygWEME', true)">
-        🎁 Get Free Weekly Decor Tips →
+    <div class="newsletter-top">
+      <div class="newsletter-top-text">
+        <p>✉️ Love these decor ideas?</p>
+        <span>Join thousands of readers getting weekly inspiration straight to their inbox.</span>
+      </div>
+      <button class="nl-btn" onclick="ml('show', 'ygWEME', true)">
+        🎁 Get Free Weekly Tips →
       </button>
+    </div>
+
+    <div class="content-body">
+      {{ARTICLE_CONTENT}}
     </div>
 
     <!-- SHARE SECTION -->
@@ -587,7 +659,8 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
 
     <!--
     ══════════════════════════════════════════════
-    NEWSLETTER BOX 2 — After author box
+    NEWSLETTER BOX 2 — BOTTOM (after author box)
+    Full-width centred block for maximum sign-ups.
     ══════════════════════════════════════════════
     -->
     <div class="newsletter-box">
@@ -598,7 +671,7 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
       </button>
     </div>
 
-    <!-- ═══ YOU MAY ALSO LOVE — loaded dynamically from posts.json ═══ -->
+    <!-- ═══ YOU MAY ALSO LOVE ═══ -->
     <div class="related-posts" id="relatedPosts" style="display:none">
       <h3>💕 You May Also Love</h3>
       <div class="related-grid" id="relatedGrid"></div>
@@ -606,10 +679,120 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
 
   </article>
 
-  <!-- SIDEBAR -->
+  <!-- ══════════════════════════════════════════════════
+    SIDEBAR
+    Supports four item types — no cap on total items:
+
+    1. PRODUCT (affiliate link, budget tier, benefit line)
+       ─────────────────────────────────────────────────
+       <a href="AFFILIATE_URL" class="sidebar-product" target="_blank" rel="nofollow noopener">
+         <div class="sidebar-product-label label-top-pick">⭐ Top Pick <span>Shop Now →</span></div>
+         <div class="sidebar-product-inner">
+           <img src="/content/images/products/FILENAME.jpg" alt="PRODUCT NAME" class="sidebar-product-image">
+           <div class="sidebar-product-info">
+             <h4>PRODUCT NAME</h4>
+             <span class="sidebar-budget-tier tier-budget">💚 Budget Pick</span>
+             <p class="sidebar-benefit">Best for renters — no drilling required</p>
+             <span class="sidebar-cta">🛍️ Shop on Amazon →</span>
+           </div>
+         </div>
+       </a>
+
+       Budget tier classes: tier-budget | tier-mid | tier-luxury
+       Label classes: label-new | label-sale | label-top-pick | label-editors-pick | label-best-value | label-limited | label-custom | label-none
+
+    2. AD SLOT (image banner or embedded ad code)
+       ─────────────────────────────────────────────────
+       <div class="sidebar-ad">
+         <div class="sidebar-ad-inner">
+           <div class="sidebar-ad-label">Advertisement</div>
+           <a href="DEST_URL" target="_blank" rel="nofollow noopener">
+             <img src="/content/images/ads/AD_BANNER.jpg" alt="Ad description">
+           </a>
+         </div>
+       </div>
+       — OR paste any ad network script inside .sidebar-ad-inner —
+
+    3. RELATED POST CARD
+       ─────────────────────────────────────────────────
+       <a href="/posts/SLUG.html" class="sidebar-related">
+         <img src="/content/images/THUMB.jpg" alt="Post title">
+         <div class="sidebar-related-body">
+           <div class="sidebar-related-cat">CATEGORY</div>
+           <div class="sidebar-related-title">Post Title Here</div>
+           <span class="sidebar-related-link">Read more →</span>
+         </div>
+       </a>
+
+    4. CUSTOM HTML BLOCK (newsletter embed, quiz, countdown, etc.)
+       ─────────────────────────────────────────────────
+       <div class="sidebar-custom">
+         Any HTML here — embeds, scripts, custom widgets.
+       </div>
+
+    Add a section divider/title between groups:
+       <div class="sidebar-section-title">🌟 Featured Products</div>
+       <div class="sidebar-section-title">📖 Read Next</div>
+       <div class="sidebar-section-title">📢 Sponsored</div>
+  ══════════════════════════════════════════════════ -->
   <aside class="sidebar">
-    <h3 class="sidebar-title">🌟 Featured Products</h3>
+
     {{SIDEBAR_PRODUCTS}}
+
+    <!--
+    EXAMPLE SIDEBAR STRUCTURE (replace {{SIDEBAR_PRODUCTS}} with this pattern):
+
+    <div class="sidebar-section-title">🌟 Featured Products</div>
+
+    <a href="https://amzn.to/XXXXX" class="sidebar-product" target="_blank" rel="nofollow noopener">
+      <div class="sidebar-product-label label-top-pick">⭐ Top Pick <span>Shop →</span></div>
+      <div class="sidebar-product-inner">
+        <img src="/content/images/products/casaluna-linen-duvet.jpg" alt="Casaluna Linen Duvet Cover" class="sidebar-product-image">
+        <div class="sidebar-product-info">
+          <h4>Casaluna Linen Blend Duvet Cover</h4>
+          <span class="sidebar-budget-tier tier-mid">🟡 Mid-Range</span>
+          <p class="sidebar-benefit">Hotel-quality feel at a fraction of the cost</p>
+          <span class="sidebar-cta">🛍️ Shop on Amazon →</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="https://amzn.to/XXXXX" class="sidebar-product" target="_blank" rel="nofollow noopener">
+      <div class="sidebar-product-label label-best-value">💙 Best Value <span>View →</span></div>
+      <div class="sidebar-product-inner">
+        <img src="/content/images/products/nuloom-rug.jpg" alt="nuLOOM Jute Rug" class="sidebar-product-image">
+        <div class="sidebar-product-info">
+          <h4>nuLOOM Rigo Handwoven Jute Rug</h4>
+          <span class="sidebar-budget-tier tier-budget">💚 Budget Pick</span>
+          <p class="sidebar-benefit">Natural texture, available in 8 sizes</p>
+          <span class="sidebar-cta">🛍️ Shop on Amazon →</span>
+        </div>
+      </div>
+    </a>
+
+    <div class="sidebar-section-title">📢 Sponsored</div>
+
+    <div class="sidebar-ad">
+      <div class="sidebar-ad-inner">
+        <div class="sidebar-ad-label">Advertisement</div>
+        <a href="https://example.com" target="_blank" rel="nofollow noopener">
+          <img src="/content/images/ads/banner-300x250.jpg" alt="Sponsored">
+        </a>
+      </div>
+    </div>
+
+    <div class="sidebar-section-title">📖 Read Next</div>
+
+    <a href="/posts/best-bedroom-lighting-ideas.html" class="sidebar-related">
+      <img src="/content/images/bedroom-lighting-thumb.jpg" alt="Best Bedroom Lighting Ideas">
+      <div class="sidebar-related-body">
+        <div class="sidebar-related-cat">Bedroom</div>
+        <div class="sidebar-related-title">15 Best Bedroom Lighting Ideas for Every Budget</div>
+        <span class="sidebar-related-link">Read more →</span>
+      </div>
+    </a>
+    -->
+
   </aside>
 
 </div>
@@ -689,7 +872,7 @@ const btt = document.getElementById('backToTop');
 window.addEventListener('scroll', () => btt.classList.toggle('visible', window.pageYOffset > 400), {passive:true});
 btt.addEventListener('click', () => window.scrollTo({top:0,behavior:'smooth'}));
 
-/* ═══ TABLE: wrap all tables in a scroll div for responsive fix ═══ */
+/* ═══ TABLE WRAPPING ═══ */
 document.querySelectorAll('.content-body table').forEach(table => {
   const wrapper = document.createElement('div');
   wrapper.className = 'table-scroll-wrap';
@@ -697,7 +880,7 @@ document.querySelectorAll('.content-body table').forEach(table => {
   wrapper.appendChild(table);
 });
 
-/* ═══ AUTO-BUILD FLOATING TOC — FIX: no brackets, clean anchor IDs ═══ */
+/* ═══ AUTO-BUILD FLOATING TOC ═══ */
 (function(){
   const tocFloat = document.getElementById('tocFloat');
   const tocList  = document.getElementById('tocList');
@@ -706,10 +889,9 @@ document.querySelectorAll('.content-body table').forEach(table => {
   if (headings.length < 3) return;
   tocFloat.style.display = 'block';
   headings.forEach((h, i) => {
-    // FIX: create clean ID — no special chars, no brackets
     if (!h.id) {
       const cleanId = 'h2-' + i + '-' + h.textContent.toLowerCase()
-        .replace(/[^a-z0-9\s-]/g, '')   // strip brackets and special chars
+        .replace(/[^a-z0-9\s-]/g, '')
         .replace(/\s+/g, '-')
         .replace(/-+/g, '-')
         .substring(0, 50);
@@ -718,7 +900,6 @@ document.querySelectorAll('.content-body table').forEach(table => {
     const li = document.createElement('li');
     const a  = document.createElement('a');
     a.href        = '#' + h.id;
-    // FIX: strip any leading emoji / number pattern for cleaner TOC labels
     a.textContent = h.textContent.replace(/^[\d]+[\.\:\s]+/, '').replace(/^Upgrade\s\d+:\s*/i, '').trim();
     a.addEventListener('click', e => {
       e.preventDefault();
@@ -801,37 +982,26 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
   });
 });
 
-/* ═══ YOU MAY ALSO LOVE — related posts from posts.json ═══ */
+/* ═══ YOU MAY ALSO LOVE ═══ */
 (function(){
   const container = document.getElementById('relatedPosts');
   const grid      = document.getElementById('relatedGrid');
   if (!container || !grid) return;
-
-  // Get current page slug from URL
   const currentSlug = window.location.pathname.split('/').pop().replace('.html','');
-
-  // Get current page categories/tags from meta if available
   const currentCategory = document.querySelector('.category-badge') ?
     document.querySelector('.category-badge').textContent.trim() : '';
-
   async function loadRelated() {
     try {
       const res = await fetch('/posts.json');
       if (!res.ok) return;
       const posts = await res.json();
-
-      // Filter out current post, prefer same category, shuffle, take 3-4
       const others = posts.filter(p => p.slug !== currentSlug && p.slug !== currentSlug.replace('.html',''));
       const sameCat = others.filter(p =>
         (p.categories || []).some(c => c.toLowerCase() === currentCategory.toLowerCase())
       );
       const pool = sameCat.length >= 3 ? sameCat : others;
-
-      // Shuffle and pick 4
       const shuffled = pool.sort(() => 0.5 - Math.random()).slice(0, 4);
-
       if (!shuffled.length) return;
-
       shuffled.forEach(post => {
         const img  = post.featured_image || '/content/images/default-post.jpg';
         const cat  = (post.categories && post.categories[0]) || 'Decor';
@@ -848,13 +1018,9 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
           </div>`;
         grid.appendChild(card);
       });
-
       container.style.display = 'block';
-    } catch(e) {
-      // Silently fail if posts.json not available
-    }
+    } catch(e) {}
   }
-
   loadRelated();
 })();
 
@@ -865,7 +1031,6 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
   if (!searchInput || !suggestionsBox) return;
   let timeout, selectedIndex = -1, cachedPosts = null;
   const popular = ['Living Room','Bedroom Decor','Budget Furniture','Minimalist','Best Of Lists'];
-
   async function loadPosts() {
     if (cachedPosts) return cachedPosts;
     try { const r = await fetch('/posts.json'); if (r.ok) { cachedPosts = await r.json(); return cachedPosts; } } catch(e){}
