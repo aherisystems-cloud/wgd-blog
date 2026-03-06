@@ -65,7 +65,7 @@ date: '2026-02-26T22:20:00.000Z'
 ---
 
 
-![Best bedroom decor ideas 2026 with layered linen bedding rattan headboard and warm neutral tones](/images/hero-best-bedroom-decor-ideas-2026)
+![Best bedroom decor ideas 2026 with layered linen bedding rattan headboard and warm neutral tones](/content/images/hero-best-bedroom-decor-ideas-2026)
 
 ---
 
@@ -117,7 +117,7 @@ By the end of this post, you'll know exactly which upgrades move the needle most
 
 ## Products Featured in This Article {#products-featured}
 
-![Top bedroom decor products 2026 including linen bedding arc lamp jute rug and framed wall art](/images/bedroom-decor-products-featured-table)
+![Top bedroom decor products 2026 including linen bedding arc lamp jute rug and framed wall art](/content/images/bedroom-decor-products-featured-table)
 
 | Product | Price Range | Best For | Why We Love It |
 |---|---|---|---|
@@ -133,7 +133,7 @@ By the end of this post, you'll know exactly which upgrades move the needle most
 
 ## Top Bedroom Decor Trends for 2026 {#trends}
 
-![2026 bedroom decor trends mood board showing earthy tones curved furniture and natural textures](/images/bedroom-decor-trends-2026-mood-board)
+![2026 bedroom decor trends mood board showing earthy tones curved furniture and natural textures](/content/images/bedroom-decor-trends-2026-mood-board)
 
 The design world has moved decisively in 2026, and the shift is one I personally find exciting. After years of cold minimalism and muted grays, bedrooms are getting warmer, softer, and more human. Here is what's driving the conversation right now — and what's quietly fading out.
 
@@ -163,7 +163,7 @@ Rattan, jute, bamboo, linen, and reclaimed wood are appearing in virtually every
 
 ### Modern & Minimalist Bedroom Decor {#modern}
 
-![Modern minimalist bedroom decor with platform bed pendant lights and clean white walls](/images/modern-minimalist-bedroom-decor)
+![Modern minimalist bedroom decor with platform bed pendant lights and clean white walls](/content/images/modern-minimalist-bedroom-decor)
 
 Modern minimalist bedroom decor is built on one principle: every item earns its place. Nothing sits in the room without purpose, and the result — when done well — feels like waking up in a boutique hotel every morning. I'd personally choose this style for any bedroom where I wanted to feel genuinely calm the moment I opened my eyes.
 
@@ -175,7 +175,7 @@ One thing I've learned from styling minimalist bedrooms: quality matters more he
 
 ### Cozy Boho Bedroom Decor {#boho}
 
-![Cozy boho bedroom decor with rattan headboard macrame wall art jute rug and layered cushions](/images/cozy-boho-bedroom-decor)
+![Cozy boho bedroom decor with rattan headboard macrame wall art jute rug and layered cushions](/content/images/cozy-boho-bedroom-decor)
 
 Boho bedroom decor is the most forgiving style to pull off — and one of the most satisfying. There are no rigid rules, only principles: warmth, texture, eclecticism, and personality. It's also the style that rewards thrifting and mixing price points most generously, which makes it accessible at almost any budget.
 
@@ -187,7 +187,7 @@ The beauty of this style is that it genuinely rewards imperfection. Thrift half 
 
 ### Luxury & Glam Bedroom Decor {#luxury}
 
-![Luxury glam bedroom decor with velvet tufted headboard gold accents and crystal chandelier](/images/luxury-glam-bedroom-decor)
+![Luxury glam bedroom decor with velvet tufted headboard gold accents and crystal chandelier](/content/images/luxury-glam-bedroom-decor)
 
 Glam bedroom decor is unapologetic. It leans into drama, richness, and the feeling of waking up in a five-star suite. Done right, it's genuinely breathtaking. Done wrong, it feels like a furniture showroom sampler. The difference, in my experience, comes down to one word: restraint. True luxury decor is curated, not crammed.
 
@@ -199,7 +199,7 @@ The one thing I always add to prevent a glam bedroom from feeling cold: somethin
 
 ### Small Bedroom Decor Ideas {#small}
 
-![Small bedroom decor ideas with floating shelves large mirror under bed storage and light walls](/images/small-bedroom-decor-ideas)
+![Small bedroom decor ideas with floating shelves large mirror under bed storage and light walls](/content/images/small-bedroom-decor-ideas)
 
 Small bedrooms are the challenge I get asked about more than any other. The good news is that the solutions are well-established, genuinely effective, and most of them cost very little to implement.
 
@@ -217,7 +217,7 @@ Small bedrooms are the challenge I get asked about more than any other. The good
 
 ## The 5 Highest-Impact Bedroom Upgrades {#high-impact}
 
-![5 highest impact bedroom decor upgrades including layered bedding lighting wall art rug and mirror](/images/bedroom-decor-highest-impact-upgrades)
+![5 highest impact bedroom decor upgrades including layered bedding lighting wall art rug and mirror](/content/images/bedroom-decor-highest-impact-upgrades)
 
 If you can only do a few things, do these five. After years of bedroom styling and direct feedback from thousands of readers, these upgrades consistently deliver the biggest visible transformation per dollar spent — in roughly this order of impact.
 
@@ -245,7 +245,7 @@ A large mirror belongs in every bedroom regardless of size. It catches and ampli
 
 ## Budget Bedroom Makeover: Transform for Under $300 {#budget-makeover}
 
-![Budget bedroom makeover before and after transformation under $300 with bedding lamp and wall art](/images/budget-bedroom-makeover-before-after)
+![Budget bedroom makeover before and after transformation under $300 with bedding lamp and wall art](/content/images/budget-bedroom-makeover-before-after)
 
 You do not need to spend thousands of dollars to have a bedroom that stops people in their tracks. Here is the exact $300 makeover formula I use — ordered by impact so you know where to start if you need to phase the spending.
 
@@ -266,7 +266,7 @@ The order matters as much as the products. Start with bedding because it deliver
 
 ## How to Style Your Bedroom Like a Designer {#how-to}
 
-![Step by step guide to styling a bedroom like a designer in 5 clear steps](/images/how-to-style-bedroom-like-designer-steps)
+![Step by step guide to styling a bedroom like a designer in 5 clear steps](/content/images/how-to-style-bedroom-like-designer-steps)
 
 Every bedroom transformation I've seen succeed follows the same sequence. Skip a step or reverse the order, and something always feels slightly off — even when you can't immediately identify why. Here's the process in the order it should happen.
 
@@ -286,7 +286,7 @@ Every bedroom transformation I've seen succeed follows the same sequence. Skip a
 
 ### 🏆 Best Overall: Casaluna Linen Blend Duvet Cover Set
 
-![Casaluna linen blend duvet cover set styled on a bedroom bed in warm neutral tones](/images/casaluna-linen-duvet-cover-bedroom)
+![Casaluna linen blend duvet cover set styled on a bedroom bed in warm neutral tones](/content/images/casaluna-linen-duvet-cover-bedroom)
 
 **Price:** $69–$129 (As of February 2026)
 **Best For:** Anyone who wants effortlessly chic, relaxed-linen aesthetics without paying premium linen prices
@@ -312,7 +312,7 @@ Every bedroom transformation I've seen succeed follows the same sequence. Skip a
 
 ### 💡 Best Lighting: Brightech Sparq Arc LED Floor Lamp
 
-![Brightech Sparq arc LED floor lamp beside bedroom bed creating warm ambient lighting glow](/images/brightech-sparq-arc-lamp-bedroom)
+![Brightech Sparq arc LED floor lamp beside bedroom bed creating warm ambient lighting glow](/content/images/brightech-sparq-arc-lamp-bedroom)
 
 **Price:** $79–$109 (As of February 2026)
 **Best For:** Creating warm, dimmable ambient light that transforms bedroom atmosphere from flat to genuinely cozy
@@ -338,7 +338,7 @@ Every bedroom transformation I've seen succeed follows the same sequence. Skip a
 
 ### 🌿 Best Rug: nuLOOM Rigo Handwoven Jute Area Rug
 
-![nuLOOM Rigo handwoven jute area rug under queen bed in boho bedroom with rattan headboard](/images/nuloom-rigo-jute-rug-bedroom)
+![nuLOOM Rigo handwoven jute area rug under queen bed in boho bedroom with rattan headboard](/content/images/nuloom-rigo-jute-rug-bedroom)
 
 **Price:** $65–$175 depending on size (As of February 2026)
 **Best For:** Natural, boho, Scandinavian, and coastal bedroom styles
@@ -364,7 +364,7 @@ Every bedroom transformation I've seen succeed follows the same sequence. Skip a
 
 ### 🖼️ Premium Pick: Uttermost Abelard Abstract Canvas Art
 
-![Uttermost Abelard abstract canvas art hung above styled bed as bedroom wall statement piece](/images/uttermost-abelard-canvas-art-bedroom-wall)
+![Uttermost Abelard abstract canvas art hung above styled bed as bedroom wall statement piece](/content/images/uttermost-abelard-canvas-art-bedroom-wall)
 
 **Price:** $180–$320 depending on size (As of February 2026)
 **Best For:** Modern, contemporary, and luxury bedrooms needing a gallery-quality anchor piece above the bed
@@ -390,7 +390,7 @@ Every bedroom transformation I've seen succeed follows the same sequence. Skip a
 
 ### 💰 Best Budget Pick: Bedsure Satin Pillowcase Set (2-Pack)
 
-![Bedsure satin pillowcase set in dusty rose on styled bed with crisp white linen and trailing plant](/images/bedsure-satin-pillowcase-set-bedroom)
+![Bedsure satin pillowcase set in dusty rose on styled bed with crisp white linen and trailing plant](/content/images/bedsure-satin-pillowcase-set-bedroom)
 
 **Price:** $10–$18 (As of February 2026)
 **Best For:** Anyone who wants the immediate feel and look of a luxury bedroom upgrade for the smallest possible investment
@@ -416,7 +416,7 @@ Every bedroom transformation I've seen succeed follows the same sequence. Skip a
 
 ## Full Product Comparison {#comparison}
 
-![Full comparison of best bedroom decor products 2026 including pricing ratings and best use cases](/images/bedroom-decor-products-comparison-2026)
+![Full comparison of best bedroom decor products 2026 including pricing ratings and best use cases](/content/images/bedroom-decor-products-comparison-2026)
 
 | Feature | Casaluna Duvet | Brightech Lamp | nuLOOM Rug | Uttermost Art | Bedsure Pillowcases |
 |---|---|---|---|---|---|
