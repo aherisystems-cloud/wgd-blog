@@ -403,6 +403,28 @@ details[open] .canva-setup summary::before { transform: rotate(90deg); }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 5px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--text-tertiary); }
 
+/* ── AFFILIATE LINKS LIST PANEL ── */
+.affiliate-list-panel { background: rgba(0,208,132,0.03); border-color: rgba(0,208,132,0.2); }
+.affiliate-list-panel h3::before { background: var(--success) !important; }
+.parsed-affiliate-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 12px; }
+.parsed-affiliate-table th { background: var(--bg-main); padding: 8px 12px; text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-secondary); border-bottom: 2px solid var(--border); font-weight: 600; }
+.parsed-affiliate-table td { padding: 8px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.parsed-affiliate-table tr:hover td { background: var(--bg-main); }
+.aff-status-ok  { color: var(--success); font-weight: 700; font-size: 12px; }
+.aff-status-skip { color: var(--warning); font-weight: 700; font-size: 12px; }
+.aff-link-pill  { display: inline-block; background: rgba(45,91,255,0.08); color: var(--primary); padding: 2px 8px; border-radius: 4px; font-family: var(--font-mono); font-size: 11px; max-width: 240px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; vertical-align: middle; }
+.tier-pill { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.4px; }
+.tier-budget  { background: #D1FAE5; color: #065F46; }
+.tier-mid     { background: #FEF3C7; color: #92400E; }
+.tier-luxury  { background: rgba(126,8,130,0.12); color: #7e0882; }
+.import-summary-box { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 20px; }
+.import-summary-stat { background: var(--bg-main); border: 2px solid var(--border); border-radius: var(--radius-sm); padding: 14px 16px; text-align: center; }
+.import-summary-val  { font-size: 28px; font-weight: 800; color: var(--primary); }
+.import-summary-val.green { color: var(--success); }
+.import-summary-val.purple { color: var(--purple); }
+.import-summary-val.orange { color: var(--factory); }
+.import-summary-label { font-size: 12px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+
 /* ── Budget Tier Select (replaces price input) ── */
 .budget-tier-select {
   width: 100%; padding: 12px 16px; margin: 8px 0;
@@ -413,6 +435,23 @@ details[open] .canva-setup summary::before { transform: rotate(90deg); }
 }
 .budget-tier-select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(45,91,255,0.1); }
 .budget-tier-select.hidden-field { opacity:0; pointer-events:none; height:0 !important; min-height:0 !important; padding:0 !important; border:none !important; margin:0 !important; overflow:hidden; }
+/* ── PARSED AFFILIATE TABLE ── */
+.parsed-affiliate-table { width:100%; border-collapse:collapse; font-size:13px; margin-top:4px; }
+.parsed-affiliate-table th { background:var(--bg-main); padding:8px 12px; text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:0.5px; color:var(--text-secondary); border-bottom:2px solid var(--border); font-weight:700; }
+.parsed-affiliate-table td { padding:9px 12px; border-bottom:1px solid var(--border); vertical-align:middle; }
+.parsed-affiliate-table tr:last-child td { border-bottom:none; }
+.parsed-affiliate-table tr:hover td { background:var(--bg-main); }
+.aff-tier-pill { display:inline-block; padding:2px 9px; border-radius:10px; font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.4px; }
+.aff-tier-budget  { background:#D1FAE5; color:#065F46; }
+.aff-tier-mid     { background:#FEF3C7; color:#92400E; }
+.aff-tier-luxury  { background:rgba(126,8,130,0.12); color:#7e0882; }
+.aff-tier-none    { background:var(--bg-main); color:var(--text-tertiary); }
+.aff-url-chip { display:inline-block; max-width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; background:rgba(45,91,255,0.07); color:var(--primary); padding:2px 8px; border-radius:4px; font-family:var(--font-mono); font-size:11px; vertical-align:middle; }
+.aff-status-added { color:var(--success); font-weight:700; font-size:12px; }
+.aff-status-skip  { color:var(--warning); font-weight:700; font-size:12px; }
+.aff-summary-stat { background:var(--bg-surface); border:2px solid var(--border); border-radius:var(--radius-sm); padding:14px 16px; text-align:center; }
+.aff-summary-val  { font-size:26px; font-weight:800; }
+.aff-summary-label{ font-size:11px; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.5px; margin-top:2px; }
 
 </style>
 </head>
@@ -731,18 +770,18 @@ details[open] .canva-setup summary::before { transform: rotate(90deg); }
 <section id="import">
   <div class="import-hero">
     <h2>⚡ Paste AI Post → Auto-Fill Everything</h2>
-    <p>Copy the full output from your writing prompt (Claude/ChatGPT) and paste it below. The scheduler will automatically extract the title, slug, meta description, keywords, categories, tags, featured image, products, and the full markdown content — then fill in every field for you. One paste. Done.</p>
+    <p>Copy the full output from your writing prompt (Claude/ChatGPT) and paste it below. The scheduler automatically extracts the title, slug, meta description, keywords, categories, tags, featured image, full content — <strong>and now your affiliate links</strong>. Products are auto-added to your permanent catalog and the sidebar. One paste. Done.</p>
     <div class="import-steps">
-      <div class="import-step"><div class="import-step-num">1</div><strong>Run your prompt</strong><p>Use your AI writing prompt to generate the post</p></div>
-      <div class="import-step"><div class="import-step-num">2</div><strong>Copy all output</strong><p>Select everything from the AI response</p></div>
-      <div class="import-step"><div class="import-step-num">3</div><strong>Paste below</strong><p>Hit "Parse & Fill" — all fields auto-populated</p></div>
-      <div class="import-step"><div class="import-step-num">4</div><strong>Schedule & save</strong><p>Go to Schedule tab, set your date, prepare &amp; save</p></div>
+      <div class="import-step"><div class="import-step-num">1</div><strong>Run your prompt</strong><p>Generate the post — make sure it includes the Affiliate Links table at the end</p></div>
+      <div class="import-step"><div class="import-step-num">2</div><strong>Copy all output</strong><p>Select everything from the AI response, top to bottom</p></div>
+      <div class="import-step"><div class="import-step-num">3</div><strong>Paste &amp; parse</strong><p>Hit "Parse &amp; Fill" — all fields, images <em>and</em> affiliate links auto-populate</p></div>
+      <div class="import-step"><div class="import-step-num">4</div><strong>Schedule &amp; save</strong><p>Go to Schedule tab, set your date, prepare &amp; save</p></div>
     </div>
   </div>
   <div class="panel">
     <h3>Paste AI Post Output</h3>
     <p style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;">
-      Paste the <strong>complete output</strong> from your writing prompt — including the metadata lines at the top and the Image Generation List at the bottom.
+      Paste the <strong>complete output</strong> from your writing prompt — including the metadata lines at the top, the Image Generation List, and the <strong>Affiliate Links table</strong> at the bottom.
     </p>
     <div class="import-paste-area">
       <textarea id="importPasteArea" placeholder="# Best Bedroom Decor Ideas 2026...&#10;&#10;**Meta Description:** Transform your bedroom...&#10;**URL Slug:** /best-bedroom-decor-ideas&#10;..."></textarea>
@@ -760,6 +799,22 @@ details[open] .canva-setup summary::before { transform: rotate(90deg); }
     <div class="action-row" style="margin-top:16px;">
       <button onclick="copyImageFilenames()" class="btn btn-secondary btn-sm">📋 Copy All Filenames</button>
       <button onclick="copyImagePrompts()" class="btn btn-secondary btn-sm">📋 Copy All AI Prompts</button>
+    </div>
+  </div>
+
+  <div class="panel" id="affiliateListPanel" style="display:none;border-color:rgba(0,208,132,0.25);background:rgba(0,208,132,0.02);">
+    <h3 style="color:var(--success);">🔗 Affiliate Links — Auto-Imported</h3>
+    <p style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;">
+      Products parsed from your AI output — automatically added to your <strong>permanent catalog</strong> and <strong>Products sidebar</strong>. Duplicates were skipped.
+    </p>
+    <div id="affiliateSummaryBox" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:20px;"></div>
+    <div id="affiliateListTable"></div>
+    <div class="action-row" style="margin-top:16px;">
+      <button onclick="copyAffiliateLinks()" class="btn btn-secondary btn-sm">📋 Copy All URLs</button>
+      <button onclick="copyAffiliateNames()" class="btn btn-secondary btn-sm">📋 Copy All Names</button>
+      <button onclick="copyAffiliateImgFiles()" class="btn btn-secondary btn-sm">🖼️ Copy Image Paths</button>
+      <button onclick="openTab('affiliate')" class="btn btn-secondary btn-sm">🔗 View Catalog</button>
+      <button onclick="openTab('products')" class="btn btn-secondary btn-sm">🛍️ View Sidebar</button>
     </div>
   </div>
 </section>
@@ -1782,38 +1837,139 @@ function parseAndFill() {
   var articleContent = raw;
   var contentStart = raw.search(/^!\[|^##\s/m);
   if (contentStart > 0) { articleContent = raw.slice(contentStart); }
-  articleContent = articleContent.replace(/^---\s*\n## Internal Links Used[\s\S]*$/m, '').replace(/^---\s*\n## 🖼[\s\S]*$/m, '').replace(/^## 🖼[\s\S]*$/m, '').trim();
+  articleContent = articleContent.replace(/^---\s*\n## Internal Links Used[\s\S]*$/m, '').replace(/^---\s*\n## 🖼[\s\S]*$/m, '').replace(/^## 🖼[\s\S]*$/m, '').replace(/^##\s*[🔗]?\s*AFFILIATE LINKS[\s\S]*$/im, '').replace(/^## 🔗[\s\S]*$/m, '').trim();
   document.getElementById('content').value = articleContent;
   var wc = articleContent.trim().split(/\s+/).filter(Boolean).length;
   filled.push({ icon: '📄', label: 'Content', val: wc + ' words' });
   updatePreview();
 
-  var productMatches = [...raw.matchAll(/###\s+(.+?)\s+(?:—|–)\s+(.+?)\n[\s\S]*?\*\*Price:\*\*\s*(\$[\d\-–$,]+)[\s\S]*?\[.*?👉.*?\]\(([^)]+)\)/g)];
-  if (productMatches.length > 0) {
-    document.getElementById('productsList').innerHTML = ''; productCounter = 0;
-    var added = 0;
-    productMatches.forEach(function(m) { if (added >= 5) return; addProductCard({ name: m[1].trim(), label: m[2].trim(), price: m[3].trim(), link: m[4].trim(), type: 'product' }); added++; });
-    if (added > 0) filled.push({ icon: '🛍️', label: 'Products', val: added + ' product cards added' });
-    updateProductBadge();
-  }
-
-  var imgListMatch = raw.match(/##\s*[🖼\uD83D\uDDBC][^\n]*\n([\s\S]+?)(?:Total Images:|Total Word Count:|$)/i);
+  // ── PARSE IMAGE LIST ──────────────────────────────────────────────
+  var imgListMatch = raw.match(/##\s*[🖼\uD83D\uDDBC][^\n]*IMAGE GENERATION[^\n]*\n([\s\S]+?)(?:##\s*AFFILIATE|##\s*🔗|Total Images:|Total Word Count:|$)/i);
   var parsedImages = [];
   if (imgListMatch) {
-    var tableStr = imgListMatch[1];
-    var rows = tableStr.split('\n').filter(function(r){ return r.includes('|') && !/^[\s|:-]+$/.test(r); });
+    var rows = imgListMatch[1].split('\n').filter(function(r){ return r.includes('|') && !/^[\s|:-]+$/.test(r); });
     rows.forEach(function(row) {
       var cells = row.split('|').map(function(c){ return c.trim(); }).filter(Boolean);
-      if (cells.length >= 4 && /^\d+$/.test(cells[0])) { parsedImages.push({ num: cells[0], placement: cells[1], filename: cells[2], prompt: cells[3] }); }
+      if (cells.length >= 4 && /^\d+$/.test(cells[0])) parsedImages.push({ num: cells[0], placement: cells[1], filename: cells[2], prompt: cells[3] });
     });
     if (parsedImages.length > 0) filled.push({ icon: '📸', label: 'Images', val: parsedImages.length + ' images parsed' });
+  }
+
+  // ── PARSE AFFILIATE LINKS LIST ────────────────────────────────────
+  // Table format: # | Product Name | Budget Tier | Affiliate URL | Benefit | Image Filename
+  // Product images always saved to: /content/images/products/
+  var affListMatch = raw.match(/##\s*[🔗\uD83D\uDD17]?\s*AFFILIATE LINKS[^\n]*\n([\s\S]+?)(?:Total Images:|Total Word Count:|$)/i);
+  var parsedAffiliates = [];
+  if (affListMatch) {
+    var affRows = affListMatch[1].split('\n').filter(function(r){ return r.includes('|') && !/^[\s|:-]+$/.test(r); });
+    affRows.forEach(function(row) {
+      var cells = row.split('|').map(function(c){ return c.trim(); }).filter(Boolean);
+      if (cells.length >= 4 && /^\d+$/.test(cells[0])) {
+        // Strip extension from image filename — stored without ext, path added at save time
+        var imgRaw = (cells[5] || '').trim().replace(/\.(jpg|jpeg|png|webp)$/i, '');
+        parsedAffiliates.push({
+          num:       cells[0],
+          name:      cells[1] || '',
+          tier:      cells[2] || '',
+          link:      cells[3] || '',
+          benefit:   cells[4] || '',
+          imageFile: imgRaw   // filename only, no path, no extension
+        });
+      }
+    });
+  }
+
+  // ── FALLBACK: scrape product cards directly from content ──────────
+  // Used when no affiliate links table is present in the output.
+  // Extracts: heading name, tier label, CTA link, and the first image tag
+  // inside each ### product card block (product images are in /content/images/products/)
+  if (parsedAffiliates.length === 0) {
+    var cardPattern = /###\s+(.+?)\s+(?:—|–)\s+(.+?)\n([\s\S]+?)(?=###\s+|##\s+|$)/gi;
+    var cardMatch;
+    while ((cardMatch = cardPattern.exec(raw)) !== null) {
+      var cardName  = cardMatch[1].trim();
+      var cardLabel = cardMatch[2].trim();
+      var cardBody  = cardMatch[3];
+      // CTA link — matches [👉 ...](url) or [Check ...](url)
+      var ctaM = cardBody.match(/\[(?:.*?👉.*?|.*?[Cc]heck.*?[Pp]rice.*?|.*?[Ss]ee.*?[Dd]eal.*?)\]\(([^)]+)\)/);
+      var cardLink = ctaM ? ctaM[1].trim() : '';
+      // First image inside the card — product images live in /content/images/products/
+      var imgM = cardBody.match(/!\[.*?\]\(\/content\/images\/products\/([^)]+)\)/i)
+              || cardBody.match(/!\[.*?\]\(\/(?:content\/)?images\/([^)]+)\)/i);
+      var cardImg = imgM ? imgM[1].trim().replace(/\.(jpg|jpeg|png|webp)$/i,'') : '';
+      if (cardName && cardLink) {
+        parsedAffiliates.push({
+          num:       String(parsedAffiliates.length + 1),
+          name:      cardName,
+          tier:      inferTier(cardLabel),
+          link:      cardLink,
+          benefit:   '',
+          imageFile: cardImg
+        });
+      }
+    }
+  }
+
+  // ── PUSH TO CATALOG + PRODUCTS SIDEBAR ────────────────────────────
+  // Catalog entry stores full path: /content/images/products/<filename>
+  // Product card receives same full path for preview
+  var affAdded = 0, affSkipped = 0, affRows2 = [];
+  if (parsedAffiliates.length > 0) {
+    var catalog = loadCatalog();
+    document.getElementById('productsList').innerHTML = ''; productCounter = 0;
+    parsedAffiliates.forEach(function(a) {
+      var status = 'added';
+      var fullImgPath = a.imageFile ? '/content/images/products/' + a.imageFile : '';
+      if (!a.link || !a.name) {
+        status = 'skip'; affSkipped++;
+      } else if (catalog.find(function(c){ return c.link === a.link; })) {
+        status = 'dup'; affSkipped++;
+      } else {
+        catalog.push({
+          name:       a.name,
+          link:       a.link,
+          category:   'General',
+          budgetTier: a.tier,
+          benefit:    a.benefit,
+          image:      fullImgPath,   // /content/images/products/<filename>
+          label:      a.tier
+        });
+        affAdded++;
+      }
+      // Add to Products sidebar regardless of catalog duplicate status
+      if (a.link && a.name && (affAdded + affSkipped) <= 12) {
+        addProductCard({
+          name:       a.name,
+          link:       a.link,
+          type:       'product',
+          budgetTier: a.tier,
+          benefit:    a.benefit,
+          image:      fullImgPath,   // /content/images/products/<filename>
+          label:      a.tier
+        });
+      }
+      affRows2.push({ ...a, fullImgPath, status });
+    });
+    saveCatalog(catalog);
+    updateCatalogCount();
+    updateProductBadge();
+    filled.push({ icon: '🔗', label: 'Affiliate Links', val: affAdded + ' added to catalog & sidebar' });
   }
 
   if (filled.length === 0) { showParseResult('error', 'Could not parse — paste the full AI response including metadata header', []); return; }
   var warnHtml = warnings.length ? '<div style="margin-top:8px;font-size:12px;color:#92400E;">Not found: ' + warnings.join(', ') + '</div>' : '';
   showParseResult('success', 'Parsed — ' + filled.length + ' fields filled', filled, warnHtml);
   if (parsedImages.length > 0) renderImageList(parsedImages);
+  if (affRows2.length > 0) renderAffiliateImportList(affRows2, affAdded, affSkipped);
   setTimeout(function(){ openTab('editor'); }, 1200);
+}
+
+function inferTier(label) {
+  var l = (label||'').toLowerCase();
+  if (l.includes('budget') || l.includes('$)') || l === '$') return 'Budget Pick';
+  if (l.includes('luxury') || l.includes('premium') || l.includes('$$$$') || l.includes('$$$')) return 'Luxury';
+  if (l.includes('mid') || l.includes('$$')) return 'Mid-Range';
+  return '';
 }
 
 function showParseResult(type, title, fields, extra='') {
@@ -1835,6 +1991,65 @@ function renderImageList(images) {
 
 function copyImageFilenames() { const names = _parsedImages.map(i => i.filename).join('\n'); navigator.clipboard.writeText(names).then(() => alert('✅ Filenames copied!')); }
 function copyImagePrompts() { const prompts = _parsedImages.map(i => `${i.num}. ${i.filename}\n${i.prompt}`).join('\n\n'); navigator.clipboard.writeText(prompts).then(() => alert('✅ Prompts copied!')); }
+
+let _parsedAffiliates = [];
+function renderAffiliateImportList(rows, added, skipped) {
+  _parsedAffiliates = rows;
+  const panel = document.getElementById('affiliateListPanel');
+  panel.style.display = 'block';
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+  // Summary stats
+  document.getElementById('affiliateSummaryBox').innerHTML = [
+    { val: rows.length, label: 'Products Found',      color: 'var(--primary)' },
+    { val: added,       label: 'Added to Catalog',    color: 'var(--success)' },
+    { val: added,       label: 'Added to Sidebar',    color: 'var(--purple)'  },
+    { val: skipped,     label: 'Skipped (duplicate)', color: 'var(--warning)' }
+  ].map(s => `<div class="aff-summary-stat"><div class="aff-summary-val" style="color:${s.color};">${s.val}</div><div class="aff-summary-label">${s.label}</div></div>`).join('');
+
+  function tierPill(tier) {
+    var t = (tier||'').toLowerCase();
+    var cls = t.includes('budget') ? 'aff-tier-budget' : t.includes('luxury')||t.includes('premium') ? 'aff-tier-luxury' : t.includes('mid') ? 'aff-tier-mid' : 'aff-tier-none';
+    return tier ? `<span class="aff-tier-pill ${cls}">${tier}</span>` : '<span class="aff-tier-pill aff-tier-none">—</span>';
+  }
+
+  function imgCell(row) {
+    if (!row.imageFile) return '<span style="color:var(--text-tertiary);font-size:12px;">—</span>';
+    const fullPath = '/content/images/products/' + row.imageFile;
+    return `<span class="filename-pill" title="${fullPath}">${row.imageFile}</span>
+            <div style="font-size:10px;color:var(--text-tertiary);margin-top:2px;">/content/images/products/</div>`;
+  }
+
+  document.getElementById('affiliateListTable').innerHTML = `
+    <table class="parsed-affiliate-table">
+      <thead><tr>
+        <th>#</th>
+        <th>Product Name</th>
+        <th>Budget Tier</th>
+        <th>Affiliate URL</th>
+        <th>Benefit</th>
+        <th>Image Filename<br><span style="font-weight:400;color:var(--text-tertiary);font-size:10px;">/content/images/products/</span></th>
+        <th>Status</th>
+      </tr></thead>
+      <tbody>${rows.map(r => `<tr>
+        <td style="font-weight:700;color:var(--text-secondary);">${r.num}</td>
+        <td style="font-weight:600;">${r.name}</td>
+        <td>${tierPill(r.tier)}</td>
+        <td><span class="aff-url-chip" title="${r.link}">${r.link||'—'}</span></td>
+        <td style="font-size:12px;color:var(--text-secondary);">${r.benefit||'—'}</td>
+        <td>${imgCell(r)}</td>
+        <td><span class="${r.status==='added'?'aff-status-added':'aff-status-skip'}">${r.status==='added'?'✅ Added':r.status==='dup'?'⚠️ Duplicate':'⚠️ Skipped'}</span></td>
+      </tr>`).join('')}</tbody>
+    </table>`;
+}
+function copyAffiliateLinks()     { const urls   = _parsedAffiliates.filter(a=>a.link).map(a=>a.link).join('\n'); navigator.clipboard.writeText(urls).then(()=>alert('✅ URLs copied!')); }
+function copyAffiliateNames()     { const names  = _parsedAffiliates.map(a=>a.name).join('\n'); navigator.clipboard.writeText(names).then(()=>alert('✅ Names copied!')); }
+function copyAffiliateImgFiles()  {
+  // Full repo paths: /content/images/products/<filename>
+  const paths = _parsedAffiliates.filter(a=>a.imageFile).map(a=>'/content/images/products/'+a.imageFile).join('\n');
+  if (!paths) { alert('⚠️ No image filenames found in this import'); return; }
+  navigator.clipboard.writeText(paths).then(()=>alert('✅ Image paths copied!\n\nSave each file to:\n/content/images/products/<filename>'));
+}
 
 /* ══════════════════════════════════════════
    TIMEZONE
