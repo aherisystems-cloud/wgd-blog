@@ -15,6 +15,20 @@ if (!fs.existsSync(TEMPLATE_PATH)) {
 
 const template = fs.readFileSync(TEMPLATE_PATH, 'utf8');
 
+// ---------------------------------------------------------------------------
+// ✅ IMAGE PATH FIXER
+// Fixes: double extensions (hero.jpg.jpg → hero.jpg), missing leading slash,
+// passes Amazon CDN / http URLs through completely untouched.
+// This was the root cause of images not showing on the blog index.
+// ---------------------------------------------------------------------------
+function fixImg(src) {
+  if (!src) return '/content/images/default-post.jpg';
+  if (src.startsWith('http')) return src;                              // Amazon CDN — never touch
+  let p = src.replace(/(\.(jpe?g|png|webp|avif|gif|svg))\1$/i, '$1'); // strip double ext
+  if (!p.startsWith('/')) p = '/' + p;                                 // ensure leading slash
+  return p;
+}
+
 const mdFiles = fs.readdirSync(POSTS_DIR)
   .filter(f => f.endsWith('.md') && fs.statSync(path.join(POSTS_DIR, f)).isFile());
 
@@ -28,14 +42,14 @@ mdFiles.forEach(file => {
     if (frontmatter.published === false) return;
 
     posts.push({
-      title: frontmatter.title || 'Untitled',
-      slug: frontmatter.slug || file.replace('.md', ''),
-      description: frontmatter.description || '',
-      date: frontmatter.date ? new Date(frontmatter.date) : new Date(),
-      categories: frontmatter.categories || [],
-      tags: frontmatter.tags || [],
-      featured_image: frontmatter.featured_image || '/content/images/default-post.jpg',
-      readTime: Math.ceil(content.split(/\s+/).length / 200)
+      title:          frontmatter.title || 'Untitled',
+      slug:           frontmatter.slug || file.replace('.md', ''),
+      description:    frontmatter.description || '',
+      date:           frontmatter.date ? new Date(frontmatter.date) : new Date(),
+      categories:     frontmatter.categories || [],
+      tags:           frontmatter.tags || [],
+      featured_image: fixImg(frontmatter.featured_image || ''),
+      readTime:       Math.ceil(content.split(/\s+/).length / 200)
     });
   } catch (e) {
     console.error(`Error processing ${file}:`, e.message);
@@ -44,13 +58,13 @@ mdFiles.forEach(file => {
 
 posts.sort((a, b) => b.date - a.date);
 
-const featuredPost = posts[0];
-const remainingPosts = posts.slice(1);
+const featuredPost    = posts[0];
+const remainingPosts  = posts.slice(1);
 
 const featuredHTML = featuredPost ? `
 <a href="/posts/${featuredPost.slug}.html" class="featured-post">
   <div class="featured-image-wrap">
-    <img src="${featuredPost.featured_image}" alt="${featuredPost.title}" class="featured-image">
+    <img src="${featuredPost.featured_image}" alt="${featuredPost.title}" class="featured-image" onerror="this.src='/content/images/default-post.jpg'">
     <span class="featured-badge">✨ Editor's Pick</span>
   </div>
   <div class="featured-content">
@@ -68,7 +82,7 @@ const featuredHTML = featuredPost ? `
 const gridHTML = remainingPosts.map(post => `
 <a href="/posts/${post.slug}.html" class="post-card">
   <div class="card-image-wrap">
-    <img src="${post.featured_image}" alt="${post.title}" class="card-image" loading="lazy">
+    <img src="${post.featured_image}" alt="${post.title}" class="card-image" loading="lazy" onerror="this.src='/content/images/default-post.jpg'">
     <span class="card-cat">${post.categories[0] || 'Decor'}</span>
   </div>
   <div class="card-content">
@@ -84,28 +98,25 @@ const gridHTML = remainingPosts.map(post => `
 
 const noPostsHTML = '<p class="no-posts">No posts yet. Check back soon!</p>';
 
-// ✅ FIX: Category slug — strip & and collapse multiple spaces/dashes before slugifying
+// ✅ Category slug — strips & and collapses multiple dashes
 const allCategories = [...new Set(posts.flatMap(p => p.categories))].slice(0, 14);
 
 const filterHTML = allCategories.map(cat => {
   const slug = cat
     .toLowerCase()
-    .replace(/[&]/g, '')       // remove ampersands
-    .replace(/\s+/g, '-')      // spaces to dashes
-    .replace(/-+/g, '-')       // ✅ collapse multiple dashes into one
-    .replace(/^-+|-+$/g, '');  // trim leading/trailing dashes
+    .replace(/[&]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-+|-+$/g, '');
   return `<a href="/category/${slug}.html" class="filter-btn">${cat}</a>`;
 }).join('\n');
 
-// ✅ FIX: Only replace {{POSTS_GRID}} — remove {{POSTS_LIST}} from your template,
-// or if your template still has it this script now replaces it with empty string
-// so posts don't appear twice.
 let html = template
-  .replace(/\{\{FEATURED_POST\}\}/g, featuredHTML)
-  .replace(/\{\{POSTS_GRID\}\}/g, gridHTML || noPostsHTML)
-  .replace(/\{\{POSTS_LIST\}\}/g, '')   // ✅ blank out the duplicate section
-  .replace(/\{\{CATEGORY_FILTERS\}\}/g, filterHTML)
-  .replace(/\{\{TOTAL_POSTS\}\}/g, posts.length);
+  .replace(/\{\{FEATURED_POST\}\}/g,     featuredHTML)
+  .replace(/\{\{POSTS_GRID\}\}/g,        gridHTML || noPostsHTML)
+  .replace(/\{\{POSTS_LIST\}\}/g,        '')   // prevent duplicate posts
+  .replace(/\{\{CATEGORY_FILTERS\}\}/g,  filterHTML)
+  .replace(/\{\{TOTAL_POSTS\}\}/g,       posts.length);
 
 fs.writeFileSync(OUTPUT_PATH, html, 'utf8');
 
