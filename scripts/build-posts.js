@@ -125,56 +125,277 @@ function resolveImage(imagePath) {
 }
 
 // ---------------------------------------------------------------------------
-// DEFAULT SIDEBAR PRODUCTS
+// IMAGE HELPER — detects Amazon CDN URLs vs local paths
+// ---------------------------------------------------------------------------
+// Amazon product image URLs look like:
+//   https://m.media-amazon.com/images/I/71xxxxx.jpg
+//   https://images-na.ssl-images-amazon.com/images/I/71xxxxx.jpg
+// If the image field is already a full URL (http/https), use it as-is.
+// Only run resolveImage() for local /content/images/ paths.
+function resolveProductImage(imagePath) {
+  if (!imagePath) return '';
+  // Already a full URL (Amazon CDN, or any https) — use directly, no disk check
+  if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+    return imagePath;
+  }
+  // Local path — resolve normally (handles missing extensions, case etc.)
+  return resolveImage(imagePath);
+}
+
+// ---------------------------------------------------------------------------
+// BUDGET TIER BADGE HTML
+// ---------------------------------------------------------------------------
+function budgetTierBadge(tier) {
+  if (!tier) return '';
+  const map = {
+    'Budget Pick':  { cls: 'tier-budget',  icon: '💚' },
+    'Mid-Range':    { cls: 'tier-mid',     icon: '🟡' },
+    'Luxury':       { cls: 'tier-luxury',  icon: '💜' },
+  };
+  const t = map[tier];
+  if (!t) return '';
+  return `<span class="sidebar-budget-tier ${t.cls}">${t.icon} ${tier}</span>`;
+}
+
+// ---------------------------------------------------------------------------
+// LABEL BAR HTML
+// ---------------------------------------------------------------------------
+function labelBar(label) {
+  if (!label) return '<div class="sidebar-product-label label-none"></div>';
+  const map = {
+    'NEW':            'label-new',
+    'SALE':           'label-sale',
+    'TOP PICK':       'label-top-pick',
+    "EDITOR'S PICK":  'label-editors-pick',
+    'BEST VALUE':     'label-best-value',
+    'LIMITED':        'label-limited',
+  };
+  const cls = map[label.toUpperCase()] || 'label-custom';
+  return `<div class="sidebar-product-label ${cls}">
+    <span>${label}</span><span>Shop →</span>
+  </div>`;
+}
+
+// ---------------------------------------------------------------------------
+// DEFAULT SIDEBAR — permanent ads/products shown on EVERY post
+// Update these with your real Amazon affiliate links and Amazon CDN image URLs.
+// To get an Amazon CDN image URL: open product page → right-click main image
+// → Copy image address. It will start with https://m.media-amazon.com/images/I/
 // ---------------------------------------------------------------------------
 const DEFAULT_SIDEBAR_PRODUCTS = `
-  <a href="https://amzn.to/4aumant" class="sidebar-product" target="_blank" rel="nofollow sponsored">
-    <img src="/content/images/products/sectional-sofa-thumb.jpg" alt="Modern Sectional Sofa" class="sidebar-product-image">
-    <div class="sidebar-product-info">
-      <h4>Modern Sectional Sofa</h4>
-      <div class="sidebar-product-price">$500-650</div>
-      <span class="sidebar-cta">Shop Now →</span>
+  <div class="sidebar-section-title">🌟 Featured Products</div>
+
+  <a href="https://amzn.to/YOUR-LINK-1" class="sidebar-product" target="_blank" rel="nofollow noopener sponsored">
+    <div class="sidebar-product-label label-top-pick"><span>⭐ Top Pick</span><span>Shop →</span></div>
+    <div class="sidebar-product-inner">
+      <img
+        src="https://m.media-amazon.com/images/I/REPLACE-WITH-REAL-AMAZON-IMAGE-ID.jpg"
+        alt="Modern Sectional Sofa"
+        class="sidebar-product-image"
+        loading="lazy"
+        onerror="this.style.display='none'">
+      <div class="sidebar-product-info">
+        <h4>Modern Sectional Sofa</h4>
+        <span class="sidebar-budget-tier tier-mid">🟡 Mid-Range</span>
+        <p class="sidebar-benefit">Perfect anchor piece for any living room</p>
+        <span class="sidebar-cta">🛍️ Shop on Amazon →</span>
+      </div>
     </div>
   </a>
-  
-  <a href="/posts/best-standing-desks.html" class="sidebar-product">
-    <img src="/content/images/posts/standing-desk-thumb.jpg" alt="Best Standing Desks" class="sidebar-product-image">
-    <div class="sidebar-product-info">
-      <h4>Best Standing Desks 2026</h4>
-      <span class="sidebar-cta">Read More →</span>
+
+  <a href="https://amzn.to/YOUR-LINK-2" class="sidebar-product" target="_blank" rel="nofollow noopener sponsored">
+    <div class="sidebar-product-label label-best-value"><span>💙 Best Value</span><span>Shop →</span></div>
+    <div class="sidebar-product-inner">
+      <img
+        src="https://m.media-amazon.com/images/I/REPLACE-WITH-REAL-AMAZON-IMAGE-ID.jpg"
+        alt="Luxury Velvet Throw Pillows"
+        class="sidebar-product-image"
+        loading="lazy"
+        onerror="this.style.display='none'">
+      <div class="sidebar-product-info">
+        <h4>Luxury Velvet Throw Pillows</h4>
+        <span class="sidebar-budget-tier tier-budget">💚 Budget Pick</span>
+        <p class="sidebar-benefit">Instantly elevates any sofa or bed</p>
+        <span class="sidebar-cta">🛍️ Shop on Amazon →</span>
+      </div>
     </div>
   </a>
-  
-  <a href="https://amzn.to/4rle6N6" class="sidebar-product" target="_blank" rel="nofollow sponsored">
-    <img src="/content/images/products/throw-pillows-thumb.jpg" alt="Velvet Throw Pillows" class="sidebar-product-image">
-    <div class="sidebar-product-info">
-      <h4>Luxury Throw Pillows</h4>
-      <div class="sidebar-product-price">$35-58</div>
-      <span class="sidebar-cta">Shop Now →</span>
+
+  <a href="https://amzn.to/YOUR-LINK-3" class="sidebar-product" target="_blank" rel="nofollow noopener sponsored">
+    <div class="sidebar-product-label label-editors-pick"><span>💜 Editor's Pick</span><span>Shop →</span></div>
+    <div class="sidebar-product-inner">
+      <img
+        src="https://m.media-amazon.com/images/I/REPLACE-WITH-REAL-AMAZON-IMAGE-ID.jpg"
+        alt="Casaluna Linen Duvet Cover"
+        class="sidebar-product-image"
+        loading="lazy"
+        onerror="this.style.display='none'">
+      <div class="sidebar-product-info">
+        <h4>Casaluna Linen Duvet Cover</h4>
+        <span class="sidebar-budget-tier tier-mid">🟡 Mid-Range</span>
+        <p class="sidebar-benefit">Hotel-quality feel at a fraction of the cost</p>
+        <span class="sidebar-cta">🛍️ Shop on Amazon →</span>
+      </div>
     </div>
   </a>
 `;
 
 // ---------------------------------------------------------------------------
+// CATALOG SYNC  — auto-saves every post's products to catalog.json
+// ---------------------------------------------------------------------------
+// catalog.json lives at the project root alongside posts.json.
+// Products are keyed by affiliate link URL, so duplicates are merged not doubled.
+// ---------------------------------------------------------------------------
+const CATALOG_PATH = path.join(__dirname, '../catalog.json');
+
+function syncProductsToCatalog(products) {
+  if (!products || !products.length) return 0;
+
+  let catalog = [];
+  try {
+    if (fs.existsSync(CATALOG_PATH)) {
+      catalog = JSON.parse(fs.readFileSync(CATALOG_PATH, 'utf8'));
+      if (!Array.isArray(catalog)) catalog = [];
+    }
+  } catch (e) { catalog = []; }
+
+  let added = 0, updated = 0;
+  products.forEach(p => {
+    if (!p.link || !p.name) return;
+    const key = p.link.trim();
+    const idx = catalog.findIndex(c => c.link === key);
+    const entry = {
+      name:        p.name.trim(),
+      link:        key,
+      image:       p.image       || '',
+      budget_tier: p.budget_tier || '',
+      benefit:     p.benefit     || '',
+      label:       p.label       || '',
+      category:    p.category    || 'Product',
+      updatedAt:   new Date().toISOString()
+    };
+    if (idx >= 0) { catalog[idx] = { ...catalog[idx], ...entry }; updated++; }
+    else          { catalog.push(entry); added++; }
+  });
+
+  fs.writeFileSync(CATALOG_PATH, JSON.stringify(catalog, null, 2), 'utf8');
+  return added + updated;
+}
+
+// ---------------------------------------------------------------------------
+// INLINE PRODUCT SECTION  — "Shop This Post" cards injected into content
+// ---------------------------------------------------------------------------
+// In your markdown, put this exactly where you want the product cards:
+//
+//   <!-- PRODUCTS -->
+//
+// If the marker is absent, cards are appended at the end of the article.
+// ---------------------------------------------------------------------------
+function generateInlineProductSection(products) {
+  if (!products || !products.length) return '';
+  const eligible = products.filter(p => p.link && p.name &&
+    !p.link.includes('/posts/')); // skip blog post links — those aren't product cards
+  if (!eligible.length) return '';
+
+  const labelColors = {
+    'TOP PICK':      '#7e0882',
+    'BEST VALUE':    '#00a060',
+    "EDITOR'S PICK": '#2D5BFF',
+    'NEW':           '#FF6B35',
+    'SALE':          '#E63946',
+    'LIMITED':       '#92400E',
+  };
+
+  const cards = eligible.map(p => {
+    const img      = resolveProductImage(p.image || '');
+    const tier     = p.budget_tier || '';
+    const tierIcon = tier === 'Budget Pick' ? '💚' : tier === 'Luxury' ? '💜' : tier ? '🟡' : '';
+    const tierCls  = tier === 'Budget Pick' ? 'tier-budget' : tier === 'Luxury' ? 'tier-luxury' : 'tier-mid';
+    const lColor   = labelColors[(p.label || '').toUpperCase()] || '#888';
+
+    return `<a href="${p.link}" class="inline-product-card" target="_blank" rel="nofollow noopener sponsored">
+      ${p.label ? `<div class="inline-product-label" style="background:${lColor}">${p.label}</div>` : ''}
+      ${img
+        ? `<img src="${img}" alt="${p.name}" class="inline-product-img" loading="lazy" onerror="this.style.display='none'">`
+        : `<div class="inline-product-img-placeholder">🛍️</div>`}
+      <div class="inline-product-body">
+        <div class="inline-product-name">${p.name}</div>
+        ${tier ? `<span class="inline-tier-badge ${tierCls}">${tierIcon} ${tier}</span>` : ''}
+        ${p.benefit ? `<div class="inline-product-benefit">${p.benefit}</div>` : ''}
+        <span class="inline-product-cta">Shop on Amazon →</span>
+      </div>
+    </a>`;
+  }).join('\n');
+
+  return `
+<div class="inline-products-section">
+  <div class="inline-products-heading">🌟 Shop This Post</div>
+  <div class="inline-products-grid">
+    ${cards}
+  </div>
+</div>`;
+}
+
+// ---------------------------------------------------------------------------
 // SIDEBAR PRODUCT GENERATOR
+// Per-post products come from frontmatter featured_products array.
+// Product images should be Amazon CDN URLs (https://m.media-amazon.com/...)
+// obtained by right-clicking the product image on Amazon → Copy image address.
+// These are hotlinked directly — no downloading, no saving to repo.
 // ---------------------------------------------------------------------------
 function generateSidebarProducts(frontmatter) {
-  if (frontmatter.featured_products && Array.isArray(frontmatter.featured_products)) {
-    return frontmatter.featured_products.map(product => {
-      const isProduct = product.price;
-      const resolvedImage = resolveImage(product.image);
-      return `
-  <a href="${product.link}" class="sidebar-product" target="_blank" rel="nofollow ${isProduct ? 'sponsored' : ''}">
-    <img src="${resolvedImage}" alt="${product.name}" class="sidebar-product-image">
-    <div class="sidebar-product-info">
-      <h4>${product.name}</h4>
-      ${isProduct ? `<div class="sidebar-product-price">${product.price}</div>` : ''}
-      <span class="sidebar-cta">${isProduct ? 'Shop Now' : 'Read More'} →</span>
+  let html = '';
+
+  // ── PER-POST PRODUCTS (from frontmatter) ─────────────────────────
+  if (frontmatter.featured_products && Array.isArray(frontmatter.featured_products) && frontmatter.featured_products.length > 0) {
+    html += '\n  <div class="sidebar-section-title">🌟 Featured Products</div>\n';
+
+    frontmatter.featured_products.forEach(product => {
+      const isProduct = product.link && !product.link.includes('/posts/');
+      const imageUrl  = resolveProductImage(product.image || '');
+      const imgHtml   = imageUrl
+        ? `<img src="${imageUrl}" alt="${product.name}" class="sidebar-product-image" loading="lazy" onerror="this.style.display='none'">`
+        : `<div class="sidebar-product-image" style="background:var(--gray-100);display:flex;align-items:center;justify-content:center;font-size:2rem;">🛍️</div>`;
+
+      if (isProduct) {
+        // Affiliate product card
+        html += `
+  <a href="${product.link}" class="sidebar-product" target="_blank" rel="nofollow noopener sponsored">
+    ${labelBar(product.label || '')}
+    <div class="sidebar-product-inner">
+      ${imgHtml}
+      <div class="sidebar-product-info">
+        <h4>${product.name}</h4>
+        ${budgetTierBadge(product.budget_tier || '')}
+        ${product.benefit ? `<p class="sidebar-benefit">${product.benefit}</p>` : ''}
+        <span class="sidebar-cta">🛍️ Shop on Amazon →</span>
+      </div>
     </div>
   </a>`;
-    }).join('\n  ');
+      } else {
+        // Blog post link
+        html += `
+  <a href="${product.link || '#'}" class="sidebar-related">
+    ${imageUrl ? `<img src="${imageUrl}" alt="${product.name}" loading="lazy">` : ''}
+    <div class="sidebar-related-body">
+      <div class="sidebar-related-cat">Read Next</div>
+      <div class="sidebar-related-title">${product.name}</div>
+      <span class="sidebar-related-link">Read more →</span>
+    </div>
+  </a>`;
+      }
+    });
+
+    // Append permanent sidebar items AFTER per-post ones
+    html += '\n\n  <!-- PERMANENT SIDEBAR ITEMS (always shown on every post) -->\n';
+    html += DEFAULT_SIDEBAR_PRODUCTS;
+
+  } else {
+    // No per-post products — show permanent items only
+    html = DEFAULT_SIDEBAR_PRODUCTS;
   }
-  return DEFAULT_SIDEBAR_PRODUCTS;
+
+  return html;
 }
 
 // ---------------------------------------------------------------------------
@@ -222,8 +443,28 @@ mdFiles.forEach(file => {
     frontmatter.featured_image || '/content/images/default.jpg'
   );
 
-  // Sidebar products
+  // ── PRODUCTS ──────────────────────────────────────────────────────────────
+  // 1. Sidebar cards
   const sidebarProducts = generateSidebarProducts(frontmatter);
+
+  // 2. Inline "Shop This Post" section — injected at <!-- PRODUCTS --> marker,
+  //    or appended before </article> if marker is absent
+  const inlineProductHtml = generateInlineProductSection(frontmatter.featured_products);
+  if (inlineProductHtml) {
+    if (htmlContent.includes('<!-- PRODUCTS -->')) {
+      htmlContent = htmlContent.replace('<!-- PRODUCTS -->', inlineProductHtml);
+    } else {
+      // Append before closing </article> tag, or at the very end
+      htmlContent = htmlContent.replace(/<\/article>/i, inlineProductHtml + '\n</article>');
+      if (!htmlContent.includes(inlineProductHtml)) {
+        htmlContent += inlineProductHtml; // fallback: just append
+      }
+    }
+  }
+
+  // 3. Catalog sync — upsert these products into catalog.json for reuse
+  const syncCount = syncProductsToCatalog(frontmatter.featured_products || []);
+  if (syncCount > 0) console.log(`   📦 Synced ${syncCount} product(s) to catalog.json`);
 
   // Tags HTML
   const tagsHTML = (frontmatter.tags || [])
