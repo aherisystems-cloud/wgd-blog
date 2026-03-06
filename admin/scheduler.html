@@ -402,6 +402,18 @@ details[open] .canva-setup summary::before { transform: rotate(90deg); }
 ::-webkit-scrollbar-track { background: var(--bg-main); }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 5px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--text-tertiary); }
+
+/* ── Budget Tier Select (replaces price input) ── */
+.budget-tier-select {
+  width: 100%; padding: 12px 16px; margin: 8px 0;
+  border: 2px solid var(--border); border-radius: var(--radius-sm);
+  font-family: var(--font-main); font-size: 15px;
+  background: var(--bg-surface); color: var(--text-primary);
+  transition: all 0.2s; cursor: pointer;
+}
+.budget-tier-select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(45,91,255,0.1); }
+.budget-tier-select.hidden-field { opacity:0; pointer-events:none; height:0 !important; min-height:0 !important; padding:0 !important; border:none !important; margin:0 !important; overflow:hidden; }
+
 </style>
 </head>
 <body>
@@ -507,9 +519,10 @@ details[open] .canva-setup summary::before { transform: rotate(90deg); }
   <div class="panel">
     <h3>Featured Products for Sidebar</h3>
     <div class="products-tip">
-      Add up to <strong>5 products or blog post links</strong>. These populate the <code>featured_products:</code> block in your post's frontmatter.<br><br>
-      🛍️ <strong>Product</strong> → generates "Shop Now →" with price &nbsp;|&nbsp; 📝 <strong>Blog Post</strong> → generates "Read More →" with no price<br>
-      🏷️ <strong>Labels</strong> → optional badges shown on the sidebar card (e.g. "NEW", "TOP PICK", or your own text)
+      Add up to <strong>12 sidebar items</strong> (products, blog post links, ad slots). These populate the <code>featured_products:</code> block in your post's frontmatter.<br><br>
+      🛍️ <strong>Product</strong> → generates "Shop Now →" with budget tier badge &nbsp;|&nbsp; 📝 <strong>Blog Post</strong> → generates "Read More →"<br>
+      🏷️ <strong>Labels</strong> → optional badge (e.g. "TOP PICK") &nbsp;|&nbsp; 💚 <strong>Budget Tier</strong> → Budget Pick / Mid-Range / Luxury<br>
+      💡 <strong>Benefit</strong> → short selling line shown under the product name
     </div>
     <div id="productsList"></div>
     <button class="add-product-btn" onclick="addProductCard()" id="addProductBtn">➕ Add Product or Blog Post Link</button>
@@ -653,7 +666,21 @@ details[open] .canva-setup summary::before { transform: rotate(90deg); }
       <input type="text" id="newLinkCategory" placeholder="Category (e.g. Bedroom, Lighting, Rugs)">
     </div>
     <input type="text" id="newLinkUrl" placeholder="Affiliate URL (e.g. https://amzn.to/xxxxx)">
-    <input type="text" id="newLinkPrice" placeholder="Price (optional, e.g. $69–$129)">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:8px 0;">
+      <div>
+        <div style="font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.4px;">Budget Tier</div>
+        <select id="newLinkBudgetTier" class="label-select">
+          <option value="">— No Tier —</option>
+          <option value="Budget Pick">💚 Budget Pick</option>
+          <option value="Mid-Range">🟡 Mid-Range</option>
+          <option value="Luxury">💜 Luxury</option>
+        </select>
+      </div>
+      <div>
+        <div style="font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.4px;">Benefit Line</div>
+        <input type="text" id="newLinkBenefit" placeholder="e.g. Best for small spaces" style="margin:0;">
+      </div>
+    </div>
     <div style="margin-top:4px;">
       <div style="font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.4px;">
         Product Image <span style="font-weight:400;font-style:italic;text-transform:none;">— filename only, e.g. <code style="font-size:11px;">chair.jpg</code></span>
@@ -1015,13 +1042,14 @@ function renderAffiliateResults(items) {
     return `<li>
       <div style="flex:1;min-width:0;">
         <div class="affiliate-name">${a.name}${labelDisplay}</div>
-        <div class="affiliate-category">${a.category||'Uncategorized'}${a.price?' · '+a.price:''}</div>
+        <div class="affiliate-category">${a.category||'Uncategorized'}${a.budgetTier?' · '+a.budgetTier:''}</div>
+        ${a.benefit ? `<div style="font-size:11px;color:var(--text-tertiary);font-style:italic;margin-top:2px;">${a.benefit}</div>` : ''}
         <div style="font-size:11px;color:var(--text-tertiary);margin-top:2px;font-family:var(--font-mono);">${shortLink}</div>
         <div style="margin-top:3px;">${imgDisplay}</div>
       </div>
       <div class="affiliate-actions">
         <button class="affiliate-link" onclick="insertAffiliateLink('${esc(a.name)}','${esc(a.link)}')">📎 Insert</button>
-        <button class="affiliate-link affiliate-link-purple" onclick="addLinkToProducts('${esc(a.name)}','${esc(a.link)}','${esc(a.price||'')}','${esc(imgFile)}','${esc(labelVal)}')">🛍️ Add to Sidebar</button>
+        <button class="affiliate-link affiliate-link-purple" onclick="addLinkToProducts('${esc(a.name)}','${esc(a.link)}','${esc(a.budgetTier||'')}','${esc(a.benefit||'')}','${esc(imgFile)}','${esc(labelVal)}')">🛍️ Add to Sidebar</button>
         <button class="affiliate-link affiliate-link-danger" onclick="deleteAffiliateLink(${trueIdx})">🗑️</button>
       </div>
     </li>`;
@@ -1032,7 +1060,8 @@ function addAffiliateLink() {
   const name = document.getElementById('newLinkName').value.trim();
   const url = document.getElementById('newLinkUrl').value.trim();
   const category = document.getElementById('newLinkCategory').value.trim();
-  const price = document.getElementById('newLinkPrice').value.trim();
+  const budgetTier = document.getElementById('newLinkBudgetTier') ? document.getElementById('newLinkBudgetTier').value : '';
+  const benefit    = document.getElementById('newLinkBenefit')    ? document.getElementById('newLinkBenefit').value.trim()    : '';
   const image = document.getElementById('newLinkImage').value.trim();
   let label = document.getElementById('newLinkLabelSelect').value;
   if (label === 'CUSTOM') label = document.getElementById('newLinkLabelCustom').value.trim();
@@ -1040,10 +1069,11 @@ function addAffiliateLink() {
   if (!url) { alert('⚠️ Please enter an affiliate URL'); return; }
   const catalog = loadCatalog();
   if (catalog.find(c => c.link === url)) { alert('⚠️ This URL is already in your catalog'); return; }
-  catalog.push({ name, link: url, category: category||'General', price: price||'', image: image||'', label: label||'' });
+  catalog.push({ name, link: url, category: category||'General', budgetTier: budgetTier||'', benefit: benefit||'', image: image||'', label: label||'' });
   saveCatalog(catalog);
-  ['newLinkName','newLinkUrl','newLinkCategory','newLinkPrice','newLinkImage','newLinkLabelCustom'].forEach(id => { document.getElementById(id).value=''; });
+  ['newLinkName','newLinkUrl','newLinkCategory','newLinkBenefit','newLinkImage','newLinkLabelCustom'].forEach(id => { document.getElementById(id).value=''; });
   document.getElementById('newLinkLabelSelect').value = '';
+  if(document.getElementById('newLinkBudgetTier')) document.getElementById('newLinkBudgetTier').value = '';
   document.getElementById('newLinkLabelCustom').style.display = 'none';
   updateCatalogCount(); searchAffiliate();
   alert(`✅ "${name}" added to your permanent catalog`);
@@ -1119,9 +1149,9 @@ function insertAffiliateLink(name, link) {
   ta.focus(); updatePreview(); openTab('editor');
 }
 
-function addLinkToProducts(name, link, price, imageFile, label) {
+function addLinkToProducts(name, link, budgetTier, benefit, imageFile, label) {
   openTab('products');
-  addProductCard({ name, link, type:'product', price: price||'', image: imageFile ? '/content/images/products/'+imageFile : '', label: label||'' });
+  addProductCard({ name, link, type:'product', budgetTier: budgetTier||'', benefit: benefit||'', image: imageFile ? '/content/images/products/'+imageFile : '', label: label||'' });
 }
 
 function esc(str) { return String(str||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;'); }
@@ -1144,11 +1174,13 @@ const IMG_PREFIX = '/content/images/products/';
 function addProductCard(prefill) {
   const list = document.getElementById('productsList');
   const existing = list.querySelectorAll('.product-card').length;
-  if (existing >= 5) { alert('⚠️ Maximum 5 products per post.'); return; }
+  if (existing >= 12) { alert('⚠️ Maximum 12 sidebar items per post.'); return; }
   productCounter++;
   const id = productCounter;
   const isProduct = !prefill || prefill.type !== 'blog';
-  const prefillLabel = prefill?.label || '';
+  const prefillLabel      = prefill?.label      || '';
+  const prefillBudgetTier   = prefill?.budgetTier  || '';
+  const prefillBenefit      = prefill?.benefit      || '';
   const prefillCustom = prefill?.labelCustom || '';
   const isCustomLabel = prefillLabel === 'CUSTOM' || (prefillLabel && !PRESET_LABELS.find(l => l.value === prefillLabel && l.value !== 'CUSTOM' && l.value !== ''));
   const labelOptions = PRESET_LABELS.map(l => `<option value="${l.value}" ${(isCustomLabel ? 'CUSTOM' : prefillLabel) === l.value ? 'selected' : ''}>${l.text}</option>`).join('');
@@ -1169,7 +1201,13 @@ function addProductCard(prefill) {
     </div>
     <div class="product-fields">
       <input type="text" class="full-width" data-field="name" placeholder="Name (e.g. Velvet Accent Chair)" value="${ea(prefill?.name)}">
-      <input type="text" class="price-field ${!isProduct ? 'hidden-field' : ''}" data-field="price" placeholder="Price (e.g. $299.99)" value="${ea(prefill?.price)}">
+      <select class="budget-tier-select ${!isProduct ? 'hidden-field' : ''}" data-field="budgetTier" style="margin:0;">
+        <option value="" ${!prefillBudgetTier ? 'selected' : ''}>— Budget Tier —</option>
+        <option value="Budget Pick" ${prefillBudgetTier==='Budget Pick' ? 'selected' : ''}>💚 Budget Pick</option>
+        <option value="Mid-Range" ${prefillBudgetTier==='Mid-Range' ? 'selected' : ''}>🟡 Mid-Range</option>
+        <option value="Luxury" ${prefillBudgetTier==='Luxury' ? 'selected' : ''}>💜 Luxury</option>
+      </select>
+      <input type="text" class="full-width" data-field="benefit" placeholder="Benefit line (e.g. Best for small spaces)" value="${ea(prefillBenefit)}">
       <div class="label-row full-width" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
         <div>
           <div style="font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.4px;">🏷️ Sidebar Label</div>
@@ -1211,9 +1249,9 @@ function setProductType(id, type, btn) {
   card.dataset.type = type;
   card.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active-product','active-blog'));
   btn.classList.add(type==='product' ? 'active-product' : 'active-blog');
-  const priceField = card.querySelector('.price-field');
-  if (type==='blog') { priceField.classList.add('hidden-field'); priceField.value=''; }
-  else { priceField.classList.remove('hidden-field'); }
+  const tierField = card.querySelector('.budget-tier-select');
+    if (type==='blog') { if(tierField){ tierField.classList.add('hidden-field'); tierField.value=''; } }
+    else { if(tierField) tierField.classList.remove('hidden-field'); }
   generateFrontmatter();
 }
 
@@ -1225,7 +1263,7 @@ function removeProductCard(id) {
 
 function updateAddButton() {
   const count = document.querySelectorAll('.product-card').length;
-  document.getElementById('addProductBtn').style.display = count >= 5 ? 'none' : 'flex';
+  document.getElementById('addProductBtn').style.display = count >= 12 ? 'none' : 'flex';
 }
 
 function updateProductBadge() {
@@ -1241,7 +1279,7 @@ function getProductsData() {
     const imageFile = card.querySelector('[data-field="imageFile"]').value.trim();
     let labelVal = labelSelect ? labelSelect.value : '';
     if (labelVal === 'CUSTOM') labelVal = labelCustom?.value.trim() || '';
-    return { type: card.dataset.type, name: card.querySelector('[data-field="name"]').value.trim(), price: card.querySelector('[data-field="price"]').value.trim(), link: card.querySelector('[data-field="link"]').value.trim(), image: imageFile ? IMG_PREFIX + imageFile : '', label: labelVal };
+    return { type: card.dataset.type, name: card.querySelector('[data-field="name"]').value.trim(), budgetTier: (card.querySelector('[data-field="budgetTier"]') || {value:''}).value, benefit: (card.querySelector('[data-field="benefit"]') ? card.querySelector('[data-field="benefit"]').value.trim() : ''), link: card.querySelector('[data-field="link"]').value.trim(), image: imageFile ? IMG_PREFIX + imageFile : '', label: labelVal };
   }).filter(p => p.name || p.link);
 }
 
@@ -1253,7 +1291,8 @@ function buildProductsYAML(indent) {
   products.forEach((p, i) => {
     yaml += `${pad}  # ${p.type === 'product' ? 'Product' : 'Blog Post'} ${i+1}\n`;
     yaml += `${pad}  - name: "${p.name}"\n`;
-    if (p.type==='product' && p.price) yaml += `${pad}    price: "${p.price}"\n`;
+    if (p.budgetTier) yaml += `${pad}    budget_tier: "${p.budgetTier}"\n`;
+    if (p.benefit)    yaml += `${pad}    benefit: "${p.benefit}"\n`;
     if (p.label) yaml += `${pad}    label: "${p.label}"\n`;
     if (p.image) yaml += `${pad}    image: "${p.image}"\n`;
     if (p.link) yaml += `${pad}    link: "${p.link}"\n`;
@@ -1277,7 +1316,8 @@ function generateFrontmatter() {
   document.getElementById('productsPreviewGrid').innerHTML = products.map(p => {
     const shortLink = p.link ? (p.link.length > 38 ? p.link.slice(0,38)+'…' : p.link) : '—';
     const labelHtml = p.label ? `<div class="product-preview-label" style="${getLabelStyle(p.label)}">${p.label}</div>` : '';
-    return `<div class="product-preview-card">${labelHtml}<div class="product-preview-name">${p.name||'—'}</div>${p.type==='product' && p.price ? `<div class="product-preview-price">${p.price}</div>` : ''}<div class="product-preview-cta">${p.type==='product' ? '🛍️ Shop Now →' : '📝 Read More →'}</div><span class="product-preview-link">${shortLink}</span></div>`;
+    return `<div class="product-preview-card">${labelHtml}<div class="product-preview-name">${p.name||'—'}</div>${p.budgetTier ? `<div class="product-preview-price" style="font-size:12px;font-weight:700;padding:2px 10px;border-radius:12px;display:inline-block;margin-bottom:4px;${p.budgetTier==='Budget Pick'?'background:#D1FAE5;color:#065F46;':p.budgetTier==='Luxury'?'background:rgba(126,8,130,0.12);color:#7e0882;':'background:#FEF3C7;color:#92400E;'}">${p.budgetTier}</div>` : ''}
+      ${p.benefit ? `<div style="font-size:11px;color:#6B7280;font-style:italic;margin-bottom:4px;">${p.benefit}</div>` : ''}<div class="product-preview-cta">${p.type==='product' ? '🛍️ Shop Now →' : '📝 Read More →'}</div><span class="product-preview-link">${shortLink}</span></div>`;
   }).join('');
 }
 
