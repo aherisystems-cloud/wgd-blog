@@ -27,85 +27,30 @@
 /* ═══ BASE ═══ */
 :root{--brand:#7e0882;--brand-dark:#5a0660;--brand-light:#a020a8;--brand-pale:rgba(126,8,130,0.07);--off-white:#fafafa;--gray-100:#f5f5f5;--gray-200:#eee;--gray-600:#757575;--gray-800:#424242;--gray-900:#212121;--shadow-sm:0 2px 12px rgba(126,8,130,0.08);--shadow-md:0 8px 32px rgba(126,8,130,0.13);--shadow-lg:0 20px 60px rgba(126,8,130,0.18);--radius:16px;--ease:cubic-bezier(0.4,0,0.2,1)}
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{overflow-x:hidden}
 body{font-family:'Nunito',sans-serif;background:var(--off-white);color:var(--gray-900);line-height:1.6}
-a{text-decoration:none}
+a{text-decoration:none;color:inherit}
+img{max-width:100%;height:auto;display:block}
+
+/* ═══ SCROLLBAR ═══ */
+::-webkit-scrollbar{width:8px}
+::-webkit-scrollbar-track{background:var(--gray-100)}
+::-webkit-scrollbar-thumb{background:var(--brand);border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:var(--brand-dark)}
 
 /* ═══ NAVBAR ═══ */
 .navbar{background:rgba(255,255,255,0.96);backdrop-filter:blur(16px);box-shadow:var(--shadow-sm);position:sticky;top:0;z-index:100}
 .nav-container{max-width:1400px;margin:0 auto;padding:13px 24px;display:flex;align-items:center;gap:16px}
 .logo{height:48px;flex-shrink:0}
-
-/* FIX 1: Search box — constrained width, no layout overflow on focus */
-.search-box{
-  position:relative;
-  display:flex;
-  align-items:center;
-  /* push it away from the logo a bit */
-  margin-left:8px;
-  /* allow it to shrink if space is tight */
-  flex-shrink:1;
-  min-width:0;
-}
-.search-input{
-  width:240px;
-  max-width:100%;
-  padding:10px 40px 10px 16px;
-  border:2px solid var(--gray-200);
-  border-radius:24px;
-  font-family:'Nunito',sans-serif;
-  font-size:14px;
-  font-weight:600;
-  transition:border-color 0.3s,box-shadow 0.3s,border-radius 0.3s;
-  background:var(--gray-100);
-  /* prevent the input from ever growing past its container */
-  box-sizing:border-box;
-}
-.search-input:focus{
-  outline:none;
-  border-color:var(--brand);
-  background:#fff;
-  /* No width change on focus — this was the main layout-breaking culprit */
-  box-shadow:0 4px 16px rgba(126,8,130,0.15);
-  border-radius:24px 24px 0 0;
-}
-.search-input.has-results:focus{border-radius:24px 24px 0 0}
+.search-box{position:relative;display:flex;align-items:center;margin-left:8px;flex-shrink:1;min-width:0}
+.search-input{width:240px;max-width:100%;padding:10px 40px 10px 16px;border:2px solid var(--gray-200);border-radius:24px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:600;transition:border-color 0.3s,box-shadow 0.3s,border-radius 0.3s;background:var(--gray-100);box-sizing:border-box}
+.search-input:focus{outline:none;border-color:var(--brand);background:#fff;box-shadow:0 4px 16px rgba(126,8,130,0.15);border-radius:24px 24px 0 0}
 .search-input::placeholder{color:var(--gray-600);font-weight:500}
-.search-btn{
-  position:absolute;
-  right:12px;
-  background:none;
-  border:none;
-  cursor:pointer;
-  font-size:18px;
-  color:var(--gray-600);
-  padding:6px;
-  transition:all 0.2s;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  z-index:10;
-  flex-shrink:0;
-}
+.search-btn{position:absolute;right:12px;background:none;border:none;cursor:pointer;font-size:18px;color:var(--gray-600);padding:6px;transition:all 0.2s;display:flex;align-items:center;justify-content:center;z-index:10;flex-shrink:0}
 .search-btn:hover{color:var(--brand);transform:scale(1.1)}
-.search-suggestions{
-  position:absolute;
-  top:100%;
-  left:0;
-  /* match input width exactly */
-  width:100%;
-  min-width:280px;
-  background:#fff;
-  border:2px solid var(--brand);
-  border-top:none;
-  border-radius:0 0 16px 16px;
-  box-shadow:0 12px 32px rgba(126,8,130,0.18);
-  max-height:420px;
-  overflow-y:auto;
-  z-index:999;
-  display:none;
-}
+.search-suggestions{position:absolute;top:100%;left:0;width:100%;min-width:280px;background:#fff;border:2px solid var(--brand);border-top:none;border-radius:0 0 16px 16px;box-shadow:0 12px 32px rgba(126,8,130,0.18);max-height:420px;overflow-y:auto;z-index:999;display:none}
 .search-suggestions.active{display:block}
-.suggestion-item{display:flex;align-items:center;gap:12px;padding:12px 16px;cursor:pointer;transition:all 0.2s;border-bottom:1px solid var(--gray-100)}
+.suggestion-item{display:flex;align-items:center;gap:12px;padding:12px 16px;cursor:pointer;transition:all 0.2s;border-bottom:1px solid var(--gray-100);text-decoration:none;color:inherit}
 .suggestion-item:last-child{border-bottom:none}
 .suggestion-item:hover,.suggestion-item.selected{background:var(--brand-pale)}
 .suggestion-thumb{width:48px;height:48px;border-radius:8px;object-fit:cover;flex-shrink:0;background:var(--gray-100)}
@@ -130,77 +75,20 @@ a{text-decoration:none}
 .loading-dots span:nth-child(3){animation-delay:0.4s}
 @keyframes bounce{0%,80%,100%{transform:scale(0.6);opacity:0.4}40%{transform:scale(1);opacity:1}}
 
-/* ═══ NAV MENU — push to right side ═══ */
-.nav-menu{
-  display:flex;
-  gap:2px;
-  align-items:center;
-  margin-left:auto; /* pushes menu + CTA to the far right */
-  flex-shrink:0;
-}
+/* ═══ NAV MENU ═══ */
+.nav-menu{display:flex;gap:2px;align-items:center;margin-left:auto;flex-shrink:0}
 .nav-link{color:var(--gray-800);font-weight:700;font-size:14px;padding:8px 14px;border-radius:8px;transition:all 0.2s;white-space:nowrap}
 .nav-link:hover,.nav-link.active{background:var(--brand-pale);color:var(--brand)}
-.nav-cta{background:var(--brand);color:#fff!important;padding:10px 20px!important;border-radius:8px;font-weight:800}
-.nav-cta:hover{background:var(--brand-dark)!important}
 .mobile-menu-btn{display:none;background:none;border:none;font-size:24px;cursor:pointer;color:var(--gray-800);padding:8px;margin-left:auto;flex-shrink:0}
 
-/* ═══ FIX 2 & 3: MEGA MENU — visible on hover + left-anchored, no right overflow ═══ */
-.mega-menu-wrapper{
-  position:relative;
-  /* ensure the dropdown can escape the nav-menu flex container */
-}
-.mega-menu-trigger{
-  position:relative;
-  cursor:pointer;
-  display:flex;
-  align-items:center;
-  gap:4px;
-  /* make it a block-level flex item so hover area is correct */
-  user-select:none;
-}
+/* ═══ MEGA MENU ═══ */
+.mega-menu-wrapper{position:relative}
+.mega-menu-trigger{position:relative;cursor:pointer;display:flex;align-items:center;gap:4px;user-select:none}
 .mega-menu-trigger::after{content:'▾';font-size:10px;transition:transform 0.25s}
 .mega-menu-wrapper:hover .mega-menu-trigger::after{transform:rotate(180deg)}
-
-.mega-menu{
-  position:fixed; /* FIX: fixed instead of absolute so it escapes any overflow:hidden parents */
-  top:auto; /* will be set by JS */
-  /* FIX 3: Anchor from left edge of navbar, not centered on the trigger */
-  left:0;
-  right:0;
-  /* constrain to the same max-width as the page content */
-  max-width:1400px;
-  margin:0 auto; /* center within the viewport width */
-  width:calc(100vw - 48px); /* full width minus some breathing room */
-  /* clamp at page edges */
-  background:#fff;
-  box-shadow:0 12px 48px rgba(126,8,130,0.18);
-  border-top:3px solid var(--brand);
-  border-radius:0 0 16px 16px;
-  padding:32px;
-  /* FIX 2: was opacity:0;visibility:hidden which sometimes doesn't trigger reliably */
-  opacity:0;
-  visibility:hidden;
-  pointer-events:none;
-  transition:opacity 0.25s var(--ease), visibility 0.25s var(--ease), transform 0.25s var(--ease);
-  transform:translateY(-8px);
-  z-index:998;
-}
-
-/* FIX 2: Reliable hover — show the menu */
-.mega-menu-wrapper:hover .mega-menu{
-  opacity:1;
-  visibility:visible;
-  pointer-events:auto;
-  transform:translateY(0);
-}
-
-/* Keep open while cursor moves from trigger into menu */
-.mega-menu:hover{
-  opacity:1;
-  visibility:visible;
-  pointer-events:auto;
-}
-
+.mega-menu{position:fixed;top:auto;left:0;right:0;max-width:1400px;margin:0 auto;width:calc(100vw - 48px);background:#fff;box-shadow:0 12px 48px rgba(126,8,130,0.18);border-top:3px solid var(--brand);border-radius:0 0 16px 16px;padding:32px;opacity:0;visibility:hidden;pointer-events:none;transition:opacity 0.25s var(--ease),visibility 0.25s var(--ease),transform 0.25s var(--ease);transform:translateY(-8px);z-index:998}
+.mega-menu-wrapper:hover .mega-menu{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0)}
+.mega-menu:hover{opacity:1;visibility:visible;pointer-events:auto}
 .mega-menu-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px}
 .mega-menu-section h4{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--brand);margin-bottom:16px;padding-bottom:8px;border-bottom:2px solid var(--brand-pale)}
 .mega-menu-links{list-style:none;display:flex;flex-direction:column;gap:8px}
@@ -222,8 +110,8 @@ a{text-decoration:none}
 .filter-bar{background:#fff;border-bottom:1px solid var(--gray-200);padding:14px 24px;position:sticky;top:74px;z-index:90;box-shadow:0 2px 8px rgba(0,0,0,0.04)}
 .filter-inner{max-width:1400px;margin:0 auto;display:flex;gap:10px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none;align-items:center}
 .filter-inner::-webkit-scrollbar{display:none}
-.filter-btn{flex-shrink:0;padding:8px 18px;border-radius:20px;background:var(--gray-100);color:var(--gray-800);font-size:13px;font-weight:700;transition:all 0.2s;white-space:nowrap}
-.filter-btn:hover{background:var(--brand);color:#fff;transform:translateY(-1px)}
+.filter-btn{flex-shrink:0;padding:8px 18px;border-radius:20px;background:var(--gray-100);color:var(--gray-800);font-size:13px;font-weight:700;transition:all 0.2s;white-space:nowrap;text-decoration:none;border:none;cursor:pointer}
+.filter-btn:hover,.filter-btn.active{background:var(--brand);color:#fff;transform:translateY(-1px)}
 
 /* ═══ VIEW TOGGLE ═══ */
 .view-toggle{display:flex;gap:8px;margin-left:auto;flex-shrink:0}
@@ -242,8 +130,8 @@ a{text-decoration:none}
 /* ═══ FEATURED POST ═══ */
 .featured-post{display:grid;grid-template-columns:1fr 1fr;background:#fff;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-md);margin-bottom:64px;transition:all 0.3s var(--ease);color:inherit}
 .featured-post:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg)}
-.featured-image-wrap{position:relative;overflow:hidden}
-.featured-image{width:100%;height:100%;min-height:420px;object-fit:cover;transition:transform 0.45s}
+.featured-image-wrap{position:relative;overflow:hidden;background:var(--gray-100);min-height:420px}
+.featured-image{width:100%;height:100%;min-height:420px;object-fit:cover;transition:transform 0.45s;display:block}
 .featured-post:hover .featured-image{transform:scale(1.04)}
 .featured-badge{position:absolute;top:20px;left:20px;background:var(--brand);color:#fff;padding:8px 18px;border-radius:20px;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:0.5px}
 .featured-content{padding:52px;display:flex;flex-direction:column;justify-content:center}
@@ -257,23 +145,25 @@ a{text-decoration:none}
 
 /* ═══ POST GRID ═══ */
 .posts-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:28px;margin-bottom:72px}
-.post-card{background:#fff;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;transition:all 0.3s var(--ease);color:inherit}
-.post-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-md)}
-.card-image-wrap{position:relative;overflow:hidden}
-.card-image{width:100%;height:224px;object-fit:cover;transition:transform 0.45s}
+.post-card{background:#fff;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;transition:all 0.3s var(--ease);color:inherit;border:2px solid transparent}
+.post-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-md);border-color:rgba(126,8,130,0.1)}
+
+/* FIX: card image always shows */
+.card-image-wrap{position:relative;overflow:hidden;background:var(--gray-100);min-height:224px}
+.card-image{width:100%;height:224px;object-fit:cover;object-position:center;display:block;transition:transform 0.45s;background:var(--gray-100)}
 .post-card:hover .card-image{transform:scale(1.06)}
 .card-cat{position:absolute;bottom:12px;left:12px;background:var(--brand);color:#fff;padding:5px 12px;border-radius:16px;font-size:11px;font-weight:800;text-transform:uppercase}
 .card-content{padding:24px;flex:1;display:flex;flex-direction:column}
 .card-meta{display:flex;gap:12px;font-size:12px;color:var(--gray-600);margin-bottom:10px}
 .card-title{font-size:1.15rem;font-weight:800;line-height:1.3;margin-bottom:10px;color:var(--gray-900)}
 .card-excerpt{font-size:14px;color:var(--gray-600);line-height:1.65;flex:1;margin-bottom:16px}
-.card-link{color:var(--brand);font-weight:800;font-size:14px;display:flex;align-items:center;gap:6px}
+.card-link{color:var(--brand);font-weight:800;font-size:14px;display:flex;align-items:center;gap:6px;text-decoration:underline;text-underline-offset:3px}
 .post-card:hover .card-link{gap:10px}
 
 /* ═══ LIST VIEW ═══ */
 .posts-list{display:none;flex-direction:column;gap:24px;margin-bottom:72px}
 .posts-list .post-card{flex-direction:row;height:auto}
-.posts-list .card-image-wrap{width:320px;flex-shrink:0}
+.posts-list .card-image-wrap{width:320px;flex-shrink:0;min-height:auto}
 .posts-list .card-image{height:100%;min-height:200px}
 .posts-list .card-content{padding:32px}
 .posts-list .card-title{font-size:1.4rem;margin-bottom:12px}
@@ -288,12 +178,12 @@ a{text-decoration:none}
 .newsletter iframe{border-radius:12px;max-width:100%;margin:0 auto}
 
 /* ═══ FOOTER ═══ */
-footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0}
+footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px}
 .footer-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:40px}
 .footer-logo{height:42px;margin-bottom:14px}
 .footer-brand p{opacity:0.7;font-size:14px;line-height:1.7;margin-bottom:20px}
 .social-row{display:flex;gap:10px}
-.social-btn{width:38px;height:38px;background:rgba(255,255,255,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;transition:all 0.2s}
+.social-btn{width:38px;height:38px;background:rgba(255,255,255,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;transition:all 0.2s;text-decoration:none}
 .social-btn:hover{background:var(--brand);transform:translateY(-2px)}
 .footer-col h4{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:18px;opacity:0.88}
 .footer-links{list-style:none}
@@ -312,33 +202,18 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
   .footer-grid{grid-template-columns:1fr 1fr}
   .posts-list .post-card{flex-direction:column}
   .posts-list .card-image-wrap{width:100%}
-  /* On tablet, hide mega menus but keep the plain links visible */
-  .mega-menu{display:none}
+  .mega-menu{display:none!important}
 }
 @media(max-width:768px){
   .nav-menu{display:none}
   .mobile-menu-btn{display:block}
-  /* Mobile menu open state is handled by JS class toggle (see script) */
-  .nav-menu.mobile-open{
-    display:flex;
-    flex-direction:column;
-    position:absolute;
-    top:100%;
-    left:0;
-    right:0;
-    background:#fff;
-    padding:20px;
-    box-shadow:0 4px 12px rgba(0,0,0,0.1);
-    z-index:200;
-  }
+  .nav-menu.mobile-open{display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:#fff;padding:20px;box-shadow:0 4px 12px rgba(0,0,0,0.1);z-index:200}
   .posts-grid{grid-template-columns:1fr}
   .featured-content{padding:28px}
   .footer-grid{grid-template-columns:1fr}
   .footer-bottom{flex-direction:column;text-align:center}
   .newsletter{padding:32px 20px}
-  /* On mobile hide mega menus entirely */
   .mega-menu-wrapper{width:100%}
-  .mega-menu{display:none!important}
 }
 </style>
 </head>
@@ -347,147 +222,49 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
 <nav class="navbar">
   <div class="nav-container">
     <a href="/"><img src="/content/images/logo.jpg" alt="Wow Glam Decor" class="logo"></a>
-
-    <!-- FIX 1: Search box keeps its width; no longer expands on focus -->
     <div class="search-box">
       <input type="text" id="searchInput" class="search-input" placeholder="Search articles, rooms, styles..." autocomplete="off">
       <button class="search-btn" onclick="performSearch()" aria-label="Search">🔍</button>
       <div class="search-suggestions" id="searchSuggestions"></div>
     </div>
-
     <div class="nav-menu" id="navMenu">
       <a href="/" class="nav-link">Home</a>
       <a href="/blog.html" class="nav-link active">Blog</a>
-
-      <!-- Rooms — FIX 2 & 3: mega menu anchored left, no overflow -->
       <div class="mega-menu-wrapper">
         <span class="nav-link mega-menu-trigger">Rooms</span>
         <div class="mega-menu">
           <div class="mega-menu-grid">
-            <div class="mega-menu-section">
-              <h4>Living Spaces</h4>
-              <ul class="mega-menu-links">
-                <li><a href="/category/living-room.html"><span class="icon">🛋️</span>Living Room</a></li>
-                <li><a href="/category/bedroom.html"><span class="icon">🛏️</span>Bedroom</a></li>
-                <li><a href="/category/dining-room.html"><span class="icon">🍽️</span>Dining Room</a></li>
-                <li><a href="/category/home-office.html"><span class="icon">💻</span>Home Office</a></li>
-              </ul>
-            </div>
-            <div class="mega-menu-section">
-              <h4>Functional Rooms</h4>
-              <ul class="mega-menu-links">
-                <li><a href="/category/kitchen.html"><span class="icon">🍳</span>Kitchen</a></li>
-                <li><a href="/category/bathroom.html"><span class="icon">🚿</span>Bathroom</a></li>
-                <li><a href="/category/laundry-room.html"><span class="icon">🧺</span>Laundry Room</a></li>
-                <li><a href="/category/entryway-hallway.html"><span class="icon">🚪</span>Entryway & Hallway</a></li>
-              </ul>
-            </div>
-            <div class="mega-menu-section">
-              <h4>Special Spaces</h4>
-              <ul class="mega-menu-links">
-                <li><a href="/category/kids-room-nursery.html"><span class="icon">🧸</span>Kids Room & Nursery</a></li>
-                <li><a href="/category/outdoor-patio.html"><span class="icon">🌿</span>Outdoor & Patio</a></li>
-                <li><a href="/category/balcony-small-spaces.html"><span class="icon">🪴</span>Balcony & Small Spaces</a></li>
-              </ul>
-            </div>
-            <div class="mega-menu-section">
-              <h4>Popular Guides</h4>
-              <ul class="mega-menu-links">
-                <li><a href="/category/small-space-storage.html"><span class="icon">📦</span>Small Space Storage</a></li>
-                <li><a href="/category/rental-friendly-decor.html"><span class="icon">🔑</span>Rental-Friendly</a></li>
-                <li><a href="/category/home-makeovers.html"><span class="icon">✨</span>Home Makeovers</a></li>
-              </ul>
-            </div>
+            <div class="mega-menu-section"><h4>Living Spaces</h4><ul class="mega-menu-links"><li><a href="/category/living-room.html"><span class="icon">🛋️</span>Living Room</a></li><li><a href="/category/bedroom.html"><span class="icon">🛏️</span>Bedroom</a></li><li><a href="/category/dining-room.html"><span class="icon">🍽️</span>Dining Room</a></li><li><a href="/category/home-office.html"><span class="icon">💻</span>Home Office</a></li></ul></div>
+            <div class="mega-menu-section"><h4>Functional Rooms</h4><ul class="mega-menu-links"><li><a href="/category/kitchen.html"><span class="icon">🍳</span>Kitchen</a></li><li><a href="/category/bathroom.html"><span class="icon">🚿</span>Bathroom</a></li><li><a href="/category/laundry-room.html"><span class="icon">🧺</span>Laundry Room</a></li><li><a href="/category/entryway-hallway.html"><span class="icon">🚪</span>Entryway & Hallway</a></li></ul></div>
+            <div class="mega-menu-section"><h4>Special Spaces</h4><ul class="mega-menu-links"><li><a href="/category/kids-room-nursery.html"><span class="icon">🧸</span>Kids Room & Nursery</a></li><li><a href="/category/outdoor-patio.html"><span class="icon">🌿</span>Outdoor & Patio</a></li><li><a href="/category/balcony-small-spaces.html"><span class="icon">🪴</span>Balcony & Small Spaces</a></li></ul></div>
+            <div class="mega-menu-section"><h4>Popular Guides</h4><ul class="mega-menu-links"><li><a href="/category/small-space-storage.html"><span class="icon">📦</span>Small Space Storage</a></li><li><a href="/category/rental-friendly-decor.html"><span class="icon">🔑</span>Rental-Friendly</a></li><li><a href="/category/home-makeovers.html"><span class="icon">✨</span>Home Makeovers</a></li></ul></div>
           </div>
         </div>
       </div>
-
-      <!-- Styles -->
       <div class="mega-menu-wrapper">
         <span class="nav-link mega-menu-trigger">Styles</span>
         <div class="mega-menu">
           <div class="mega-menu-grid">
-            <div class="mega-menu-section">
-              <h4>Modern Styles</h4>
-              <ul class="mega-menu-links">
-                <li><a href="/category/modern-style.html"><span class="icon">🏙️</span>Modern</a></li>
-                <li><a href="/category/minimalist-style.html"><span class="icon">◻️</span>Minimalist</a></li>
-                <li><a href="/category/scandinavian-style.html"><span class="icon">🌿</span>Scandinavian</a></li>
-                <li><a href="/category/industrial-style.html"><span class="icon">🏭</span>Industrial</a></li>
-              </ul>
-            </div>
-            <div class="mega-menu-section">
-              <h4>Classic Styles</h4>
-              <ul class="mega-menu-links">
-                <li><a href="/category/traditional-classic.html"><span class="icon">🏛️</span>Traditional & Classic</a></li>
-                <li><a href="/category/luxury-glam-decor.html"><span class="icon">👑</span>Luxury & Glam</a></li>
-                <li><a href="/category/boho-rustic-decor.html"><span class="icon">🌻</span>Boho & Rustic</a></li>
-              </ul>
-            </div>
-            <div class="mega-menu-section">
-              <h4>Decor Elements</h4>
-              <ul class="mega-menu-links">
-                <li><a href="/category/wall-decor.html"><span class="icon">🖼️</span>Wall Decor</a></li>
-                <li><a href="/category/lighting-lamps.html"><span class="icon">💡</span>Lighting & Lamps</a></li>
-                <li><a href="/category/rugs-carpets.html"><span class="icon">🟫</span>Rugs & Carpets</a></li>
-                <li><a href="/category/plants-planters.html"><span class="icon">🪴</span>Plants & Planters</a></li>
-              </ul>
-            </div>
-            <div class="mega-menu-section">
-              <h4>Seasonal</h4>
-              <ul class="mega-menu-links">
-                <li><a href="/category/seasonal-decor.html"><span class="icon">🍂</span>Seasonal Decor</a></li>
-                <li><a href="/category/holiday-decor.html"><span class="icon">🎄</span>Holiday Decor</a></li>
-              </ul>
-            </div>
+            <div class="mega-menu-section"><h4>Modern Styles</h4><ul class="mega-menu-links"><li><a href="/category/modern-style.html"><span class="icon">🏙️</span>Modern</a></li><li><a href="/category/minimalist-style.html"><span class="icon">◻️</span>Minimalist</a></li><li><a href="/category/scandinavian-style.html"><span class="icon">🌿</span>Scandinavian</a></li><li><a href="/category/industrial-style.html"><span class="icon">🏭</span>Industrial</a></li></ul></div>
+            <div class="mega-menu-section"><h4>Classic Styles</h4><ul class="mega-menu-links"><li><a href="/category/traditional-classic.html"><span class="icon">🏛️</span>Traditional & Classic</a></li><li><a href="/category/luxury-glam-decor.html"><span class="icon">👑</span>Luxury & Glam</a></li><li><a href="/category/boho-rustic-decor.html"><span class="icon">🌻</span>Boho & Rustic</a></li></ul></div>
+            <div class="mega-menu-section"><h4>Decor Elements</h4><ul class="mega-menu-links"><li><a href="/category/wall-decor.html"><span class="icon">🖼️</span>Wall Decor</a></li><li><a href="/category/lighting-lamps.html"><span class="icon">💡</span>Lighting & Lamps</a></li><li><a href="/category/rugs-carpets.html"><span class="icon">🟫</span>Rugs & Carpets</a></li><li><a href="/category/plants-planters.html"><span class="icon">🪴</span>Plants & Planters</a></li></ul></div>
+            <div class="mega-menu-section"><h4>Seasonal</h4><ul class="mega-menu-links"><li><a href="/category/seasonal-decor.html"><span class="icon">🍂</span>Seasonal Decor</a></li><li><a href="/category/holiday-decor.html"><span class="icon">🎄</span>Holiday Decor</a></li></ul></div>
           </div>
         </div>
       </div>
-
-      <!-- Buying Guides -->
       <div class="mega-menu-wrapper">
         <span class="nav-link mega-menu-trigger">Buying Guides</span>
         <div class="mega-menu">
           <div class="mega-menu-grid">
-            <div class="mega-menu-section">
-              <h4>By Budget</h4>
-              <ul class="mega-menu-links">
-                <li><a href="/category/budget-furniture.html"><span class="icon">💰</span>Budget Furniture</a></li>
-                <li><a href="/category/luxury-furniture.html"><span class="icon">💎</span>Luxury Furniture</a></li>
-                <li><a href="/category/budget-gift-ideas.html"><span class="icon">🎁</span>Budget Gifts</a></li>
-                <li><a href="/category/luxury-home-gifts.html"><span class="icon">✨</span>Luxury Gifts</a></li>
-              </ul>
-            </div>
-            <div class="mega-menu-section">
-              <h4>By Type</h4>
-              <ul class="mega-menu-links">
-                <li><a href="/category/space-saving-furniture.html"><span class="icon">📐</span>Space-Saving</a></li>
-                <li><a href="/category/multifunctional-furniture.html"><span class="icon">🔄</span>Multifunctional</a></li>
-                <li><a href="/category/furniture-buying-guides.html"><span class="icon">📖</span>Buying Guides</a></li>
-              </ul>
-            </div>
-            <div class="mega-menu-section">
-              <h4>Reviews & Lists</h4>
-              <ul class="mega-menu-links">
-                <li><a href="/category/best-of-lists.html"><span class="icon">🏆</span>Best Of Lists</a></li>
-                <li><a href="/category/product-reviews.html"><span class="icon">⭐</span>Product Reviews</a></li>
-                <li><a href="/category/comparisons.html"><span class="icon">⚖️</span>Comparisons</a></li>
-              </ul>
-            </div>
-            <div class="mega-menu-section">
-              <h4>Gift Ideas</h4>
-              <ul class="mega-menu-links">
-                <li><a href="/category/home-gift-ideas.html"><span class="icon">🎁</span>Home Gift Ideas</a></li>
-                <li><a href="/category/housewarming-gifts.html"><span class="icon">🏡</span>Housewarming</a></li>
-              </ul>
-            </div>
+            <div class="mega-menu-section"><h4>By Budget</h4><ul class="mega-menu-links"><li><a href="/category/budget-furniture.html"><span class="icon">💰</span>Budget Furniture</a></li><li><a href="/category/luxury-furniture.html"><span class="icon">💎</span>Luxury Furniture</a></li><li><a href="/category/budget-gift-ideas.html"><span class="icon">🎁</span>Budget Gifts</a></li><li><a href="/category/luxury-home-gifts.html"><span class="icon">✨</span>Luxury Gifts</a></li></ul></div>
+            <div class="mega-menu-section"><h4>By Type</h4><ul class="mega-menu-links"><li><a href="/category/space-saving-furniture.html"><span class="icon">📐</span>Space-Saving</a></li><li><a href="/category/multifunctional-furniture.html"><span class="icon">🔄</span>Multifunctional</a></li><li><a href="/category/furniture-buying-guides.html"><span class="icon">📖</span>Buying Guides</a></li></ul></div>
+            <div class="mega-menu-section"><h4>Reviews & Lists</h4><ul class="mega-menu-links"><li><a href="/category/best-of-lists.html"><span class="icon">🏆</span>Best Of Lists</a></li><li><a href="/category/product-reviews.html"><span class="icon">⭐</span>Product Reviews</a></li><li><a href="/category/comparisons.html"><span class="icon">⚖️</span>Comparisons</a></li></ul></div>
+            <div class="mega-menu-section"><h4>Gift Ideas</h4><ul class="mega-menu-links"><li><a href="/category/home-gift-ideas.html"><span class="icon">🎁</span>Home Gift Ideas</a></li><li><a href="/category/housewarming-gifts.html"><span class="icon">🏡</span>Housewarming</a></li></ul></div>
           </div>
         </div>
       </div>
-
       <a href="/about.html" class="nav-link">About</a>
     </div>
-
     <button class="mobile-menu-btn" id="mobileMenuBtn" onclick="toggleMobileMenu()" aria-label="Toggle menu">☰</button>
   </div>
 </nav>
@@ -508,7 +285,7 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
 
 <div class="filter-bar">
   <div class="filter-inner">
-    <a href="/blog.html" class="filter-btn">🏠 All Posts</a>
+    <a href="/blog.html" class="filter-btn active">🏠 All Posts</a>
     <a href="/category/bedroom.html" class="filter-btn">Bedroom</a>
 <a href="/category/luxury-glam-decor.html" class="filter-btn">Luxury & Glam Decor</a>
 <a href="/category/living-room.html" class="filter-btn">Living Room</a>
@@ -640,72 +417,47 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
         <a href="#" class="social-btn">📌</a>
       </div>
     </div>
-    <div class="footer-col">
-      <h4>Shop By Room</h4>
-      <ul class="footer-links">
-        <li><a href="/category/living-room.html">Living Room</a></li>
-        <li><a href="/category/bedroom.html">Bedroom</a></li>
-        <li><a href="/category/kitchen.html">Kitchen</a></li>
-        <li><a href="/category/bathroom.html">Bathroom</a></li>
-        <li><a href="/category/home-office.html">Home Office</a></li>
-        <li><a href="/category/outdoor-patio.html">Outdoor & Patio</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Buying Guides</h4>
-      <ul class="footer-links">
-        <li><a href="/category/best-of-lists.html">Best Of Lists</a></li>
-        <li><a href="/category/product-reviews.html">Product Reviews</a></li>
-        <li><a href="/category/budget-furniture.html">Budget Picks</a></li>
-        <li><a href="/category/luxury-furniture.html">Luxury Finds</a></li>
-        <li><a href="/category/comparisons.html">Comparisons</a></li>
-        <li><a href="/category/home-gift-ideas.html">Gift Ideas</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Company</h4>
-      <ul class="footer-links">
-        <li><a href="/about.html">About Us</a></li>
-        <li><a href="/contact.html">Contact</a></li>
-        <li><a href="/affiliate-disclosure.html">Affiliate Disclosure</a></li>
-        <li><a href="/privacy-policy.html">Privacy Policy</a></li>
-        <li><a href="/sitemap.xml">Sitemap</a></li>
-        <li><a href="/feed.xml">RSS Feed</a></li>
-      </ul>
-    </div>
+    <div class="footer-col"><h4>Shop By Room</h4><ul class="footer-links"><li><a href="/category/living-room.html">Living Room</a></li><li><a href="/category/bedroom.html">Bedroom</a></li><li><a href="/category/kitchen.html">Kitchen</a></li><li><a href="/category/bathroom.html">Bathroom</a></li><li><a href="/category/home-office.html">Home Office</a></li><li><a href="/category/outdoor-patio.html">Outdoor & Patio</a></li></ul></div>
+    <div class="footer-col"><h4>Buying Guides</h4><ul class="footer-links"><li><a href="/category/best-of-lists.html">Best Of Lists</a></li><li><a href="/category/product-reviews.html">Product Reviews</a></li><li><a href="/category/budget-furniture.html">Budget Picks</a></li><li><a href="/category/luxury-furniture.html">Luxury Finds</a></li><li><a href="/category/comparisons.html">Comparisons</a></li><li><a href="/category/home-gift-ideas.html">Gift Ideas</a></li></ul></div>
+    <div class="footer-col"><h4>Company</h4><ul class="footer-links"><li><a href="/about.html">About Us</a></li><li><a href="/contact.html">Contact</a></li><li><a href="/affiliate-disclosure.html">Affiliate Disclosure</a></li><li><a href="/privacy-policy.html">Privacy Policy</a></li><li><a href="/sitemap.xml">Sitemap</a></li><li><a href="/feed.xml">RSS Feed</a></li></ul></div>
   </div>
   <div class="footer-bottom">
     <p>&copy; 2026 Wow Glam Decor. All rights reserved.</p>
-    <div class="footer-legal">
-      <a href="/privacy-policy.html">Privacy</a>
-      <a href="/affiliate-disclosure.html">Affiliate Disclosure</a>
-      <a href="/sitemap.xml">Sitemap</a>
-    </div>
+    <div class="footer-legal"><a href="/privacy-policy.html">Privacy</a><a href="/affiliate-disclosure.html">Affiliate Disclosure</a><a href="/sitemap.xml">Sitemap</a></div>
   </div>
 </footer>
 
 <script>
-/* ═══ VIEW TOGGLE (no localStorage — not supported in this environment) ═══ */
+/* ═══ VIEW TOGGLE ═══ */
 function switchView(viewType) {
   const gridView = document.getElementById('postsGrid');
   const listView = document.getElementById('postsList');
   const gridBtn  = document.getElementById('gridViewBtn');
   const listBtn  = document.getElementById('listViewBtn');
   if (viewType === 'grid') {
-    gridView.style.display = 'grid';
-    listView.style.display = 'none';
-    gridBtn.classList.add('active');
-    listBtn.classList.remove('active');
+    gridView.style.display = 'grid'; listView.style.display = 'none';
+    gridBtn.classList.add('active'); listBtn.classList.remove('active');
   } else {
-    gridView.style.display = 'none';
-    listView.style.display = 'flex';
-    gridBtn.classList.remove('active');
-    listBtn.classList.add('active');
+    gridView.style.display = 'none'; listView.style.display = 'flex';
+    gridBtn.classList.remove('active'); listBtn.classList.add('active');
   }
 }
 window.addEventListener('DOMContentLoaded', () => switchView('grid'));
 
-/* ═══ MOBILE MENU — FIX: use class toggle, not inline styles ═══ */
+/* ═══ FIX: normalize image paths — strip .jpg.jpg double extensions ═══ */
+function fixImagePath(src) {
+  if (!src) return '/content/images/default-post.jpg';
+  let p = src.replace(/(\.(jpe?g|png|webp|gif|bmp))\1$/i, '$1');
+  if (!p.startsWith('/') && !p.startsWith('http')) p = '/' + p;
+  return p;
+}
+document.querySelectorAll('.card-image, .featured-image').forEach(img => {
+  const fixed = fixImagePath(img.getAttribute('src'));
+  if (fixed !== img.getAttribute('src')) img.setAttribute('src', fixed);
+  img.addEventListener('error', function(){ this.src='/content/images/default-post.jpg'; }, {once:true});
+});
+
+/* ═══ MOBILE MENU ═══ */
 function toggleMobileMenu() {
   const menu = document.getElementById('navMenu');
   const btn  = document.getElementById('mobileMenuBtn');
@@ -713,153 +465,57 @@ function toggleMobileMenu() {
   const isOpen = menu.classList.toggle('mobile-open');
   btn.textContent = isOpen ? '✕' : '☰';
 }
-// Close mobile menu when clicking outside
 document.addEventListener('click', (e) => {
   const menu = document.getElementById('navMenu');
   const btn  = document.getElementById('mobileMenuBtn');
-  if (menu && menu.classList.contains('mobile-open') &&
-      !menu.contains(e.target) && !btn.contains(e.target)) {
-    menu.classList.remove('mobile-open');
-    btn.textContent = '☰';
+  if (menu && menu.classList.contains('mobile-open') && !menu.contains(e.target) && !btn.contains(e.target)) {
+    menu.classList.remove('mobile-open'); btn.textContent = '☰';
   }
 });
 
-/* ═══ MEGA MENU — position below navbar using JS for pixel-perfect placement ═══ */
-(function () {
+/* ═══ MEGA MENU POSITIONING ═══ */
+(function(){
   const navbar = document.querySelector('.navbar');
-  function positionMegaMenus() {
+  function pos() {
     if (!navbar) return;
-    const navBottom = navbar.getBoundingClientRect().bottom + window.scrollY;
-    document.querySelectorAll('.mega-menu').forEach(menu => {
-      menu.style.top = navBottom + 'px';
-    });
+    const b = navbar.getBoundingClientRect().bottom + window.scrollY;
+    document.querySelectorAll('.mega-menu').forEach(m => m.style.top = b + 'px');
   }
-  // Position on load and on scroll (since navbar is sticky)
-  positionMegaMenus();
-  window.addEventListener('scroll', positionMegaMenus, { passive: true });
-  window.addEventListener('resize', positionMegaMenus, { passive: true });
+  pos();
+  window.addEventListener('scroll', pos, {passive:true});
+  window.addEventListener('resize', pos, {passive:true});
 })();
 
 /* ═══ SEARCH ═══ */
-(function () {
-  const searchInput    = document.getElementById('searchInput');
-  const suggestionsBox = document.getElementById('searchSuggestions');
-  if (!searchInput || !suggestionsBox) return;
-
-  let searchTimeout;
-  let selectedIndex = -1;
-  let cachedPosts   = null;
-  const popularSearches = ['Living Room', 'Bedroom Decor', 'Budget Furniture', 'Minimalist', 'Best Of Lists'];
-
+(function(){
+  const inp = document.getElementById('searchInput');
+  const box = document.getElementById('searchSuggestions');
+  if (!inp || !box) return;
+  let timeout, idx = -1, cache = null;
+  const popular = ['Living Room','Bedroom Decor','Budget Furniture','Minimalist','Best Of Lists'];
   async function loadPosts() {
-    if (cachedPosts) return cachedPosts;
-    try {
-      const res = await fetch('/posts.json');
-      if (res.ok) { cachedPosts = await res.json(); return cachedPosts; }
-    } catch (e) {}
+    if (cache) return cache;
+    try { const r = await fetch('/posts.json'); if (r.ok) { cache = await r.json(); return cache; } } catch(e){}
     return [];
   }
-
-  function highlightText(text, query) {
-    if (!query || !text) return text;
-    const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
-    return text.replace(regex, '<span class="highlight">$1</span>');
+  function hl(t, q) { if (!q||!t) return t; return t.replace(new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`,'gi'),'<span class="highlight">$1</span>'); }
+  async function search(q) {
+    const posts = await loadPosts(); if (!posts.length) return [];
+    const terms = q.toLowerCase().split(/\s+/).filter(Boolean);
+    return posts.map(p => ({ ...p, score: terms.reduce((s,t) => s+((`${p.title} ${p.description||''} ${(p.tags||[]).join(' ')} ${(p.categories||[]).join(' ')}`).toLowerCase().split(t).length-1), 0) }))
+      .filter(p => p.score > 0).sort((a,b) => b.score-a.score).slice(0,5);
   }
-
-  async function searchPosts(query) {
-    const posts = await loadPosts();
-    if (!posts.length) return [];
-    const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
-    return posts
-      .map(post => {
-        const searchable = `${post.title} ${post.description || post.excerpt || ''} ${(post.tags||[]).join(' ')} ${(post.categories||[]).join(' ')}`.toLowerCase();
-        const score = terms.reduce((s, t) => s + (searchable.split(t).length - 1), 0);
-        return { ...post, score };
-      })
-      .filter(p => p.score > 0)
-      .sort((a, b) => b.score - a.score)
-      .slice(0, 5);
+  function render(r, q) {
+    if (!r.length) { box.innerHTML=`<div class="no-results"><div class="no-results-icon">🔍</div><p>No results for "<strong>${q}</strong>"</p><div class="popular-searches">${popular.map(t=>`<span class="popular-tag" onclick="document.getElementById('searchInput').value='${t}';document.getElementById('searchInput').dispatchEvent(new Event('input'));">${t}</span>`).join('')}</div></div>`; box.classList.add('active'); return; }
+    box.innerHTML = r.map((p,i) => `<a href="/posts/${p.slug}.html" class="suggestion-item" data-index="${i}"><img src="${fixImagePath(p.featured_image)}" alt="${p.title}" class="suggestion-thumb" loading="lazy"><div class="suggestion-content"><div class="suggestion-title">${hl(p.title,q)}</div><div class="suggestion-meta"><span class="suggestion-category">${(p.categories&&p.categories[0])||'Decor'}</span><span>⏱️ ${p.readTime||5} min</span></div></div></a>`).join('')+`<div class="search-footer"><a href="/search.html?q=${encodeURIComponent(q)}">View all results for "${q}" →</a></div>`;
+    box.classList.add('active'); idx=-1;
   }
-
-  function renderSuggestions(results, query) {
-    if (!results.length) {
-      suggestionsBox.innerHTML = `
-        <div class="no-results">
-          <div class="no-results-icon">🔍</div>
-          <p>No results for "<strong>${query}</strong>"</p>
-          <div class="popular-searches">
-            ${popularSearches.map(t =>
-              `<span class="popular-tag" onclick="document.getElementById('searchInput').value='${t}';document.getElementById('searchInput').dispatchEvent(new Event('input'));">${t}</span>`
-            ).join('')}
-          </div>
-        </div>`;
-      suggestionsBox.classList.add('active');
-      return;
-    }
-    suggestionsBox.innerHTML = results.map((post, idx) => {
-      const img      = post.featured_image || '/content/images/default-post.jpg';
-      const cat      = (post.categories && post.categories[0]) || 'Decor';
-      const readTime = post.readTime || '5';
-      const url      = post.url || `/posts/${post.slug}.html`;
-      return `
-        <a href="${url}" class="suggestion-item" data-index="${idx}">
-          <img src="${img}" alt="${post.title}" class="suggestion-thumb" loading="lazy">
-          <div class="suggestion-content">
-            <div class="suggestion-title">${highlightText(post.title, query)}</div>
-            <div class="suggestion-meta">
-              <span class="suggestion-category">${cat}</span>
-              <span>⏱️ ${readTime} min read</span>
-            </div>
-          </div>
-        </a>`;
-    }).join('') + `
-      <div class="search-footer">
-        <a href="/search.html?q=${encodeURIComponent(query)}">View all results for "${query}" →</a>
-      </div>`;
-    suggestionsBox.classList.add('active');
-    selectedIndex = -1;
-  }
-
-  searchInput.addEventListener('input', e => {
-    const query = e.target.value.trim();
-    clearTimeout(searchTimeout);
-    if (!query) { suggestionsBox.classList.remove('active'); return; }
-    if (query.length < 2) return;
-    suggestionsBox.innerHTML = '<div class="search-loading">Searching<div class="loading-dots"><span></span><span></span><span></span></div></div>';
-    suggestionsBox.classList.add('active');
-    searchTimeout = setTimeout(async () => {
-      renderSuggestions(await searchPosts(query), query);
-    }, 300);
-  });
-
-  searchInput.addEventListener('keydown', e => {
-    const items = suggestionsBox.querySelectorAll('.suggestion-item');
-    if (e.key === 'ArrowDown')  { e.preventDefault(); selectedIndex = Math.min(selectedIndex + 1, items.length - 1); updateSelection(items); }
-    else if (e.key === 'ArrowUp')  { e.preventDefault(); selectedIndex = Math.max(selectedIndex - 1, -1); updateSelection(items); }
-    else if (e.key === 'Enter')    { e.preventDefault(); selectedIndex >= 0 && items[selectedIndex] ? items[selectedIndex].click() : performSearch(); }
-    else if (e.key === 'Escape')   { suggestionsBox.classList.remove('active'); searchInput.blur(); }
-  });
-
-  function updateSelection(items) {
-    items.forEach((item, idx) => item.classList.toggle('selected', idx === selectedIndex));
-    if (selectedIndex >= 0 && items[selectedIndex]) items[selectedIndex].scrollIntoView({ block: 'nearest' });
-  }
-
-  document.addEventListener('click', e => {
-    if (!searchInput.contains(e.target) && !suggestionsBox.contains(e.target))
-      suggestionsBox.classList.remove('active');
-  });
-
-  document.addEventListener('keydown', e => {
-    if (e.key === '/' && !['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) {
-      e.preventDefault(); searchInput.focus();
-    }
-  });
-
-  window.performSearch = function () {
-    const query = searchInput.value.trim();
-    if (query) window.location.href = `/search.html?q=${encodeURIComponent(query)}`;
-  };
+  inp.addEventListener('input', e => { const q=e.target.value.trim(); clearTimeout(timeout); if(!q){box.classList.remove('active');return;} if(q.length<2)return; box.innerHTML='<div class="search-loading">Searching<div class="loading-dots"><span></span><span></span><span></span></div></div>'; box.classList.add('active'); timeout=setTimeout(async()=>render(await search(q),q),300); });
+  inp.addEventListener('keydown', e => { const items=box.querySelectorAll('.suggestion-item'); if(e.key==='ArrowDown'){e.preventDefault();idx=Math.min(idx+1,items.length-1);upd(items);}else if(e.key==='ArrowUp'){e.preventDefault();idx=Math.max(idx-1,-1);upd(items);}else if(e.key==='Enter'){e.preventDefault();idx>=0&&items[idx]?items[idx].click():performSearch();}else if(e.key==='Escape'){box.classList.remove('active');inp.blur();} });
+  function upd(items){items.forEach((it,i)=>it.classList.toggle('selected',i===idx));if(idx>=0&&items[idx])items[idx].scrollIntoView({block:'nearest'});}
+  document.addEventListener('click', e=>{if(!inp.contains(e.target)&&!box.contains(e.target))box.classList.remove('active');});
+  document.addEventListener('keydown', e=>{if(e.key==='/'&&!['INPUT','TEXTAREA'].includes(document.activeElement.tagName)){e.preventDefault();inp.focus();}});
+  window.performSearch = ()=>{ const q=inp.value.trim(); if(q) window.location.href=`/search.html?q=${encodeURIComponent(q)}`; };
 })();
 </script>
 </body>
