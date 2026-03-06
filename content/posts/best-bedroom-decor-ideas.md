@@ -416,8 +416,6 @@ Every bedroom transformation I've seen succeed follows the same sequence. Skip a
 
 ## Full Product Comparison {#comparison}
 
-![Full comparison of best bedroom decor products 2026 including pricing ratings and best use cases](/content/images/bedroom-decor-products-comparison-2026)
-
 | Feature | Casaluna Duvet | Brightech Lamp | nuLOOM Rug | Uttermost Art | Bedsure Pillowcases |
 |---|---|---|---|---|---|
 | **Price Range** | $69–$129 | $79–$109 | $65–$175 | $180–$320 | $10–$18 |
