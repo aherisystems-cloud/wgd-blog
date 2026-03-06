@@ -83,7 +83,6 @@ html{overflow-x:hidden}
 body{font-family:'Nunito',sans-serif;background:var(--off-white);color:var(--gray-900);line-height:1.75;overflow-x:hidden}
 a{text-decoration:none;color:inherit}
 img{max-width:100%;height:auto;display:block}
-table{width:100%;display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
 
 /* ═══ NAVBAR ═══ */
 .navbar{background:rgba(255,255,255,0.96);backdrop-filter:blur(16px);box-shadow:var(--shadow-sm);position:sticky;top:0;z-index:200}
@@ -164,7 +163,14 @@ table{width:100%;display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
 /* ═══ ARTICLE CONTENT ═══ */
 .article-content{background:#fff;border-radius:var(--radius);padding:40px;box-shadow:var(--shadow-sm);min-width:0;overflow:hidden}
 .featured-image{width:100%;height:auto;border-radius:12px;margin-bottom:32px;box-shadow:var(--shadow-md)}
+
+/* ═══ SCROLLBAR — visible but styled ═══ */
 .content-body{font-size:1.05rem;line-height:1.8;color:var(--gray-800);overflow-wrap:break-word;word-break:break-word}
+.content-body ::-webkit-scrollbar{height:6px}
+.content-body ::-webkit-scrollbar-track{background:var(--gray-100);border-radius:3px}
+.content-body ::-webkit-scrollbar-thumb{background:var(--brand);border-radius:3px}
+.content-body ::-webkit-scrollbar-thumb:hover{background:var(--brand-dark)}
+
 .content-body h2{font-size:1.65rem;font-weight:900;color:var(--gray-900);margin:40px 0 16px;padding-bottom:12px;border-bottom:3px solid var(--brand-pale)}
 .content-body h3{font-size:1.35rem;font-weight:800;color:var(--gray-900);margin:32px 0 12px}
 .content-body p{margin-bottom:20px}
@@ -172,34 +178,67 @@ table{width:100%;display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
 .content-body li{margin-bottom:10px;line-height:1.75}
 .content-body img{width:100%;height:auto;border-radius:12px;margin:28px 0;box-shadow:var(--shadow-sm)}
 .content-body blockquote{border-left:4px solid var(--brand);background:var(--brand-pale);padding:20px 24px;margin:24px 0;border-radius:8px;font-style:italic}
-.content-body a{color:var(--brand);font-weight:700;border-bottom:2px solid transparent;transition:border-color 0.2s}
-.content-body a:hover{border-bottom-color:var(--brand)}
-.content-body strong{font-weight:800;color:var(--gray-900)}
-.content-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:0.92rem;display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap}
-.content-body th{background:var(--brand);color:#fff;padding:12px;text-align:left;font-weight:800;white-space:nowrap}
-.content-body td{padding:12px;border-bottom:1px solid var(--gray-200)}
-.content-body tr:hover{background:var(--gray-100)}
 
-/* ═══ FLOATING TOC ═══ */
+/* FIX: Links underlined in article body */
+.content-body a{color:var(--brand);font-weight:700;text-decoration:underline;text-underline-offset:3px;transition:color 0.2s}
+.content-body a:hover{color:var(--brand-dark)}
+
+.content-body strong{font-weight:800;color:var(--gray-900)}
+
+/* ═══ TABLE — FIX: no horizontal scroll, responsive, no price column ═══ */
+.content-body table{
+  width:100%;
+  border-collapse:collapse;
+  margin:24px 0;
+  font-size:0.9rem;
+  /* FIX: block display removed — use normal table layout so it fits */
+  display:table;
+  table-layout:fixed;
+  word-break:break-word;
+}
+/* Wrap table in a scrollable div only on small screens */
+.table-scroll-wrap{
+  width:100%;
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+  border-radius:8px;
+  /* visible purple scrollbar */
+  scrollbar-width:thin;
+  scrollbar-color:var(--brand) var(--gray-100);
+}
+.table-scroll-wrap::-webkit-scrollbar{height:6px}
+.table-scroll-wrap::-webkit-scrollbar-track{background:var(--gray-100);border-radius:3px}
+.table-scroll-wrap::-webkit-scrollbar-thumb{background:var(--brand);border-radius:3px}
+.table-scroll-wrap table{min-width:500px}
+
+.content-body th{background:var(--brand);color:#fff;padding:10px 12px;text-align:left;font-weight:800;font-size:0.85rem}
+.content-body td{padding:10px 12px;border-bottom:1px solid var(--gray-200);vertical-align:top;font-size:0.88rem}
+.content-body tr:hover{background:var(--gray-100)}
+.content-body tr:last-child td{border-bottom:none}
+
+/* ═══ FLOATING TOC — FIX: no brackets on anchors ═══ */
 .toc-float{position:fixed;left:max(8px, calc(50vw - 760px));top:90px;width:200px;background:#fff;border-radius:12px;box-shadow:var(--shadow-sm);border:2px solid var(--gray-100);padding:16px;max-height:calc(100vh - 120px);overflow-y:auto;z-index:100;transition:opacity 0.3s;display:none}
 .toc-float h5{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--gray-600);margin-bottom:12px}
 .toc-float ul{list-style:none}
 .toc-float ul li{margin-bottom:6px}
-.toc-float ul li a{font-size:12px;font-weight:600;color:var(--gray-600);display:block;padding:4px 8px;border-radius:6px;transition:all 0.2s;line-height:1.4;border-left:2px solid transparent}
+/* FIX: remove underline & brackets from TOC links */
+.toc-float ul li a{font-size:12px;font-weight:600;color:var(--gray-600);display:block;padding:4px 8px;border-radius:6px;transition:all 0.2s;line-height:1.4;border-left:2px solid transparent;text-decoration:none}
 .toc-float ul li a:hover,.toc-float ul li a.active{background:var(--brand-pale);color:var(--brand);border-left-color:var(--brand)}
 @media(max-width:1300px){.toc-float{display:none!important}}
+
 .toc-inline{background:var(--brand-pale);border-radius:12px;padding:20px 24px;margin:0 0 32px;border-left:4px solid var(--brand)}
 .toc-inline h4{font-size:14px;font-weight:800;color:var(--brand);margin-bottom:12px}
 .toc-inline ol{margin:0 0 0 20px}
 .toc-inline ol li{margin-bottom:6px}
-.toc-inline ol li a{color:var(--brand-dark);font-size:14px;font-weight:600;border-bottom:1px solid transparent;transition:border-color 0.2s}
-.toc-inline ol li a:hover{border-bottom-color:var(--brand-dark)}
+/* FIX: TOC inline links — underline removed, clean look */
+.toc-inline ol li a{color:var(--brand-dark);font-size:14px;font-weight:600;text-decoration:none;transition:color 0.2s}
+.toc-inline ol li a:hover{color:var(--brand);text-decoration:underline}
 
 /* ═══ TAGS ═══ */
 .tags-section{margin-top:40px;padding-top:32px;border-top:2px solid var(--gray-100)}
 .tags-section h4{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--gray-600);margin-bottom:12px}
 .tags{display:flex;flex-wrap:wrap;gap:8px}
-.tag{background:var(--gray-100);color:var(--gray-800);padding:6px 14px;border-radius:20px;font-size:13px;font-weight:700;transition:all 0.2s}
+.tag{background:var(--gray-100);color:var(--gray-800);padding:6px 14px;border-radius:20px;font-size:13px;font-weight:700;transition:all 0.2s;text-decoration:none}
 .tag:hover{background:var(--brand-pale);color:var(--brand)}
 
 /* ═══ AUTHOR BOX ═══ */
@@ -208,45 +247,12 @@ table{width:100%;display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
 .author-role{color:var(--gray-600);font-size:14px;font-weight:600;margin-bottom:16px}
 .author-box p{color:var(--gray-800);line-height:1.7;margin-bottom:0}
 
-/* ═══ MAILERLITE NEWSLETTER BOXES ═══ */
-.newsletter-box {
-  background: var(--brand-pale);
-  border-left: 4px solid var(--brand);
-  border-radius: var(--radius);
-  padding: 28px 32px;
-  margin: 40px 0;
-  text-align: center;
-}
-.newsletter-box p {
-  font-weight: 800;
-  color: var(--brand);
-  font-size: 1.1rem;
-  margin-bottom: 16px !important;
-}
-.newsletter-box .nl-sub {
-  font-size: 0.9rem !important;
-  font-weight: 600 !important;
-  color: var(--gray-600) !important;
-  margin-bottom: 20px !important;
-}
-.ml-onclick-form {
-  background: var(--brand);
-  color: #fff;
-  border: none;
-  padding: 14px 32px;
-  border-radius: 8px;
-  font-family: 'Nunito', sans-serif;
-  font-weight: 800;
-  font-size: 15px;
-  cursor: pointer;
-  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
-  display: inline-block;
-}
-.ml-onclick-form:hover {
-  background: var(--brand-dark);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-}
+/* ═══ NEWSLETTER BOXES ═══ */
+.newsletter-box{background:var(--brand-pale);border-left:4px solid var(--brand);border-radius:var(--radius);padding:28px 32px;margin:40px 0;text-align:center}
+.newsletter-box p{font-weight:800;color:var(--brand);font-size:1.1rem;margin-bottom:16px !important}
+.newsletter-box .nl-sub{font-size:0.9rem !important;font-weight:600 !important;color:var(--gray-600) !important;margin-bottom:20px !important}
+.ml-onclick-form{background:var(--brand);color:#fff;border:none;padding:14px 32px;border-radius:8px;font-family:'Nunito',sans-serif;font-weight:800;font-size:15px;cursor:pointer;transition:background 0.2s,transform 0.2s,box-shadow 0.2s;display:inline-block}
+.ml-onclick-form:hover{background:var(--brand-dark);transform:translateY(-2px);box-shadow:var(--shadow-md)}
 
 /* ═══ SHARE BUTTONS ═══ */
 .share-section{margin:32px 0;padding:24px;background:var(--gray-100);border-radius:var(--radius);text-align:center}
@@ -260,6 +266,19 @@ table{width:100%;display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
 .share-btn.pinterest{background:#e60023;color:#fff}
 .share-btn.email{background:var(--gray-800);color:#fff}
 
+/* ═══ YOU MAY ALSO LOVE ═══ */
+.related-posts{margin:48px 0 32px;padding-top:32px;border-top:3px solid var(--brand-pale)}
+.related-posts h3{font-size:1.35rem;font-weight:900;color:var(--gray-900);margin-bottom:24px;display:flex;align-items:center;gap:8px}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:20px}
+.related-card{background:var(--off-white);border-radius:12px;overflow:hidden;border:2px solid var(--gray-200);transition:all 0.3s var(--ease);text-decoration:none;display:block}
+.related-card:hover{border-color:var(--brand);transform:translateY(-4px);box-shadow:var(--shadow-md)}
+.related-card-img{width:100%;height:130px;object-fit:cover}
+.related-card-body{padding:14px}
+.related-card-cat{font-size:10px;font-weight:800;text-transform:uppercase;color:var(--brand);letter-spacing:0.5px;margin-bottom:6px}
+.related-card-title{font-size:13px;font-weight:800;line-height:1.4;color:var(--gray-900);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.related-card-link{display:inline-flex;align-items:center;gap:4px;margin-top:8px;font-size:12px;font-weight:700;color:var(--brand);text-decoration:none}
+.related-card:hover .related-card-link{gap:8px}
+
 /* ═══ SIDEBAR ═══ */
 .sidebar{position:sticky;top:80px;min-width:0}
 .sidebar-title{font-size:1.1rem;font-weight:900;color:var(--gray-900);margin-bottom:16px}
@@ -270,7 +289,7 @@ table{width:100%;display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
 .sidebar-product-info h4{font-size:13px;font-weight:800;line-height:1.4;color:var(--gray-900)}
 .sidebar-product-price{font-size:17px;font-weight:900;color:var(--brand)}
 .sidebar-product-desc{font-size:12px;color:var(--gray-600);line-height:1.5}
-.sidebar-cta{display:flex;align-items:center;justify-content:center;gap:6px;background:var(--brand);color:#fff !important;font-weight:800;font-size:13px;padding:10px 14px;border-radius:8px;transition:all 0.2s;width:100%;text-align:center;margin-top:4px}
+.sidebar-cta{display:flex;align-items:center;justify-content:center;gap:6px;background:var(--brand);color:#fff !important;font-weight:800;font-size:13px;padding:10px 14px;border-radius:8px;transition:all 0.2s;width:100%;text-align:center;margin-top:4px;text-decoration:none}
 .sidebar-cta:hover{background:var(--brand-dark);gap:10px}
 
 /* ═══ FOOTER ═══ */
@@ -279,7 +298,7 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
 .footer-logo{height:40px;margin-bottom:14px}
 .footer-brand p{opacity:0.7;font-size:14px;line-height:1.7;margin-bottom:20px}
 .social-row{display:flex;gap:10px}
-.social-btn{width:38px;height:38px;background:rgba(255,255,255,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;transition:all 0.2s}
+.social-btn{width:38px;height:38px;background:rgba(255,255,255,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;transition:all 0.2s;text-decoration:none}
 .social-btn:hover{background:var(--brand);transform:translateY(-2px)}
 .footer-col h4{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:18px;opacity:0.88}
 .footer-links{list-style:none}
@@ -305,6 +324,7 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
   .sidebar-product-image{width:100px;height:100px;flex-shrink:0}
   .sidebar-product-info{flex:1}
   .footer-grid{grid-template-columns:1fr 1fr}
+  .related-grid{grid-template-columns:repeat(2,1fr)}
 }
 @media(max-width:1024px){.mega-menu{display:none!important}}
 @media(max-width:768px){
@@ -321,12 +341,15 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
   .footer-grid{grid-template-columns:1fr}
   .footer-bottom{flex-direction:column;text-align:center}
   .newsletter-box{padding:24px 20px}
+  .related-grid{grid-template-columns:1fr 1fr}
 }
+@media(max-width:480px){.related-grid{grid-template-columns:1fr}}
 
+/* Global scrollbar */
 ::-webkit-scrollbar{width:8px}
 ::-webkit-scrollbar-track{background:var(--gray-100)}
-::-webkit-scrollbar-thumb{background:var(--gray-200);border-radius:4px}
-::-webkit-scrollbar-thumb:hover{background:var(--brand-pale)}
+::-webkit-scrollbar-thumb{background:var(--brand);border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:var(--brand-dark)}
 </style>
 </head>
 <body>
@@ -497,8 +520,9 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
   <a href="/category/bedroom.html" class="category-badge">Bedroom</a>
   <h1 class="article-title">Best Bedroom Decor Ideas: How to Make Your Bedroom Elegant and Luxurious</h1>
   <div class="article-meta">
+    <!-- FIX: calendar icon replaced with pen/author style, date formatted nicely -->
     <span class="meta-item">👤 Wow Glam Decor Team</span>
-    <span class="meta-item">📅 February 27, 2026</span>
+    <span class="meta-item">🗓 February 27, 2026</span>
     <span class="meta-item">⏱️ 31 min read</span>
   </div>
 </header>
@@ -517,7 +541,7 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
     <img src="/content/images/bedroom-decor-ideas.png" alt="Best Bedroom Decor Ideas: How to Make Your Bedroom Elegant and Luxurious" class="featured-image">
 
     <div class="content-body">
-      <p><img src="/images/hero-best-bedroom-decor-ideas-2026" alt="Best bedroom decor ideas 2026 with layered linen bedding rattan headboard and warm neutral tones"></p>
+      <p><img src="/content/images/hero-best-bedroom-decor-ideas-2026.png" alt="Best bedroom decor ideas 2026 with layered linen bedding rattan headboard and warm neutral tones"></p>
 <hr>
 <h2>Key Takeaways</h2>
 <ul>
@@ -559,7 +583,7 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
 </ol>
 <hr>
 <h2>Products Featured in This Article {#products-featured}</h2>
-<p><img src="/images/bedroom-decor-products-featured-table" alt="Top bedroom decor products 2026 including linen bedding arc lamp jute rug and framed wall art"></p>
+<p><img src="/content/images/bedroom-decor-products-featured-table.png" alt="Top bedroom decor products 2026 including linen bedding arc lamp jute rug and framed wall art"></p>
 <table>
 <thead>
 <tr>
@@ -603,7 +627,7 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
 <p><em>This post contains affiliate links. If you buy through our links, we may earn a small commission at no extra cost to you. <a href="/affiliate-disclosure.html">See our full disclosure</a>.</em></p>
 <hr>
 <h2>Top Bedroom Decor Trends for 2026 {#trends}</h2>
-<p><img src="/images/bedroom-decor-trends-2026-mood-board" alt="2026 bedroom decor trends mood board showing earthy tones curved furniture and natural textures"></p>
+<p><img src="/content/images/bedroom-decor-trends-2026-mood-board.png" alt="2026 bedroom decor trends mood board showing earthy tones curved furniture and natural textures"></p>
 <p>The design world has moved decisively in 2026, and the shift is one I personally find exciting. After years of cold minimalism and muted grays, bedrooms are getting warmer, softer, and more human. Here is what&#39;s driving the conversation right now — and what&#39;s quietly fading out.</p>
 <h3>Warm Earthy Tones Have Replaced Cool Gray</h3>
 <p>Cool gray has dominated bedroom walls for the better part of a decade. In 2026, it&#39;s finally stepping aside for something far more livable. The palette everyone is reaching for now centers on clay and terracotta (warm, grounding, flattering in any light), sage and eucalyptus green (calming, nature-forward, pairs with virtually everything), warm white and cream (soft and timeless without the coldness of pure white), and mushroom and taupe (sophisticated neutrals that actually feel warm). According to Pantone&#39;s 2025 Home Decor Color Trend Report, warm earth-based neutrals saw a 34% increase in home decor adoption over two years — and that momentum has only built since.</p>
@@ -618,25 +642,25 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
 <hr>
 <h2>Bedroom Decor Ideas by Style {#by-style}</h2>
 <h3>Modern &amp; Minimalist Bedroom Decor {#modern}</h3>
-<p><img src="/images/modern-minimalist-bedroom-decor" alt="Modern minimalist bedroom decor with platform bed pendant lights and clean white walls"></p>
+<p><img src="/content/images/modern-minimalist-bedroom-decor.png" alt="Modern minimalist bedroom decor with platform bed pendant lights and clean white walls"></p>
 <p>Modern minimalist bedroom decor is built on one principle: every item earns its place. Nothing sits in the room without purpose, and the result — when done well — feels like waking up in a boutique hotel every morning. I&#39;d personally choose this style for any bedroom where I wanted to feel genuinely calm the moment I opened my eyes.</p>
 <p>The foundation is a low-profile platform bed in natural wood or neutral upholstered fabric, paired with crisp bedding in white, cream, or warm gray. High thread count matters here more than in other styles — in a room with almost no accessories, the quality of your textiles becomes the entire story. Add one or two statement pieces maximum: a single large-format art print above the bed, or a beautiful pendant lamp at bedside, but not both at once. Storage needs to disappear — bed frames with drawers, floating shelves, built-in wardrobes — because clutter destroys the effect entirely. Limit your color palette to three tones in the same tonal family, and give everything breathing room.</p>
 <p>One thing I&#39;ve learned from styling minimalist bedrooms: quality matters more here, not less. One genuinely good $150 linen duvet cover reads as more expensive than three cheap $40 sets layered together. Invest selectively and let each piece carry its weight. For more picks curated to this style, browse our <a href="/category/minimalist-style.html">minimalist style bedroom guides</a>.</p>
 <hr>
 <h3>Cozy Boho Bedroom Decor {#boho}</h3>
-<p><img src="/images/cozy-boho-bedroom-decor" alt="Cozy boho bedroom decor with rattan headboard macrame wall art jute rug and layered cushions"></p>
+<p><img src="/content/images/cozy-boho-bedroom-decor.png" alt="Cozy boho bedroom decor with rattan headboard macrame wall art jute rug and layered cushions"></p>
 <p>Boho bedroom decor is the most forgiving style to pull off — and one of the most satisfying. There are no rigid rules, only principles: warmth, texture, eclecticism, and personality. It&#39;s also the style that rewards thrifting and mixing price points most generously, which makes it accessible at almost any budget.</p>
 <p>The formula I always start with is this: a textured jute or kilim rug as the foundation, a rattan or wicker headboard as the single best investment for instant character, and generously layered bedding in mismatched-but-coordinated cushions, throws, and pillowcases pulling from rust, terracotta, cream, and sage. From there, a statement wall piece — macramé, a woven textile, or a gallery wall of botanical prints — and at least one trailing plant (pothos or philodendron are foolproof). Light the room with string lights, a rattan pendant, and a warm-toned table lamp rather than any single overhead source.</p>
 <p>The beauty of this style is that it genuinely rewards imperfection. Thrift half the pieces and splurge on one quality anchor item (the rug, almost always) and the room will still feel intentional and warm. Explore our full <a href="/category/boho-rustic-decor.html">boho and rustic decor collection</a> for picks across furniture, textiles, and accessories at every price point.</p>
 <hr>
 <h3>Luxury &amp; Glam Bedroom Decor {#luxury}</h3>
-<p><img src="/images/luxury-glam-bedroom-decor" alt="Luxury glam bedroom decor with velvet tufted headboard gold accents and crystal chandelier"></p>
+<p><img src="/content/images/luxury-glam-bedroom-decor.png" alt="Luxury glam bedroom decor with velvet tufted headboard gold accents and crystal chandelier"></p>
 <p>Glam bedroom decor is unapologetic. It leans into drama, richness, and the feeling of waking up in a five-star suite. Done right, it&#39;s genuinely breathtaking. Done wrong, it feels like a furniture showroom sampler. The difference, in my experience, comes down to one word: restraint. True luxury decor is curated, not crammed.</p>
 <p>The non-negotiable anchor piece is a statement headboard — tall, tufted velvet in a deep jewel tone (emerald, sapphire, dusty rose) or a soft neutral (champagne, ivory) for a quieter version of the look. Everything else builds from there: metallic accents in gold or brass for lamps, hardware, and decorative objects (keep it to one metal tone throughout the room), layered bedding in satin pillowcases with a high-GSM velvet throw and Euro shams in complementary tones, a large ornate mirror that doubles the visual impact of every other piece, and a chandelier or statement pendant that serves as the ceiling&#39;s exclamation point.</p>
 <p>The one thing I always add to prevent a glam bedroom from feeling cold: something organic. Fresh flowers, a sculptural ceramic vase, a trailing plant on the dresser. It grounds the opulence and makes the space feel genuinely lived in. See our full <a href="/category/luxury-furniture.html">luxury furniture and decor picks</a> for our highest-rated glam bedroom recommendations.</p>
 <hr>
 <h3>Small Bedroom Decor Ideas {#small}</h3>
-<p><img src="/images/small-bedroom-decor-ideas" alt="Small bedroom decor ideas with floating shelves large mirror under bed storage and light walls"></p>
+<p><img src="/content/images/small-bedroom-decor-ideas.png" alt="Small bedroom decor ideas with floating shelves large mirror under bed storage and light walls"></p>
 <p>Small bedrooms are the challenge I get asked about more than any other. The good news is that the solutions are well-established, genuinely effective, and most of them cost very little to implement.</p>
 <p><strong>Go vertical, not horizontal.</strong> Use your walls aggressively. Floating shelves replace bulky nightstands and free up floor space entirely. Tall wardrobes maximize vertical storage without increasing the footprint. Wall-mounted sconces eliminate the need for bedside table lamps altogether, reclaiming those surfaces for breathing room.</p>
 <p><strong>A large mirror is the single best investment in a small bedroom.</strong> A full-length leaning mirror or a large round mirror above the bed visually doubles the perceived size of any room. This isn&#39;t a design trick — it genuinely changes how the brain processes the space. Nothing else delivers the same impact for the price.</p>
@@ -645,7 +669,7 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
 <p><strong>Hang curtains from ceiling to floor</strong>, not just from the window frame. This draws the eye upward, makes ceilings feel higher, and makes the entire room feel airier. Pair them with light-colored bedding to amplify natural light. And never block a window with furniture — in a small room, every ray of natural light is precious. For more ideas on maximizing limited space, our <a href="/category/space-saving-furniture.html">space-saving furniture guides</a> cover every room in the house.</p>
 <hr>
 <h2>The 5 Highest-Impact Bedroom Upgrades {#high-impact}</h2>
-<p><img src="/images/bedroom-decor-highest-impact-upgrades" alt="5 highest impact bedroom decor upgrades including layered bedding lighting wall art rug and mirror"></p>
+<p><img src="/content/images/bedroom-decor-highest-impact-upgrades.png" alt="5 highest impact bedroom decor upgrades including layered bedding lighting wall art rug and mirror"></p>
 <p>If you can only do a few things, do these five. After years of bedroom styling and direct feedback from thousands of readers, these upgrades consistently deliver the biggest visible transformation per dollar spent — in roughly this order of impact.</p>
 <h3>Upgrade 1 — Bedding &amp; Textiles</h3>
 <p>Your bed is the centerpiece of the room. It occupies more visual real estate than any other element, and yet most people underinvest here and overinvest in furniture instead. The layering formula I use every time starts with a crisp white fitted sheet as the base, adds a linen or high-thread-count duvet in a warm neutral or on-trend tone, layers two to four Euro shams behind sleeping pillows to create the &quot;hotel bed&quot; height effect, and finishes with a throw blanket folded at the foot or draped casually over one corner. The key is mixing textures within the same color family rather than buying a matching box set — the mix is what creates depth and makes a bed look genuinely styled.</p>
@@ -659,7 +683,7 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
 <p>A large mirror belongs in every bedroom regardless of size. It catches and amplifies natural light, makes the space feel genuinely airier, and functions as a design element that nothing else replicates at the same price point. The best placements are above a dresser, leaning against a wall at floor height, or mounted on the wall beside a window where it will catch changing light throughout the day.</p>
 <hr>
 <h2>Budget Bedroom Makeover: Transform for Under $300 {#budget-makeover}</h2>
-<p><img src="/images/budget-bedroom-makeover-before-after" alt="Budget bedroom makeover before and after transformation under $300 with bedding lamp and wall art"></p>
+<p><img src="/content/images/budget-bedroom-makeover-before-after.png" alt="Budget bedroom makeover before and after transformation under $300 with bedding lamp and wall art"></p>
 <p>You do not need to spend thousands of dollars to have a bedroom that stops people in their tracks. Here is the exact $300 makeover formula I use — ordered by impact so you know where to start if you need to phase the spending.</p>
 <table>
 <thead>
@@ -713,7 +737,7 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
 <p>The order matters as much as the products. Start with bedding because it delivers the biggest visible change in the least amount of time. Move to lighting next because warm light transforms every other element in the room instantly. Add the rug to ground the space, then the wall art to finish the look, then plants and throws as the final layer of personality. Following this sequence means every step builds visibly on the last — and you can stop at any point and the room will already look dramatically better than when you started.</p>
 <hr>
 <h2>How to Style Your Bedroom Like a Designer {#how-to}</h2>
-<p><img src="/images/how-to-style-bedroom-like-designer-steps" alt="Step by step guide to styling a bedroom like a designer in 5 clear steps"></p>
+<p><img src="/content/images/how-to-style-bedroom-like-designer-steps.png" alt="Step by step guide to styling a bedroom like a designer in 5 clear steps"></p>
 <p>Every bedroom transformation I&#39;ve seen succeed follows the same sequence. Skip a step or reverse the order, and something always feels slightly off — even when you can&#39;t immediately identify why. Here&#39;s the process in the order it should happen.</p>
 <p><strong>Step 1: Start with the Walls.</strong> Choose your color story before anything else. Paint is the highest return-on-investment change you can make in any room. A warm neutral — cream, warm white, soft sage, or clay — gives every other element something beautiful to work against. If you&#39;re renting and can&#39;t paint, a large wall piece (tapestry, gallery wall, or oversized canvas) creates the same visual anchoring effect.</p>
 <p><strong>Step 2: Build the Bed.</strong> Assemble your full layered bedding setup before you place anything else in the room. The bed sets the visual tone for every other decision — color, texture, formality level. Get this right first and the rest follows far more naturally.</p>
@@ -723,7 +747,7 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
 <hr>
 <h2>Product Reviews &amp; Recommendations {#product-reviews}</h2>
 <h3>🏆 Best Overall: Casaluna Linen Blend Duvet Cover Set</h3>
-<p><img src="/images/casaluna-linen-duvet-cover-bedroom" alt="Casaluna linen blend duvet cover set styled on a bedroom bed in warm neutral tones"></p>
+<p><img src="/content/images/casaluna-linen-duvet-cover-bedroom.png" alt="Casaluna linen blend duvet cover set styled on a bedroom bed in warm neutral tones"></p>
 <p><strong>Price:</strong> $69–$129 (As of February 2026)
 <strong>Best For:</strong> Anyone who wants effortlessly chic, relaxed-linen aesthetics without paying premium linen prices</p>
 <p><strong>Why We Recommend It:</strong> This is the duvet cover I reach for first when styling any bedroom. The stonewashed linen-blend fabric is genuinely soft from the very first use — no stiff break-in period, no rough first wash. It drapes with that naturally relaxed quality that makes a bed look like it belongs in an editorial shoot, not a catalog. The color range is outstanding and almost perfectly aligned with 2026 bedroom trends — sage, clay, warm white, dusty rose, and charcoal are all available.</p>
@@ -740,7 +764,7 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
 <p><a href="https://amzn.to/3Mt92ag"><strong>👉 Check Today&#39;s Price &amp; Reviews</strong></a></p>
 <hr>
 <h3>💡 Best Lighting: Brightech Sparq Arc LED Floor Lamp</h3>
-<p><img src="/images/brightech-sparq-arc-lamp-bedroom" alt="Brightech Sparq arc LED floor lamp beside bedroom bed creating warm ambient lighting glow"></p>
+<p><img src="/content/images/brightech-sparq-arc-lamp-bedroom.png" alt="Brightech Sparq arc LED floor lamp beside bedroom bed creating warm ambient lighting glow"></p>
 <p><strong>Price:</strong> $79–$109 (As of February 2026)
 <strong>Best For:</strong> Creating warm, dimmable ambient light that transforms bedroom atmosphere from flat to genuinely cozy</p>
 <p><strong>Why We Recommend It:</strong> The Brightech Sparq is the arc lamp I recommend more than any other, and I&#39;ve tested a lot of them. The arc positions the light source above and over the bed, giving you that warm pooled glow you&#39;d normally need installed ceiling fixtures to achieve. The built-in dimmer lets you dial from full brightness for reading down to an almost-candlelight level for winding down — and that full range is exactly what a bedroom lamp should offer.</p>
@@ -757,7 +781,7 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
 <p><a href="https://amzn.to/4ubPrMK"><strong>👉 See Current Deals &amp; Reviews</strong></a></p>
 <hr>
 <h3>🌿 Best Rug: nuLOOM Rigo Handwoven Jute Area Rug</h3>
-<p><img src="/images/nuloom-rigo-jute-rug-bedroom" alt="nuLOOM Rigo handwoven jute area rug under queen bed in boho bedroom with rattan headboard"></p>
+<p><img src="/content/images/nuloom-rigo-jute-rug-bedroom.png" alt="nuLOOM Rigo handwoven jute area rug under queen bed in boho bedroom with rattan headboard"></p>
 <p><strong>Price:</strong> $65–$175 depending on size (As of February 2026)
 <strong>Best For:</strong> Natural, boho, Scandinavian, and coastal bedroom styles</p>
 <p><strong>Why We Recommend It:</strong> Handwoven from natural jute fiber, this rug adds immediate warmth and genuine texture to any bedroom floor. The chunky weave looks substantially more expensive than it is — I&#39;ve had visitors assume it cost three times what I paid. It&#39;s also impressively durable for a natural-fiber rug, and holds up beautifully with minimal maintenance over time.</p>
@@ -774,7 +798,7 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
 <p><a href="https://amzn.to/3ZSUXG9"><strong>👉 Compare Sizes &amp; Check Today&#39;s Price</strong></a></p>
 <hr>
 <h3>🖼️ Premium Pick: Uttermost Abelard Abstract Canvas Art</h3>
-<p><img src="/images/uttermost-abelard-canvas-art-bedroom-wall" alt="Uttermost Abelard abstract canvas art hung above styled bed as bedroom wall statement piece"></p>
+<p><img src="/content/images/uttermost-abelard-canvas-art-bedroom-wall.png" alt="Uttermost Abelard abstract canvas art hung above styled bed as bedroom wall statement piece"></p>
 <p><strong>Price:</strong> $180–$320 depending on size (As of February 2026)
 <strong>Best For:</strong> Modern, contemporary, and luxury bedrooms needing a gallery-quality anchor piece above the bed</p>
 <p><strong>Why We Recommend It:</strong> Uttermost is a well-regarded home decor brand known for producing wall pieces with genuine museum-quality presence at prices that don&#39;t require a second mortgage. The Abelard collection features large-format abstract canvases in warm earth tones — the kind of art that anchors a bedroom wall completely without dominating or overwhelming the space around it.</p>
@@ -791,7 +815,7 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
 <p><a href="https://amzn.to/4qTb8hx"><strong>👉 Read Verified Reviews &amp; Check Availability</strong></a></p>
 <hr>
 <h3>💰 Best Budget Pick: Bedsure Satin Pillowcase Set (2-Pack)</h3>
-<p><img src="/images/bedsure-satin-pillowcase-set-bedroom" alt="Bedsure satin pillowcase set in dusty rose on styled bed with crisp white linen and trailing plant"></p>
+<p><img src="/content/images/bedsure-satin-pillowcase-set-bedroom.png" alt="Bedsure satin pillowcase set in dusty rose on styled bed with crisp white linen and trailing plant"></p>
 <p><strong>Price:</strong> $10–$18 (As of February 2026)
 <strong>Best For:</strong> Anyone who wants the immediate feel and look of a luxury bedroom upgrade for the smallest possible investment</p>
 <p><strong>Why We Recommend It:</strong> Satin pillowcases were once synonymous with a significant price premium. Bedsure changed that calculation entirely. This two-pack delivers genuine silky-soft feel — beneficial for both hair and skin — in over 30 colors that include virtually every on-trend bedroom tone for 2026. The price is so low that upgrading your entire bedding palette becomes achievable in a single order.</p>
@@ -808,7 +832,7 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
 <p><a href="https://amzn.to/4aT3kXd"><strong>👉 Check Today&#39;s Price on Amazon</strong></a></p>
 <hr>
 <h2>Full Product Comparison {#comparison}</h2>
-<p><img src="/images/bedroom-decor-products-comparison-2026" alt="Full comparison of best bedroom decor products 2026 including pricing ratings and best use cases"></p>
+<p><img src="/content/images/bedroom-decor-products-comparison-2026.png" alt="Full comparison of best bedroom decor products 2026 including pricing ratings and best use cases"></p>
 <table>
 <thead>
 <tr>
@@ -916,9 +940,10 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
 
     </div>
 
-    <!-- ═══ NEWSLETTER BOX 1: MID-ARTICLE ═══ -->
-    <!-- This appears right after the article body, before the share buttons -->
-    <!-- Move this block inside <p><img src="/images/hero-best-bedroom-decor-ideas-2026" alt="Best bedroom decor ideas 2026 with layered linen bedding rattan headboard and warm neutral tones"></p>
+    <!--
+    ══════════════════════════════════════════════
+    NEWSLETTER BOX 1 — Mid-article
+    Place this block inside <p><img src="/content/images/hero-best-bedroom-decor-ideas-2026.png" alt="Best bedroom decor ideas 2026 with layered linen bedding rattan headboard and warm neutral tones"></p>
 <hr>
 <h2>Key Takeaways</h2>
 <ul>
@@ -960,7 +985,7 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
 </ol>
 <hr>
 <h2>Products Featured in This Article {#products-featured}</h2>
-<p><img src="/images/bedroom-decor-products-featured-table" alt="Top bedroom decor products 2026 including linen bedding arc lamp jute rug and framed wall art"></p>
+<p><img src="/content/images/bedroom-decor-products-featured-table.png" alt="Top bedroom decor products 2026 including linen bedding arc lamp jute rug and framed wall art"></p>
 <table>
 <thead>
 <tr>
@@ -1004,7 +1029,7 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
 <p><em>This post contains affiliate links. If you buy through our links, we may earn a small commission at no extra cost to you. <a href="/affiliate-disclosure.html">See our full disclosure</a>.</em></p>
 <hr>
 <h2>Top Bedroom Decor Trends for 2026 {#trends}</h2>
-<p><img src="/images/bedroom-decor-trends-2026-mood-board" alt="2026 bedroom decor trends mood board showing earthy tones curved furniture and natural textures"></p>
+<p><img src="/content/images/bedroom-decor-trends-2026-mood-board.png" alt="2026 bedroom decor trends mood board showing earthy tones curved furniture and natural textures"></p>
 <p>The design world has moved decisively in 2026, and the shift is one I personally find exciting. After years of cold minimalism and muted grays, bedrooms are getting warmer, softer, and more human. Here is what&#39;s driving the conversation right now — and what&#39;s quietly fading out.</p>
 <h3>Warm Earthy Tones Have Replaced Cool Gray</h3>
 <p>Cool gray has dominated bedroom walls for the better part of a decade. In 2026, it&#39;s finally stepping aside for something far more livable. The palette everyone is reaching for now centers on clay and terracotta (warm, grounding, flattering in any light), sage and eucalyptus green (calming, nature-forward, pairs with virtually everything), warm white and cream (soft and timeless without the coldness of pure white), and mushroom and taupe (sophisticated neutrals that actually feel warm). According to Pantone&#39;s 2025 Home Decor Color Trend Report, warm earth-based neutrals saw a 34% increase in home decor adoption over two years — and that momentum has only built since.</p>
@@ -1019,25 +1044,25 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
 <hr>
 <h2>Bedroom Decor Ideas by Style {#by-style}</h2>
 <h3>Modern &amp; Minimalist Bedroom Decor {#modern}</h3>
-<p><img src="/images/modern-minimalist-bedroom-decor" alt="Modern minimalist bedroom decor with platform bed pendant lights and clean white walls"></p>
+<p><img src="/content/images/modern-minimalist-bedroom-decor.png" alt="Modern minimalist bedroom decor with platform bed pendant lights and clean white walls"></p>
 <p>Modern minimalist bedroom decor is built on one principle: every item earns its place. Nothing sits in the room without purpose, and the result — when done well — feels like waking up in a boutique hotel every morning. I&#39;d personally choose this style for any bedroom where I wanted to feel genuinely calm the moment I opened my eyes.</p>
 <p>The foundation is a low-profile platform bed in natural wood or neutral upholstered fabric, paired with crisp bedding in white, cream, or warm gray. High thread count matters here more than in other styles — in a room with almost no accessories, the quality of your textiles becomes the entire story. Add one or two statement pieces maximum: a single large-format art print above the bed, or a beautiful pendant lamp at bedside, but not both at once. Storage needs to disappear — bed frames with drawers, floating shelves, built-in wardrobes — because clutter destroys the effect entirely. Limit your color palette to three tones in the same tonal family, and give everything breathing room.</p>
 <p>One thing I&#39;ve learned from styling minimalist bedrooms: quality matters more here, not less. One genuinely good $150 linen duvet cover reads as more expensive than three cheap $40 sets layered together. Invest selectively and let each piece carry its weight. For more picks curated to this style, browse our <a href="/category/minimalist-style.html">minimalist style bedroom guides</a>.</p>
 <hr>
 <h3>Cozy Boho Bedroom Decor {#boho}</h3>
-<p><img src="/images/cozy-boho-bedroom-decor" alt="Cozy boho bedroom decor with rattan headboard macrame wall art jute rug and layered cushions"></p>
+<p><img src="/content/images/cozy-boho-bedroom-decor.png" alt="Cozy boho bedroom decor with rattan headboard macrame wall art jute rug and layered cushions"></p>
 <p>Boho bedroom decor is the most forgiving style to pull off — and one of the most satisfying. There are no rigid rules, only principles: warmth, texture, eclecticism, and personality. It&#39;s also the style that rewards thrifting and mixing price points most generously, which makes it accessible at almost any budget.</p>
 <p>The formula I always start with is this: a textured jute or kilim rug as the foundation, a rattan or wicker headboard as the single best investment for instant character, and generously layered bedding in mismatched-but-coordinated cushions, throws, and pillowcases pulling from rust, terracotta, cream, and sage. From there, a statement wall piece — macramé, a woven textile, or a gallery wall of botanical prints — and at least one trailing plant (pothos or philodendron are foolproof). Light the room with string lights, a rattan pendant, and a warm-toned table lamp rather than any single overhead source.</p>
 <p>The beauty of this style is that it genuinely rewards imperfection. Thrift half the pieces and splurge on one quality anchor item (the rug, almost always) and the room will still feel intentional and warm. Explore our full <a href="/category/boho-rustic-decor.html">boho and rustic decor collection</a> for picks across furniture, textiles, and accessories at every price point.</p>
 <hr>
 <h3>Luxury &amp; Glam Bedroom Decor {#luxury}</h3>
-<p><img src="/images/luxury-glam-bedroom-decor" alt="Luxury glam bedroom decor with velvet tufted headboard gold accents and crystal chandelier"></p>
+<p><img src="/content/images/luxury-glam-bedroom-decor.png" alt="Luxury glam bedroom decor with velvet tufted headboard gold accents and crystal chandelier"></p>
 <p>Glam bedroom decor is unapologetic. It leans into drama, richness, and the feeling of waking up in a five-star suite. Done right, it&#39;s genuinely breathtaking. Done wrong, it feels like a furniture showroom sampler. The difference, in my experience, comes down to one word: restraint. True luxury decor is curated, not crammed.</p>
 <p>The non-negotiable anchor piece is a statement headboard — tall, tufted velvet in a deep jewel tone (emerald, sapphire, dusty rose) or a soft neutral (champagne, ivory) for a quieter version of the look. Everything else builds from there: metallic accents in gold or brass for lamps, hardware, and decorative objects (keep it to one metal tone throughout the room), layered bedding in satin pillowcases with a high-GSM velvet throw and Euro shams in complementary tones, a large ornate mirror that doubles the visual impact of every other piece, and a chandelier or statement pendant that serves as the ceiling&#39;s exclamation point.</p>
 <p>The one thing I always add to prevent a glam bedroom from feeling cold: something organic. Fresh flowers, a sculptural ceramic vase, a trailing plant on the dresser. It grounds the opulence and makes the space feel genuinely lived in. See our full <a href="/category/luxury-furniture.html">luxury furniture and decor picks</a> for our highest-rated glam bedroom recommendations.</p>
 <hr>
 <h3>Small Bedroom Decor Ideas {#small}</h3>
-<p><img src="/images/small-bedroom-decor-ideas" alt="Small bedroom decor ideas with floating shelves large mirror under bed storage and light walls"></p>
+<p><img src="/content/images/small-bedroom-decor-ideas.png" alt="Small bedroom decor ideas with floating shelves large mirror under bed storage and light walls"></p>
 <p>Small bedrooms are the challenge I get asked about more than any other. The good news is that the solutions are well-established, genuinely effective, and most of them cost very little to implement.</p>
 <p><strong>Go vertical, not horizontal.</strong> Use your walls aggressively. Floating shelves replace bulky nightstands and free up floor space entirely. Tall wardrobes maximize vertical storage without increasing the footprint. Wall-mounted sconces eliminate the need for bedside table lamps altogether, reclaiming those surfaces for breathing room.</p>
 <p><strong>A large mirror is the single best investment in a small bedroom.</strong> A full-length leaning mirror or a large round mirror above the bed visually doubles the perceived size of any room. This isn&#39;t a design trick — it genuinely changes how the brain processes the space. Nothing else delivers the same impact for the price.</p>
@@ -1046,7 +1071,7 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
 <p><strong>Hang curtains from ceiling to floor</strong>, not just from the window frame. This draws the eye upward, makes ceilings feel higher, and makes the entire room feel airier. Pair them with light-colored bedding to amplify natural light. And never block a window with furniture — in a small room, every ray of natural light is precious. For more ideas on maximizing limited space, our <a href="/category/space-saving-furniture.html">space-saving furniture guides</a> cover every room in the house.</p>
 <hr>
 <h2>The 5 Highest-Impact Bedroom Upgrades {#high-impact}</h2>
-<p><img src="/images/bedroom-decor-highest-impact-upgrades" alt="5 highest impact bedroom decor upgrades including layered bedding lighting wall art rug and mirror"></p>
+<p><img src="/content/images/bedroom-decor-highest-impact-upgrades.png" alt="5 highest impact bedroom decor upgrades including layered bedding lighting wall art rug and mirror"></p>
 <p>If you can only do a few things, do these five. After years of bedroom styling and direct feedback from thousands of readers, these upgrades consistently deliver the biggest visible transformation per dollar spent — in roughly this order of impact.</p>
 <h3>Upgrade 1 — Bedding &amp; Textiles</h3>
 <p>Your bed is the centerpiece of the room. It occupies more visual real estate than any other element, and yet most people underinvest here and overinvest in furniture instead. The layering formula I use every time starts with a crisp white fitted sheet as the base, adds a linen or high-thread-count duvet in a warm neutral or on-trend tone, layers two to four Euro shams behind sleeping pillows to create the &quot;hotel bed&quot; height effect, and finishes with a throw blanket folded at the foot or draped casually over one corner. The key is mixing textures within the same color family rather than buying a matching box set — the mix is what creates depth and makes a bed look genuinely styled.</p>
@@ -1060,7 +1085,7 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
 <p>A large mirror belongs in every bedroom regardless of size. It catches and amplifies natural light, makes the space feel genuinely airier, and functions as a design element that nothing else replicates at the same price point. The best placements are above a dresser, leaning against a wall at floor height, or mounted on the wall beside a window where it will catch changing light throughout the day.</p>
 <hr>
 <h2>Budget Bedroom Makeover: Transform for Under $300 {#budget-makeover}</h2>
-<p><img src="/images/budget-bedroom-makeover-before-after" alt="Budget bedroom makeover before and after transformation under $300 with bedding lamp and wall art"></p>
+<p><img src="/content/images/budget-bedroom-makeover-before-after.png" alt="Budget bedroom makeover before and after transformation under $300 with bedding lamp and wall art"></p>
 <p>You do not need to spend thousands of dollars to have a bedroom that stops people in their tracks. Here is the exact $300 makeover formula I use — ordered by impact so you know where to start if you need to phase the spending.</p>
 <table>
 <thead>
@@ -1114,7 +1139,7 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
 <p>The order matters as much as the products. Start with bedding because it delivers the biggest visible change in the least amount of time. Move to lighting next because warm light transforms every other element in the room instantly. Add the rug to ground the space, then the wall art to finish the look, then plants and throws as the final layer of personality. Following this sequence means every step builds visibly on the last — and you can stop at any point and the room will already look dramatically better than when you started.</p>
 <hr>
 <h2>How to Style Your Bedroom Like a Designer {#how-to}</h2>
-<p><img src="/images/how-to-style-bedroom-like-designer-steps" alt="Step by step guide to styling a bedroom like a designer in 5 clear steps"></p>
+<p><img src="/content/images/how-to-style-bedroom-like-designer-steps.png" alt="Step by step guide to styling a bedroom like a designer in 5 clear steps"></p>
 <p>Every bedroom transformation I&#39;ve seen succeed follows the same sequence. Skip a step or reverse the order, and something always feels slightly off — even when you can&#39;t immediately identify why. Here&#39;s the process in the order it should happen.</p>
 <p><strong>Step 1: Start with the Walls.</strong> Choose your color story before anything else. Paint is the highest return-on-investment change you can make in any room. A warm neutral — cream, warm white, soft sage, or clay — gives every other element something beautiful to work against. If you&#39;re renting and can&#39;t paint, a large wall piece (tapestry, gallery wall, or oversized canvas) creates the same visual anchoring effect.</p>
 <p><strong>Step 2: Build the Bed.</strong> Assemble your full layered bedding setup before you place anything else in the room. The bed sets the visual tone for every other decision — color, texture, formality level. Get this right first and the rest follows far more naturally.</p>
@@ -1124,7 +1149,7 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
 <hr>
 <h2>Product Reviews &amp; Recommendations {#product-reviews}</h2>
 <h3>🏆 Best Overall: Casaluna Linen Blend Duvet Cover Set</h3>
-<p><img src="/images/casaluna-linen-duvet-cover-bedroom" alt="Casaluna linen blend duvet cover set styled on a bedroom bed in warm neutral tones"></p>
+<p><img src="/content/images/casaluna-linen-duvet-cover-bedroom.png" alt="Casaluna linen blend duvet cover set styled on a bedroom bed in warm neutral tones"></p>
 <p><strong>Price:</strong> $69–$129 (As of February 2026)
 <strong>Best For:</strong> Anyone who wants effortlessly chic, relaxed-linen aesthetics without paying premium linen prices</p>
 <p><strong>Why We Recommend It:</strong> This is the duvet cover I reach for first when styling any bedroom. The stonewashed linen-blend fabric is genuinely soft from the very first use — no stiff break-in period, no rough first wash. It drapes with that naturally relaxed quality that makes a bed look like it belongs in an editorial shoot, not a catalog. The color range is outstanding and almost perfectly aligned with 2026 bedroom trends — sage, clay, warm white, dusty rose, and charcoal are all available.</p>
@@ -1141,7 +1166,7 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
 <p><a href="https://amzn.to/3Mt92ag"><strong>👉 Check Today&#39;s Price &amp; Reviews</strong></a></p>
 <hr>
 <h3>💡 Best Lighting: Brightech Sparq Arc LED Floor Lamp</h3>
-<p><img src="/images/brightech-sparq-arc-lamp-bedroom" alt="Brightech Sparq arc LED floor lamp beside bedroom bed creating warm ambient lighting glow"></p>
+<p><img src="/content/images/brightech-sparq-arc-lamp-bedroom.png" alt="Brightech Sparq arc LED floor lamp beside bedroom bed creating warm ambient lighting glow"></p>
 <p><strong>Price:</strong> $79–$109 (As of February 2026)
 <strong>Best For:</strong> Creating warm, dimmable ambient light that transforms bedroom atmosphere from flat to genuinely cozy</p>
 <p><strong>Why We Recommend It:</strong> The Brightech Sparq is the arc lamp I recommend more than any other, and I&#39;ve tested a lot of them. The arc positions the light source above and over the bed, giving you that warm pooled glow you&#39;d normally need installed ceiling fixtures to achieve. The built-in dimmer lets you dial from full brightness for reading down to an almost-candlelight level for winding down — and that full range is exactly what a bedroom lamp should offer.</p>
@@ -1158,7 +1183,7 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
 <p><a href="https://amzn.to/4ubPrMK"><strong>👉 See Current Deals &amp; Reviews</strong></a></p>
 <hr>
 <h3>🌿 Best Rug: nuLOOM Rigo Handwoven Jute Area Rug</h3>
-<p><img src="/images/nuloom-rigo-jute-rug-bedroom" alt="nuLOOM Rigo handwoven jute area rug under queen bed in boho bedroom with rattan headboard"></p>
+<p><img src="/content/images/nuloom-rigo-jute-rug-bedroom.png" alt="nuLOOM Rigo handwoven jute area rug under queen bed in boho bedroom with rattan headboard"></p>
 <p><strong>Price:</strong> $65–$175 depending on size (As of February 2026)
 <strong>Best For:</strong> Natural, boho, Scandinavian, and coastal bedroom styles</p>
 <p><strong>Why We Recommend It:</strong> Handwoven from natural jute fiber, this rug adds immediate warmth and genuine texture to any bedroom floor. The chunky weave looks substantially more expensive than it is — I&#39;ve had visitors assume it cost three times what I paid. It&#39;s also impressively durable for a natural-fiber rug, and holds up beautifully with minimal maintenance over time.</p>
@@ -1175,7 +1200,7 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
 <p><a href="https://amzn.to/3ZSUXG9"><strong>👉 Compare Sizes &amp; Check Today&#39;s Price</strong></a></p>
 <hr>
 <h3>🖼️ Premium Pick: Uttermost Abelard Abstract Canvas Art</h3>
-<p><img src="/images/uttermost-abelard-canvas-art-bedroom-wall" alt="Uttermost Abelard abstract canvas art hung above styled bed as bedroom wall statement piece"></p>
+<p><img src="/content/images/uttermost-abelard-canvas-art-bedroom-wall.png" alt="Uttermost Abelard abstract canvas art hung above styled bed as bedroom wall statement piece"></p>
 <p><strong>Price:</strong> $180–$320 depending on size (As of February 2026)
 <strong>Best For:</strong> Modern, contemporary, and luxury bedrooms needing a gallery-quality anchor piece above the bed</p>
 <p><strong>Why We Recommend It:</strong> Uttermost is a well-regarded home decor brand known for producing wall pieces with genuine museum-quality presence at prices that don&#39;t require a second mortgage. The Abelard collection features large-format abstract canvases in warm earth tones — the kind of art that anchors a bedroom wall completely without dominating or overwhelming the space around it.</p>
@@ -1192,7 +1217,7 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
 <p><a href="https://amzn.to/4qTb8hx"><strong>👉 Read Verified Reviews &amp; Check Availability</strong></a></p>
 <hr>
 <h3>💰 Best Budget Pick: Bedsure Satin Pillowcase Set (2-Pack)</h3>
-<p><img src="/images/bedsure-satin-pillowcase-set-bedroom" alt="Bedsure satin pillowcase set in dusty rose on styled bed with crisp white linen and trailing plant"></p>
+<p><img src="/content/images/bedsure-satin-pillowcase-set-bedroom.png" alt="Bedsure satin pillowcase set in dusty rose on styled bed with crisp white linen and trailing plant"></p>
 <p><strong>Price:</strong> $10–$18 (As of February 2026)
 <strong>Best For:</strong> Anyone who wants the immediate feel and look of a luxury bedroom upgrade for the smallest possible investment</p>
 <p><strong>Why We Recommend It:</strong> Satin pillowcases were once synonymous with a significant price premium. Bedsure changed that calculation entirely. This two-pack delivers genuine silky-soft feel — beneficial for both hair and skin — in over 30 colors that include virtually every on-trend bedroom tone for 2026. The price is so low that upgrading your entire bedding palette becomes achievable in a single order.</p>
@@ -1209,7 +1234,7 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
 <p><a href="https://amzn.to/4aT3kXd"><strong>👉 Check Today&#39;s Price on Amazon</strong></a></p>
 <hr>
 <h2>Full Product Comparison {#comparison}</h2>
-<p><img src="/images/bedroom-decor-products-comparison-2026" alt="Full comparison of best bedroom decor products 2026 including pricing ratings and best use cases"></p>
+<p><img src="/content/images/bedroom-decor-products-comparison-2026.png" alt="Full comparison of best bedroom decor products 2026 including pricing ratings and best use cases"></p>
 <table>
 <thead>
 <tr>
@@ -1314,7 +1339,11 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
 <li><strong>Joanna Gaines</strong>, Interior Designer &amp; Author — <em>&quot;A bedroom should be the most personal room in your home. It should tell your story.&quot;</em></li>
 <li><strong>Bobby Berk</strong>, Interior Designer (Queer Eye) — <em>&quot;Layering texture in a bedroom is the design secret most people overlook. It&#39;s what separates styled from staged.&quot;</em></li>
 </ol>
- if you want it truly mid-article -->
+
+    at whichever point you want it mid-article,
+    e.g. after Upgrade 6 section.
+    ══════════════════════════════════════════════
+    -->
     <div class="newsletter-box">
       <p>✉️ Love these decor ideas?</p>
       <p class="nl-sub">Join thousands of readers getting weekly inspiration straight to their inbox.</p>
@@ -1362,13 +1391,23 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
       <p>Passionate about creating beautiful, functional living spaces on any budget.</p>
     </div>
 
-    <!-- ═══ NEWSLETTER BOX 2: AFTER AUTHOR BOX ═══ -->
+    <!--
+    ══════════════════════════════════════════════
+    NEWSLETTER BOX 2 — After author box
+    ══════════════════════════════════════════════
+    -->
     <div class="newsletter-box">
       <p>💌 Enjoyed this article?</p>
       <p class="nl-sub">Subscribe for more styling tips, budget finds, and room transformations every week.</p>
       <button class="ml-onclick-form" onclick="ml('show', 'ygWEME', true)">
         🏡 Join the Wow Glam Community →
       </button>
+    </div>
+
+    <!-- ═══ YOU MAY ALSO LOVE — loaded dynamically from posts.json ═══ -->
+    <div class="related-posts" id="relatedPosts" style="display:none">
+      <h3>💕 You May Also Love</h3>
+      <div class="related-grid" id="relatedGrid"></div>
     </div>
 
   </article>
@@ -1487,7 +1526,6 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
     (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
     ml('account', '2154421');
 </script>
-<!-- End MailerLite Universal -->
 
 <script>
 /* ═══ PROGRESS BAR ═══ */
@@ -1501,7 +1539,15 @@ const btt = document.getElementById('backToTop');
 window.addEventListener('scroll', () => btt.classList.toggle('visible', window.pageYOffset > 400), {passive:true});
 btt.addEventListener('click', () => window.scrollTo({top:0,behavior:'smooth'}));
 
-/* ═══ AUTO-BUILD FLOATING TOC ═══ */
+/* ═══ TABLE: wrap all tables in a scroll div for responsive fix ═══ */
+document.querySelectorAll('.content-body table').forEach(table => {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'table-scroll-wrap';
+  table.parentNode.insertBefore(wrapper, table);
+  wrapper.appendChild(table);
+});
+
+/* ═══ AUTO-BUILD FLOATING TOC — FIX: no brackets, clean anchor IDs ═══ */
 (function(){
   const tocFloat = document.getElementById('tocFloat');
   const tocList  = document.getElementById('tocList');
@@ -1510,11 +1556,20 @@ btt.addEventListener('click', () => window.scrollTo({top:0,behavior:'smooth'}));
   if (headings.length < 3) return;
   tocFloat.style.display = 'block';
   headings.forEach((h, i) => {
-    if (!h.id) h.id = 'section-' + i;
+    // FIX: create clean ID — no special chars, no brackets
+    if (!h.id) {
+      const cleanId = 'h2-' + i + '-' + h.textContent.toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, '')   // strip brackets and special chars
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .substring(0, 50);
+      h.id = cleanId;
+    }
     const li = document.createElement('li');
     const a  = document.createElement('a');
     a.href        = '#' + h.id;
-    a.textContent = h.textContent.replace(/^#+\s*/, '');
+    // FIX: strip any leading emoji / number pattern for cleaner TOC labels
+    a.textContent = h.textContent.replace(/^[\d]+[\.\:\s]+/, '').replace(/^Upgrade\s\d+:\s*/i, '').trim();
     a.addEventListener('click', e => {
       e.preventDefault();
       h.scrollIntoView({behavior:'smooth', block:'start'});
@@ -1566,7 +1621,8 @@ function toggleMobileMenu() {
 document.addEventListener('click', e => {
   const menu = document.getElementById('navMenu');
   const btn  = document.getElementById('mobileMenuBtn');
-  if (menu && menu.classList.contains('mobile-open') && !menu.contains(e.target) && !btn.contains(e.target)) {
+  if (menu && menu.classList.contains('mobile-open') &&
+      !menu.contains(e.target) && !btn.contains(e.target)) {
     menu.classList.remove('mobile-open');
     btn.textContent = '☰';
   }
@@ -1594,6 +1650,63 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     if (t) { e.preventDefault(); t.scrollIntoView({behavior:'smooth'}); }
   });
 });
+
+/* ═══ YOU MAY ALSO LOVE — related posts from posts.json ═══ */
+(function(){
+  const container = document.getElementById('relatedPosts');
+  const grid      = document.getElementById('relatedGrid');
+  if (!container || !grid) return;
+
+  // Get current page slug from URL
+  const currentSlug = window.location.pathname.split('/').pop().replace('.html','');
+
+  // Get current page categories/tags from meta if available
+  const currentCategory = document.querySelector('.category-badge') ?
+    document.querySelector('.category-badge').textContent.trim() : '';
+
+  async function loadRelated() {
+    try {
+      const res = await fetch('/posts.json');
+      if (!res.ok) return;
+      const posts = await res.json();
+
+      // Filter out current post, prefer same category, shuffle, take 3-4
+      const others = posts.filter(p => p.slug !== currentSlug && p.slug !== currentSlug.replace('.html',''));
+      const sameCat = others.filter(p =>
+        (p.categories || []).some(c => c.toLowerCase() === currentCategory.toLowerCase())
+      );
+      const pool = sameCat.length >= 3 ? sameCat : others;
+
+      // Shuffle and pick 4
+      const shuffled = pool.sort(() => 0.5 - Math.random()).slice(0, 4);
+
+      if (!shuffled.length) return;
+
+      shuffled.forEach(post => {
+        const img  = post.featured_image || '/content/images/default-post.jpg';
+        const cat  = (post.categories && post.categories[0]) || 'Decor';
+        const url  = post.url || `/posts/${post.slug}.html`;
+        const card = document.createElement('a');
+        card.href      = url;
+        card.className = 'related-card';
+        card.innerHTML = `
+          <img src="${img}" alt="${post.title}" class="related-card-img" loading="lazy">
+          <div class="related-card-body">
+            <div class="related-card-cat">${cat}</div>
+            <div class="related-card-title">${post.title}</div>
+            <span class="related-card-link">Read more →</span>
+          </div>`;
+        grid.appendChild(card);
+      });
+
+      container.style.display = 'block';
+    } catch(e) {
+      // Silently fail if posts.json not available
+    }
+  }
+
+  loadRelated();
+})();
 
 /* ═══ SEARCH ═══ */
 (function(){

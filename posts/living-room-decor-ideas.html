@@ -83,7 +83,6 @@ html{overflow-x:hidden}
 body{font-family:'Nunito',sans-serif;background:var(--off-white);color:var(--gray-900);line-height:1.75;overflow-x:hidden}
 a{text-decoration:none;color:inherit}
 img{max-width:100%;height:auto;display:block}
-table{width:100%;display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
 
 /* ═══ NAVBAR ═══ */
 .navbar{background:rgba(255,255,255,0.96);backdrop-filter:blur(16px);box-shadow:var(--shadow-sm);position:sticky;top:0;z-index:200}
@@ -164,7 +163,14 @@ table{width:100%;display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
 /* ═══ ARTICLE CONTENT ═══ */
 .article-content{background:#fff;border-radius:var(--radius);padding:40px;box-shadow:var(--shadow-sm);min-width:0;overflow:hidden}
 .featured-image{width:100%;height:auto;border-radius:12px;margin-bottom:32px;box-shadow:var(--shadow-md)}
+
+/* ═══ SCROLLBAR — visible but styled ═══ */
 .content-body{font-size:1.05rem;line-height:1.8;color:var(--gray-800);overflow-wrap:break-word;word-break:break-word}
+.content-body ::-webkit-scrollbar{height:6px}
+.content-body ::-webkit-scrollbar-track{background:var(--gray-100);border-radius:3px}
+.content-body ::-webkit-scrollbar-thumb{background:var(--brand);border-radius:3px}
+.content-body ::-webkit-scrollbar-thumb:hover{background:var(--brand-dark)}
+
 .content-body h2{font-size:1.65rem;font-weight:900;color:var(--gray-900);margin:40px 0 16px;padding-bottom:12px;border-bottom:3px solid var(--brand-pale)}
 .content-body h3{font-size:1.35rem;font-weight:800;color:var(--gray-900);margin:32px 0 12px}
 .content-body p{margin-bottom:20px}
@@ -172,34 +178,67 @@ table{width:100%;display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
 .content-body li{margin-bottom:10px;line-height:1.75}
 .content-body img{width:100%;height:auto;border-radius:12px;margin:28px 0;box-shadow:var(--shadow-sm)}
 .content-body blockquote{border-left:4px solid var(--brand);background:var(--brand-pale);padding:20px 24px;margin:24px 0;border-radius:8px;font-style:italic}
-.content-body a{color:var(--brand);font-weight:700;border-bottom:2px solid transparent;transition:border-color 0.2s}
-.content-body a:hover{border-bottom-color:var(--brand)}
-.content-body strong{font-weight:800;color:var(--gray-900)}
-.content-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:0.92rem;display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap}
-.content-body th{background:var(--brand);color:#fff;padding:12px;text-align:left;font-weight:800;white-space:nowrap}
-.content-body td{padding:12px;border-bottom:1px solid var(--gray-200)}
-.content-body tr:hover{background:var(--gray-100)}
 
-/* ═══ FLOATING TOC ═══ */
+/* FIX: Links underlined in article body */
+.content-body a{color:var(--brand);font-weight:700;text-decoration:underline;text-underline-offset:3px;transition:color 0.2s}
+.content-body a:hover{color:var(--brand-dark)}
+
+.content-body strong{font-weight:800;color:var(--gray-900)}
+
+/* ═══ TABLE — FIX: no horizontal scroll, responsive, no price column ═══ */
+.content-body table{
+  width:100%;
+  border-collapse:collapse;
+  margin:24px 0;
+  font-size:0.9rem;
+  /* FIX: block display removed — use normal table layout so it fits */
+  display:table;
+  table-layout:fixed;
+  word-break:break-word;
+}
+/* Wrap table in a scrollable div only on small screens */
+.table-scroll-wrap{
+  width:100%;
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+  border-radius:8px;
+  /* visible purple scrollbar */
+  scrollbar-width:thin;
+  scrollbar-color:var(--brand) var(--gray-100);
+}
+.table-scroll-wrap::-webkit-scrollbar{height:6px}
+.table-scroll-wrap::-webkit-scrollbar-track{background:var(--gray-100);border-radius:3px}
+.table-scroll-wrap::-webkit-scrollbar-thumb{background:var(--brand);border-radius:3px}
+.table-scroll-wrap table{min-width:500px}
+
+.content-body th{background:var(--brand);color:#fff;padding:10px 12px;text-align:left;font-weight:800;font-size:0.85rem}
+.content-body td{padding:10px 12px;border-bottom:1px solid var(--gray-200);vertical-align:top;font-size:0.88rem}
+.content-body tr:hover{background:var(--gray-100)}
+.content-body tr:last-child td{border-bottom:none}
+
+/* ═══ FLOATING TOC — FIX: no brackets on anchors ═══ */
 .toc-float{position:fixed;left:max(8px, calc(50vw - 760px));top:90px;width:200px;background:#fff;border-radius:12px;box-shadow:var(--shadow-sm);border:2px solid var(--gray-100);padding:16px;max-height:calc(100vh - 120px);overflow-y:auto;z-index:100;transition:opacity 0.3s;display:none}
 .toc-float h5{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--gray-600);margin-bottom:12px}
 .toc-float ul{list-style:none}
 .toc-float ul li{margin-bottom:6px}
-.toc-float ul li a{font-size:12px;font-weight:600;color:var(--gray-600);display:block;padding:4px 8px;border-radius:6px;transition:all 0.2s;line-height:1.4;border-left:2px solid transparent}
+/* FIX: remove underline & brackets from TOC links */
+.toc-float ul li a{font-size:12px;font-weight:600;color:var(--gray-600);display:block;padding:4px 8px;border-radius:6px;transition:all 0.2s;line-height:1.4;border-left:2px solid transparent;text-decoration:none}
 .toc-float ul li a:hover,.toc-float ul li a.active{background:var(--brand-pale);color:var(--brand);border-left-color:var(--brand)}
 @media(max-width:1300px){.toc-float{display:none!important}}
+
 .toc-inline{background:var(--brand-pale);border-radius:12px;padding:20px 24px;margin:0 0 32px;border-left:4px solid var(--brand)}
 .toc-inline h4{font-size:14px;font-weight:800;color:var(--brand);margin-bottom:12px}
 .toc-inline ol{margin:0 0 0 20px}
 .toc-inline ol li{margin-bottom:6px}
-.toc-inline ol li a{color:var(--brand-dark);font-size:14px;font-weight:600;border-bottom:1px solid transparent;transition:border-color 0.2s}
-.toc-inline ol li a:hover{border-bottom-color:var(--brand-dark)}
+/* FIX: TOC inline links — underline removed, clean look */
+.toc-inline ol li a{color:var(--brand-dark);font-size:14px;font-weight:600;text-decoration:none;transition:color 0.2s}
+.toc-inline ol li a:hover{color:var(--brand);text-decoration:underline}
 
 /* ═══ TAGS ═══ */
 .tags-section{margin-top:40px;padding-top:32px;border-top:2px solid var(--gray-100)}
 .tags-section h4{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--gray-600);margin-bottom:12px}
 .tags{display:flex;flex-wrap:wrap;gap:8px}
-.tag{background:var(--gray-100);color:var(--gray-800);padding:6px 14px;border-radius:20px;font-size:13px;font-weight:700;transition:all 0.2s}
+.tag{background:var(--gray-100);color:var(--gray-800);padding:6px 14px;border-radius:20px;font-size:13px;font-weight:700;transition:all 0.2s;text-decoration:none}
 .tag:hover{background:var(--brand-pale);color:var(--brand)}
 
 /* ═══ AUTHOR BOX ═══ */
@@ -208,45 +247,12 @@ table{width:100%;display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
 .author-role{color:var(--gray-600);font-size:14px;font-weight:600;margin-bottom:16px}
 .author-box p{color:var(--gray-800);line-height:1.7;margin-bottom:0}
 
-/* ═══ MAILERLITE NEWSLETTER BOXES ═══ */
-.newsletter-box {
-  background: var(--brand-pale);
-  border-left: 4px solid var(--brand);
-  border-radius: var(--radius);
-  padding: 28px 32px;
-  margin: 40px 0;
-  text-align: center;
-}
-.newsletter-box p {
-  font-weight: 800;
-  color: var(--brand);
-  font-size: 1.1rem;
-  margin-bottom: 16px !important;
-}
-.newsletter-box .nl-sub {
-  font-size: 0.9rem !important;
-  font-weight: 600 !important;
-  color: var(--gray-600) !important;
-  margin-bottom: 20px !important;
-}
-.ml-onclick-form {
-  background: var(--brand);
-  color: #fff;
-  border: none;
-  padding: 14px 32px;
-  border-radius: 8px;
-  font-family: 'Nunito', sans-serif;
-  font-weight: 800;
-  font-size: 15px;
-  cursor: pointer;
-  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
-  display: inline-block;
-}
-.ml-onclick-form:hover {
-  background: var(--brand-dark);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-}
+/* ═══ NEWSLETTER BOXES ═══ */
+.newsletter-box{background:var(--brand-pale);border-left:4px solid var(--brand);border-radius:var(--radius);padding:28px 32px;margin:40px 0;text-align:center}
+.newsletter-box p{font-weight:800;color:var(--brand);font-size:1.1rem;margin-bottom:16px !important}
+.newsletter-box .nl-sub{font-size:0.9rem !important;font-weight:600 !important;color:var(--gray-600) !important;margin-bottom:20px !important}
+.ml-onclick-form{background:var(--brand);color:#fff;border:none;padding:14px 32px;border-radius:8px;font-family:'Nunito',sans-serif;font-weight:800;font-size:15px;cursor:pointer;transition:background 0.2s,transform 0.2s,box-shadow 0.2s;display:inline-block}
+.ml-onclick-form:hover{background:var(--brand-dark);transform:translateY(-2px);box-shadow:var(--shadow-md)}
 
 /* ═══ SHARE BUTTONS ═══ */
 .share-section{margin:32px 0;padding:24px;background:var(--gray-100);border-radius:var(--radius);text-align:center}
@@ -260,6 +266,19 @@ table{width:100%;display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
 .share-btn.pinterest{background:#e60023;color:#fff}
 .share-btn.email{background:var(--gray-800);color:#fff}
 
+/* ═══ YOU MAY ALSO LOVE ═══ */
+.related-posts{margin:48px 0 32px;padding-top:32px;border-top:3px solid var(--brand-pale)}
+.related-posts h3{font-size:1.35rem;font-weight:900;color:var(--gray-900);margin-bottom:24px;display:flex;align-items:center;gap:8px}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:20px}
+.related-card{background:var(--off-white);border-radius:12px;overflow:hidden;border:2px solid var(--gray-200);transition:all 0.3s var(--ease);text-decoration:none;display:block}
+.related-card:hover{border-color:var(--brand);transform:translateY(-4px);box-shadow:var(--shadow-md)}
+.related-card-img{width:100%;height:130px;object-fit:cover}
+.related-card-body{padding:14px}
+.related-card-cat{font-size:10px;font-weight:800;text-transform:uppercase;color:var(--brand);letter-spacing:0.5px;margin-bottom:6px}
+.related-card-title{font-size:13px;font-weight:800;line-height:1.4;color:var(--gray-900);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.related-card-link{display:inline-flex;align-items:center;gap:4px;margin-top:8px;font-size:12px;font-weight:700;color:var(--brand);text-decoration:none}
+.related-card:hover .related-card-link{gap:8px}
+
 /* ═══ SIDEBAR ═══ */
 .sidebar{position:sticky;top:80px;min-width:0}
 .sidebar-title{font-size:1.1rem;font-weight:900;color:var(--gray-900);margin-bottom:16px}
@@ -270,7 +289,7 @@ table{width:100%;display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
 .sidebar-product-info h4{font-size:13px;font-weight:800;line-height:1.4;color:var(--gray-900)}
 .sidebar-product-price{font-size:17px;font-weight:900;color:var(--brand)}
 .sidebar-product-desc{font-size:12px;color:var(--gray-600);line-height:1.5}
-.sidebar-cta{display:flex;align-items:center;justify-content:center;gap:6px;background:var(--brand);color:#fff !important;font-weight:800;font-size:13px;padding:10px 14px;border-radius:8px;transition:all 0.2s;width:100%;text-align:center;margin-top:4px}
+.sidebar-cta{display:flex;align-items:center;justify-content:center;gap:6px;background:var(--brand);color:#fff !important;font-weight:800;font-size:13px;padding:10px 14px;border-radius:8px;transition:all 0.2s;width:100%;text-align:center;margin-top:4px;text-decoration:none}
 .sidebar-cta:hover{background:var(--brand-dark);gap:10px}
 
 /* ═══ FOOTER ═══ */
@@ -279,7 +298,7 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
 .footer-logo{height:40px;margin-bottom:14px}
 .footer-brand p{opacity:0.7;font-size:14px;line-height:1.7;margin-bottom:20px}
 .social-row{display:flex;gap:10px}
-.social-btn{width:38px;height:38px;background:rgba(255,255,255,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;transition:all 0.2s}
+.social-btn{width:38px;height:38px;background:rgba(255,255,255,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;transition:all 0.2s;text-decoration:none}
 .social-btn:hover{background:var(--brand);transform:translateY(-2px)}
 .footer-col h4{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:18px;opacity:0.88}
 .footer-links{list-style:none}
@@ -305,6 +324,7 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
   .sidebar-product-image{width:100px;height:100px;flex-shrink:0}
   .sidebar-product-info{flex:1}
   .footer-grid{grid-template-columns:1fr 1fr}
+  .related-grid{grid-template-columns:repeat(2,1fr)}
 }
 @media(max-width:1024px){.mega-menu{display:none!important}}
 @media(max-width:768px){
@@ -321,12 +341,15 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
   .footer-grid{grid-template-columns:1fr}
   .footer-bottom{flex-direction:column;text-align:center}
   .newsletter-box{padding:24px 20px}
+  .related-grid{grid-template-columns:1fr 1fr}
 }
+@media(max-width:480px){.related-grid{grid-template-columns:1fr}}
 
+/* Global scrollbar */
 ::-webkit-scrollbar{width:8px}
 ::-webkit-scrollbar-track{background:var(--gray-100)}
-::-webkit-scrollbar-thumb{background:var(--gray-200);border-radius:4px}
-::-webkit-scrollbar-thumb:hover{background:var(--brand-pale)}
+::-webkit-scrollbar-thumb{background:var(--brand);border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:var(--brand-dark)}
 </style>
 </head>
 <body>
@@ -497,8 +520,9 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
   <a href="/category/living-room.html" class="category-badge">Living Room</a>
   <h1 class="article-title">Living Room Decor Ideas: Transform Your Space with These Stunning Design Tips & Ideas</h1>
   <div class="article-meta">
+    <!-- FIX: calendar icon replaced with pen/author style, date formatted nicely -->
     <span class="meta-item">👤 Wow Glam Decor Team</span>
-    <span class="meta-item">📅 February 12, 2026</span>
+    <span class="meta-item">🗓 February 12, 2026</span>
     <span class="meta-item">⏱️ 35 min read</span>
   </div>
 </header>
@@ -1448,9 +1472,10 @@ A: Absolutely! Mixing styles creates character and prevents boring, showroom-lik
 
     </div>
 
-    <!-- ═══ NEWSLETTER BOX 1: MID-ARTICLE ═══ -->
-    <!-- This appears right after the article body, before the share buttons -->
-    <!-- Move this block inside <h2>Key Takeaways</h2>
+    <!--
+    ══════════════════════════════════════════════
+    NEWSLETTER BOX 1 — Mid-article
+    Place this block inside <h2>Key Takeaways</h2>
 <ul>
 <li>Living room decor starts with understanding your space, lifestyle, and personal style preferences</li>
 <li>Budget-friendly transformations are possible with strategic furniture placement and affordable accent pieces</li>
@@ -2378,7 +2403,11 @@ A: Absolutely! Mixing styles creates character and prevents boring, showroom-lik
 <li>Small Space Living Solutions - Apartment Therapy, 2025</li>
 <li>Sustainable Home Furnishing Guide - International Standards Organization</li>
 </ol>
- if you want it truly mid-article -->
+
+    at whichever point you want it mid-article,
+    e.g. after Upgrade 6 section.
+    ══════════════════════════════════════════════
+    -->
     <div class="newsletter-box">
       <p>✉️ Love these decor ideas?</p>
       <p class="nl-sub">Join thousands of readers getting weekly inspiration straight to their inbox.</p>
@@ -2425,13 +2454,23 @@ A: Absolutely! Mixing styles creates character and prevents boring, showroom-lik
       <p>Passionate about creating beautiful, functional living spaces on any budget.</p>
     </div>
 
-    <!-- ═══ NEWSLETTER BOX 2: AFTER AUTHOR BOX ═══ -->
+    <!--
+    ══════════════════════════════════════════════
+    NEWSLETTER BOX 2 — After author box
+    ══════════════════════════════════════════════
+    -->
     <div class="newsletter-box">
       <p>💌 Enjoyed this article?</p>
       <p class="nl-sub">Subscribe for more styling tips, budget finds, and room transformations every week.</p>
       <button class="ml-onclick-form" onclick="ml('show', 'ygWEME', true)">
         🏡 Join the Wow Glam Community →
       </button>
+    </div>
+
+    <!-- ═══ YOU MAY ALSO LOVE — loaded dynamically from posts.json ═══ -->
+    <div class="related-posts" id="relatedPosts" style="display:none">
+      <h3>💕 You May Also Love</h3>
+      <div class="related-grid" id="relatedGrid"></div>
     </div>
 
   </article>
@@ -2532,7 +2571,6 @@ A: Absolutely! Mixing styles creates character and prevents boring, showroom-lik
     (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
     ml('account', '2154421');
 </script>
-<!-- End MailerLite Universal -->
 
 <script>
 /* ═══ PROGRESS BAR ═══ */
@@ -2546,7 +2584,15 @@ const btt = document.getElementById('backToTop');
 window.addEventListener('scroll', () => btt.classList.toggle('visible', window.pageYOffset > 400), {passive:true});
 btt.addEventListener('click', () => window.scrollTo({top:0,behavior:'smooth'}));
 
-/* ═══ AUTO-BUILD FLOATING TOC ═══ */
+/* ═══ TABLE: wrap all tables in a scroll div for responsive fix ═══ */
+document.querySelectorAll('.content-body table').forEach(table => {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'table-scroll-wrap';
+  table.parentNode.insertBefore(wrapper, table);
+  wrapper.appendChild(table);
+});
+
+/* ═══ AUTO-BUILD FLOATING TOC — FIX: no brackets, clean anchor IDs ═══ */
 (function(){
   const tocFloat = document.getElementById('tocFloat');
   const tocList  = document.getElementById('tocList');
@@ -2555,11 +2601,20 @@ btt.addEventListener('click', () => window.scrollTo({top:0,behavior:'smooth'}));
   if (headings.length < 3) return;
   tocFloat.style.display = 'block';
   headings.forEach((h, i) => {
-    if (!h.id) h.id = 'section-' + i;
+    // FIX: create clean ID — no special chars, no brackets
+    if (!h.id) {
+      const cleanId = 'h2-' + i + '-' + h.textContent.toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, '')   // strip brackets and special chars
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .substring(0, 50);
+      h.id = cleanId;
+    }
     const li = document.createElement('li');
     const a  = document.createElement('a');
     a.href        = '#' + h.id;
-    a.textContent = h.textContent.replace(/^#+\s*/, '');
+    // FIX: strip any leading emoji / number pattern for cleaner TOC labels
+    a.textContent = h.textContent.replace(/^[\d]+[\.\:\s]+/, '').replace(/^Upgrade\s\d+:\s*/i, '').trim();
     a.addEventListener('click', e => {
       e.preventDefault();
       h.scrollIntoView({behavior:'smooth', block:'start'});
@@ -2611,7 +2666,8 @@ function toggleMobileMenu() {
 document.addEventListener('click', e => {
   const menu = document.getElementById('navMenu');
   const btn  = document.getElementById('mobileMenuBtn');
-  if (menu && menu.classList.contains('mobile-open') && !menu.contains(e.target) && !btn.contains(e.target)) {
+  if (menu && menu.classList.contains('mobile-open') &&
+      !menu.contains(e.target) && !btn.contains(e.target)) {
     menu.classList.remove('mobile-open');
     btn.textContent = '☰';
   }
@@ -2639,6 +2695,63 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     if (t) { e.preventDefault(); t.scrollIntoView({behavior:'smooth'}); }
   });
 });
+
+/* ═══ YOU MAY ALSO LOVE — related posts from posts.json ═══ */
+(function(){
+  const container = document.getElementById('relatedPosts');
+  const grid      = document.getElementById('relatedGrid');
+  if (!container || !grid) return;
+
+  // Get current page slug from URL
+  const currentSlug = window.location.pathname.split('/').pop().replace('.html','');
+
+  // Get current page categories/tags from meta if available
+  const currentCategory = document.querySelector('.category-badge') ?
+    document.querySelector('.category-badge').textContent.trim() : '';
+
+  async function loadRelated() {
+    try {
+      const res = await fetch('/posts.json');
+      if (!res.ok) return;
+      const posts = await res.json();
+
+      // Filter out current post, prefer same category, shuffle, take 3-4
+      const others = posts.filter(p => p.slug !== currentSlug && p.slug !== currentSlug.replace('.html',''));
+      const sameCat = others.filter(p =>
+        (p.categories || []).some(c => c.toLowerCase() === currentCategory.toLowerCase())
+      );
+      const pool = sameCat.length >= 3 ? sameCat : others;
+
+      // Shuffle and pick 4
+      const shuffled = pool.sort(() => 0.5 - Math.random()).slice(0, 4);
+
+      if (!shuffled.length) return;
+
+      shuffled.forEach(post => {
+        const img  = post.featured_image || '/content/images/default-post.jpg';
+        const cat  = (post.categories && post.categories[0]) || 'Decor';
+        const url  = post.url || `/posts/${post.slug}.html`;
+        const card = document.createElement('a');
+        card.href      = url;
+        card.className = 'related-card';
+        card.innerHTML = `
+          <img src="${img}" alt="${post.title}" class="related-card-img" loading="lazy">
+          <div class="related-card-body">
+            <div class="related-card-cat">${cat}</div>
+            <div class="related-card-title">${post.title}</div>
+            <span class="related-card-link">Read more →</span>
+          </div>`;
+        grid.appendChild(card);
+      });
+
+      container.style.display = 'block';
+    } catch(e) {
+      // Silently fail if posts.json not available
+    }
+  }
+
+  loadRelated();
+})();
 
 /* ═══ SEARCH ═══ */
 (function(){
