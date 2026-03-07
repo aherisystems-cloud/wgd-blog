@@ -56,6 +56,58 @@ function canonicalUrl(asin) {
   return `https://www.amazon.com/dp/${asin}`;
 }
 
+// ─── Shorten Amazon product titles ────────────────────────────────────────────
+// Amazon titles are often 15–25 words packed with specs, sizes, and brand fluff.
+// This rewrites them to a clean 4–7 word display name.
+//
+// Strategy (applied in order):
+//   1. Strip anything after the first em-dash, pipe, or hyphen-separator
+//   2. Strip parenthetical specs  e.g. "(Set of 2, 18x18)"
+//   3. Strip common filler suffixes: "for Hair and Skin", "with Envelope Closure" etc.
+//   4. Collapse brand prefix if title starts with brand name repeated
+//   5. Truncate to 6 words max, append "…" only if actually truncated
+//
+// Examples:
+//   "Bedsure Satin Pillowcase for Hair and Skin Queen – Silver Grey 20x30 Inches"
+//   → "Bedsure Satin Pillowcase"
+//
+//   "AmazonBasics Microfiber Sheet Set - Soft, Easy-Care, 4 Piece, Full, Light Grey"
+//   → "AmazonBasics Microfiber Sheet Set"
+//
+//   "Lifewit Large Under Bed Storage Bags with Window (Set of 4)"
+//   → "Lifewit Under Bed Storage Bags"
+
+function shortenProductTitle(raw) {
+  if (!raw) return raw;
+
+  let t = raw.trim();
+
+  // 1. Cut at em-dash, pipe, or " - " separator (long spec lists follow these)
+  t = t.split(/\s+[–—|]\s+|\s+-\s+/)[0].trim();
+
+  // 2. Remove parenthetical content: "(Set of 2, Queen Size)" etc.
+  t = t.replace(/\s*\([^)]*\)/g, '').trim();
+
+  // 3. Remove common filler phrases that follow the core name
+  const fillers = [
+    /\s+for\s+(hair|skin|men|women|kids|bedroom|living room|home|pet|cat|dog).*/i,
+    /\s+with\s+(lid|handle|strap|zipper|window|envelope closure|removable|usb).*/i,
+    /\s+\d+[\s-]?(pack|piece|count|pcs|set)\b.*/i,
+    /\s+(queen|king|full|twin|euro|standard)\s+size?\b.*/i,
+    /\s+\d{2}x\d{2}.*/i,    // "18x18 inches"
+    /\s+\d+\s*(inch|in\b).*/i,
+  ];
+  fillers.forEach(re => { t = t.replace(re, '').trim(); });
+
+  // 4. Truncate to 6 words maximum
+  const words = t.split(/\s+/);
+  if (words.length > 6) {
+    t = words.slice(0, 6).join(' ') + '…';
+  }
+
+  return t || raw.trim(); // fall back to original if we somehow emptied the string
+}
+
 // ─── Fetch product data from Amazon ───────────────────────────────────────────
 async function fetchAmazonProduct(affiliateUrl) {
   const asin = extractASIN(affiliateUrl);
@@ -133,7 +185,7 @@ async function fetchAmazonProduct(affiliateUrl) {
       return null;
     }
 
-    return { asin, title, image_url, price };
+    return { asin, title: title ? shortenProductTitle(title) : null, image_url, price };
 
   } catch (err) {
     console.warn(`  ⚠️  Fetch error for ASIN ${asin}: ${err.message}`);
