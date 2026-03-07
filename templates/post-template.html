@@ -191,7 +191,6 @@ img{max-width:100%;height:auto;display:block}
   border-collapse:collapse;
   margin:24px 0;
   font-size:0.9rem;
-  /* FIX: block display removed — use normal table layout so it fits */
   display:table;
   table-layout:fixed;
   word-break:break-word;
@@ -202,7 +201,6 @@ img{max-width:100%;height:auto;display:block}
   overflow-x:auto;
   -webkit-overflow-scrolling:touch;
   border-radius:8px;
-  /* visible purple scrollbar */
   scrollbar-width:thin;
   scrollbar-color:var(--brand) var(--gray-100);
 }
@@ -216,12 +214,11 @@ img{max-width:100%;height:auto;display:block}
 .content-body tr:hover{background:var(--gray-100)}
 .content-body tr:last-child td{border-bottom:none}
 
-/* ═══ FLOATING TOC — FIX: no brackets on anchors ═══ */
+/* ═══ FLOATING TOC ═══ */
 .toc-float{position:fixed;left:max(8px, calc(50vw - 760px));top:90px;width:200px;background:#fff;border-radius:12px;box-shadow:var(--shadow-sm);border:2px solid var(--gray-100);padding:16px;max-height:calc(100vh - 120px);overflow-y:auto;z-index:100;transition:opacity 0.3s;display:none}
 .toc-float h5{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--gray-600);margin-bottom:12px}
 .toc-float ul{list-style:none}
 .toc-float ul li{margin-bottom:6px}
-/* FIX: remove underline & brackets from TOC links */
 .toc-float ul li a{font-size:12px;font-weight:600;color:var(--gray-600);display:block;padding:4px 8px;border-radius:6px;transition:all 0.2s;line-height:1.4;border-left:2px solid transparent;text-decoration:none}
 .toc-float ul li a:hover,.toc-float ul li a.active{background:var(--brand-pale);color:var(--brand);border-left-color:var(--brand)}
 @media(max-width:1300px){.toc-float{display:none!important}}
@@ -230,7 +227,6 @@ img{max-width:100%;height:auto;display:block}
 .toc-inline h4{font-size:14px;font-weight:800;color:var(--brand);margin-bottom:12px}
 .toc-inline ol{margin:0 0 0 20px}
 .toc-inline ol li{margin-bottom:6px}
-/* FIX: TOC inline links — underline removed, clean look */
 .toc-inline ol li a{color:var(--brand-dark);font-size:14px;font-weight:600;text-decoration:none;transition:color 0.2s}
 .toc-inline ol li a:hover{color:var(--brand);text-decoration:underline}
 
@@ -282,13 +278,151 @@ img{max-width:100%;height:auto;display:block}
 /* ═══ SIDEBAR ═══ */
 .sidebar{position:sticky;top:80px;min-width:0}
 .sidebar-title{font-size:1.1rem;font-weight:900;color:var(--gray-900);margin-bottom:16px}
-.sidebar-product{background:#fff;border-radius:var(--radius);padding:16px;margin-bottom:20px;box-shadow:var(--shadow-sm);transition:all 0.3s var(--ease);border:2px solid transparent;display:flex;flex-direction:column;gap:10px}
-.sidebar-product:hover{transform:translateY(-4px);box-shadow:var(--shadow-md);border-color:var(--brand)}
-.sidebar-product-image{width:100%;height:160px;object-fit:contain;border-radius:10px;display:block}
-.sidebar-product-info{display:flex;flex-direction:column;gap:6px}
-.sidebar-product-info h4{font-size:13px;font-weight:800;line-height:1.4;color:var(--gray-900)}
-.sidebar-product-price{font-size:17px;font-weight:900;color:var(--brand)}
-.sidebar-product-desc{font-size:12px;color:var(--gray-600);line-height:1.5}
+
+/* ═══ PRODUCT CARDS — Tier Badges ═══ */
+.tier-badge{
+  position:absolute;top:10px;left:10px;
+  font-size:0.7rem;font-weight:700;letter-spacing:0.04em;
+  padding:3px 9px;border-radius:20px;text-transform:uppercase;
+  white-space:nowrap;z-index:2;backdrop-filter:blur(4px);
+}
+.budget-badge  {background:#e8f5e9;color:#2e7d32;border:1px solid #a5d6a7}
+.value-badge   {background:#fff8e1;color:#f57f17;border:1px solid #ffe082}
+.premium-badge {background:#f3e5f5;color:#7e0882;border:1px solid #ce93d8}
+.splurge-badge {background:#1a1a2e;color:#ffd700;border:1px solid #ffd700}
+
+/* ═══ PRODUCT CARDS — Sidebar ═══ */
+.sidebar-product{
+  display:flex;flex-direction:column;
+  text-decoration:none;color:inherit;
+  background:#fff;border:1px solid #f0e6f1;border-radius:12px;
+  overflow:hidden;margin-bottom:20px;
+  transition:box-shadow 0.2s,transform 0.2s;
+  box-shadow:0 2px 8px rgba(126,8,130,0.06);
+}
+.sidebar-product:hover{
+  box-shadow:0 6px 24px rgba(126,8,130,0.14);
+  transform:translateY(-2px);
+}
+.product-img-wrap{
+  position:relative;width:100%;aspect-ratio:1/1;
+  background:#faf8fb;overflow:hidden;
+}
+.product-img-wrap img{
+  width:100%;height:100%;object-fit:contain;padding:12px;
+  transition:transform 0.3s;
+}
+.sidebar-product:hover .product-img-wrap img{transform:scale(1.04)}
+.product-info{padding:14px 16px;display:flex;flex-direction:column;gap:4px}
+.product-name{
+  font-size:0.85rem;font-weight:600;color:#1a1a1a;line-height:1.35;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
+  overflow:hidden;margin:0;
+}
+.product-price{font-size:1rem;font-weight:800;color:var(--brand);margin:2px 0 0}
+.product-benefit{font-size:0.75rem;color:#555;margin:0}
+.product-cta{
+  display:inline-block;margin-top:10px;padding:8px 14px;
+  background:var(--brand);color:#fff;border-radius:8px;
+  font-size:0.8rem;font-weight:700;text-align:center;transition:background 0.2s;
+}
+.sidebar-product:hover .product-cta{background:var(--brand-dark)}
+
+/* ═══ PRODUCT CARDS — "Shop This Post" Inline Section ═══ */
+.shop-this-post{
+  margin:40px 0;padding:28px;
+  background:linear-gradient(135deg,#fdf6ff 0%,#fff8fe 100%);
+  border:1.5px solid #e8c9ea;border-radius:16px;
+}
+.shop-heading{
+  font-size:1.25rem;font-weight:800;color:var(--brand);
+  margin:0 0 20px;letter-spacing:-0.01em;
+}
+
+/* ═══ PRODUCT CARDS — Inline Grid (shared by shop-this-post & legacy inline-products-section) ═══ */
+.inline-products-section{
+  margin:48px 0;padding:32px;
+  background:linear-gradient(135deg,rgba(126,8,130,0.04),rgba(45,91,255,0.04));
+  border:2px solid rgba(126,8,130,0.15);border-radius:16px;
+}
+.inline-products-heading{
+  font-size:22px;font-weight:800;color:var(--gray-900);
+  margin-bottom:24px;display:flex;align-items:center;gap:10px;
+}
+.inline-products-heading::after{
+  content:'';flex:1;height:2px;
+  background:linear-gradient(90deg,rgba(126,8,130,0.2),transparent);
+}
+.inline-products-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:16px;
+}
+.inline-product-card{
+  display:flex;flex-direction:column;
+  text-decoration:none;color:inherit;
+  background:#fff;border:1px solid #f0e6f1;border-radius:12px;
+  overflow:hidden;
+  transition:box-shadow 0.2s,transform 0.2s;
+  box-shadow:0 2px 8px rgba(126,8,130,0.05);
+  position:relative;
+}
+.inline-product-card:hover{
+  box-shadow:0 8px 28px rgba(126,8,130,0.13);
+  transform:translateY(-3px);
+  border-color:var(--brand);
+}
+.inline-product-img{
+  position:relative;aspect-ratio:1/1;
+  background:#faf8fb;overflow:hidden;
+}
+.inline-product-img img,.inline-product-img-placeholder + img{
+  width:100%;height:100%;object-fit:contain;padding:12px;
+  transition:transform 0.3s;
+}
+.inline-product-card:hover .inline-product-img img{transform:scale(1.05)}
+.inline-product-img-placeholder{
+  width:100%;height:180px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:40px;background:#faf8fb;
+}
+.inline-product-label{
+  padding:5px 12px;font-size:10px;font-weight:800;
+  letter-spacing:0.6px;text-transform:uppercase;
+  color:#fff;text-align:center;
+}
+.inline-product-body{
+  padding:12px 14px;display:flex;flex-direction:column;gap:3px;flex:1;
+}
+.inline-product-name{
+  font-size:0.82rem;font-weight:600;color:#1a1a1a;line-height:1.3;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
+  overflow:hidden;margin:0;
+}
+.inline-product-price,.inline-product-price{
+  font-size:0.95rem;font-weight:800;color:var(--brand);margin:2px 0 0;
+}
+.inline-product-benefit{font-size:0.72rem;color:#666;margin:0;line-height:1.5;margin-top:2px;flex:1}
+.inline-product-btn{
+  display:block;font-size:0.78rem;font-weight:700;color:var(--brand);
+  border-top:1px solid #f0e6f1;margin-top:10px;padding-top:10px;
+}
+.inline-product-card:hover .inline-product-btn{color:var(--brand-dark)}
+.inline-product-cta{
+  margin-top:auto;padding:8px 14px;
+  background:var(--brand);color:#fff;border-radius:8px;
+  font-size:12px;font-weight:700;text-align:center;
+}
+.inline-product-card:hover .inline-product-cta{background:var(--brand-dark)}
+.inline-tier-badge{display:inline-block;padding:3px 8px;border-radius:10px;font-size:10px;font-weight:700}
+.inline-tier-badge.tier-budget {background:#D1FAE5;color:#065F46}
+.inline-tier-badge.tier-mid    {background:#FEF3C7;color:#92400E}
+.inline-tier-badge.tier-luxury {background:rgba(126,8,130,0.1);color:var(--brand)}
+
+/* Affiliate disclosure note */
+.affiliate-note{margin-top:16px;font-size:0.72rem;color:#999;text-align:center}
+
+/* Legacy sidebar-cta kept for backwards-compatibility */
 .sidebar-cta{display:flex;align-items:center;justify-content:center;gap:6px;background:var(--brand);color:#fff !important;font-weight:800;font-size:13px;padding:10px 14px;border-radius:8px;transition:all 0.2s;width:100%;text-align:center;margin-top:4px;text-decoration:none}
 .sidebar-cta:hover{background:var(--brand-dark);gap:10px}
 
@@ -321,8 +455,8 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
   .content-wrapper{grid-template-columns:1fr}
   .sidebar{position:static}
   .sidebar-product{flex-direction:row;align-items:flex-start}
-  .sidebar-product-image{width:100px;height:100px;flex-shrink:0}
-  .sidebar-product-info{flex:1}
+  .product-img-wrap{width:100px;height:100px;flex-shrink:0;aspect-ratio:unset}
+  .product-info{flex:1}
   .footer-grid{grid-template-columns:1fr 1fr}
   .related-grid{grid-template-columns:repeat(2,1fr)}
 }
@@ -337,40 +471,24 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
   .content-wrapper{padding:0 16px 60px}
   .share-btn{padding:10px 12px;font-size:12px}
   .sidebar-product{flex-direction:column}
-  .sidebar-product-image{width:100%;height:160px}
+  .product-img-wrap{width:100%;aspect-ratio:1/1}
   .footer-grid{grid-template-columns:1fr}
   .footer-bottom{flex-direction:column;text-align:center}
   .newsletter-box{padding:24px 20px}
   .related-grid{grid-template-columns:1fr 1fr}
 }
+@media(max-width:640px){
+  .inline-products-grid{grid-template-columns:repeat(2,1fr);gap:12px}
+  .inline-products-section,.shop-this-post{padding:20px 16px}
+}
 @media(max-width:480px){.related-grid{grid-template-columns:1fr}}
+@media(max-width:380px){.inline-products-grid{grid-template-columns:1fr}}
 
 /* Global scrollbar */
 ::-webkit-scrollbar{width:8px}
 ::-webkit-scrollbar-track{background:var(--gray-100)}
 ::-webkit-scrollbar-thumb{background:var(--brand);border-radius:4px}
 ::-webkit-scrollbar-thumb:hover{background:var(--brand-dark)}
-
-/* ── INLINE "SHOP THIS POST" PRODUCT CARDS ───────────────────────────────── */
-.inline-products-section{margin:48px 0;padding:32px;background:linear-gradient(135deg,rgba(126,8,130,0.04),rgba(45,91,255,0.04));border:2px solid rgba(126,8,130,0.15);border-radius:16px}
-.inline-products-heading{font-size:22px;font-weight:800;color:var(--text-dark);margin-bottom:24px;display:flex;align-items:center;gap:10px}
-.inline-products-heading::after{content:'';flex:1;height:2px;background:linear-gradient(90deg,rgba(126,8,130,0.2),transparent)}
-.inline-products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:18px}
-.inline-product-card{display:flex;flex-direction:column;background:#fff;border:2px solid var(--gray-200);border-radius:12px;overflow:hidden;text-decoration:none;color:inherit;transition:all 0.25s;position:relative}
-.inline-product-card:hover{border-color:#7e0882;box-shadow:0 8px 24px rgba(126,8,130,0.12);transform:translateY(-3px)}
-.inline-product-label{padding:5px 12px;font-size:10px;font-weight:800;letter-spacing:0.6px;text-transform:uppercase;color:#fff;text-align:center}
-.inline-product-img{width:100%;height:180px;object-fit:contain;object-position:center;padding:12px;background:var(--gray-50)}
-.inline-product-img-placeholder{width:100%;height:180px;display:flex;align-items:center;justify-content:center;font-size:40px;background:var(--gray-50)}
-.inline-product-body{padding:14px;display:flex;flex-direction:column;gap:6px;flex:1}
-.inline-product-name{font-size:14px;font-weight:700;color:var(--text-dark);line-height:1.4}
-.inline-tier-badge{display:inline-block;padding:3px 8px;border-radius:10px;font-size:10px;font-weight:700}
-.inline-tier-badge.tier-budget{background:#D1FAE5;color:#065F46}
-.inline-tier-badge.tier-mid{background:#FEF3C7;color:#92400E}
-.inline-tier-badge.tier-luxury{background:rgba(126,8,130,0.1);color:#7e0882}
-.inline-product-benefit{font-size:12px;color:var(--text-muted);line-height:1.5;margin-top:2px;flex:1}
-.inline-product-cta{margin-top:auto;padding:8px 14px;background:#7e0882;color:#fff;border-radius:8px;font-size:12px;font-weight:700;text-align:center}
-.inline-product-card:hover .inline-product-cta{background:#5a005c}
-@media(max-width:640px){.inline-products-grid{grid-template-columns:repeat(2,1fr)}.inline-products-section{padding:20px}}
 </style>
 </head>
 <body>
@@ -541,7 +659,6 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
   <a href="/category/{{CATEGORY_SLUG}}.html" class="category-badge">{{CATEGORY}}</a>
   <h1 class="article-title">{{TITLE}}</h1>
   <div class="article-meta">
-    <!-- FIX: calendar icon replaced with pen/author style, date formatted nicely -->
     <span class="meta-item">👤 {{AUTHOR_NAME}}</span>
     <span class="meta-item">🗓 {{PUBLISH_DATE_FORMATTED}}</span>
     <span class="meta-item">⏱️ {{READ_TIME}} min read</span>
@@ -565,14 +682,6 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
       {{ARTICLE_CONTENT}}
     </div>
 
-    <!--
-    ══════════════════════════════════════════════
-    NEWSLETTER BOX 1 — Mid-article
-    Place this block inside {{ARTICLE_CONTENT}}
-    at whichever point you want it mid-article,
-    e.g. after Upgrade 6 section.
-    ══════════════════════════════════════════════
-    -->
     <div class="newsletter-box">
       <p>✉️ Love these decor ideas?</p>
       <p class="nl-sub">Join thousands of readers getting weekly inspiration straight to their inbox.</p>
@@ -606,11 +715,6 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
       <p>{{AUTHOR_BIO}}</p>
     </div>
 
-    <!--
-    ══════════════════════════════════════════════
-    NEWSLETTER BOX 2 — After author box
-    ══════════════════════════════════════════════
-    -->
     <div class="newsletter-box">
       <p>💌 Enjoyed this article?</p>
       <p class="nl-sub">Subscribe for more styling tips, budget finds, and room transformations every week.</p>
@@ -619,7 +723,7 @@ footer{background:var(--gray-900);color:#fff;padding:56px 24px 24px;margin-top:0
       </button>
     </div>
 
-    <!-- ═══ YOU MAY ALSO LOVE — loaded dynamically from posts.json ═══ -->
+    <!-- ═══ YOU MAY ALSO LOVE ═══ -->
     <div class="related-posts" id="relatedPosts" style="display:none">
       <h3>💕 You May Also Love</h3>
       <div class="related-grid" id="relatedGrid"></div>
@@ -718,7 +822,7 @@ document.querySelectorAll('.content-body table').forEach(table => {
   wrapper.appendChild(table);
 });
 
-/* ═══ AUTO-BUILD FLOATING TOC — FIX: no brackets, clean anchor IDs ═══ */
+/* ═══ AUTO-BUILD FLOATING TOC ═══ */
 (function(){
   const tocFloat = document.getElementById('tocFloat');
   const tocList  = document.getElementById('tocList');
@@ -727,10 +831,9 @@ document.querySelectorAll('.content-body table').forEach(table => {
   if (headings.length < 3) return;
   tocFloat.style.display = 'block';
   headings.forEach((h, i) => {
-    // FIX: create clean ID — no special chars, no brackets
     if (!h.id) {
       const cleanId = 'h2-' + i + '-' + h.textContent.toLowerCase()
-        .replace(/[^a-z0-9\s-]/g, '')   // strip brackets and special chars
+        .replace(/[^a-z0-9\s-]/g, '')
         .replace(/\s+/g, '-')
         .replace(/-+/g, '-')
         .substring(0, 50);
@@ -739,7 +842,6 @@ document.querySelectorAll('.content-body table').forEach(table => {
     const li = document.createElement('li');
     const a  = document.createElement('a');
     a.href        = '#' + h.id;
-    // FIX: strip any leading emoji / number pattern for cleaner TOC labels
     a.textContent = h.textContent.replace(/^[\d]+[\.\:\s]+/, '').replace(/^Upgrade\s\d+:\s*/i, '').trim();
     a.addEventListener('click', e => {
       e.preventDefault();
@@ -822,37 +924,26 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
   });
 });
 
-/* ═══ YOU MAY ALSO LOVE — related posts from posts.json ═══ */
+/* ═══ YOU MAY ALSO LOVE ═══ */
 (function(){
   const container = document.getElementById('relatedPosts');
   const grid      = document.getElementById('relatedGrid');
   if (!container || !grid) return;
-
-  // Get current page slug from URL
   const currentSlug = window.location.pathname.split('/').pop().replace('.html','');
-
-  // Get current page categories/tags from meta if available
   const currentCategory = document.querySelector('.category-badge') ?
     document.querySelector('.category-badge').textContent.trim() : '';
-
   async function loadRelated() {
     try {
       const res = await fetch('/posts.json');
       if (!res.ok) return;
       const posts = await res.json();
-
-      // Filter out current post, prefer same category, shuffle, take 3-4
       const others = posts.filter(p => p.slug !== currentSlug && p.slug !== currentSlug.replace('.html',''));
       const sameCat = others.filter(p =>
         (p.categories || []).some(c => c.toLowerCase() === currentCategory.toLowerCase())
       );
       const pool = sameCat.length >= 3 ? sameCat : others;
-
-      // Shuffle and pick 4
       const shuffled = pool.sort(() => 0.5 - Math.random()).slice(0, 4);
-
       if (!shuffled.length) return;
-
       shuffled.forEach(post => {
         const img  = post.featured_image || '/content/images/default-post.jpg';
         const cat  = (post.categories && post.categories[0]) || 'Decor';
@@ -869,13 +960,9 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
           </div>`;
         grid.appendChild(card);
       });
-
       container.style.display = 'block';
-    } catch(e) {
-      // Silently fail if posts.json not available
-    }
+    } catch(e) {}
   }
-
   loadRelated();
 })();
 
@@ -886,7 +973,6 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
   if (!searchInput || !suggestionsBox) return;
   let timeout, selectedIndex = -1, cachedPosts = null;
   const popular = ['Living Room','Bedroom Decor','Budget Furniture','Minimalist','Best Of Lists'];
-
   async function loadPosts() {
     if (cachedPosts) return cachedPosts;
     try { const r = await fetch('/posts.json'); if (r.ok) { cachedPosts = await r.json(); return cachedPosts; } } catch(e){}
