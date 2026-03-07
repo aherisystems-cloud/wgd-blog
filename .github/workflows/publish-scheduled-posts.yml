@@ -2,7 +2,7 @@ name: Publish Scheduled Posts
 
 on:
   schedule:
-    - cron: '0 */6 * * *'  # Every 6 hours
+    - cron: '*/5 * * * *'  # Every 5 minutes
   workflow_dispatch:  # Manual trigger
 
 permissions:

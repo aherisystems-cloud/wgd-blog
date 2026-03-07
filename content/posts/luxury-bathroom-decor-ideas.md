@@ -1,10 +1,12 @@
 ---
-title: "How to Make Your Bathroom Look Like a 5-Star Spa (Without Touching a Single Tile)"
-description: "Transform your bathroom into a luxury glam retreat with 8 stunning decor upgrades. No renovation needed. Shop the exact pieces inside."
-slug: "luxury-bathroom-decor-ideas"
+title: >-
+  How to Make Your Bathroom Look Like a 5-Star Spa (Without Touching a Single
+  Tile)
+description: >-
+  Transform your bathroom into a luxury glam retreat with 8 stunning decor
+  upgrades. No renovation needed. Shop the exact pieces inside.
+slug: luxury-bathroom-decor-ideas
 date: 2026-03-06T14:05:00.000Z
-scheduled_date: 2026-03-06T14:05:00.000Z
-# Scheduled for: 2026-03-06 17:05 EAT (EAT, UTC+3)
 categories:
   - Bathroom
   - Luxury & Glam Decor
@@ -38,64 +40,48 @@ keywords:
   - small bathroom decor
   - bathroom decor on a budget
   - hotel bathroom look at home
-featured_image: "/content/images/hero-luxury-glam-bathroom-decor"
+featured_image: /content/images/hero-luxury-glam-bathroom-decor
 featured_products:
-  # Product 1
-  - name: "Hollywood LED Vanity Mirror"
-    benefit: "Best overall, highest visual impact upgrade"
-    label: "Premium ($$$)"
-    image: "/content/images/products/hollywood-led-vanity-mirror"
-    link: "https://amzn.to/40eFws4"
-
-  # Product 2
-  - name: "Gold Brushed Brass Bathroom Faucet"
-    benefit: "One swap that transforms the entire room"
-    label: "Luxury ($$$$)"
-    image: "/content/images/products/gold-brushed-brass-bathroom-faucet"
-    link: "https://amzn.to/4svm2vf"
-
-  # Product 3
-  - name: "Marble and Gold Bath Tray"
-    benefit: "Iconic spa tray look for under $50"
-    label: "Mid-Range ($$)"
-    image: "/content/images/products/marble-gold-bath-tray"
-    link: "https://amzn.to/4uaBf6w"
-
-  # Product 4
-  - name: "Thick Plush Bath Rug"
-    benefit: "Luxury underfoot feel, machine washable"
-    label: "Budget ($)"
-    image: "/content/images/products/thick-plush-bath-rug"
-    link: "https://amzn.to/4szyBWx"
-
-  # Product 5
-  - name: "Gold Towel Bar and Ring Accessory Set"
-    benefit: "Ties every gold element together cohesively"
-    label: "Mid-Range ($$)"
-    image: "/content/images/products/gold-towel-bar-ring-accessory-set"
-    link: "https://amzn.to/4rjmxHz"
-
-  # Product 6
-  - name: "Crystal Glass Soap Dispenser Set"
-    benefit: "Replaces plastic, adds instant countertop glamour"
-    label: "Mid-Range ($$)"
-    image: "/content/images/products/crystal-glass-soap-dispenser-set"
-    link: "https://amzn.to/4sqP7YB"
-
-  # Product 7
-  - name: "Luxury Scented Candle and Diffuser Set"
-    benefit: "Five-star hotel scent, highest value per dollar"
-    label: "Budget ($)"
-    image: "/content/images/products/luxury-scented-candle-diffuser-set"
-    link: "https://amzn.to/4d6JwlL"
-
-  # Product 8
-  - name: "Framed Botanical Gold-Tone Wall Art"
-    benefit: "Finishes the room, ready to hang out of the box"
-    label: "Mid-Range ($$)"
-    image: "/content/images/products/framed-botanical-gold-tone-wall-art"
-    link: "https://amzn.to/4rSirqZ"
-
+  - name: Hollywood LED Vanity Mirror
+    benefit: 'Best overall, highest visual impact upgrade'
+    label: Premium ($$$)
+    image: /content/images/products/hollywood-led-vanity-mirror
+    link: 'https://amzn.to/40eFws4'
+  - name: Gold Brushed Brass Bathroom Faucet
+    benefit: One swap that transforms the entire room
+    label: Luxury ($$$$)
+    image: /content/images/products/gold-brushed-brass-bathroom-faucet
+    link: 'https://amzn.to/4svm2vf'
+  - name: Marble and Gold Bath Tray
+    benefit: Iconic spa tray look for under $50
+    label: Mid-Range ($$)
+    image: /content/images/products/marble-gold-bath-tray
+    link: 'https://amzn.to/4uaBf6w'
+  - name: Thick Plush Bath Rug
+    benefit: 'Luxury underfoot feel, machine washable'
+    label: Budget ($)
+    image: /content/images/products/thick-plush-bath-rug
+    link: 'https://amzn.to/4szyBWx'
+  - name: Gold Towel Bar and Ring Accessory Set
+    benefit: Ties every gold element together cohesively
+    label: Mid-Range ($$)
+    image: /content/images/products/gold-towel-bar-ring-accessory-set
+    link: 'https://amzn.to/4rjmxHz'
+  - name: Crystal Glass Soap Dispenser Set
+    benefit: 'Replaces plastic, adds instant countertop glamour'
+    label: Mid-Range ($$)
+    image: /content/images/products/crystal-glass-soap-dispenser-set
+    link: 'https://amzn.to/4sqP7YB'
+  - name: Luxury Scented Candle and Diffuser Set
+    benefit: 'Five-star hotel scent, highest value per dollar'
+    label: Budget ($)
+    image: /content/images/products/luxury-scented-candle-diffuser-set
+    link: 'https://amzn.to/4d6JwlL'
+  - name: Framed Botanical Gold-Tone Wall Art
+    benefit: 'Finishes the room, ready to hang out of the box'
+    label: Mid-Range ($$)
+    image: /content/images/products/framed-botanical-gold-tone-wall-art
+    link: 'https://amzn.to/4rSirqZ'
 published: true
 ---
 
