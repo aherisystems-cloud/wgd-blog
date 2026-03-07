@@ -21,7 +21,8 @@
     "gray-matter": "^4.0.3",
     "js-yaml": "^4.1.1",
     "marked": "^12.0.2",
-    "moment-timezone": "^0.5.48"
+    "moment-timezone": "^0.5.48",
+    "node-fetch": "^3.3.2"
   },
   "repository": {
     "type": "git",
