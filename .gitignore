@@ -68,3 +68,12 @@ coverage/
 *.temp
 .temp/
 tmp/
+# Generated build outputs — never commit these
+posts.json
+catalog.json
+blog.html
+feed.xml
+posts/
+category/
+tag/
+sitemap.xml
