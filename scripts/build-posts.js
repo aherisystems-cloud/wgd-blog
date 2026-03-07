@@ -143,6 +143,32 @@ function resolveProductImage(imagePath) {
 }
 
 // ---------------------------------------------------------------------------
+// PRODUCT FIELD NORMALISATION  (NEW — transparent upgrade)
+// ---------------------------------------------------------------------------
+// Accepts BOTH old field names (link, image, budget_tier) and new AI-prompt
+// names (affiliate_url, image_url, tier).  All downstream code works unchanged
+// because it receives a normalised object with the original field names.
+//
+//   affiliate_url  →  link          (affiliate_url wins if both present)
+//   image_url      →  image         (image_url wins if both present)
+//   tier           →  budget_tier   (budget_tier wins if both present)
+//   price          →  price         (new field — shown on cards as "From $X")
+// ---------------------------------------------------------------------------
+function normaliseProduct(p) {
+  if (!p || typeof p !== 'object') return p;
+  return {
+    name:        p.name                             || '',
+    link:        p.affiliate_url || p.link          || '',  // affiliate_url wins
+    image:       p.image_url    || p.image          || '',  // image_url wins
+    price:       p.price                            || '',  // new
+    budget_tier: p.budget_tier  || p.tier           || '',  // budget_tier wins
+    benefit:     p.benefit                          || '',
+    label:       p.label                            || '',
+    category:    p.category                         || 'Product',
+  };
+}
+
+// ---------------------------------------------------------------------------
 // BUDGET TIER BADGE HTML
 // ---------------------------------------------------------------------------
 function budgetTierBadge(tier) {
@@ -248,8 +274,10 @@ const DEFAULT_SIDEBAR_PRODUCTS = `
 // ---------------------------------------------------------------------------
 const CATALOG_PATH = path.join(__dirname, '../catalog.json');
 
-function syncProductsToCatalog(products) {
-  if (!products || !products.length) return 0;
+function syncProductsToCatalog(rawProducts) {
+  if (!rawProducts || !rawProducts.length) return 0;
+  // Normalise field names before syncing
+  const products = rawProducts.map(normaliseProduct);
 
   let catalog = [];
   try {
@@ -268,6 +296,7 @@ function syncProductsToCatalog(products) {
       name:        p.name.trim(),
       link:        key,
       image:       p.image       || '',
+      price:       p.price       || '',          // new
       budget_tier: p.budget_tier || '',
       benefit:     p.benefit     || '',
       label:       p.label       || '',
@@ -289,10 +318,11 @@ function syncProductsToCatalog(products) {
 //
 //   <!-- PRODUCTS -->
 //
-// If the marker is absent, cards are appended at the end of the article.
+// If the marker is absent, cards are appended before </article>.
 // ---------------------------------------------------------------------------
-function generateInlineProductSection(products) {
-  if (!products || !products.length) return '';
+function generateInlineProductSection(rawProducts) {
+  if (!rawProducts || !rawProducts.length) return '';
+  const products = rawProducts.map(normaliseProduct);
   const eligible = products.filter(p => p.link && p.name &&
     !p.link.includes('/posts/')); // skip blog post links — those aren't product cards
   if (!eligible.length) return '';
@@ -320,7 +350,8 @@ function generateInlineProductSection(products) {
         : `<div class="inline-product-img-placeholder">🛍️</div>`}
       <div class="inline-product-body">
         <div class="inline-product-name">${p.name}</div>
-        ${tier ? `<span class="inline-tier-badge ${tierCls}">${tierIcon} ${tier}</span>` : ''}
+        ${tier      ? `<span class="inline-tier-badge ${tierCls}">${tierIcon} ${tier}</span>` : ''}
+        ${p.price   ? `<div class="inline-product-price">From ${p.price}</div>` : ''}
         ${p.benefit ? `<div class="inline-product-benefit">${p.benefit}</div>` : ''}
         <span class="inline-product-cta">Shop on Amazon →</span>
       </div>
@@ -350,7 +381,10 @@ function generateSidebarProducts(frontmatter) {
   if (frontmatter.featured_products && Array.isArray(frontmatter.featured_products) && frontmatter.featured_products.length > 0) {
     html += '\n  <div class="sidebar-section-title">🌟 Featured Products</div>\n';
 
-    frontmatter.featured_products.forEach(product => {
+    // Normalise each product so affiliate_url/image_url/tier all work
+    const products = frontmatter.featured_products.map(normaliseProduct);
+
+    products.forEach(product => {
       const isProduct = product.link && !product.link.includes('/posts/');
       const imageUrl  = resolveProductImage(product.image || '');
       const imgHtml   = imageUrl
@@ -367,6 +401,7 @@ function generateSidebarProducts(frontmatter) {
       <div class="sidebar-product-info">
         <h4>${product.name}</h4>
         ${budgetTierBadge(product.budget_tier || '')}
+        ${product.price   ? `<p class="sidebar-product-price">From ${product.price}</p>` : ''}
         ${product.benefit ? `<p class="sidebar-benefit">${product.benefit}</p>` : ''}
         <span class="sidebar-cta">🛍️ Shop on Amazon →</span>
       </div>
